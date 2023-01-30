@@ -1,4 +1,4 @@
-package PreProjet;
+
 
 import javax.swing.Action;
 import javax.swing.ImageIcon;
@@ -8,10 +8,15 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.*;
+import javax.swing.*;
+import java.awt.geom.*;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
+
 
 
 public class GameView extends JFrame{
@@ -32,30 +37,27 @@ public class GameView extends JFrame{
     ball = new Circle(new Ball());
     add(ball);
     setVisible(true);    
-    //animate();
-    Timer timer = new Timer(100, new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent ae) {
-
-            System.out.print('a');
-
-        }
-    });
-
-    timer.start();
+    animate();
 
     }
 
-    // public void animate() {
-    //     Timer chrono = new Timer();
-    //     int seconds = 0;
-    //     chrono.schedule(new TimerTask() {
-    //         public void run(){
-    //             ball.ball.updateBall(seconds);
-    //             repaint();
-    //         }
-    //     },0,1);
-    // }
+    public void animate() {
+        Timer timer = new Timer(10, new ActionListener() {
+            double now=System.nanoTime();
+            double last;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                last = System.nanoTime();
+                ball.ball.updateBall((last-now)*1.0e-9);
+                repaint();
+                now=last;
+                
+            }
+        });
+        timer.start();
+    }
+
+
 
 
 
@@ -73,7 +75,7 @@ public class GameView extends JFrame{
         }
         public void paint(Graphics g){
             setSize(largeur,hauteur);
-            g.setColor(Color.GREEN);
+            g.setColor(Color.BLACK);
             g.fillOval((int)ball.ballX,(int)ball.ballY,(int)ball.ballRadius,(int)ball.ballRadius);
         }
     } 
