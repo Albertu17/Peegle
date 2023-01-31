@@ -11,6 +11,7 @@ import java.awt.Graphics;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.geom.*;
+import java.util.ArrayList;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,17 +25,29 @@ public class GameView extends JFrame{
     private static final int largeur = 500;
     private static final int hauteur = 500;
 
-    JPanel panel = new JPanel();
 
-    private Circle ball;
+
+    //private Circle ball;
+    private ArrayList<Ball> balls=new ArrayList<>();
 
     GameView() {
 
-    add(panel);
     setSize(largeur, hauteur);
     setTitle("Test");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    ball = new Circle(new Ball());
+
+    balls.add(new Ball(10,10,-10,10));
+    balls.add(new Ball(20,30,10,-10));
+
+    balls.add(new Ball(60,10,75,10));
+    balls.add(new Ball(100,30,-65,10));
+
+    balls.add(new Ball(200,10,-100,10));
+    balls.add(new Ball(250,30,10,100));
+
+    balls.add(new Ball(400,10,10,10));
+    balls.add(new Ball(300,30,10,200));
+    Shapes ball = new Shapes();
     add(ball);
     setVisible(true);    
     animate();
@@ -48,7 +61,10 @@ public class GameView extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 last = System.nanoTime();
-                ball.ball.updateBall((last-now)*1.0e-9);
+                //ball.ball.updateBall((last-now)*1.0e-9);
+                for (Ball b:balls){
+                    b.updateBall((last-now)*1.0e-9);
+                }
                 repaint();
                 now=last;
                 
@@ -62,22 +78,25 @@ public class GameView extends JFrame{
 
 
 
+
     public static void main(String[] args) {
 
         GameView g = new GameView();
         
     }
 
-    public class Circle extends JPanel{
-        Ball ball;
-        Circle (Ball b){
-            ball=b;
-        }
-        public void paint(Graphics g){
-            setSize(largeur,hauteur);
-            g.setColor(Color.BLACK);
-            g.fillOval((int)ball.ballX,(int)ball.ballY,(int)ball.ballRadius,(int)ball.ballRadius);
-        }
+    public class Shapes extends JPanel{
+  
+
+    public void paint(Graphics g){
+        // setSize(largeur,hauteur);
+        // g.setColor(Color.BLACK);
+        // g.fillOval((int)ball.ballX,(int)ball.ballY,(int)ball.ballRadius,(int)ball.ballRadius);
+
+        setSize(largeur,hauteur);
+        g.setColor(Color.BLACK);
+        for (Ball ball:balls) g.fillOval((int)ball.ballX,(int)ball.ballY,(int)ball.ballRadius,(int)ball.ballRadius);
+    }
     } 
 }
 

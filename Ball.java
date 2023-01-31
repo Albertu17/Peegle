@@ -1,5 +1,7 @@
+import java.util.ArrayList;
 import java.util.Random;
 import java.math.*;
+import java.sql.Array;
 public class Ball{
 
     public final double ballRadius = 25.0; // m
@@ -12,17 +14,19 @@ public class Ball{
 
     private int yMarxgin = 3;
 
-    private double masse = 0.33;
+    private boolean ispresent = true;
 
     private double g=200; // m/s
 
+    private ArrayList<Ball> ballAdjacentes=new ArrayList<>();
+
     /* Important coordonée de la balle centre en X mais tout en haut pour Y */
 
-    Ball(){
-        ballX=200;
-        ballY=0;
-        ballSpeedX=50;
-        ballSpeedY=1;
+    Ball(int x,int y,int vx0,int vy0){
+        ballX=x;
+        ballY=y;
+        ballSpeedX=vx0;
+        ballSpeedY=vy0;
     }
 
     public void updateBall(double deltaT) {
@@ -33,17 +37,22 @@ public class Ball{
         //ballSpeedX = ballSpeedX + g*deltaT;
         ballSpeedY = ballSpeedY + g*deltaT;
         // next, see if the ball would meet some obstacle
-        if (nextBallY < 0 || nextBallY > height- ballRadius*2 - yMarxgin) { 
+        if (nextBallY < 0 || nextBallY > height- ballRadius*2 - yMarxgin || touchedBall()) { 
             ballSpeedY = -ballSpeedY*0.8;
             nextBallY = ballY + deltaT * ballSpeedY + 1/2*g*(deltaT*deltaT);
         }
 
-        if (nextBallX < 0 || nextBallX> width - ballRadius){
+        if (nextBallX < 0 || nextBallX> width - ballRadius || touchedBall()){
             ballSpeedX = -ballSpeedX;
             nextBallX = ballX + deltaT * ballSpeedX;
         }
         ballX = nextBallX;
         ballY = nextBallY;
+    }
+
+    public boolean touchedBall(){
+        return false;
+
     }
 
 
