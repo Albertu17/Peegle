@@ -82,12 +82,18 @@ public class Ball{
             double d1 = Math.sqrt(ux* ux + uy*uy);
             double d2 = Math.sqrt(ballSpeedX* ballSpeedX + ballSpeedY*ballSpeedY);
             double alpha = Math.acos(s/(d1*d2));
-            System.out.println(180-alpha*180/Math.PI);
+            System.out.println(alpha*180/Math.PI);
+            double beta;
+            if (alpha>90){
+                    alpha = 180-alpha;
+            }
+            beta = 2*alpha;
+            System.out.println(beta*180/Math.PI);
 
             double nx = ballSpeedX;
             double ny = ballSpeedY;
-            ballSpeedX = nx*Math.cos(alpha) + ny*Math.sin(alpha);
-            ballSpeedY = -nx*Math.sin(alpha) + ny*Math.cos(alpha);
+            ballSpeedX = nx*Math.cos(beta) + ny*Math.sin(beta);
+            ballSpeedY = -nx*Math.sin(beta) + ny*Math.cos(beta);
         }
         ballX = nextBallX;
         ballY = nextBallY;
@@ -108,14 +114,16 @@ public class Ball{
     public Rectangle touchedWall(double nextBallX, double nextBallY){
         Rectangle r=null;
         for (Rectangle rect:court.getRectangle()){
-            if (rect.x0 <= ballX && ballX <= rect.x1
-            &&  rect.y0 <= ballY && ballY <= rect.y1) {
+            if ((int) rect.x0 <= (int)  ballX &&  (int) ballX <= (int)  rect.x1
+            &&  (int)  rect.y0 <= (int)  ballY && (int)  ballY <= (int)  rect.y1) {
                
                 double x = rect.x0 + nextBallX-rect.x0;
                 double adjacent = rect.x1 - x;
                 double tan = Math.tan(rect.angle);
                 double y = rect.y1 - tan*adjacent;
-                if (x<=nextBallX && y <= nextBallY) {
+                // System.out.println(x + " " + y);
+                // System.out.println(ballX + " " + ballY);
+                if ((int) x<= (int) nextBallX && (int) y <= (int) nextBallY) {
                     System.out.println("touch");
                     return rect;}
             }

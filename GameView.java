@@ -41,18 +41,18 @@ public class GameView extends JFrame{
     setTitle("Test");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-    balls.add(new Ball(225,300,1,0,this));
+    balls.add(new Ball(225,300,0,0,this));
     rectanlgle.add(new Rectangle(200, 400, 100, -45));
-    balls.add(new Ball(20,30,10,-10,this));
+    // balls.add(new Ball(20,30,10,-10,this));
 
-    balls.add(new Ball(60,10,75,10,this));
-    balls.add(new Ball(100,30,-65,10,this));
+    // balls.add(new Ball(60,10,75,10,this));
+    // balls.add(new Ball(100,30,-65,10,this));
 
-    balls.add(new Ball(200,10,-100,10,this));
-    balls.add(new Ball(250,30,10,100,this));
+    // balls.add(new Ball(200,10,-100,10,this));
+    // balls.add(new Ball(250,30,10,100,this));
 
-    balls.add(new Ball(400,10,10,10,this));
-    balls.add(new Ball(300,30,10,200,this));
+    // balls.add(new Ball(400,10,10,10,this));
+    // balls.add(new Ball(300,30,10,200,this));
     Shapes s = new Shapes();
     add(s);
     setVisible(true);    
