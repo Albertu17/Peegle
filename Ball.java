@@ -60,11 +60,8 @@ public class Ball{
             // System.out.println(tan);
             // ballSpeedX = (ballSpeedY+ballSpeedX)*tan*Math.cos(r.angle);
             // ballSpeedY = -ballSpeedY*tan*Math.sin(r.angle);
-            ballSpeedX = 100;
-            ballSpeedY = -ballSpeedY;
-
-
-
+            // ballSpeedX = 100;
+            // ballSpeedY = -ballSpeedY;
             //double tanBeta = ballSpeedY/ballSpeedX; // en dégré
             //double angleRebond = 90 - tanBeta; // En dégré
             // double angle = -tanBeta*Math.PI/180;
@@ -72,6 +69,25 @@ public class Ball{
             // ballSpeedX = (ballSpeedY+ballSpeedX)*Math.sin(angle);
             // ballSpeedY = (ballSpeedY+ballSpeedX)*Math.cos(angle);
             //System.out.println(tan);
+
+            // double vx = Math.abs(ballX - ballSpeedX);
+            // double vy = Math.abs(ballY - ballSpeedY);
+
+            //double ux = 
+            double ux = r.x0 - r.x1;
+            double uy = r.y0 - r.y1;
+
+
+            double s = ux*ballSpeedX+ uy*ballSpeedY;
+            double d1 = Math.sqrt(ux* ux + uy*uy);
+            double d2 = Math.sqrt(ballSpeedX* ballSpeedX + ballSpeedY*ballSpeedY);
+            double alpha = Math.acos(s/(d1*d2));
+            System.out.println(180-alpha*180/Math.PI);
+
+            double nx = ballSpeedX;
+            double ny = ballSpeedY;
+            ballSpeedX = nx*Math.cos(alpha) + ny*Math.sin(alpha);
+            ballSpeedY = -nx*Math.sin(alpha) + ny*Math.cos(alpha);
         }
         ballX = nextBallX;
         ballY = nextBallY;
@@ -99,7 +115,7 @@ public class Ball{
                 double adjacent = rect.x1 - x;
                 double tan = Math.tan(rect.angle);
                 double y = rect.y1 - tan*adjacent;
-                if (x <=nextBallX + 3 && y <= nextBallY + 3 ) {
+                if (x<=nextBallX && y <= nextBallY) {
                     System.out.println("touch");
                     return rect;}
             }
