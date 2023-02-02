@@ -113,20 +113,35 @@ public class Ball{
 
     public Rectangle touchedWall(double nextBallX, double nextBallY){
         Rectangle r=null;
+        System.out.println("no");
         for (Rectangle rect:court.getRectangle()){
             if ((int) rect.x0 <= (int)  ballX &&  (int) ballX <= (int)  rect.x1
             &&  (int)  rect.y0 <= (int)  ballY && (int)  ballY <= (int)  rect.y1) {
+
+
                
-                double x = rect.x0 + nextBallX-rect.x0;
-                double adjacent = rect.x1 - x;
-                double tan = Math.tan(rect.angle);
-                double y = rect.y1 - tan*adjacent;
+            double x = rect.x0 + nextBallX-rect.x0;
+            double adjacent = rect.x1 - x;
+            double tan = Math.tan(rect.angle);
+            double y = rect.y1 - tan*adjacent;
+            // System.out.println((nextBallX+ballSpeedX) + " "+ (nextBallY+ballSpeedY));
+            
+            if ((ballY+ballSpeedY) >= y && (ballX+ballSpeedX) <= x) return rect;
                 // System.out.println(x + " " + y);
                 // System.out.println(ballX + " " + ballY);
-                if ((int) x<= (int) nextBallX && (int) y <= (int) nextBallY) {
-                    System.out.println("touch");
-                    return rect;}
+            // if (x<= 2*nextBallX-ballSpeedX && y <= 2*nextBallY+ballSpeedY) {
+            //         System.out.println("touch");
+            //         //return rect;
+            //     }
             }
+
+            // double vRectX = r.x0 - r.x1;
+            // double vRectY = r.y0 - r.y1;
+            // double vVitX = nextBallX-ballSpeedX;
+            // double vVitY = nextBallY-ballSpeedY;
+            // double e1 = vVitX - r.x0 / vRectX;
+            // double e2 = vVitY - r.y0 / vRectY;
+            // if (e1==e2) 
 
             
             }

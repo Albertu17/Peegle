@@ -41,7 +41,7 @@ public class GameView extends JFrame{
     setTitle("Test");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-    balls.add(new Ball(225,300,0,0,this));
+    balls.add(new Ball(225,3,0,0,this));
     rectanlgle.add(new Rectangle(200, 400, 100, -45));
     // balls.add(new Ball(20,30,10,-10,this));
 
