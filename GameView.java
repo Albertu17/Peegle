@@ -15,12 +15,14 @@ import java.util.ArrayList;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 
 import javax.swing.Timer;
+import javax.swing.event.MouseInputListener;
 
 
 
-public class GameView extends JFrame{
+public class GameView extends JFrame implements MouseInputListener{
 
     private int width;
     private int heigth;
@@ -30,6 +32,10 @@ public class GameView extends JFrame{
     //private Circle ball;
     private ArrayList<Ball> balls=new ArrayList<>();
     private ArrayList<Rectangle> rectanlgle=new ArrayList<>();
+
+    // Canon
+
+    Canon canon ;
 
 
     GameView(int w,int h) {
@@ -58,6 +64,12 @@ public class GameView extends JFrame{
     setVisible(true);    
     animate();
 
+
+    // creation canon :
+    canon = new Canon(w) ;
+
+        this.addMouseListener(this);
+        this.addMouseMotionListener(this);
     }
 
     public void animate() {
@@ -115,5 +127,46 @@ public class GameView extends JFrame{
         g.setColor(Color.RED);
         for (Rectangle rect:rectanlgle) g.drawLine(rect.x0, rect.y0, rect.caculX1(), rect.caculY1());
     }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        // TODO Pour les teste du cannon modifier le comportement par la suite
+
+        // lancer une balle
+        canon.tirer();
+        
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        // Déplacement du canon en fonction de la possition de la souris
+        canon.DeplacementCanon(e);
+        
     } 
 }

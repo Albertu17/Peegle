@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.math.*;
 import java.sql.Array;
+import java.awt.*;
 public class Ball{
 
     public final double ballRadius = 12.5; // m
@@ -82,13 +83,13 @@ public class Ball{
             double d1 = Math.sqrt(ux* ux + uy*uy);
             double d2 = Math.sqrt(ballSpeedX* ballSpeedX + ballSpeedY*ballSpeedY);
             double alpha = Math.acos(s/(d1*d2));
-            System.out.println(alpha*180/Math.PI);
+            // System.out.println(alpha*180/Math.PI);
             double beta;
             if (alpha>90){
                     alpha = 180-alpha;
             }
             beta = 2*alpha;
-            System.out.println(beta*180/Math.PI);
+            // System.out.println(beta*180/Math.PI);
 
             double nx = ballSpeedX;
             double ny = ballSpeedY;
@@ -124,7 +125,7 @@ public class Ball{
                 // System.out.println(x + " " + y);
                 // System.out.println(ballX + " " + ballY);
                 if ((int) x<= (int) nextBallX && (int) y <= (int) nextBallY) {
-                    System.out.println("touch");
+                    // System.out.println("touch");
                     return rect;}
             }
 
