@@ -67,9 +67,11 @@ public class GameView extends JFrame implements MouseInputListener{
 
     // creation canon :
     canon = new Canon(w) ;
+    this.add(canon) ;
+    canon.setVisible(true);
 
-        this.addMouseListener(this);
-        this.addMouseMotionListener(this);
+    this.addMouseListener(this);
+    this.addMouseMotionListener(this);
     }
 
     public void animate() {
@@ -125,7 +127,7 @@ public class GameView extends JFrame implements MouseInputListener{
 
 
         g.setColor(Color.RED);
-        for (Rectangle rect:rectanlgle) g.drawLine(rect.x0, rect.y0, rect.caculX1(), rect.caculY1());
+        // for (Rectangle rect:rectanlgle) g.drawLine(rect.x0, rect.y0, rect.caculX1(), rect.caculY1());
     }
     }
 
