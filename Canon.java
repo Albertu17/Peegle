@@ -92,20 +92,20 @@ public class Canon extends JPanel{
         //g2D.rotate( angleOrientation, 0, 0);
         //g2D.drawImage(image, 0, 0, null);  
         
-        g2D.rotate( angleOrientation, getWidth()/2, 0);
+        g2D.rotate( Math.PI/2- angleOrientation, getWidth()/2, 0);
         g2D.drawImage(image, getWidth()/2, 0, this) ;
     }
 
-    public static void main(String[] args) {
-        JFrame test = new JFrame();
-        test.setSize(200,200);
-        test.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        test.setVisible(true);
-        Canon c = new Canon(200);
-        test.add(c);
-        test.repaint();
-        c.repaint();
-    }
+    // public static void main(String[] args) {
+    //     JFrame test = new JFrame();
+    //     test.setSize(200,200);
+    //     test.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    //     test.setVisible(true);
+    //     Canon c = new Canon(200);
+    //     test.add(c);
+    //     test.repaint();
+    //     c.repaint();
+    // }
 
 
 
