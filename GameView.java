@@ -59,11 +59,11 @@ public class GameView extends JFrame implements MouseInputListener{
 
     // balls.add(new Ball(400,10,10,10,this));
     // balls.add(new Ball(300,30,10,200,this));
-    // Shapes s = new Shapes();
-    // add(s);
+    Shapes s = new Shapes();
+    add(s);
     setVisible(true);    
-    // animate();
-    setLayout(null);
+    animate();
+    // setLayout(null);
 
     // creation canon :
     canon = new Canon(w) ;
@@ -133,8 +133,6 @@ public class GameView extends JFrame implements MouseInputListener{
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        // TODO Pour les teste du cannon modifier le comportement par la suite
-
         // lancer une balle
         canon.tirer();
         
@@ -168,7 +166,6 @@ public class GameView extends JFrame implements MouseInputListener{
     @Override
     public void mouseMoved(MouseEvent e) {
         // Déplacement du canon en fonction de la possition de la souris
-        System.out.println("x : "+e.getX()+" y : "+e.getY());
         canon.DeplacementCanon(e);    
     } 
 }

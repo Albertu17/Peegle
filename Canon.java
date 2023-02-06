@@ -30,24 +30,34 @@ public class Canon extends JPanel{
 
         // à changer par un import global de toute les images
         try {    
-            image = ImageIO.read(new File("Image\\cannonSolo1.png"));
+            image = ImageIO.read(new File("Image\\cannonPetit.png"));
         } catch (Exception e) {
             System.out.println(e);
         }  
         
-        pivotDeRotation = new Point(largeurFrame/2 - getWidth()/2 + image.getWidth()/2 , 100 + image.getHeight()/2) ;
-
+        
         // position du canon initial à la vertical
         angleOrientation = Math.PI/2 ;     
         
         
         // setPreferredSize(new Dimension(50,50));
-        
-        setBounds(0, 0, 200, 200);
-        setLocation(largeurFrame/2 - getWidth()/2, 100);
 
+        int taillecarre = Math.max(image.getWidth(), image.getHeight()) ;
+        
+        // setBounds(0, 0, image.getWidth(), image.getHeight());
+        setBounds(0, 0, taillecarre, taillecarre);
+
+       
+        setLocation(largeurFrame/2 - getWidth()/2, 50);
+        
+        // pivotDeRotation = new Point(largeurFrame/2 - getWidth()/2 + image.getWidth()/2 , 100 + image.getHeight()/2) ;
+        pivotDeRotation = new Point(getX() + getWidth()/2, getY() + getHeight()/2) ;
         // setBackground(Color.RED);
         // setForeground(getBackground());
+
+        Graphics2D g2D = (Graphics2D) image.getGraphics() ;
+        g2D.drawImage(image,0, 0, this) ;
+
     }
 
     public void setBalleATirer(Ball balleATirer) {
@@ -60,8 +70,8 @@ public class Canon extends JPanel{
 
     private void placementBallCanon(){
         // TODO mettre la boule au bout du canon
-        // balleATirer.ballX = 1;
-        // balleATirer.ballSpeedY =1; 
+        balleATirer.ballX = pivotDeRotation.x + Math.cos(angleOrientation)*this.getHeight() ;
+        balleATirer.ballY = pivotDeRotation.x + Math.sin(angleOrientation)*this.getHeight(); 
     }
 
    
@@ -69,6 +79,10 @@ public class Canon extends JPanel{
     public void DeplacementCanon(MouseEvent e){
         // calcul angle du canon 
         angleOrientation = Math.atan2((e.getY() - pivotDeRotation.y), (pivotDeRotation.x-e.getX()));
+
+        // Correction pour eviter des positions incongrue
+        if (angleOrientation >= 160*(Math.PI/180)) angleOrientation = 160*(Math.PI/180);
+        else if (angleOrientation < 20*(Math.PI/180) ) angleOrientation = 20*(Math.PI/180) ; 
         // System.out.println(angleOrientation*(180/Math.PI));
 
         
@@ -88,25 +102,10 @@ public class Canon extends JPanel{
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D) g ;
-
-        //g2D.rotate( angleOrientation, 0, 0);
-        //g2D.drawImage(image, 0, 0, null);  
         
-        g2D.rotate( Math.PI/2- angleOrientation, getWidth()/2, 0);
-        g2D.drawImage(image, getWidth()/2, 0, this) ;
+        g2D.rotate( Math.PI/2- angleOrientation, getWidth()/2, getHeight()/2);
+        g2D.drawImage(image, 0, 0, this) ;
     }
-
-    // public static void main(String[] args) {
-    //     JFrame test = new JFrame();
-    //     test.setSize(200,200);
-    //     test.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    //     test.setVisible(true);
-    //     Canon c = new Canon(200);
-    //     test.add(c);
-    //     test.repaint();
-    //     c.repaint();
-    // }
-
 
 
 }
