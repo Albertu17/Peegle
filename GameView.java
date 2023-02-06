@@ -68,7 +68,6 @@ public class GameView extends JFrame implements MouseInputListener{
     // creation canon :
     canon = new Canon(w) ;
     this.add(canon) ;
-    canon.setBounds(100, 100, 100, 100);
     canon.setVisible(true);
 
     this.addMouseListener(this);
@@ -169,6 +168,7 @@ public class GameView extends JFrame implements MouseInputListener{
     @Override
     public void mouseMoved(MouseEvent e) {
         // Déplacement du canon en fonction de la possition de la souris
-        canon.DeplacementCanon(e);        
+        System.out.println("x : "+e.getX()+" y : "+e.getY());
+        canon.DeplacementCanon(e);    
     } 
 }

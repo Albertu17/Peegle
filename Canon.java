@@ -35,15 +35,16 @@ public class Canon extends JPanel{
             System.out.println(e);
         }  
         
-        pivotDeRotation = new Point(largeurFrame/2, 10) ;
+        pivotDeRotation = new Point(largeurFrame/2 - getWidth()/2 + image.getWidth()/2 , 100 + image.getHeight()/2) ;
 
         // position du canon initial à la vertical
         angleOrientation = Math.PI/2 ;     
         
         
         // setPreferredSize(new Dimension(50,50));
-        // setLocation(largeurFrame/2 - getWidth(), 100);
-        setBounds(largeurFrame/2 - getWidth(), 100, 50, 50);
+        
+        setBounds(0, 0, 200, 200);
+        setLocation(largeurFrame/2 - getWidth()/2, 100);
 
         // setBackground(Color.RED);
         // setForeground(getBackground());
@@ -82,79 +83,17 @@ public class Canon extends JPanel{
         // balleATirer.ballSpeedY =  vitesseTir;
 
     }
-
-    // @Override
-    // public void paint(Graphics g) {
-    //     if (true){
-    //         // creation de la ligne de viser :
-    //             g.setColor(Color.BLACK);
-    //             g.drawLine(pivotDeRotation.x, pivotDeRotation.y, (int)(Math.cos(angleOrientation)*tailleLigneTir+pivotDeRotation.x), (int)(Math.sin(angleOrientation)*tailleLigneTir+pivotDeRotation.y)) ;
-    //             // System.out.println("x, y : " +String.valueOf((int)(Math.cos(angleOrientation)*tailleLigneTir+pivotDeRotation.x)) + ", "+ String.valueOf((int)(Math.sin(angleOrientation)*tailleLigneTir+pivotDeRotation.y)));
-    //             // System.out.println(angleOrientation);
-
-    //         // la balle suit le bout du canon :
-    //             placementBallCanon();
-
-    //     }
-
-    //     // mouvement du canon
-        
-
-    //     super.paint(g);
-    //     // paintComponent(graphics2D);
-    // }
-
-    // @Override
-    // public void paintComponent(Graphics g) {
-    //     super.paintComponent(g);
-
-    //     // g.drawImage(image, 0, 0, this);
-        
-    //     // System.out.println("paintCompo");
-    //     // // if (balleATirer != null){
-    //     // if (true){
-    //     //     // creation de la ligne de viser :
-
-    //     //         g.drawLine(pivotDeRotation.x, pivotDeRotation.y, (int)Math.cos(angleOrientation)*tailleLigneTir+pivotDeRotation.x, (int)Math.sin(angleOrientation)*tailleLigneTir+pivotDeRotation.y) ;
-    //     //         // System.out.println("paintCo");
-
-    //     //     // la balle suit le bout du canon :
-    //     //         placementBallCanon();
-
-    //     // }
-
-    //     // this.setPreferredSize(new Dimension(100,100));
-    //     // System.out.println("TAille image "+  image.getHeight());
-    //     // System.out.println(this.getPreferredSize());
-
-    //     // g.setColor(Color.ORANGE);
-    //     // g.drawOval(0, 0, 50, 50);
-
-    //     // TODO faire bouger le canon
     
-    //         int newHeigh = image.getWidth();
-    //         int newWidth = image.getHeight();
-    //         int typeOfImage = image.getType();
-    
-    //         BufferedImage temp = new BufferedImage(newHeigh, newWidth, typeOfImage);
-    //         Graphics2D graphics2D = temp.createGraphics();
-    //         graphics2D.rotate( angleOrientation, pivotDeRotation.x, pivotDeRotation.y);
-    //         graphics2D.drawImage(image, null, 0, 0);
-    //         image = temp ;
-        
-        
-
-    //     super.paintComponents(g);
-    // }
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D) g ;
 
-        g2D.rotate( angleOrientation, 0, 0);
-        g2D.drawImage(image, 0, 0, null);  
+        //g2D.rotate( angleOrientation, 0, 0);
+        //g2D.drawImage(image, 0, 0, null);  
         
-        // g.drawImage(image, 0, 0, this) ;
+        g2D.rotate( angleOrientation, getWidth()/2, 0);
+        g2D.drawImage(image, getWidth()/2, 0, this) ;
     }
 
     public static void main(String[] args) {
