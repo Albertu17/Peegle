@@ -47,8 +47,8 @@ public class GameView extends JFrame implements MouseInputListener{
     setTitle("Test");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-    balls.add(new Ball(225,300,0,0,this));
-    rectanlgle.add(new Rectangle(200, 400, 100, -45));
+    // balls.add(new Ball(225,300,0,0,this));
+    // rectanlgle.add(new Rectangle(200, 400, 100, -45));
     // balls.add(new Ball(20,30,10,-10,this));
 
     // balls.add(new Ball(60,10,75,10,this));
@@ -59,15 +59,16 @@ public class GameView extends JFrame implements MouseInputListener{
 
     // balls.add(new Ball(400,10,10,10,this));
     // balls.add(new Ball(300,30,10,200,this));
-    Shapes s = new Shapes();
-    add(s);
+    // Shapes s = new Shapes();
+    // add(s);
     setVisible(true);    
-    animate();
-
+    // animate();
+    setLayout(null);
 
     // creation canon :
     canon = new Canon(w) ;
     this.add(canon) ;
+    canon.setBounds(100, 100, 100, 100);
     canon.setVisible(true);
 
     this.addMouseListener(this);
@@ -112,7 +113,7 @@ public class GameView extends JFrame implements MouseInputListener{
 
     public static void main(String[] args) {
 
-       GameView g = new GameView(500,500);
+       GameView g = new GameView(700,700);
        
 
     }
@@ -127,7 +128,7 @@ public class GameView extends JFrame implements MouseInputListener{
 
 
         g.setColor(Color.RED);
-        // for (Rectangle rect:rectanlgle) g.drawLine(rect.x0, rect.y0, rect.caculX1(), rect.caculY1());
+        for (Rectangle rect:rectanlgle) g.drawLine(rect.x0, rect.y0, rect.caculX1(), rect.caculY1());
     }
     }
 
@@ -168,7 +169,6 @@ public class GameView extends JFrame implements MouseInputListener{
     @Override
     public void mouseMoved(MouseEvent e) {
         // Déplacement du canon en fonction de la possition de la souris
-        canon.DeplacementCanon(e);
-        
+        canon.DeplacementCanon(e);        
     } 
 }
