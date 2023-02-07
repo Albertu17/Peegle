@@ -20,9 +20,9 @@ public class Canon extends JPanel{
     // en Radiant
     private double angleOrientation ;
     
-    private int tailleLigneTir  = 85;
+    private int tailleLigneTir  = 200;
     private Point pivotDeRotation ;
-    private int vitesseTir = 50 ;
+    private int vitesseTir = 150 ;
 
 
 
@@ -30,7 +30,7 @@ public class Canon extends JPanel{
 
         // à changer par un import global de toute les images
         try {    
-            image = ImageIO.read(new File("Image\\cannonPetit.png"));
+            image = ImageIO.read(new File("Image\\cannonPetitV3.png"));
         } catch (Exception e) {
             System.out.println(e);
         }  
@@ -39,20 +39,11 @@ public class Canon extends JPanel{
         // position du canon initial à la vertical
         angleOrientation = Math.PI/2 ;     
         
-        
-        // setPreferredSize(new Dimension(50,50));
-
-        
         setBounds(0, 0, image.getWidth(), image.getHeight());
-
-       
         setLocation(largeurFrame/2 - getWidth()/2, 50);
 
+        // definition point de pivot de rotation
         pivotDeRotation = new Point(getX() + getWidth()/2, getY() + getHeight()/2) ;
-
-        Graphics2D g2D = (Graphics2D) image.getGraphics() ;
-        g2D.drawImage(image,0, 0, this) ;
-
     }
 
     public void setBalleATirer(Ball balleATirer) {
@@ -65,10 +56,11 @@ public class Canon extends JPanel{
 
     private void placementBallCanon(){
         // TODO mettre la boule au bout du canon
-        balleATirer.ballX = pivotDeRotation.x - Math.cos(angleOrientation)*(this.getHeight()/2);
-        balleATirer.ballY = pivotDeRotation.y + Math.sin(angleOrientation)*(this.getHeight()/2); 
+        balleATirer.ballX = pivotDeRotation.x - Math.cos(angleOrientation)*(this.getHeight()/2) -balleATirer.ballRadius/2 ;
+        balleATirer.ballY = pivotDeRotation.y + Math.sin(angleOrientation)*(this.getHeight()/2) - balleATirer.ballRadius/2; 
 
         System.out.println("x, y : " + String.valueOf(balleATirer.ballX) + ", " + String.valueOf(balleATirer.ballY));
+        System.out.println("pivot x, y : " + String.valueOf(pivotDeRotation.x) +", "+ String.valueOf(pivotDeRotation.y));
     }
 
    
@@ -104,19 +96,26 @@ public class Canon extends JPanel{
         balleATirer.ballSpeedY =  vitesseTir*Math.sin(angleOrientation);
 
         // creation d'une nouvelle ball
-        Ball lancer = balleATirer ;
+        Ball Ball_lancer = balleATirer ;
         balleATirer = new Ball(0, 0, 0, 0, balleATirer.getCourt()) ;
-        return lancer ;
+
+        // return la balle tirer
+        return Ball_lancer ;
     }
 
 
     @Override
     public void paint(Graphics g) {
 
+        Graphics gGameview = balleATirer.getCourt().getGraphics() ;
         /// ball
         placementBallCanon();
-        g.setColor(Color.BLACK);
-        g.fillOval((int)balleATirer.ballX,(int)balleATirer.ballY,(int)balleATirer.ballRadius, (int)balleATirer.ballRadius);
+        gGameview.setColor(Color.BLACK);
+        gGameview.fillOval((int)balleATirer.ballX,(int)balleATirer.ballY,(int)balleATirer.ballRadius, (int)balleATirer.ballRadius);
+
+        
+        // ligne de viser
+            gGameview.drawLine((int)balleATirer.ballX, (int)balleATirer.ballY,  (int)(balleATirer.ballX - tailleLigneTir*Math.cos(angleOrientation)), (int)(balleATirer.ballY + tailleLigneTir*Math.sin(angleOrientation)));
         super.paint(g);
     }
     
@@ -130,10 +129,6 @@ public class Canon extends JPanel{
         g2D.drawImage(image, 0, 0, this) ;
 
         
-
-
-        // ligne de viser
-        // BasicStroke pinceau_pointille = new BasicStroke(12.0f, )
     }
 
 
