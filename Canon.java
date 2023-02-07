@@ -22,7 +22,7 @@ public class Canon extends JPanel{
     
     private int tailleLigneTir  = 85;
     private Point pivotDeRotation ;
-    private int vitesseTir = 10 ;
+    private int vitesseTir = 50 ;
 
 
 
@@ -42,18 +42,13 @@ public class Canon extends JPanel{
         
         // setPreferredSize(new Dimension(50,50));
 
-        int taillecarre = Math.max(image.getWidth(), image.getHeight()) ;
         
-        // setBounds(0, 0, image.getWidth(), image.getHeight());
-        setBounds(0, 0, taillecarre, taillecarre);
+        setBounds(0, 0, image.getWidth(), image.getHeight());
 
        
         setLocation(largeurFrame/2 - getWidth()/2, 50);
-        
-        // pivotDeRotation = new Point(largeurFrame/2 - getWidth()/2 + image.getWidth()/2 , 100 + image.getHeight()/2) ;
+
         pivotDeRotation = new Point(getX() + getWidth()/2, getY() + getHeight()/2) ;
-        // setBackground(Color.RED);
-        // setForeground(getBackground());
 
         Graphics2D g2D = (Graphics2D) image.getGraphics() ;
         g2D.drawImage(image,0, 0, this) ;
@@ -70,12 +65,18 @@ public class Canon extends JPanel{
 
     private void placementBallCanon(){
         // TODO mettre la boule au bout du canon
-        balleATirer.ballX = pivotDeRotation.x + Math.cos(angleOrientation)*this.getHeight() ;
-        balleATirer.ballY = pivotDeRotation.x + Math.sin(angleOrientation)*this.getHeight(); 
+        balleATirer.ballX = pivotDeRotation.x - Math.cos(angleOrientation)*(this.getHeight()/2);
+        balleATirer.ballY = pivotDeRotation.y + Math.sin(angleOrientation)*(this.getHeight()/2); 
+
+        System.out.println("x, y : " + String.valueOf(balleATirer.ballX) + ", " + String.valueOf(balleATirer.ballY));
     }
 
    
-    
+    /**
+     * @author Thibault
+     * @param Mouse Event
+     * @description Permet de faire bouger le canon en fonction des coordonnées de la souris
+     */
     public void DeplacementCanon(MouseEvent e){
         // calcul angle du canon 
         angleOrientation = Math.atan2((e.getY() - pivotDeRotation.y), (pivotDeRotation.x-e.getX()));
@@ -91,11 +92,32 @@ public class Canon extends JPanel{
         
     }
 
-    public void tirer(){
+    /**
+     * @description Défini la vitesse de la balle pour amorcer le tir 
+     *  place un nouvelle balle dans le lanceur
+     * @author Thibault
+     * @return Ball // ball qui vient d'être tirer
+     */
+    public Ball tirer(){
         // TODO tir de la balle donner une vitesse initial
-        // balleATirer.ballSpeedX = vitesseTir;
-        // balleATirer.ballSpeedY =  vitesseTir;
+        balleATirer.ballSpeedX = - vitesseTir*Math.cos(angleOrientation);
+        balleATirer.ballSpeedY =  vitesseTir*Math.sin(angleOrientation);
 
+        // creation d'une nouvelle ball
+        Ball lancer = balleATirer ;
+        balleATirer = new Ball(0, 0, 0, 0, balleATirer.getCourt()) ;
+        return lancer ;
+    }
+
+
+    @Override
+    public void paint(Graphics g) {
+
+        /// ball
+        placementBallCanon();
+        g.setColor(Color.BLACK);
+        g.fillOval((int)balleATirer.ballX,(int)balleATirer.ballY,(int)balleATirer.ballRadius, (int)balleATirer.ballRadius);
+        super.paint(g);
     }
     
     @Override
@@ -103,8 +125,15 @@ public class Canon extends JPanel{
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D) g ;
         
+        // orientation du canon :
         g2D.rotate( Math.PI/2- angleOrientation, getWidth()/2, getHeight()/2);
         g2D.drawImage(image, 0, 0, this) ;
+
+        
+
+
+        // ligne de viser
+        // BasicStroke pinceau_pointille = new BasicStroke(12.0f, )
     }
 
 

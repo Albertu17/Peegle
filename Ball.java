@@ -24,7 +24,13 @@ public class Ball{
 
     private GameView court;
 
+
+
     /* Important coordonée de la balle centre en X mais tout en haut pour Y */
+
+    public GameView getCourt() {
+        return court;
+    }
 
     Ball(int x,int y,int vx0,int vy0,GameView g){
         ballX=x;

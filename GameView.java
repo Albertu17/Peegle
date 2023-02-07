@@ -70,6 +70,8 @@ public class GameView extends JFrame implements MouseInputListener{
     this.add(canon) ;
     canon.setVisible(true);
 
+    canon.setBalleATirer(new Ball(0, 0, 0, 0, this));
+
     this.addMouseListener(this);
     this.addMouseMotionListener(this);
     }
@@ -134,7 +136,7 @@ public class GameView extends JFrame implements MouseInputListener{
     @Override
     public void mouseClicked(MouseEvent e) {
         // lancer une balle
-        canon.tirer();
+        balls.add(canon.tirer()) ;
         
     }
 
