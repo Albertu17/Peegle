@@ -41,8 +41,20 @@ public class GameView extends JFrame{
     setTitle("Test");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-    balls.add(new Ball(225,3,0,0,this));
-    rectanlgle.add(new Rectangle(200, 400, 100, -45));
+    // balls.add(new Ball(220,3,0,0,this));
+    // rectanlgle.add(new Rectangle(100, 300, 300,45));
+
+    // balls.add(new Ball(220,3,0,0,this));
+    // rectanlgle.add(new Rectangle(100, 300, 300,-45));
+
+    
+    // balls.add(new Ball(0,3,100,0,this));
+    // rectanlgle.add(new Rectangle(200, 300, 300,-45));
+
+    balls.add(new Ball(300,400,-100,-100,this));
+    rectanlgle.add(new Rectangle(0, 100, 300,-45));
+
+
     // balls.add(new Ball(20,30,10,-10,this));
 
     // balls.add(new Ball(60,10,75,10,this));
@@ -113,7 +125,8 @@ public class GameView extends JFrame{
 
 
         g.setColor(Color.RED);
-        for (Rectangle rect:rectanlgle) g.drawLine(rect.x0, rect.y0, rect.caculX1(), rect.caculY1());
+        for (Rectangle rect:rectanlgle) {
+            g.drawLine(rect.x0, rect.y0, rect.caculX1(), rect.caculY1());}
     }
     } 
 }
