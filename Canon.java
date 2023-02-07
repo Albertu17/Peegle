@@ -91,7 +91,10 @@ public class Canon extends JPanel{
      * @return Ball // ball qui vient d'être tirer
      */
     public Ball tirer(){
-        // TODO tir de la balle donner une vitesse initial
+        // TODO a retirer par la suite
+        placementBallCanon();
+
+
         balleATirer.ballSpeedX = - vitesseTir*Math.cos(angleOrientation);
         balleATirer.ballSpeedY =  vitesseTir*Math.sin(angleOrientation);
 
@@ -104,20 +107,20 @@ public class Canon extends JPanel{
     }
 
 
-    @Override
-    public void paint(Graphics g) {
+    // @Override
+    // public void paint(Graphics g) {
 
-        Graphics gGameview = balleATirer.getCourt().getGraphics() ;
-        /// ball
-        placementBallCanon();
-        gGameview.setColor(Color.BLACK);
-        gGameview.fillOval((int)balleATirer.ballX,(int)balleATirer.ballY,(int)balleATirer.ballRadius, (int)balleATirer.ballRadius);
+    //     Graphics gGameview = balleATirer.getCourt().getGraphics() ;
+    //     /// ball
+    //     placementBallCanon();
+    //     gGameview.setColor(Color.BLACK);
+    //     gGameview.fillOval((int)balleATirer.ballX,(int)balleATirer.ballY,(int)balleATirer.ballRadius, (int)balleATirer.ballRadius);
 
         
-        // ligne de viser
-            gGameview.drawLine((int)balleATirer.ballX, (int)balleATirer.ballY,  (int)(balleATirer.ballX - tailleLigneTir*Math.cos(angleOrientation)), (int)(balleATirer.ballY + tailleLigneTir*Math.sin(angleOrientation)));
-        super.paint(g);
-    }
+    //     // ligne de viser
+    //         gGameview.drawLine((int)balleATirer.ballX, (int)balleATirer.ballY,  (int)(balleATirer.ballX - tailleLigneTir*Math.cos(angleOrientation)), (int)(balleATirer.ballY + tailleLigneTir*Math.sin(angleOrientation)));
+    //     super.paint(g);
+    // }
     
     @Override
     protected void paintComponent(Graphics g) {
