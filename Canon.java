@@ -4,6 +4,14 @@ import java.awt.Point;
 import java.awt.event.MouseEvent ;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.awt.geom.*;
+import java.awt.*;
+import javax.swing.*;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -133,16 +141,24 @@ public class Canon extends JPanel{
         /*x=-t×v_0*×cos(α)
 y=t*×v_0×sin(α)+(gt^2)/2 */
         //calcul du point d'arrivé de la ligne de visée
-        double[] x = new double[100];
-        double[] y = new double[100];
+        int[] x = new int[11];
+        int[] y = new int[11];
         x[0] = depart.x;
         y[0] = depart.y;
-        double deltaT = 0.1 ;
-        for (int t = 1; t < 100; t++) {
-            x[t] = depart.x - deltaT*t * vitesseTir * Math.cos(angleOrientation);
-            y[t] = depart.y + deltaT *t* vitesseTir * Math.sin(angleOrientation) + 100.0*deltaT * deltaT*t*t  / 2.0;
-            g2D.drawLine((int)x[t-1], (int)y[t-1], (int)x[t], (int)y[t] );
+        double deltaT = 0.2;
+        for (int t = 1; t < 11; t++) {
+            x[t] = (int)(depart.x - deltaT*t * vitesseTir * Math.cos(angleOrientation));
+            y[t] = (int)(depart.y + deltaT *t* vitesseTir * Math.sin(angleOrientation) + 100.0*deltaT * deltaT*t*t  / 2.0);
         }
+        // draw the line of the given polynom of 2nd degree
+        float dash1[] = {20.0f};
+        BasicStroke dashed = new BasicStroke(5.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
+        g2D.setStroke(dashed);
+        g2D.setColor(Color.RED);
+        g2D.drawPolyline(x, y, 11);
+        g2D.setColor(Color.BLACK);
+        
+        
         super.paint(g);
     }
     
