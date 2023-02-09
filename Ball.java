@@ -23,6 +23,8 @@ public class Ball{
 
     private GameView court;
 
+    double x,y;
+
     /* Important coordonée de la balle centre en X mais tout en haut pour Y */
 
     Ball(int x,int y,int vx0,int vy0,GameView g){
@@ -215,18 +217,21 @@ public class Ball{
 
     public Rectangle touchedWall(double nextBallX, double nextBallY,double deltaT){
         Rectangle r=null;
+        int j=0;
         System.out.println("-------------------------------------------");
+        double nextBallX2=nextBallX;
+        double nextBallY2=nextBallY;
         for (Rectangle rect:court.getRectangle()){     
             if (Math.min(rect.x0,rect.x1) <= nextBallX && nextBallX <= Math.max(rect.x0,rect.x1) &&
             Math.min(rect.y0,rect.y1) <= nextBallY && nextBallY <= Math.max(rect.y0,rect.y1)) {
+                System.out.println(rect.toString());
                 for (int i=0;i<1;i++){
                     double ux = rect.x0 - rect.x1;
                     double uy = rect.y0 - rect.y1;
                     double vx = ballSpeedX;
                     double vy = ballSpeedY;
     
-                    double nextBallX2=nextBallX;
-                    double nextBallY2=nextBallY;
+
     
     
                     double coeffDirecteurDroite = uy/ux;
@@ -240,28 +245,31 @@ public class Ball{
                         double x,y;
                         x = (b2-b1)/(coeffDirecteurDroite-coeffDirecteurVecteur);
                         y = (-b2*coeffDirecteurDroite+b1*coeffDirecteurVecteur)/(coeffDirecteurVecteur-coeffDirecteurDroite);
-                        //System.out.println(x + " "+ y);
-                        if (ballSpeedX>=0 && x<=nextBallX2) return null;
-                        if (ballSpeedX<=0 && x>=nextBallX2) return null;
-                        if (ballSpeedY>=0 && y<=nextBallY2) return null;
-                        if (ballSpeedY<=0 && y>=nextBallY2) return null;
+                        this.x = (b2-b1)/(coeffDirecteurDroite-coeffDirecteurVecteur);
+                        this.y = (-b2*coeffDirecteurDroite+b1*coeffDirecteurVecteur)/(coeffDirecteurVecteur-coeffDirecteurDroite);
+                        //System.out.println(j);
+                        // if (ballSpeedX>=0 && x<=nextBallX2) return null;
+                        // if (ballSpeedX<=0 && x>=nextBallX2) return null;
+                        // if (ballSpeedY>=0 && y<=nextBallY2) return null;
+                        // if (ballSpeedY<=0 && y>=nextBallY2) return null;
                         if (Math.min(rect.x0,rect.x1) <= x && x <= Math.max(rect.x0,rect.x1)
                         && Math.min(rect.y0,rect.y1)<= y && y <= Math.max(rect.y0,rect.y1)){
-                            if (nextBallX2==x && nextBallY2==y) System.out.println("1");
+                            //if (((int) nextBallX2)==((int)x) && ((int)nextBallY2)==((int)y)) return rect;
                             
                                 //System.out.println(nextBallX2 + " "+ nextBallY);
                                 if (ballSpeedY>=0){
                                     System.out.println(1);             
                                     if (ballSpeedX>=0){
                                         System.out.println(1);
-                                        if (nextBallX2+ballRadius>=x && nextBallY2+ballRadius>=y) {
+                                        System.out.println(((int) nextBallX2+ballRadius*2) + ">=" +  ((int) x) + " " + ((int) nextBallY2+ballRadius*2) + ">=" + ((int) y));
+                                        if (((int) nextBallX2+ballRadius*2) >= ((int) x) && ((int) nextBallY2+ballRadius*2)>=((int) y)) {
                                             System.out.println(1);
                                             return rect;
                                         }
                                     }
                                     else {
-                                        System.out.println(2);
-                                        if (nextBallX2<=x && nextBallY2+ballRadius>=y) {
+                                        System.out.println(((int) nextBallX2+ballRadius) + "<=" +  ((int) x) + " " + ((int) nextBallY2+ballRadius*2) + ">=" + ((int) y));
+                                        if (((int) nextBallX2) <= ((int) x) && ((int) nextBallY2+ballRadius*2)>=((int) y)) {
                                             return rect;
                                         }
                                         }
@@ -269,30 +277,31 @@ public class Ball{
                                 else {
                                     System.out.println(2);
                                     if (ballSpeedX>=0){
-                                        System.out.println(1);
                                         System.out.println(nextBallX2+ballRadius*2 +  ">=" + x + " " + nextBallY2 + "<=" + y );
-                                        if (nextBallX2+ballRadius*2>=x && nextBallY2<=y) {
+                                        if (((int) nextBallX2+ballRadius*2) >= ((int) x) && ((int) nextBallY2)<=((int) y)) {
                                             return rect;
                                         }
                                         }
                                         else {
                                             System.out.println(2);
-                                            if (nextBallX2<=x && nextBallY2>=y) {
+                                            System.out.println(((int) nextBallX2) + "<=" +  ((int) x) + " " + ((int) nextBallY2) + ">=" + ((int) y));
+                                            if (((int) nextBallX2) <= ((int) x) && ((int) nextBallY2)>=((int) y)) {
                                                 return rect;
                                             }
                                             }
                                         }
                                                     
-                                nextBallX2 = nextBallX2 + deltaT * ballSpeedX;
-                                nextBallY2 = nextBallY2 + deltaT * ballSpeedY + 1/2*g*(deltaT*deltaT);
+
                             }
                         }
+                        nextBallX2 = nextBallX2 + deltaT * ballSpeedX;
+                        nextBallY2 = nextBallY2 + deltaT * ballSpeedY + 1/2*g*(deltaT*deltaT);
                 }
-
+            }
                     
                 }
-                
-            }
+            j++;  
+
         return r;
     }
 }
