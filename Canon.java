@@ -1,12 +1,12 @@
-import javax.imageio.ImageIO;
-import javax.swing.*;
-
-
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.event.MouseEvent ;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.awt.event.MouseEvent ;
-// import java.awt.graphics2D ;    
+
+import javax.imageio.ImageIO;
+import javax.swing.JPanel;
 
 
 
@@ -17,18 +17,18 @@ public class Canon extends JPanel{
     // Pointer à gauche revient à 0, à droite pi
     // en Radiant
     private double angleOrientation ;
-    private Insets offset ;
+    private GameView court ;
 
     
     // parametre du canon :
         private int tailleLigneTir  = 500;
         private Point pivotDeRotation ;
-        private int vitesseTir = 150 ;
+        private double vitesseTir = 150 ;
         private double tailleCanon = 9/100.0; // en pourcentage de la taille de l'écran
 
 
 
-    public Canon(int largeurFrame){
+    public Canon(GameView court){
 
         // à changer par un import global de toute les images
         try {    
@@ -36,6 +36,10 @@ public class Canon extends JPanel{
         } catch (Exception e) {
             System.out.println(e);
         }  
+
+        // definition du Gameview
+        this.court = court ;
+        int largeurFrame = court.getWidth() ;
         
         // Mise à l'echelle du canon :
  
@@ -69,12 +73,9 @@ public class Canon extends JPanel{
     }
     
     private void placementBallCanon(){
-        // TODO mettre la boule au bout du canon
         balleATirer.ballX = pivotDeRotation.x -balleATirer.ballRadius/2 - Math.cos(angleOrientation)*( this.getHeight()/2 );
         balleATirer.ballY = pivotDeRotation.y -balleATirer.ballRadius/2 + Math.sin(angleOrientation)*( this.getHeight()/2 ); 
         
-        // System.out.println("x, y : " + String.valueOf(balleATirer.ballX) + ", " + String.valueOf(balleATirer.ballY));
-        // System.out.println("pivot x, y : " + String.valueOf(pivotDeRotation.x) +", "+ String.valueOf(pivotDeRotation.y));
     }
 
 
@@ -85,17 +86,7 @@ public class Canon extends JPanel{
      * @return Ball // ball qui vient d'être tirer
      */
     public Ball tirer(){
-        // TODO a retirer par la suite
         placementBallCanon();
-
-
-        // System.out.println("Pivot" + pivotDeRotation);
-        // System.out.print("Centre image : ") ;
-        // System.out.print(getX()+getWidth()/2 +", ");
-        // System.out.println(getY() + getHeight()/2);
-
-        // System.out.println("x : "+String.valueOf(balleATirer.ballX));
-        // System.out.println("y : "+String.valueOf(balleATirer.ballY));
 
         // definition de la vitesse de la balle
         balleATirer.ballSpeedX = - vitesseTir*Math.cos(angleOrientation);
@@ -116,7 +107,6 @@ public class Canon extends JPanel{
      * @description Permet de faire bouger le canon en fonction des coordonnées de la souris
      */
     public void DeplacementCanon(MouseEvent e){
-        if (offset == null) offset = balleATirer.getCourt().getInsets() ;
         // calcul angle du canon 
         angleOrientation = Math.atan2((e.getY() - pivotDeRotation.y), (pivotDeRotation.x-e.getX()));
 
@@ -133,23 +123,26 @@ public class Canon extends JPanel{
 
     @Override
     public void paint(Graphics g) {
-        placementBallCanon();
 
-        Graphics gGameview = balleATirer.getCourt().getGraphics() ;
-        /// ball
-        // placementBallCanon();
-        // gGameview.setColor(Color.BLACK);
-        // gGameview.fillOval((int)balleATirer.ballX,(int)balleATirer.ballY,(int)balleATirer.ballRadius, (int)balleATirer.ballRadius);
+        Graphics gGameview = court.getGraphics() ;
+       
+        Point depart = new Point((int)(pivotDeRotation.x + court.getInsets().left -  Math.cos(angleOrientation)*(this.getHeight()/2)), (int)(pivotDeRotation.y + Math.sin(angleOrientation)*(this.getHeight()/2) + court.getInsets().top )) ;
 
-        Point depart = new Point((int)(pivotDeRotation.x + offset.left -  Math.cos(angleOrientation)*(this.getHeight()/2)), (int)(pivotDeRotation.y + Math.sin(angleOrientation)*(this.getHeight()/2) + offset.top )) ;
-
-        // balleATirer.ballX = pivotDeRotation.x - Math.cos(angleOrientation)*((this.getHeight()/2) +balleATirer.ballRadius/2);
-        // balleATirer.ballY = pivotDeRotation.y + Math.sin(angleOrientation)*((this.getHeight()/2) + balleATirer.ballRadius/2 ); 
         // ligne de viser
-            // gGameview.drawLine((int)(pivotDeRotation.x - Math.cos(angleOrientation)*(this.getHeight()/2 )), (int)(pivotDeRotation.y + Math.sin(angleOrientation)*(this.getHeight()/2 )),  
-            //     (int)(pivotDeRotation.x - Math.cos(angleOrientation)*(this.getHeight()/2 + tailleLigneTir)), (int)(pivotDeRotation.y + Math.sin(angleOrientation)*(this.getHeight()/2 + tailleLigneTir)));
-            gGameview.drawLine((int)( depart.x ), depart.y,  
-                (int)(depart.x - Math.cos(angleOrientation)*(tailleLigneTir)), (int)(depart.y + Math.sin(angleOrientation)*(tailleLigneTir)));
+        Graphics2D g2D = (Graphics2D) gGameview ;
+        /*x=-t×v_0*×cos(α)
+y=t*×v_0×sin(α)+(gt^2)/2 */
+        //calcul du point d'arrivé de la ligne de visée
+        double[] x = new double[100];
+        double[] y = new double[100];
+        x[0] = depart.x;
+        y[0] = depart.y;
+        double deltaT = 0.1 ;
+        for (int t = 1; t < 100; t++) {
+            x[t] = depart.x - deltaT*t * vitesseTir * Math.cos(angleOrientation);
+            y[t] = depart.y + deltaT *t* vitesseTir * Math.sin(angleOrientation) + 100.0*deltaT * deltaT*t*t  / 2.0;
+            g2D.drawLine((int)x[t-1], (int)y[t-1], (int)x[t], (int)y[t] );
+        }
         super.paint(g);
     }
     
