@@ -85,6 +85,7 @@ public class GameView extends JFrame implements MouseInputListener{
                 last = System.nanoTime();
                 for (Ball b:balls){
                     b.updateBall((last-now)*1.0e-9);
+                    System.out.println(b.ballX);
                 }
                 repaint();
                 now=last;
@@ -114,7 +115,8 @@ public class GameView extends JFrame implements MouseInputListener{
 
     public static void main(String[] args) {
 
-       GameView g = new GameView(700,700);
+    //    GameView g = new GameView(1000,1000);
+       GameView g = new GameView(500,500);
        
 
     }
@@ -162,7 +164,7 @@ public class GameView extends JFrame implements MouseInputListener{
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        
+        canon.DeplacementCanon(e);
     }
 
     @Override

@@ -17,6 +17,7 @@ public class Canon extends JPanel{
     // Pointer à gauche revient à 0, à droite pi
     // en Radiant
     private double angleOrientation ;
+    private Insets offset ;
 
     
     // parametre du canon :
@@ -115,6 +116,7 @@ public class Canon extends JPanel{
      * @description Permet de faire bouger le canon en fonction des coordonnées de la souris
      */
     public void DeplacementCanon(MouseEvent e){
+        if (offset == null) offset = balleATirer.getCourt().getInsets() ;
         // calcul angle du canon 
         angleOrientation = Math.atan2((e.getY() - pivotDeRotation.y), (pivotDeRotation.x-e.getX()));
 
@@ -133,21 +135,21 @@ public class Canon extends JPanel{
     public void paint(Graphics g) {
         placementBallCanon();
 
-        Graphics gGameview = getGraphics() ;
+        Graphics gGameview = balleATirer.getCourt().getGraphics() ;
         /// ball
         // placementBallCanon();
         // gGameview.setColor(Color.BLACK);
         // gGameview.fillOval((int)balleATirer.ballX,(int)balleATirer.ballY,(int)balleATirer.ballRadius, (int)balleATirer.ballRadius);
 
-        
+        Point depart = new Point((int)(pivotDeRotation.x + offset.left -  Math.cos(angleOrientation)*(this.getHeight()/2)), (int)(pivotDeRotation.y + Math.sin(angleOrientation)*(this.getHeight()/2) + offset.top )) ;
 
         // balleATirer.ballX = pivotDeRotation.x - Math.cos(angleOrientation)*((this.getHeight()/2) +balleATirer.ballRadius/2);
         // balleATirer.ballY = pivotDeRotation.y + Math.sin(angleOrientation)*((this.getHeight()/2) + balleATirer.ballRadius/2 ); 
         // ligne de viser
             // gGameview.drawLine((int)(pivotDeRotation.x - Math.cos(angleOrientation)*(this.getHeight()/2 )), (int)(pivotDeRotation.y + Math.sin(angleOrientation)*(this.getHeight()/2 )),  
             //     (int)(pivotDeRotation.x - Math.cos(angleOrientation)*(this.getHeight()/2 + tailleLigneTir)), (int)(pivotDeRotation.y + Math.sin(angleOrientation)*(this.getHeight()/2 + tailleLigneTir)));
-            gGameview.drawLine((int)(pivotDeRotation.x ), (int)(pivotDeRotation.y  ),  
-                (int)(pivotDeRotation.x - Math.cos(angleOrientation)*(this.getHeight()/2 + tailleLigneTir)), (int)(pivotDeRotation.y + Math.sin(angleOrientation)*(this.getHeight()/2 + tailleLigneTir)));
+            gGameview.drawLine((int)( depart.x ), depart.y,  
+                (int)(depart.x - Math.cos(angleOrientation)*(tailleLigneTir)), (int)(depart.y + Math.sin(angleOrientation)*(tailleLigneTir)));
         super.paint(g);
     }
     
