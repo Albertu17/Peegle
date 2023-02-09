@@ -125,6 +125,7 @@ public class GameView extends JFrame implements MouseInputListener{
   
 
     public void paint(Graphics g){
+        canon.repaint();
         setSize(width,heigth);
         g.setColor(Color.BLACK);
         for (Ball ball:balls) g.fillOval((int)ball.ballX,(int)ball.ballY,(int)ball.ballRadius,(int)ball.ballRadius);

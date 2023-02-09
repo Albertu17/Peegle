@@ -20,6 +20,11 @@ import javax.swing.JPanel;
 
 public class Canon extends JPanel{
     
+    
+    int[] x = new int[11];
+    int[] y = new int[11];
+    double angleOrientation_old;
+    
     private Ball balleATirer ;
     private BufferedImage image; 
     // Pointer à gauche revient à 0, à droite pi
@@ -128,7 +133,6 @@ public class Canon extends JPanel{
         
     }
 
-
     @Override
     public void paint(Graphics g) {
 
@@ -141,22 +145,22 @@ public class Canon extends JPanel{
         /*x=-t×v_0*×cos(α)
 y=t*×v_0×sin(α)+(gt^2)/2 */
         //calcul du point d'arrivé de la ligne de visée
-        int[] x = new int[11];
-        int[] y = new int[11];
         x[0] = depart.x;
         y[0] = depart.y;
         double deltaT = 0.2;
+        if(angleOrientation != angleOrientation_old){
+            System.out.println("test");
         for (int t = 1; t < 11; t++) {
             x[t] = (int)(depart.x - deltaT*t * vitesseTir * Math.cos(angleOrientation));
             y[t] = (int)(depart.y + deltaT *t* vitesseTir * Math.sin(angleOrientation) + 100.0*deltaT * deltaT*t*t  / 2.0);
         }
+    }
+        angleOrientation_old = angleOrientation;
         // draw the line of the given polynom of 2nd degree
         float dash1[] = {20.0f};
         BasicStroke dashed = new BasicStroke(5.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
         g2D.setStroke(dashed);
-        g2D.setColor(Color.RED);
         g2D.drawPolyline(x, y, 11);
-        g2D.setColor(Color.BLACK);
         
         
         super.paint(g);
