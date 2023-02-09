@@ -129,9 +129,10 @@ public class Canon extends JPanel{
         // System.out.println(angleOrientation*(180/Math.PI));
 
         // update de l'orientation du canon + balle
-        repaint();
+       
         
     }
+    
 
     @Override
     public void paint(Graphics g) {
@@ -149,7 +150,6 @@ y=t*×v_0×sin(α)+(gt^2)/2 */
         y[0] = depart.y;
         double deltaT = 0.2;
         if(angleOrientation != angleOrientation_old){
-            System.out.println("test");
         for (int t = 1; t < 11; t++) {
             x[t] = (int)(depart.x - deltaT*t * vitesseTir * Math.cos(angleOrientation));
             y[t] = (int)(depart.y + deltaT *t* vitesseTir * Math.sin(angleOrientation) + 100.0*deltaT * deltaT*t*t  / 2.0);
