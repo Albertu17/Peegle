@@ -1,17 +1,10 @@
+import java.awt.BasicStroke;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent ;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.awt.geom.*;
-import java.awt.*;
-import javax.swing.*;
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -20,10 +13,10 @@ import javax.swing.JPanel;
 
 public class Canon extends JPanel{
     
-    
-    int[] x = new int[11];
-    int[] y = new int[11];
-    double angleOrientation_old;
+    //pour le tracer la ligne de viser et eviter des calculs inutiles:
+        int[] x = new int[11];
+        int[] y = new int[11];
+        double angleOrientation_old;
     
     private Ball balleATirer ;
     private BufferedImage image; 
@@ -34,7 +27,8 @@ public class Canon extends JPanel{
 
     
     // parametre du canon :
-        private int tailleLigneTir  = 500;
+        private double gravity = 100 ; 
+        private int maxDistanceLigneTir ;
         private Point pivotDeRotation ;
         private double vitesseTir = 150 ;
         private double tailleCanon = 9/100.0; // en pourcentage de la taille de l'écran
@@ -45,7 +39,7 @@ public class Canon extends JPanel{
 
         // à changer par un import global de toute les images
         try {    
-            image = ImageIO.read(new File("Image\\cannonGrandV3.png"));
+            image = ImageIO.read(new File("Image\\cannonGrand.png"));
         } catch (Exception e) {
             System.out.println(e);
         }  
@@ -74,6 +68,10 @@ public class Canon extends JPanel{
 
         // definition point de pivot de rotation
         pivotDeRotation = new Point(getX() + getWidth()/2, getY() + getHeight()/2) ;
+
+
+        // def max distance ligne tir :
+            maxDistanceLigneTir = court.getHeight()/3 ;
     }
 
     // TODO pas forcément utile ça dépend de l'implémentation futur
@@ -88,8 +86,8 @@ public class Canon extends JPanel{
     private void placementBallCanon(){
         balleATirer.ballX = pivotDeRotation.x -balleATirer.ballRadius/2 - Math.cos(angleOrientation)*( this.getHeight()/2 );
         balleATirer.ballY = pivotDeRotation.y -balleATirer.ballRadius/2 + Math.sin(angleOrientation)*( this.getHeight()/2 ); 
-        
     }
+
 
 
      /**
@@ -99,6 +97,7 @@ public class Canon extends JPanel{
      * @return Ball // ball qui vient d'être tirer
      */
     public Ball tirer(){
+        // place la balle au bout du canon
         placementBallCanon();
 
         // definition de la vitesse de la balle
@@ -126,41 +125,43 @@ public class Canon extends JPanel{
         // Correction pour eviter des positions incongrue
             if (angleOrientation >= 160*(Math.PI/180)) angleOrientation = 160*(Math.PI/180);
             else if (angleOrientation < 20*(Math.PI/180) ) angleOrientation = 20*(Math.PI/180) ; 
-        // System.out.println(angleOrientation*(180/Math.PI));
-
-        // update de l'orientation du canon + balle
-       
-        
+        // System.out.println(angleOrientation*(180/Math.PI));        
     }
+
+    private double calculDeltaT(Point depart){
+        double a = gravity*11*11 / 2.0; 
+        double b = 11*vitesseTir*Math.sin(angleOrientation) ; 
+        double delta = b*b - 4*a*(depart.y - maxDistanceLigneTir) ;
+
+        return  (-b + Math.sqrt(delta))/(2*a) ; //racine du polynome
+    } 
     
 
     @Override
     public void paint(Graphics g) {
 
-        Graphics gGameview = court.getGraphics() ;
+        Graphics2D g2DGameview = (Graphics2D) court.getGraphics() ;
        
         Point depart = new Point((int)(pivotDeRotation.x + court.getInsets().left -  Math.cos(angleOrientation)*(this.getHeight()/2)), (int)(pivotDeRotation.y + Math.sin(angleOrientation)*(this.getHeight()/2) + court.getInsets().top )) ;
-
-        // ligne de viser
-        Graphics2D g2D = (Graphics2D) gGameview ;
-        /*x=-t×v_0*×cos(α)
-y=t*×v_0×sin(α)+(gt^2)/2 */
+        
         //calcul du point d'arrivé de la ligne de visée
         x[0] = depart.x;
         y[0] = depart.y;
-        double deltaT = 0.2;
+
+        double deltaT = calculDeltaT(depart) ; // adapte le deltaT pour que la ligne de viser s'adpate avec la taille maximun imposer
         if(angleOrientation != angleOrientation_old){
-        for (int t = 1; t < 11; t++) {
-            x[t] = (int)(depart.x - deltaT*t * vitesseTir * Math.cos(angleOrientation));
-            y[t] = (int)(depart.y + deltaT *t* vitesseTir * Math.sin(angleOrientation) + 100.0*deltaT * deltaT*t*t  / 2.0);
+            for (int t = 1; t < 11; t++) {
+                x[t] = (int)(depart.x - deltaT*t * vitesseTir * Math.cos(angleOrientation));
+                y[t] = (int)(depart.y + deltaT *t* vitesseTir * Math.sin(angleOrientation) + gravity*deltaT * deltaT*t*t  / 2.0);
+            }
         }
-    }
         angleOrientation_old = angleOrientation;
-        // draw the line of the given polynom of 2nd degree
-        float dash1[] = {20.0f};
-        BasicStroke dashed = new BasicStroke(5.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
-        g2D.setStroke(dashed);
-        g2D.drawPolyline(x, y, 11);
+
+        // traçage ligne de viser
+            float dash1[] = {20.0f};
+            BasicStroke dashed = new BasicStroke(5.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
+            g2DGameview.setStroke(dashed);
+            g2DGameview.drawPolyline(x, y, 11);
         
         
         super.paint(g);

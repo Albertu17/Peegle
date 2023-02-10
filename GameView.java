@@ -165,6 +165,7 @@ public class GameView extends JFrame implements MouseInputListener{
 
     @Override
     public void mouseDragged(MouseEvent e) {
+        // Déplacement du canon en fonction de la possition de la souris
         canon.DeplacementCanon(e);
     }
 
