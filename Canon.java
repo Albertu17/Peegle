@@ -2,9 +2,11 @@ import java.awt.BasicStroke;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Color;
 import java.awt.event.MouseEvent ;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -35,14 +37,10 @@ public class Canon extends JPanel{
 
 
 
-    public Canon(GameView court){
+    public Canon(GameView court){ 
 
-        // à changer par un import global de toute les images
-        try {    
-            image = ImageIO.read(new File("Image\\cannonGrand.png"));
-        } catch (Exception e) {
-            System.out.println(e);
-        }  
+        image = ImageImport.getImage("cannonGrand.png") ;
+        
 
         // definition du Gameview
         this.court = court ;
@@ -50,7 +48,7 @@ public class Canon extends JPanel{
         
         // Mise à l'echelle du canon :
  
-        int tailleImage = (int) (largeurFrame * (tailleCanon) ) ;
+        int tailleImage = (int) (largeurFrame* tailleCanon ) ;
 
         BufferedImage resizedImage = new BufferedImage(tailleImage, tailleImage, image.getType());
         Graphics2D graphics2D = resizedImage.createGraphics();
@@ -158,6 +156,7 @@ public class Canon extends JPanel{
         angleOrientation_old = angleOrientation;
 
         // traçage ligne de viser
+            g2DGameview.setColor(Color.RED);
             float dash1[] = {20.0f};
             BasicStroke dashed = new BasicStroke(5.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
             g2DGameview.setStroke(dashed);

@@ -40,12 +40,26 @@ public class GameView extends JFrame implements MouseInputListener{
 
     GameView(int w,int h) {
 
+
+    ImageImport.setImage(false);
+
+
+    
     width=w;
     heigth=h;
 
     setSize(width, heigth);
     setTitle("Test");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
+
+    // creation canon :
+    canon = new Canon(this) ;
+    this.add(canon) ;
+    canon.setVisible(true);
+
+    canon.setBalleATirer(new Ball(0, 0, 0, 0, this));
 
     // balls.add(new Ball(225,300,0,0,this));
     // rectanlgle.add(new Rectangle(200, 400, 100, -45));
@@ -65,12 +79,7 @@ public class GameView extends JFrame implements MouseInputListener{
     animate();
     // setLayout(null);
 
-    // creation canon :
-    canon = new Canon(this) ;
-    this.add(canon) ;
-    canon.setVisible(true);
-
-    canon.setBalleATirer(new Ball(0, 0, 0, 0, this));
+    
 
     this.addMouseListener(this);
     this.addMouseMotionListener(this);
