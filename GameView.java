@@ -44,7 +44,7 @@ public class GameView extends JFrame{
     // balls.add(new Ball(220,3,2,0,this));
     // rectanlgle.add(new Rectangle(100, 300, 300,45));
 
-    balls.add(new Ball(0,0,2,0,this));
+    balls.add(new Ball(5,0,20,1,this));
     rectanlgle.add(new Rectangle(0, 400, 500,45));
 
     
@@ -128,7 +128,9 @@ public class GameView extends JFrame{
             g.setColor(Color.BLUE);
             g.fillOval((int)ball.x,(int)ball.y,5,5);
             g.setColor(Color.RED);
-            g.fillOval((int)(ball.ballX+ball.ballRadius),(int)(ball.ballY+ball.ballRadius),1,1);
+            g.fillOval((int)(ball.p1),(int)(ball.p2),5,5);
+            g.setColor(Color.PINK);
+            g.fillOval((int)(ball.p1),(int)(ball.p2),5,5);
         }
 
 

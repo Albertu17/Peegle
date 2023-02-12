@@ -15,6 +15,7 @@ public class Ball{
     // private int width=500;
 
     private int yMarxgin = 3;
+    public double p1,p2;
 
     private boolean ispresent = true;
 
@@ -37,22 +38,24 @@ public class Ball{
 
     public void updateBall(double deltaT) {
         // first, compute possible next position if nothing stands in the way
-        double nextBallX = ballX + deltaT * ballSpeedX;
-        double nextBallY = ballY + deltaT * ballSpeedY + 1/2*g*(deltaT*deltaT);
-        double nextBallSpeedY = ballSpeedY + g*deltaT;
-        double nextBallSpeedX = ballSpeedX;
+        nextBallX = ballX + deltaT * ballSpeedX;
+        nextBallY = ballY + deltaT * ballSpeedY + 1/2*g*(deltaT*deltaT);
+
+        ballSpeedY = ballSpeedY + g*deltaT;
         
         // next, see if the ball would meet some obstacle
         if (touchedWallY(nextBallY)) { 
-            nextBallSpeedY = -ballSpeedY*coeffRebond;
+            ballSpeedY = -ballSpeedY*coeffRebond;
             nextBallY = ballY + deltaT * ballSpeedY + 1/2*g*(deltaT*deltaT);
         }
 
         if (touchedWallX(nextBallX)){
-            nextBallSpeedX = -ballSpeedX;
+            ballSpeedX = -ballSpeedX;
             nextBallX = ballX + deltaT * ballSpeedX;
         }
-        Rectangle r = touchedWall(nextBallX,nextBallY,nextBallSpeedX,nextBallSpeedY,deltaT);
+        
+
+        Rectangle r = touchedWall(deltaT);
         if (r!=null){
             // double ux = Math.abs(r.x0 - r.x1);
             // double uy = Math.abs(r.y0 - r.y1);
@@ -92,23 +95,21 @@ public class Ball{
             double ux = r.x0 - r.x1;
             double uy = r.y0 - r.y1;
 
-            double s = ux*nextBallSpeedX+ uy*nextBallSpeedY;
+            double s = ux*ballSpeedX+ uy*ballSpeedY;
             double d1 = Math.sqrt(ux* ux + uy*uy);
-            double d2 = Math.sqrt(nextBallSpeedX* nextBallSpeedX + nextBallSpeedY*nextBallSpeedY);
+            double d2 = Math.sqrt(ballSpeedX* ballSpeedX + ballSpeedY*ballSpeedY);
             double alpha =Math.acos(s/(d1*d2));
-            //System.out.println(alpha*180/Math.PI);
-            System.out.println("otuche");
+            System.out.println("angle d'incidence : " + alpha*180/Math.PI);
+            System.out.println("touche");
             double beta = Math.PI - alpha;
             double angle = -beta;
-            nextBallSpeedX=d2*Math.cos(angle);
-            nextBallSpeedY=d2*Math.sin(angle);
+            ballSpeedX=d2*Math.cos(angle);
+            ballSpeedY=d2*Math.sin(angle);
             ispresent=true;
 
         }
         ballX = nextBallX;
         ballY = nextBallY;
-        ballSpeedX=nextBallSpeedX;
-        ballSpeedY=nextBallSpeedY;
     }
 
 
@@ -307,64 +308,98 @@ public class Ball{
     //     return r;
     // }
 
-    public Rectangle touchedWall(double nextBallX, double nextBallY,double nextBallSpeedX, double nextBallSpeedY,double deltaT){
+    public Rectangle touchedWall(double deltaT){
         Rectangle r=null;
-        double nextBallX2= nextBallX + deltaT * nextBallSpeedX;
-        double nextBallY2 = nextBallY + deltaT * nextBallSpeedY + 1/2*g*(deltaT*deltaT);
-        double nextBallSpeedY2= nextBallSpeedY + g*deltaT;
-        double nextBallSpeedX2=  nextBallSpeedX;
+        // double nextBallX2= nextBallX + deltaT * nextBallSpeedX;
+        // double nextBallY2 = nextBallY + deltaT * nextBallSpeedY + 1/2*g*(deltaT*deltaT);
+        // double nextBallSpeedY2= nextBallSpeedY + g*deltaT;
+        // double nextBallSpeedX2=  nextBallSpeedX;
 
 
-        double nextBallX3 = nextBallX2 + deltaT * nextBallSpeedX2;
-        double nextBallY3 = nextBallY2 + deltaT * nextBallSpeedY2 + 1/2*g*(deltaT*deltaT);
-        double nextBallSpeedY3= nextBallSpeedY2 + g*deltaT;
-        double nextBallSpeedX3=  nextBallSpeedX2;
+        // double nextBallX3 = nextBallX2 + deltaT * nextBallSpeedX2;
+        // double nextBallY3 = nextBallY2 + deltaT * nextBallSpeedY2 + 1/2*g*(deltaT*deltaT);
+        // double nextBallSpeedY3= nextBallSpeedY2 + g*deltaT;
+        // double nextBallSpeedX3=  nextBallSpeedX2;
 
         for (Rectangle rect:court.getRectangle()){     
             if (Math.min(rect.x0,rect.x1) <= nextBallX && nextBallX <= Math.max(rect.x0,rect.x1) &&
-            Math.min(rect.y0,rect.y1) <= nextBallY && nextBallY <= Math.max(rect.y0,rect.y1)) {
-                    double ux = rect.x0 - rect.x1;
-                    double uy = rect.y0 - rect.y1;
-                    double vx = nextBallSpeedX;
-                    double vy = nextBallSpeedY;
+            Math.min(rect.y0,rect.y1) <= nextBallY && nextBallY <= Math.max(rect.y0,rect.y1)) { // Je regarde si ma balle est dans la surface de mon trait/rectangle 
+                    // je vais chercher à résoudre l'équation d'un point qui appartient à ma droite de la forme y=ax+b
+                    // pour cela : 
+
+                    double ux = rect.x0 - rect.x1; // calcul du vecteur en x de mon trait
+                    double uy = rect.y0 - rect.y1; // calcul du vecteur en y de mon trait
+                    double vx = ballSpeedX; // calcul du vecteur en x de ma vitesse
+                    double vy = ballSpeedY; // calcul du vecteur en y de ma vitesse
 
                     double coeffDirecteurDroite = uy/ux;
-                    double b1 = rect.y0 - coeffDirecteurDroite*rect.x0;
                     double coeffDirecteurVecteur = vy/vx;
 
-                    double p1 = nextBallX2+ballRadius + coeffDirecteurVecteur/ballRadius*Math.cos(coeffDirecteurVecteur);
-                    double p2 = nextBallY2+ballRadius + coeffDirecteurVecteur/ballRadius*-Math.sin(coeffDirecteurVecteur);
+                    double b1 = rect.y0 - coeffDirecteurDroite*rect.x0; // je prends un point qui appartient a ma droite de mon trait pour trouver la constante b dans y=ax+b <=> b = y - ax;
+                    
 
-                    double b2 = p2- coeffDirecteurVecteur*p1;
+                    p1 = nextBallX; // point en haut à gauche de la balle (point rose)
+                    p2 = nextBallY;
+                    // p1 = nextBallX+ballRadius + normeCoeffDirecteurVecteur*Math.cos(ballSpeedY/ballSpeedX);
+                    // p2 = nextBallY+ballRadius + normeCoeffDirecteurVecteur*Math.sin(ballSpeedY/ballSpeedX);
+
+                    double b2 = p2- coeffDirecteurVecteur*p1; // je prends un point qui appartient a ma droite de mon vecteur vitesse pour trouver la constante b dans y=ax+b <=> b = y - ax;
     
-                    if (coeffDirecteurDroite!=coeffDirecteurVecteur){
+                    if (coeffDirecteurDroite!=coeffDirecteurVecteur){ // je teste si les droites s'intersectent ie les vecteurs ne sont pas colinéaires.
                         double x,y;
-                        x = (b2-b1)/(coeffDirecteurDroite-coeffDirecteurVecteur);
-                        y = (-b2*coeffDirecteurDroite+b1*coeffDirecteurVecteur)/(coeffDirecteurVecteur-coeffDirecteurDroite);
-                        this.x = x;
+                        x = (b2-b1)/(coeffDirecteurDroite-coeffDirecteurVecteur); // systeme équation intersection pour x : y = a'x + b' et y = ax + b <=> x = (b-b') / (a'x-ax)
+                        y = (-b2*coeffDirecteurDroite+b1*coeffDirecteurVecteur)/(coeffDirecteurVecteur-coeffDirecteurDroite);  // systeme équation intersection pour y : y = a'x + b' et y = ax + b <=> y = (-b*a'x+b'*a) / (a'x-ax)
+                        this.x = x; // sert juste pour l'affichahe ie le sauvegader dans une instance de la classe balle 
                         this.y = y;
+                            if (Math.abs(x-nextBallX) <= 10 &&  Math.abs(y-nextBallY) <= 10 && !ispresent){ // je test si mon potentiel point d'intersection est suffisament proche de ma balle 
+                                // dijonction des cas :
+                                // Il est possible que la balle aille trop vite, c'est à dire les les coordonnées peuvent passer par exemple en x de 300 à 305 
+                                // et donc "passer à travers de notre point d'interseciton"
+                                // Je dois faire donc une dijonction de cas par rapport la vitesse pour savoir si ma balle est passée à travers mon point grace aux inégalités
 
-                        if (nextBallSpeedX>=0 && x<=nextBallX2) return null;
-                        if (nextBallSpeedX<=0 && x>=nextBallX2) return null;
-                        if (nextBallSpeedY>=0 && y<=nextBallY2) return null;
-                        if (nextBallSpeedY<=0 && y>=nextBallY2) return null;
-                        if (Math.min(rect.x0,rect.x1) <= x && x <= Math.max(rect.x0,rect.x1)
-                        && Math.min(rect.y0,rect.y1)<= y && y <= Math.max(rect.y0,rect.y1)){
+                                // Par exemple 1er cas ma balle descend et va à droite 
+                                // Je regarde donc si les coordonées de ma balle en x sont supérieurs à mon point en x (est passée à droite)
+                                // et si ma balle en y est passée en dessous de mon point d'interseciton c a d nextBallY +ballRadius*2 > y
+                                ispresent=true;
+                                if (ballSpeedY>=0){
+                                    if (ballSpeedX>=0){
 
-                            // System.out.println("1        " + (int) nextBallX+"      "+ (int)nextBallY);
-                            // System.out.println("------------------------------");
-                            // System.out.println("2        " +(int) nextBallX2+"      "+ (int)nextBallY2);
-                            // System.out.println("------------------------------");
-                            System.out.println("3        " + Math.ceil(p1)+"      "+  Math.ceil(p2));
-                            System.out.println("------------------------------");
-                            System.out.println("point :   " +  Math.ceil(x)+"         "+  Math.ceil(y));
-                            if (Math.ceil(p1)==Math.ceil(x) && Math.ceil(p2)==Math.ceil(y)) return rect;
-                            // if ((int) nextBallSpeedX2<= (int)x && (int)x<= (int) nextBallX3 
-                            // && (int) nextBallSpeedY2<=(int) y && (int) y<=(int) nextBallY3 
-                            // ) return rect;
-                            
+                                        if (nextBallX + ballRadius * 2 >= x && nextBallY + ballRadius*2 >= y) {
+                                            
+                                            // nextBallX = nextBallX - Math.abs(x-nextBallX);
+                                            // nextBallY = nextBallY - Math.abs(y-nextBallY);
+                                            return rect;
+                                        }
+                                    }
+                                    else {
+                                        if (nextBallX <= x && nextBallY + ballRadius*2 >= y) {
+                                            // nextBallX = nextBallX + Math.abs(x-nextBallX);
+                                            // nextBallY = nextBallY - Math.abs(y-nextBallY);
+                                            return rect;
+                                        }
+                                    }
+                                }
+                                else {
+                                    if (ballSpeedX>=0){
+                                        if (nextBallX + ballRadius*2 >= x && nextBallY <= y) {
+                                            // nextBallX = nextBallX - ballRadius*2;
+                                            // nextBallY = nextBallY - ballRadius*2;
+                                            return rect;
+                                        }
+                                    }
+                                    else {
+                                        if (nextBallX <= x && nextBallY <= y) {
+                                            // nextBallX = nextBallX + Math.abs(x-nextBallX);
+                                            // nextBallY = nextBallY + Math.abs(y-nextBallY);
+                                            return rect;
+                                        }
+                                    }
+                                }
+                                
+    
+                            }
+                            else ispresent=false;
 
-                        }
                     }
                 }
             } 
