@@ -41,7 +41,7 @@ public class GameView extends JFrame implements MouseInputListener{
     GameView(int w,int h) {
 
 
-    ImageImport.setImage(false);
+    ImageImport.setImage(true);
 
 
     

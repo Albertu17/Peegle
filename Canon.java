@@ -39,24 +39,16 @@ public class Canon extends JPanel{
 
     public Canon(GameView court){ 
 
-        image = ImageImport.getImage("cannonGrand.png") ;
         
-
+        
         // definition du Gameview
         this.court = court ;
         int largeurFrame = court.getWidth() ;
         
         // Mise à l'echelle du canon :
- 
         int tailleImage = (int) (largeurFrame* tailleCanon ) ;
-
-        BufferedImage resizedImage = new BufferedImage(tailleImage, tailleImage, image.getType());
-        Graphics2D graphics2D = resizedImage.createGraphics();
-        graphics2D.drawImage(image, 0, 0, tailleImage, tailleImage, null);
-        graphics2D.dispose();
-        image = resizedImage;
-
-
+        image = ImageImport.getImage("cannonGrand.png", tailleImage, tailleImage) ;
+ 
         
         // position du canon initial à la vertical
         angleOrientation = Math.PI/2 ;     
@@ -121,8 +113,14 @@ public class Canon extends JPanel{
         angleOrientation = Math.atan2((e.getY() - pivotDeRotation.y), (pivotDeRotation.x-e.getX()));
 
         // Correction pour eviter des positions incongrue
-            if (angleOrientation >= 160*(Math.PI/180)) angleOrientation = 160*(Math.PI/180);
-            else if (angleOrientation < 20*(Math.PI/180) ) angleOrientation = 20*(Math.PI/180) ; 
+            if (angleOrientation >= 170*(Math.PI/180) || angleOrientation < 10*(Math.PI/180) ){
+                if (e.getX()> pivotDeRotation.x) {
+                    angleOrientation = 170*(Math.PI/180);
+                }else{
+                    angleOrientation = 10*(Math.PI/180) ; 
+                }
+            }
+
         // System.out.println(angleOrientation*(180/Math.PI));        
     }
 

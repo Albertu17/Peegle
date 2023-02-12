@@ -1,12 +1,10 @@
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
-
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.nio.Buffer;
 
 
 public class ImageImport {
@@ -15,7 +13,13 @@ public class ImageImport {
     private static boolean importFini = false ;
 
     
-
+    /**
+     * @description Lance l'import de toute les images du dossier image (ainsi que ses sous dossier)
+     * Les images sont récuperable avec la fonction statique getImage(path) ;
+     * @param Thread indique si l'import des images doit se faire en arriere plan 
+     * @author Thibault
+     * 
+     */
     public static void setImage(Boolean Thread){
         allimage = new HashMap<>() ;
 
@@ -25,6 +29,7 @@ public class ImageImport {
                     try {
                         scanFile(new File(pathDossierImage), "") ;
                         importFini = true ;
+                        System.out.println("fini");
                     } catch (Exception e) {
                         System.out.println(e);
                     }
@@ -48,7 +53,7 @@ public class ImageImport {
                 scanFile(f, path + f.getName() + "/");
             }else{
                 allimage.put( path + f.getName(), ImageIO.read(f)) ;
-                System.out.println( path + f.getName() +":"+ (allimage.get(path + f.getName()) == null ? "null" : "good") );
+                // System.out.println( path + f.getName() +":"+ (allimage.get(path + f.getName()) == null ? "null" : "good") );
             }
         }
 
@@ -56,28 +61,76 @@ public class ImageImport {
 
     }
 
+    /**
+     *
+     * @param path chemin de l'image (chemin relatif depuis Le dossier "/Image") 
+     * @author Thibault
+     * @return l'image correspondante 
+     * 
+     */
     public static BufferedImage getImage(String path){
-        return getImageResize(path, 100) ;
+        return getImage(path, 100) ;
     }
     
-    public static BufferedImage getImageResize(String path, int pourcentage){
-        BufferedImage image = null ;
-        do {
-            if (importFini){
-                image = allimage.get(path) ;
-                // TODO faut-il supprimer l'image du hashmap apres ?
-                if (pourcentage != 0){
-                    // TODO faire le resize
-                }
-            }
-        }
 
-        while(! importFini) ;
+     /**
+     *
+     * @param path chemin de l'image (chemin relatif depuis Le dossier "/Image") 
+     * @param pourcentage (0-100) resize l'image en pourcenatge de la taille original 
+     *  
+     * @author Thibault
+     * @return l'image correspondante 
+     * 
+     */
+    public static BufferedImage getImage(String path, int pourcentage){
+        
+        while(! importFini) ;  //attend  que l'import des images par le thread soit fini
+        
+        BufferedImage image = allimage.get(path) ;
+        // TODO faut-il supprimer l'image du hashmap apres ?
+
+        if (pourcentage != 100){
+            int width = (int) ((image.getWidth()*pourcentage)/100.0 );
+            int heigth = (int) ((image.getHeight()*pourcentage)/100.0 );
+            // resize de l'image :
+            BufferedImage resizedImage = new BufferedImage(width, heigth, image.getType());
+            Graphics2D graphics2D = resizedImage.createGraphics();
+            graphics2D.drawImage(image, 0, 0, width, heigth, null);
+            graphics2D.dispose();
+            image = resizedImage;
+        }
+        
+        return image ;
+    }
+
+    /**
+     *
+     * @param path chemin de l'image (chemin relatif depuis Le dossier "/Image") 
+     * @param width nouvelle largeur 
+     * @param heigth nouvelle hauteur
+     *  
+     * @author Thibault
+     * @return l'image correspondante 
+     * 
+     */
+    public static BufferedImage getImage(String path, int width, int heigth){
+
+        while(! importFini){ System.out.print("");} ;  //attend  que l'import des images par le thread soit fini
+        // laisser le print sinon ça ne fonctionne pas 
+
+
+        BufferedImage image = allimage.get(path) ;
+        // TODO faut-il supprimer l'image du hashmap apres ?
+
+        // resize de l'image :
+        BufferedImage resizedImage = new BufferedImage(width, heigth, image.getType());
+        Graphics2D graphics2D = resizedImage.createGraphics();
+        graphics2D.drawImage(image, 0, 0, width, heigth, null);
+        graphics2D.dispose();
+        image = resizedImage;
         
         return image ;
     }
     
-    public static void main(String[] args) {
-        ImageImport.setImage(true) ;
-    }
+
 }
