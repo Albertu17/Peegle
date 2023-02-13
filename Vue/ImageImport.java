@@ -1,3 +1,4 @@
+package Vue;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -9,7 +10,7 @@ import javax.imageio.ImageIO;
 
 public class ImageImport {
     private static HashMap<String, BufferedImage> allimage ;
-    private static String pathDossierImage = "Image/" ;
+    private static String pathDossierImage = "Vue/Image/" ;
     private static boolean importFini = false ;
 
     

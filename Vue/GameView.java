@@ -1,3 +1,4 @@
+package Vue;
 
 
 import javax.swing.Action;
@@ -20,9 +21,16 @@ import java.awt.event.MouseEvent;
 import javax.swing.Timer;
 import javax.swing.event.MouseInputListener;
 
+import Modele.Ball;
+import Modele.Rectangle;
+import Vue.Canon;
+import Vue.ImageImport;
 
 
-public class GameView extends JFrame implements MouseInputListener{
+
+public class GameView extends JPanel implements MouseInputListener{
+
+    private Controleur controleur ;
 
     private int width;
     private int heigth;
@@ -38,19 +46,18 @@ public class GameView extends JFrame implements MouseInputListener{
     Canon canon ;
 
 
-    GameView(int w,int h) {
+    public GameView() {
+    
+    // this.controleur = controleur ;
 
-
-    ImageImport.setImage(true);
+    
 
 
     
-    width=w;
-    heigth=h;
+    width= 1000;
+    heigth= 1000;
+    // setSize(width,heigth);
 
-    setSize(width, heigth);
-    setTitle("Test");
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 
 
@@ -75,9 +82,9 @@ public class GameView extends JFrame implements MouseInputListener{
     // balls.add(new Ball(300,30,10,200,this));
     Shapes s = new Shapes();
     add(s);
-    setVisible(true);    
+    // setVisible(true);    
     animate();
-    // setLayout(null);
+    setLayout(null);
 
     
 
@@ -122,13 +129,6 @@ public class GameView extends JFrame implements MouseInputListener{
 
 
 
-    public static void main(String[] args) {
-
-       GameView g = new GameView(1000,1000);
-    //    GameView g = new GameView(500,500);
-       
-
-    }
 
     public class Shapes extends JPanel{
   
@@ -183,4 +183,15 @@ public class GameView extends JFrame implements MouseInputListener{
         // Déplacement du canon en fonction de la possition de la souris
         canon.DeplacementCanon(e);    
     } 
+
+    public static void main(String[] args) {
+        JFrame f = new JFrame();
+        f.setSize(1000,1000);
+        f.setVisible(true);
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setLayout(null);
+        GameView g = new GameView();
+        f.add(g);
+        System.out.println(g.getSize());
+    }
 }

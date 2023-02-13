@@ -1,19 +1,19 @@
-package Menu;
-import javax.swing.JFrame;
-
-import GameView;
-import Controleur ; 
-
+package Vue.Menu;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ResourceBundle.Control;
+
+import Vue.Controleur;
+import Vue.GameView;
 
 
 public class MenuPrincipal extends JPanel {
 
     MenuLibre menuLibre ;
     MenuParametre menuParametre ;
-    
+    Controleur controleur ;
+    GameView gameView;
     
 
 
@@ -26,8 +26,13 @@ public class MenuPrincipal extends JPanel {
     JButton quitter = new JButton("Quitter");
 
 
-    MenuPrincipal(){
-        
+
+    MenuPrincipal(Controleur controleur){
+        this.controleur = controleur ;
+        gameView = new GameView();
+        add(gameView);
+        gameView.setVisible(false);
+
         setLayout(new BorderLayout());
         zoneTexte.setPreferredSize(new Dimension(600,150));
         zoneTexte.setLayout(new BorderLayout());
@@ -46,12 +51,14 @@ public class MenuPrincipal extends JPanel {
         add(bouttons,BorderLayout.CENTER);
         
         menuLibre  = new MenuLibre() ;
+
         menuParametre = new MenuParametre() ;
 
         
         campagne.addActionListener((ActionEvent e)->{
             setVisible(false);
-            
+            controleur.menu.setVisible(false);
+            gameView.setVisible(true);
         });
 
         libre.addActionListener(e ->{
@@ -76,9 +83,6 @@ public class MenuPrincipal extends JPanel {
 
 
 
-    public static void main(String[] args) {
-        new MenuPrincipal();
-    }
     
 }
 

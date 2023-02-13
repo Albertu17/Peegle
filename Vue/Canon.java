@@ -1,3 +1,4 @@
+package Vue;
 import java.awt.BasicStroke;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -6,6 +7,8 @@ import java.awt.Color;
 import java.awt.event.MouseEvent ;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
+
+import Modele.Ball;
 
 
 

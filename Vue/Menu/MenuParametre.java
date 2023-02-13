@@ -1,4 +1,4 @@
-package Menu;
+package Vue.Menu;
 import javax.imageio.plugins.jpeg.JPEGHuffmanTable;
 import javax.swing.JFrame;
 import javax.swing.JPanel;

@@ -1,5 +1,9 @@
+package Modele;
 import java.util.ArrayList;
 import java.util.Random;
+
+import Vue.GameView;
+
 import java.math.*;
 import java.sql.Array;
 import java.awt.*;
@@ -32,7 +36,7 @@ public class Ball{
         return court;
     }
 
-    Ball(int x,int y,int vx0,int vy0,GameView g){
+    public Ball(int x,int y,int vx0,int vy0,GameView g){
         ballX=x;
         ballY=y;
         ballSpeedX=vx0;
