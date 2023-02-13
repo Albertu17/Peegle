@@ -44,7 +44,7 @@ public class GameView extends JFrame{
     // balls.add(new Ball(220,3,2,0,this));
     // rectanlgle.add(new Rectangle(100, 300, 300,45));
 
-    balls.add(new Ball(5,0,20,1,this));
+    balls.add(new Ball(5,0,50,1,this));
     rectanlgle.add(new Rectangle(0, 400, 500,45));
 
     

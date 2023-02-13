@@ -4,7 +4,7 @@ import java.math.*;
 import java.sql.Array;
 public class Ball{
 
-    public final double ballRadius = 12.5/2; // m
+    public final double ballRadius = 14/2; // m
 
     public double ballX, ballY; // m
     public double ballSpeedX, ballSpeedY; // m
@@ -97,29 +97,20 @@ public class Ball{
             double uy = r.y0 - r.y1;
             double vx = ballSpeedX;
             double vy = ballSpeedY;
-
-            double s = ux*vx+ uy*vy;
-            double d1 = Math.sqrt(ux* ux + uy*uy);
-            double d2 = Math.sqrt(vx* vx + vy*vy);
-            double alpha =Math.acos(s/(d1*d2));
-            System.out.println("angle d'incidence : " + alpha*180/Math.PI);
-            System.out.println("touche");
-            System.out.println("vitesse en x : " + ballSpeedX);
-            System.out.println("vitesse en y : " + ballSpeedY);
-            atoucher = true;
-            double beta = Math.PI - alpha;
-            double angle = beta - r.angle;
-            if (beta < 0){
-                beta = -beta;
-            }
-            System.out.println("angle de rebond : " + angle*180/Math.PI);
+            // calcul de l'angle du rebond
+            double angle = Math.atan2(uy,ux);
+            // calcul de la norme du vecteur vitesse
+            double norme = Math.sqrt(vx*vx + vy*vy);
+            // calcul de l'angle de retour
+            double angleRetour = Math.atan2(vy,vx);
+            // calcul de l'angle de rebond
+            double angleRebond = angleRetour - 2*(angleRetour - angle);
             // calcul de la nouvelle vitesse
-            ballSpeedX=d2*Math.cos(angle);
-            ballSpeedY=d2*Math.sin(angle);
-            System.out.println("vitesse en x : " + ballSpeedX);
-            System.out.println("vitesse en y : " + ballSpeedY);
-            System.out.println("vitesse totale : " + Math.sqrt(ballSpeedX*ballSpeedX + ballSpeedY*ballSpeedY));
-
+            ballSpeedX = norme*Math.cos(angleRebond);
+            ballSpeedY = norme*Math.sin(angleRebond);
+            atoucher=true;
+        } else if (r==null){
+            atoucher=false;
         } else {}
         ballX = nextBallX;
         ballY = nextBallY;
