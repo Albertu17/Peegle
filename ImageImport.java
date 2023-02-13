@@ -29,7 +29,6 @@ public class ImageImport {
                     try {
                         scanFile(new File(pathDossierImage), "") ;
                         importFini = true ;
-                        System.out.println("fini");
                     } catch (Exception e) {
                         System.out.println(e);
                     }
@@ -56,9 +55,6 @@ public class ImageImport {
                 // System.out.println( path + f.getName() +":"+ (allimage.get(path + f.getName()) == null ? "null" : "good") );
             }
         }
-
-
-
     }
 
     /**
@@ -84,7 +80,7 @@ public class ImageImport {
      */
     public static BufferedImage getImage(String path, int pourcentage){
         
-        while(! importFini) ;  //attend  que l'import des images par le thread soit fini
+        while(! importFini){System.out.print("");} ;  //attend  que l'import des images par le thread soit fini
         
         BufferedImage image = allimage.get(path) ;
         // TODO faut-il supprimer l'image du hashmap apres ?
@@ -115,9 +111,8 @@ public class ImageImport {
      */
     public static BufferedImage getImage(String path, int width, int heigth){
 
-        while(! importFini){ System.out.print("");} ;  //attend  que l'import des images par le thread soit fini
+        while(! importFini) {System.out.print("");};  //attend  que l'import des images par le thread soit fini
         // laisser le print sinon ça ne fonctionne pas 
-
 
         BufferedImage image = allimage.get(path) ;
         // TODO faut-il supprimer l'image du hashmap apres ?

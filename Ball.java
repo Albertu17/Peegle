@@ -39,6 +39,9 @@ public class Ball{
         ballSpeedY=vy0;
         court=g;
     }
+    public double getG() {
+        return g;
+    }
 
     public void updateBall(double deltaT) {
         // first, compute possible next position if nothing stands in the way
