@@ -40,12 +40,26 @@ public class GameView extends JFrame implements MouseInputListener{
 
     GameView(int w,int h) {
 
+
+    ImageImport.setImage(true);
+
+
+    
     width=w;
     heigth=h;
 
     setSize(width, heigth);
     setTitle("Test");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
+
+    // creation canon :
+    canon = new Canon(this) ;
+    this.add(canon) ;
+    canon.setVisible(true);
+
+    canon.setBalleATirer(new Ball(0, 0, 0, 0, this));
 
     // balls.add(new Ball(225,300,0,0,this));
     // rectanlgle.add(new Rectangle(200, 400, 100, -45));
@@ -65,10 +79,7 @@ public class GameView extends JFrame implements MouseInputListener{
     animate();
     // setLayout(null);
 
-    // creation canon :
-    canon = new Canon(w) ;
-    this.add(canon) ;
-    canon.setVisible(true);
+    
 
     this.addMouseListener(this);
     this.addMouseMotionListener(this);
@@ -83,6 +94,7 @@ public class GameView extends JFrame implements MouseInputListener{
                 last = System.nanoTime();
                 for (Ball b:balls){
                     b.updateBall((last-now)*1.0e-9);
+                    // System.out.println(b.ballX);
                 }
                 repaint();
                 now=last;
@@ -112,7 +124,8 @@ public class GameView extends JFrame implements MouseInputListener{
 
     public static void main(String[] args) {
 
-       GameView g = new GameView(700,700);
+       GameView g = new GameView(1000,1000);
+    //    GameView g = new GameView(500,500);
        
 
     }
@@ -121,6 +134,7 @@ public class GameView extends JFrame implements MouseInputListener{
   
 
     public void paint(Graphics g){
+        canon.repaint();
         setSize(width,heigth);
         g.setColor(Color.BLACK);
         for (Ball ball:balls) g.fillOval((int)ball.ballX,(int)ball.ballY,(int)ball.ballRadius,(int)ball.ballRadius);
@@ -134,7 +148,7 @@ public class GameView extends JFrame implements MouseInputListener{
     @Override
     public void mouseClicked(MouseEvent e) {
         // lancer une balle
-        canon.tirer();
+        balls.add(canon.tirer()) ;
         
     }
 
@@ -160,7 +174,8 @@ public class GameView extends JFrame implements MouseInputListener{
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        
+        // Déplacement du canon en fonction de la possition de la souris
+        canon.DeplacementCanon(e);
     }
 
     @Override
