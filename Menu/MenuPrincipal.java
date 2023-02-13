@@ -1,10 +1,21 @@
+package Menu;
 import javax.swing.JFrame;
+
+import GameView;
+import Controleur ; 
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 
-public class MenuPrincipal extends JFrame {
+public class MenuPrincipal extends JPanel {
+
+    MenuLibre menuLibre ;
+    MenuParametre menuParametre ;
+    
+    
+
 
     JPanel zoneTexte = new JPanel();
     JPanel bouttons = new JPanel();
@@ -14,11 +25,9 @@ public class MenuPrincipal extends JFrame {
     JButton parametres = new JButton("Parametres");
     JButton quitter = new JButton("Quitter");
 
+
     MenuPrincipal(){
-        setSize(600,700);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setVisible(true);
-        setLocationRelativeTo(null);
+        
         setLayout(new BorderLayout());
         zoneTexte.setPreferredSize(new Dimension(600,150));
         zoneTexte.setLayout(new BorderLayout());
@@ -35,23 +44,26 @@ public class MenuPrincipal extends JFrame {
 
         add(zoneTexte,BorderLayout.NORTH);
         add(bouttons,BorderLayout.CENTER);
+        
+        menuLibre  = new MenuLibre() ;
+        menuParametre = new MenuParametre() ;
 
         
         campagne.addActionListener((ActionEvent e)->{
-            hide();
-            new GameView(500, 500);
+            setVisible(false);
+            
         });
 
         libre.addActionListener(e ->{
-            hide();
-            new MenuLibre();
+            setVisible(false);
+            menuLibre.setVisible(true);
         });
 
 
 
         parametres.addActionListener(e ->{
-            hide();
-            new MenuParametre();
+            setVisible(false);
+            menuParametre.setVisible(true);
         } );
 
 
