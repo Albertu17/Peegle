@@ -15,12 +15,14 @@ import java.util.ArrayList;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 
 import javax.swing.Timer;
+import javax.swing.event.MouseInputListener;
 
 
 
-public class GameView extends JFrame{
+public class GameView extends JFrame implements MouseInputListener{
 
     private int width;
     private int heigth;
@@ -32,9 +34,18 @@ public class GameView extends JFrame{
     private ArrayList<Rectangle> rectanlgle=new ArrayList<>();
     private ArrayList<Pegs> pegs=new ArrayList<>();
 
+    // Canon
+
+    Canon canon ;
+
 
     GameView(int w,int h) {
 
+
+    ImageImport.setImage(true);
+
+
+    
     width=w;
     heigth=h;
 
@@ -42,8 +53,18 @@ public class GameView extends JFrame{
     setTitle("Test");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-    // balls.add(new Ball(220,3,2,0,this));
-    //rectanlgle.add(new Rectangle(100, 300, 300,45));
+
+
+    // creation canon :
+    canon = new Canon(this) ;
+    this.add(canon) ;
+    canon.setVisible(true);
+
+    canon.setBalleATirer(new Ball(0, 0, 0, 0, this));
+
+    // balls.add(new Ball(225,300,0,0,this));
+    // rectanlgle.add(new Rectangle(200, 400, 100, -45));
+    // balls.add(new Ball(20,30,10,-10,this));
 
     balls.add(new Ball(5,0,50,1,this));
     //rectanlgle.add(new Rectangle(-10, 300, 600,30));
@@ -98,7 +119,12 @@ public class GameView extends JFrame{
     add(s);
     setVisible(true);    
     animate();
+    // setLayout(null);
 
+    
+
+    this.addMouseListener(this);
+    this.addMouseMotionListener(this);
     }
 
     public void animate() {
@@ -110,6 +136,7 @@ public class GameView extends JFrame{
                 last = System.nanoTime();
                 for (Ball b:balls){
                     b.updateBall((last-now)*1.0e-9);
+                    // System.out.println(b.ballX);
                 }
                 repaint();
                 now=last;
@@ -139,15 +166,16 @@ public class GameView extends JFrame{
 
     public static void main(String[] args) {
 
-       GameView g = new GameView(500,500);
+       GameView g = new GameView(1000,1000);
+    //    GameView g = new GameView(500,500);
        
-
     }
 
     public class Shapes extends JPanel{
   
 
     public void paint(Graphics g){
+        canon.repaint();
         setSize(width,heigth);
         g.setColor(Color.BLACK);
         for (Ball ball:balls) 
@@ -187,5 +215,44 @@ public class GameView extends JFrame{
 
     public ArrayList<Pegs> getPegs() {
         return pegs;
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        // lancer une balle
+        balls.add(canon.tirer()) ;
+        
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        // Déplacement du canon en fonction de la possition de la souris
+        canon.DeplacementCanon(e);
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        // Déplacement du canon en fonction de la possition de la souris
+        canon.DeplacementCanon(e);    
     } 
 }
