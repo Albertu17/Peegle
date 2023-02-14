@@ -30,6 +30,7 @@ public class GameView extends JFrame{
     //private Circle ball;
     private ArrayList<Ball> balls=new ArrayList<>();
     private ArrayList<Rectangle> rectanlgle=new ArrayList<>();
+    private ArrayList<Pegs> pegs=new ArrayList<>();
 
 
     GameView(int w,int h) {
@@ -42,29 +43,57 @@ public class GameView extends JFrame{
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     // balls.add(new Ball(220,3,2,0,this));
-    // rectanlgle.add(new Rectangle(100, 300, 300,45));
+    //rectanlgle.add(new Rectangle(100, 300, 300,45));
 
     balls.add(new Ball(5,0,50,1,this));
-    rectanlgle.add(new Rectangle(0, 400, 500,45));
+    //rectanlgle.add(new Rectangle(-10, 300, 600,30));
 
     
-    //balls.add(new Ball(0,3,100,0,this));
+    balls.add(new Ball(0,3,100,0,this));
     //rectanlgle.add(new Rectangle(200, 300, 300,-45));
 
-    // balls.add(new Ball(300,400,-100,-100,this));
-    rectanlgle.add(new Rectangle(0, 400, 300,-45));
+    balls.add(new Ball(300,400,-100,-100,this));
+   //rectanlgle.add(new Rectangle(0, 400, 300,-45));
 
 
-    // balls.add(new Ball(20,30,10,-10,this));
+    balls.add(new Ball(20,30,10,-10,this));
 
-    // balls.add(new Ball(60,10,75,10,this));
-    // balls.add(new Ball(100,30,-65,10,this));
+    balls.add(new Ball(60,10,75,10,this));
+    balls.add(new Ball(100,30,-65,10,this));
 
-    // balls.add(new Ball(200,10,-100,10,this));
-    // balls.add(new Ball(250,30,10,100,this));
+    balls.add(new Ball(200,10,-100,10,this));
+    balls.add(new Ball(250,30,10,100,this));
 
-    // balls.add(new Ball(400,10,10,10,this));
-    // balls.add(new Ball(300,30,10,200,this));
+    balls.add(new Ball(400,10,10,10,this));
+    balls.add(new Ball(300,30,10,200,this));
+    pegs.add(new Pegs(100, 200, 20));
+    pegs.add(new Pegs(200, 200, 20));
+    pegs.add(new Pegs(300, 200, 20));
+    pegs.add(new Pegs(400, 200, 20));
+    pegs.add(new Pegs(500, 200, 20));
+    pegs.add(new Pegs(150, 300, 20));
+    pegs.add(new Pegs(250, 300, 20));
+    pegs.add(new Pegs(350, 300, 20));
+    pegs.add(new Pegs(450, 300, 20));
+    pegs.add(new Pegs(50, 400, 20));
+    pegs.add(new Pegs(150, 400, 20));
+    pegs.add(new Pegs(250, 400, 20));
+    pegs.add(new Pegs(350, 400, 20));
+    pegs.add(new Pegs(450, 400, 20));
+    pegs.add(new Pegs(50, 500, 20));
+    pegs.add(new Pegs(150, 500, 20));
+    pegs.add(new Pegs(250, 500, 20));
+    pegs.add(new Pegs(350, 500, 20));
+    pegs.add(new Pegs(450, 500, 20));
+    pegs.add(new Pegs(50, 200, 20));
+    pegs.add(new Pegs(50, 300, 20));
+    pegs.add(new Pegs(150, 200, 20));
+    pegs.add(new Pegs(250, 200, 20));
+    pegs.add(new Pegs(350, 200, 20));
+    pegs.add(new Pegs(450, 200, 20));
+    
+
+
     Shapes s = new Shapes();
     add(s);
     setVisible(true);    
@@ -132,11 +161,25 @@ public class GameView extends JFrame{
             g.setColor(Color.PINK);
             g.fillOval((int)(ball.p1),(int)(ball.p2),5,5);
         }
+        //remove ball hit the ground
+        for (int i=0;i<balls.size();i++) {
+            if (balls.get(i).getHitGround()) {
+                balls.remove(i);
+            }
+        }
 
 
         g.setColor(Color.RED);
         for (Rectangle rect:rectanlgle) {
             g.drawLine(rect.x0, rect.y0, rect.caculX1(), rect.caculY1());}
+        for (Pegs peg:pegs) {
+            g.fillOval(peg.getX(), peg.getY(), peg.getRadius(), peg.getRadius());
+        }
     }
+
+    }
+
+    public ArrayList<Pegs> getPegs() {
+        return pegs;
     } 
 }

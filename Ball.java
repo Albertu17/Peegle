@@ -19,6 +19,8 @@ public class Ball{
 
     private boolean ispresent = true;
     private boolean atoucher = false;
+    private boolean atoucherpegs = false;
+    private boolean hitground = false;
 
     private double g=300; // m/s
     private double coeffRebond = 0.8;
@@ -47,6 +49,7 @@ public class Ball{
         // next, see if the ball would meet some obstacle
         if (touchedWallY(nextBallY)) { 
             ballSpeedY = -ballSpeedY*coeffRebond;
+            System.out.println("touched wall Y");
             nextBallY = ballY + deltaT * ballSpeedY + 1/2*g*(deltaT*deltaT);
         }
 
@@ -58,39 +61,6 @@ public class Ball{
 
         Rectangle r = touchedWall(deltaT);
         if (r!=null && !atoucher){
-            // double ux = Math.abs(r.x0 - r.x1);
-            // double uy = Math.abs(r.y0 - r.y1);
-
-
-            // double s = ux*ballSpeedX+ uy*ballSpeedY;
-            // double d1 = Math.sqrt(ux* ux + uy*uy);
-            // double d2 = Math.sqrt(ballSpeedX* ballSpeedX + ballSpeedY*ballSpeedY);
-            // double alpha = Math.acos(s/(d1*d2));
-            // System.out.println(alpha*180/Math.PI);
-            // double beta;
-
-            // beta = Math.PI-alpha;
-            // System.out.println(beta*180/Math.PI);
-
-            // double teta = Math.atan(ballSpeedY/ballSpeedX);
-            // double beta;
-            
-            // beta=r.angle;
-            // double angle = Math.PI+teta-2*beta;
-            // System.out.println(angle*180/Math.PI);
-
-            // double nx = ballSpeedX;
-            // double ny = ballSpeedY;
-            // ballSpeedX=Math.sqrt(ballSpeedX*ballSpeedX + ballSpeedY*ballSpeedY)*Math.cos(angle);
-            // ballSpeedY=Math.sqrt(ballSpeedX*ballSpeedX + ballSpeedY*ballSpeedY)*Math.sin(angle);
-  
-
-            // ballSpeedX = nx*Math.sin(alpha) + ny*Math.cos(alpha);
-            // ballSpeedY = nx*Math.cos(alpha) - ny*Math.sin(alpha);
-
-            // ballSpeedX = -100;
-            // ballSpeedY = -ballSpeedY;
-            // ispresent=true;
 
 
             double ux = r.x0 - r.x1;
@@ -112,6 +82,27 @@ public class Ball{
         } else if (r==null){
             atoucher=false;
         } else {}
+        Pegs p = touchedPegs();
+        if (p!=null && !atoucherpegs){
+            double ux = nextBallX -p.getX();
+            double uy = nextBallY - p.getY();
+            double vx = ballSpeedX;
+            double vy = ballSpeedY;
+            // calcul de l'angle du rebond
+            double angle = Math.atan2(uy,ux);
+            // calcul de la norme du vecteur vitesse
+            double norme = Math.sqrt(vx*vx + vy*vy);
+            // calcul de l'angle de retour
+            double angleRetour = Math.atan2(vy,vx);
+            // calcul de l'angle de rebond
+            double angleRebond = angleRetour - 2*(angleRetour - angle);
+            // calcul de la nouvelle vitesse
+            ballSpeedX = norme*Math.cos(angleRebond);
+            ballSpeedY = norme*Math.sin(angleRebond);
+            atoucherpegs=true;
+        } else if (p==null){
+            atoucherpegs=false;
+        } else {}
         ballX = nextBallX;
         ballY = nextBallY;
     }
@@ -122,15 +113,26 @@ public class Ball{
     }
 
     public boolean touchedWallY(double nextBallY){
+        if (nextBallY > court.getHeight() - ballRadius*2 - 15){
+            hitground=true;
+        }
         return nextBallY < 0 || nextBallY > court.getHeight() - ballRadius*2 - 15;
     }
     
 
 
-
+    public Pegs touchedPegs(){
+        Pegs p=null;
+        for (Pegs peg:court.getPegs()){
+            if (Math.sqrt(Math.pow(peg.getX()-ballX,2)+Math.pow(peg.getY()-ballY,2)) <= ballRadius+10+peg.getRadius()){
+                p=peg;
+            }
+        }
+        return p;
+    }
     public Rectangle touchedWall(double deltaT){
         Rectangle r=null;
-        for (Rectangle rect:court.getRectangle()){     
+        for (Rectangle rect:court.getRectangle()){
             if (Math.min(rect.x0,rect.x1) <= nextBallX && nextBallX <= Math.max(rect.x0,rect.x1) &&
             Math.min(rect.y0,rect.y1) <= nextBallY && nextBallY <= Math.max(rect.y0,rect.y1)) { // Je regarde si ma balle est dans la surface de mon trait/rectangle 
                     // je vais chercher à résoudre l'équation d'un point qui appartient à ma droite de la forme y=ax+b
@@ -234,9 +236,12 @@ public class Ball{
                     }
                 }
                 else ispresent=false;
-            } 
+            }
 
         return r;
+    }
+    public boolean getHitGround(){
+        return hitground;
     }
 
 
