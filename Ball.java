@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.math.*;
 import java.sql.Array;
+import java.awt.*;
 public class Ball{
 
     public final double ballRadius = 14/2; // m
@@ -31,12 +32,19 @@ public class Ball{
 
     /* Important coordonée de la balle centre en X mais tout en haut pour Y */
 
+    public GameView getCourt() {
+        return court;
+    }
+
     Ball(int x,int y,int vx0,int vy0,GameView g){
         ballX=x;
         ballY=y;
         ballSpeedX=vx0;
         ballSpeedY=vy0;
         court=g;
+    }
+    public double getG() {
+        return g;
     }
 
     public void updateBall(double deltaT) {
