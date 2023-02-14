@@ -2,6 +2,7 @@ public class Pegs {
     private int x;
     private int y;
     private int radius;
+    private boolean toucher = false;
     public Pegs(int x, int y, int radius) {
         this.x = x;
         this.y = y;
@@ -15,6 +16,12 @@ public class Pegs {
     }
     public int getRadius() {
         return radius;
+    }
+    public void toucher() {
+        toucher = true;
+    }
+    public boolean getHit() {
+        return toucher;
     }
     
     

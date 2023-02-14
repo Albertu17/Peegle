@@ -173,6 +173,12 @@ public class GameView extends JFrame{
         for (Rectangle rect:rectanlgle) {
             g.drawLine(rect.x0, rect.y0, rect.caculX1(), rect.caculY1());}
         for (Pegs peg:pegs) {
+            if (peg.getHit()) {
+                g.setColor(Color.GREEN);
+            }
+            else {
+                g.setColor(Color.RED);
+            }
             g.fillOval(peg.getX(), peg.getY(), peg.getRadius(), peg.getRadius());
         }
     }

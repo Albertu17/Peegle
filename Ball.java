@@ -84,21 +84,13 @@ public class Ball{
         } else {}
         Pegs p = touchedPegs();
         if (p!=null && !atoucherpegs){
+            p.toucher();
             double ux = nextBallX -p.getX();
             double uy = nextBallY - p.getY();
             double vx = ballSpeedX;
             double vy = ballSpeedY;
-            // calcul de l'angle du rebond
-            double angle = Math.atan2(uy,ux);
-            // calcul de la norme du vecteur vitesse
-            double norme = Math.sqrt(vx*vx + vy*vy);
-            // calcul de l'angle de retour
-            double angleRetour = Math.atan2(vy,vx);
-            // calcul de l'angle de rebond
-            double angleRebond = angleRetour - 2*(angleRetour - angle);
-            // calcul de la nouvelle vitesse
-            ballSpeedX = norme*Math.cos(angleRebond);
-            ballSpeedY = norme*Math.sin(angleRebond);
+            ballSpeedX = vx - 2*ux*(ux*vx + uy*vy)/(ux*ux + uy*uy);
+            ballSpeedY = vy - 2*uy*(ux*vx + uy*vy)/(ux*ux + uy*uy);
             atoucherpegs=true;
         } else if (p==null){
             atoucherpegs=false;
@@ -124,9 +116,12 @@ public class Ball{
     public Pegs touchedPegs(){
         Pegs p=null;
         for (Pegs peg:court.getPegs()){
-            if (Math.sqrt(Math.pow(peg.getX()-ballX,2)+Math.pow(peg.getY()-ballY,2)) <= ballRadius+10+peg.getRadius()){
+            if (Math.sqrt(Math.pow(peg.getX()-ballX,2)+Math.pow(peg.getY()-ballY,2)) <= ballRadius+peg.getRadius()){
                 p=peg;
             }
+        }
+        if (p==null){
+            atoucherpegs= false;
         }
         return p;
     }
