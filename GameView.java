@@ -65,53 +65,11 @@ public class GameView extends JFrame implements MouseInputListener{
     // balls.add(new Ball(225,300,0,0,this));
     // rectanlgle.add(new Rectangle(200, 400, 100, -45));
     // balls.add(new Ball(20,30,10,-10,this));
-
-    balls.add(new Ball(5,0,50,1,this));
-    //rectanlgle.add(new Rectangle(-10, 300, 600,30));
-
-    
-    balls.add(new Ball(0,3,100,0,this));
-    //rectanlgle.add(new Rectangle(200, 300, 300,-45));
-
-    balls.add(new Ball(300,400,-100,-100,this));
-   //rectanlgle.add(new Rectangle(0, 400, 300,-45));
-
-
-    balls.add(new Ball(20,30,10,-10,this));
-
-    balls.add(new Ball(60,10,75,10,this));
-    balls.add(new Ball(100,30,-65,10,this));
-
-    balls.add(new Ball(200,10,-100,10,this));
-    balls.add(new Ball(250,30,10,100,this));
-
-    balls.add(new Ball(400,10,10,10,this));
-    balls.add(new Ball(300,30,10,200,this));
-    pegs.add(new Pegs(100, 200, 20));
-    pegs.add(new Pegs(200, 200, 20));
-    pegs.add(new Pegs(300, 200, 20));
-    pegs.add(new Pegs(400, 200, 20));
-    pegs.add(new Pegs(500, 200, 20));
-    pegs.add(new Pegs(150, 300, 20));
-    pegs.add(new Pegs(250, 300, 20));
-    pegs.add(new Pegs(350, 300, 20));
-    pegs.add(new Pegs(450, 300, 20));
-    pegs.add(new Pegs(50, 400, 20));
-    pegs.add(new Pegs(150, 400, 20));
-    pegs.add(new Pegs(250, 400, 20));
-    pegs.add(new Pegs(350, 400, 20));
-    pegs.add(new Pegs(450, 400, 20));
-    pegs.add(new Pegs(50, 500, 20));
-    pegs.add(new Pegs(150, 500, 20));
-    pegs.add(new Pegs(250, 500, 20));
-    pegs.add(new Pegs(350, 500, 20));
-    pegs.add(new Pegs(450, 500, 20));
-    pegs.add(new Pegs(50, 200, 20));
-    pegs.add(new Pegs(50, 300, 20));
-    pegs.add(new Pegs(150, 200, 20));
-    pegs.add(new Pegs(250, 200, 20));
-    pegs.add(new Pegs(350, 200, 20));
-    pegs.add(new Pegs(450, 200, 20));
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            pegs.add(new Pegs(50 + i * 100, 150 + j * 100, 20));
+        }
+    }
     
 
 

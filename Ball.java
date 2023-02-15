@@ -93,12 +93,15 @@ public class Ball{
         Pegs p = touchedPegs();
         if (p!=null && !atoucherpegs){
             p.toucher();
-            double ux = nextBallX -p.getX();
+            double ux = nextBallX - p.getX();
             double uy = nextBallY - p.getY();
             double vx = ballSpeedX;
             double vy = ballSpeedY;
             ballSpeedX = vx - 2*ux*(ux*vx + uy*vy)/(ux*ux + uy*uy);
             ballSpeedY = vy - 2*uy*(ux*vx + uy*vy)/(ux*ux + uy*uy);
+            ballSpeedX = 0.9 * ballSpeedX;
+            ballSpeedY = 0.9 * ballSpeedY;
+            
             atoucherpegs=true;
         } else if (p==null){
             atoucherpegs=false;
@@ -124,12 +127,12 @@ public class Ball{
     public Pegs touchedPegs(){
         Pegs p=null;
         for (Pegs peg:court.getPegs()){
-            if (Math.sqrt(Math.pow(peg.getX()-ballX,2)+Math.pow(peg.getY()-ballY,2)) <= ballRadius+peg.getRadius()){
+            if (Math.sqrt(Math.pow(peg.getX()-ballX,2)+Math.pow(peg.getY()-ballY,2)) < ballRadius+(peg.getRadius())){
                 p=peg;
             }
         }
         if (p==null){
-            atoucherpegs= false;
+            atoucherpegs=false;
         }
         return p;
     }

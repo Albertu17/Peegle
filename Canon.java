@@ -30,7 +30,7 @@ public class Canon extends JPanel{
         private double gravity = 100 ; 
         private int maxDistanceLigneTir ;
         private Point pivotDeRotation ;
-        private double vitesseTir = 150 ;
+        private double vitesseTir = 600 ;
         private double tailleCanon = 9/100.0; // en pourcentage de la taille de l'écran
 
 
