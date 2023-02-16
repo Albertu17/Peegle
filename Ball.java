@@ -27,6 +27,8 @@ public class Ball{
 
     double x,y;
 
+
+
     /* Important coordonée de la balle centre en X mais tout en haut pour Y */
 
     Ball(int x,int y,int vx0,int vy0,GameView g){
@@ -35,6 +37,14 @@ public class Ball{
         ballSpeedX=vx0;
         ballSpeedY=vy0;
         court=g;
+    }
+
+    public void setPresent(boolean b){
+        ispresent = b;
+    }
+
+    public boolean isPresent(){
+        return ispresent;
     }
 
     public void updateBall(double deltaT) {
@@ -121,7 +131,7 @@ public class Ball{
     }
 
     public boolean touchedWallY(double nextBallY){
-        return nextBallY < 0 || nextBallY > court.getHeight() - ballRadius*2 - 15;
+        return nextBallY < 0 || nextBallY> court.getHeight() - ballRadius;
     }
     
 

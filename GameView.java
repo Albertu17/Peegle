@@ -30,6 +30,7 @@ public class GameView extends JFrame{
     //private Circle ball;
     private ArrayList<Ball> balls=new ArrayList<>();
     private ArrayList<Rectangle> rectanlgle=new ArrayList<>();
+    private Sceau sceau;
 
 
     GameView(int w,int h) {
@@ -45,14 +46,15 @@ public class GameView extends JFrame{
     // rectanlgle.add(new Rectangle(100, 300, 300,45));
 
     balls.add(new Ball(5,0,20,1,this));
-    rectanlgle.add(new Rectangle(0, 400, 500,45));
+    sceau = new Sceau(this);
+    //rectanlgle.add(new Rectangle(0, 400, 500,45));
 
     
     //balls.add(new Ball(0,3,100,0,this));
     //rectanlgle.add(new Rectangle(200, 300, 300,-45));
 
     // balls.add(new Ball(300,400,-100,-100,this));
-    rectanlgle.add(new Rectangle(0, 400, 300,-45));
+    //rectanlgle.add(new Rectangle(0, 400, 300,-45));
 
 
     // balls.add(new Ball(20,30,10,-10,this));
@@ -81,6 +83,7 @@ public class GameView extends JFrame{
                 last = System.nanoTime();
                 for (Ball b:balls){
                     b.updateBall((last-now)*1.0e-9);
+                    sceau.move(((last-now)*1.0e-9),b);
                 }
                 repaint();
                 now=last;
@@ -100,6 +103,10 @@ public class GameView extends JFrame{
 
     public ArrayList<Rectangle> getRectangle(){
         return rectanlgle;
+    }
+
+    public Sceau getSceau(){
+        return sceau;
     }
 
 
@@ -122,16 +129,22 @@ public class GameView extends JFrame{
         setSize(width,heigth);
         g.setColor(Color.BLACK);
         for (Ball ball:balls) 
-        {
-            g.setColor(Color.BLACK);
-            g.fillOval((int)ball.ballX,(int)ball.ballY,(int)ball.ballRadius*2,(int)ball.ballRadius*2);
-            g.setColor(Color.BLUE);
-            g.fillOval((int)ball.x,(int)ball.y,5,5);
-            g.setColor(Color.RED);
-            g.fillOval((int)(ball.p1),(int)(ball.p2),5,5);
-            g.setColor(Color.PINK);
-            g.fillOval((int)(ball.p1),(int)(ball.p2),5,5);
+        {   
+            if (ball.isPresent()){
+                g.setColor(Color.BLACK);
+                g.fillOval((int)ball.ballX,(int)ball.ballY,(int)ball.ballRadius*2,(int)ball.ballRadius*2);
+            }
+
+            //g.setColor(Color.BLUE);
+            // g.fillOval((int)ball.x,(int)ball.y,5,5);
+            // g.setColor(Color.RED);
+            // g.fillOval((int)(ball.p1),(int)(ball.p2),5,5);
+            // g.setColor(Color.PINK);
+            // g.fillOval((int)(ball.p1),(int)(ball.p2),5,5);
         }
+
+        //g.drawRect((int)sceau.X, (int)sceau.Y, (int)sceau.longeur, (int)sceau.hauteur);
+        g.drawImage(sceau.getImage(), (int) sceau.X, (int)sceau.Y, this);
 
 
         g.setColor(Color.RED);
