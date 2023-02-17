@@ -56,9 +56,7 @@ public class MenuPrincipal extends JPanel {
 
         
         campagne.addActionListener((ActionEvent e)->{
-            setVisible(false);
-            controleur.menu.setVisible(false);
-            gameView.setVisible(true);
+            controleur.launchGameview();
         });
 
         libre.addActionListener(e ->{

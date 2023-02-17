@@ -26,15 +26,21 @@ public class Controleur extends JFrame{
         setVisible(true);
     }
 
-    void launchMenu(){
-        menu = new Menu(this) ;
-        add(menu) ;
+    public void launchMenu(){
+        if (menu == null){
+            menu = new Menu(this) ;
+            add(menu) ;
+        }
+        if (gameview != null ) gameview.setVisible(false) ;
         menu.setVisible(true);
     }
 
-    void launchGameview(){
-        gameview = new GameView(this);
-        add(gameview) ;
+    public void launchGameview(){
+        if (gameview == null){
+            gameview = new GameView(this);
+            add(gameview) ;
+        }
+        if (menu != null) menu.setVisible(false) ;
         gameview.setVisible(true);
     }
 
@@ -42,11 +48,19 @@ public class Controleur extends JFrame{
 
     public static void main(String[] args) {
         Controleur c = new Controleur() ;
-        // lance le menu
-            // c.launchMenu();
-            
-        // lance direct le jeu
+
+
+        // decide de comment tu veux demarré le jeux
+        boolean menu = true ;
+
+        if (menu){
+            // lance le menu
+            c.launchMenu();
+        }else{
+            // lance direct le jeu
             c.launchGameview();
+        }
+
 
         c.repaint();
 
