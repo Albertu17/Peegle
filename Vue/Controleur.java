@@ -8,29 +8,22 @@ public class Controleur extends JFrame{
     public GameView gameview ;
     public Menu menu ;
     Controleur(){
+
         // lancement de l'import des images 
         ImageImport.setImage(true);
 
 
-
+        // mise en pleine ecran
         setExtendedState(JFrame.MAXIMIZED_BOTH); 
         setUndecorated(true);
-        
-        // setSize(1000,1000);
+       
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Peggle");
-        setVisible(true);
-        // setLocationRelativeTo(null);
 
         // empeche l'utilisateur de resize la fenetre :
-        // setResizable(false);
-        
-        
-
-        System.out.println(this.getSize());
-        repaint();
-
-
+        setResizable(false);
+       
+        setVisible(true);
     }
 
     void launchMenu(){
@@ -49,10 +42,13 @@ public class Controleur extends JFrame{
 
     public static void main(String[] args) {
         Controleur c = new Controleur() ;
-        // c.launchMenu();
-        c.launchGameview();
+        // lance le menu
+            // c.launchMenu();
+            
+        // lance direct le jeu
+            c.launchGameview();
 
+        c.repaint();
 
-        // c.pack();
     }
 }
