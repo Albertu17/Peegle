@@ -13,10 +13,10 @@ public class Menu extends JPanel {
 
     public Menu(Controleur controleur){
         this.controleur = controleur ;
+        setSize(controleur.getSize());
         setVisible(true);
         menuPrincipal = new MenuPrincipal(controleur);
         add(menuPrincipal);
-
     }
 
 }

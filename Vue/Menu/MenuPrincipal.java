@@ -29,9 +29,9 @@ public class MenuPrincipal extends JPanel {
 
     MenuPrincipal(Controleur controleur){
         this.controleur = controleur ;
-        gameView = new GameView();
-        add(gameView);
-        gameView.setVisible(false);
+        // gameView = new GameView();
+        // add(gameView);
+        // gameView.setVisible(false);
 
         setLayout(new BorderLayout());
         zoneTexte.setPreferredSize(new Dimension(600,150));

@@ -6,7 +6,9 @@ import java.awt.Point;
 import java.awt.Color;
 import java.awt.event.MouseEvent ;
 import java.awt.image.BufferedImage;
+import java.awt.*;
 import javax.swing.JPanel;
+import javax.swing.*;
 
 import Modele.Ball;
 
@@ -53,7 +55,8 @@ public class Canon extends JPanel{
         angleOrientation = Math.PI/2 ;     
         
         setBounds(largeurFrame/2 - image.getWidth()/2, getHeight()/4, image.getWidth(), image.getHeight());
-
+        // setLocation(largeurFrame/2 - image.getWidth()/2, getHeight()/4);
+      
         // definition point de pivot de rotation
         pivotDeRotation = new Point(getX() + getWidth()/2, getY() + getHeight()/2) ;
 
@@ -79,7 +82,7 @@ public class Canon extends JPanel{
 
 
 
-     /**
+    /**
      * @description Défini la vitesse de la balle pour amorcer le tir 
      *  place un nouvelle balle dans le lanceur
      * @author Thibault
@@ -95,7 +98,9 @@ public class Canon extends JPanel{
 
         // creation d'une nouvelle ball
         Ball Ball_lancer = balleATirer ;
-        balleATirer = new Ball(0, 0, 0, 0, balleATirer.getCourt()) ;
+        balleATirer = new Ball(0, 0, 0, 0, court) ;
+
+        // redéfinie la gravité pour chaque balle
         gravity = balleATirer.getG() ;
 
         // return la balle tirer
