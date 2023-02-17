@@ -50,7 +50,7 @@ public class Controleur extends JFrame{
         Controleur c = new Controleur() ;
 
 
-        // decide de comment tu veux demarré le jeux
+        // decide de comment tu veux demarrer le jeux
         boolean menu = true ;
 
         if (menu){
