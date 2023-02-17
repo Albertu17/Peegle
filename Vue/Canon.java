@@ -52,7 +52,7 @@ public class Canon extends JPanel{
         // position du canon initial à la vertical
         angleOrientation = Math.PI/2 ;     
         
-        setBounds(largeurFrame/2 - getWidth()/2, getHeight()/4, image.getWidth(), image.getHeight());
+        setBounds(largeurFrame/2 - image.getWidth()/2, getHeight()/4, image.getWidth(), image.getHeight());
 
         // definition point de pivot de rotation
         pivotDeRotation = new Point(getX() + getWidth()/2, getY() + getHeight()/2) ;
