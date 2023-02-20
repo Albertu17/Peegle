@@ -1,35 +1,78 @@
 package Vue;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import Vue.Menu.Menu;
 
 public class Controleur extends JFrame{
     
-    public GameView gameView ;
+    public GameView gameview ;
     public Menu menu ;
     Controleur(){
+
         // lancement de l'import des images 
-        ImageImport.setImage(true);
+        ImageImport.setImage(true); //TODO voir le probleme quand le menu ne se lance pas avec le thread = true
 
 
-
-        // setExtendedState(JFrame.MAXIMIZED_BOTH); 
-        // setUndecorated(true);
-        setSize(1000,1000);
+        // mise en pleine ecran
+        setExtendedState(JFrame.MAXIMIZED_BOTH); 
+        setUndecorated(true);
+       
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Peggle");
+
+        // empeche l'utilisateur de resize la fenetre :
+        setResizable(false);
+       
         setVisible(true);
-        setLocationRelativeTo(null);
-        Menu m = new Menu(this);
-        add(m);
+    }
 
+    public void launchMenu(){
+        if (menu == null){
+            menu = new Menu(this) ;
+            add(menu) ;
+        }
+        if (gameview != null ) gameview.setVisible(false) ;
+        menu.setVisible(true);
+    }
 
+    public void launchGameview(){
+        if (gameview == null){
+            gameview = new GameView(this);
+            add(gameview) ;
+        }
+        if (menu != null) menu.setVisible(false) ;
+        gameview.setVisible(true);
     }
 
 
 
     public static void main(String[] args) {
-        Controleur c = new Controleur() ;
+
+
+        // decide de comment tu veux demarrer le jeux
+        boolean menu = true ;
+
+        SwingUtilities.invokeLater(new Runnable(){
+            @Override
+            public void run() {
+                Controleur c = new Controleur() ;
+
+                if (menu){
+                    // lance le menu
+                    c.launchMenu();
+                }else{
+                    // lance direct le jeu
+                    c.launchGameview();
+                }
+        
+        
+                c.repaint();
+                
+            }
+
+        });
+
 
     }
 }

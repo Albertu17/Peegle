@@ -13,7 +13,6 @@ public class MenuPrincipal extends JPanel {
     MenuLibre menuLibre ;
     MenuParametre menuParametre ;
     Controleur controleur ;
-    GameView gameView;
     
 
 
@@ -29,9 +28,9 @@ public class MenuPrincipal extends JPanel {
 
     MenuPrincipal(Controleur controleur){
         this.controleur = controleur ;
-        gameView = new GameView();
-        add(gameView);
-        gameView.setVisible(false);
+        // gameView = new GameView();
+        // add(gameView);
+        // gameView.setVisible(false);
 
         setLayout(new BorderLayout());
         zoneTexte.setPreferredSize(new Dimension(600,150));
@@ -56,9 +55,7 @@ public class MenuPrincipal extends JPanel {
 
         
         campagne.addActionListener((ActionEvent e)->{
-            setVisible(false);
-            controleur.menu.setVisible(false);
-            gameView.setVisible(true);
+            controleur.launchGameview();
         });
 
         libre.addActionListener(e ->{
