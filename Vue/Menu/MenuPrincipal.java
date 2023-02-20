@@ -13,7 +13,6 @@ public class MenuPrincipal extends JPanel {
     MenuLibre menuLibre ;
     MenuParametre menuParametre ;
     Controleur controleur ;
-    GameView gameView;
     
 
 

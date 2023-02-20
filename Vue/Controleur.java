@@ -1,5 +1,6 @@
 package Vue;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 import Vue.Menu.Menu;
 
@@ -10,7 +11,7 @@ public class Controleur extends JFrame{
     Controleur(){
 
         // lancement de l'import des images 
-        ImageImport.setImage(true);
+        ImageImport.setImage(true); //TODO voir le probleme quand le menu ne se lance pas avec le thread = true
 
 
         // mise en pleine ecran
@@ -47,22 +48,31 @@ public class Controleur extends JFrame{
 
 
     public static void main(String[] args) {
-        Controleur c = new Controleur() ;
 
 
         // decide de comment tu veux demarrer le jeux
         boolean menu = true ;
 
-        if (menu){
-            // lance le menu
-            c.launchMenu();
-        }else{
-            // lance direct le jeu
-            c.launchGameview();
-        }
+        SwingUtilities.invokeLater(new Runnable(){
+            @Override
+            public void run() {
+                Controleur c = new Controleur() ;
 
+                if (menu){
+                    // lance le menu
+                    c.launchMenu();
+                }else{
+                    // lance direct le jeu
+                    c.launchGameview();
+                }
+        
+        
+                c.repaint();
+                
+            }
 
-        c.repaint();
+        });
+
 
     }
 }

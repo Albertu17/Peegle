@@ -34,7 +34,7 @@ public class Canon extends JPanel{
         private int maxDistanceLigneTir ;
         private Point pivotDeRotation ;
         private double vitesseTir = 150 ;
-        private double tailleCanon = 9/100.0; // en pourcentage de la taille de l'écran
+        private double tailleCanon = 4/100.0; // en pourcentage de la taille de l'écran
 
 
 
@@ -45,6 +45,8 @@ public class Canon extends JPanel{
         // definition du Gameview
         this.court = court ;
         int largeurFrame = court.getWidth() ;
+        setOpaque(false); //les balles ne passent plus derriere le jpanel du canon
+
         
         // Mise à l'echelle du canon :
         int tailleImage = (int) (largeurFrame* tailleCanon ) ;
@@ -159,12 +161,13 @@ public class Canon extends JPanel{
         // traçage ligne de viser
             g2DGameview.setColor(Color.RED);
             float dash1[] = {20.0f};
-            BasicStroke dashed = new BasicStroke(5.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
+            BasicStroke dashed = new BasicStroke(3.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
             g2DGameview.setStroke(dashed);
-            g2DGameview.drawPolyline(x, y, 10);
+            g2DGameview.drawPolyline(x, y, 6);
         
         
         super.paint(g);
+        
     }
     
     @Override
