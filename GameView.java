@@ -37,6 +37,7 @@ public class GameView extends JFrame implements MouseInputListener{
     // Canon
 
     Canon canon ;
+    private Sceau sceau;
 
 
     GameView(int w,int h) {
@@ -53,12 +54,20 @@ public class GameView extends JFrame implements MouseInputListener{
     setTitle("Test");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+    // balls.add(new Ball(220,3,2,0,this));
+    // rectanlgle.add(new Rectangle(100, 300, 300,45));
+
+    balls.add(new Ball(5,0,20,1,this));
+    sceau = new Sceau(this);
+    //rectanlgle.add(new Rectangle(0, 400, 500,45));
 
 
     // creation canon :
     canon = new Canon(this) ;
     this.add(canon) ;
     canon.setVisible(true);
+    // balls.add(new Ball(300,400,-100,-100,this));
+    //rectanlgle.add(new Rectangle(0, 400, 300,-45));
 
     canon.setBalleATirer(new Ball(0, 0, 0, 0, this));
 
@@ -94,9 +103,11 @@ public class GameView extends JFrame implements MouseInputListener{
             public void actionPerformed(ActionEvent e) {
                 last = System.nanoTime();
                 for (Ball b:balls){
-                    b.updateBall((last-now)*1.0e-9);
-                    // System.out.println(b.ballX);
+                    if (b.isPresent()) b.updateBall((last-now)*1.0e-9,sceau);
+                    
+                    
                 }
+                sceau.move(((last-now)*1.0e-9));
                 repaint();
                 now=last;
                 
@@ -117,6 +128,10 @@ public class GameView extends JFrame implements MouseInputListener{
         return rectanlgle;
     }
 
+    public Sceau getSceau(){
+        return sceau;
+    }
+
 
 
 
@@ -125,7 +140,7 @@ public class GameView extends JFrame implements MouseInputListener{
 
     public static void main(String[] args) {
 
-       GameView g = new GameView(1000,1000);
+       GameView g = new GameView(500,500);
     //    GameView g = new GameView(500,500);
        
     }
@@ -144,16 +159,18 @@ public class GameView extends JFrame implements MouseInputListener{
         setSize(width,heigth);
         g.setColor(Color.BLACK);
         for (Ball ball:balls) 
-        {
-            g.setColor(Color.BLACK);
-            g.fillOval((int)ball.ballX,(int)ball.ballY,(int)ball.ballRadius*2,(int)ball.ballRadius*2);
-            g.setColor(Color.BLUE);
-            g.fillOval((int)ball.x,(int)ball.y,5,5);
-            g.setColor(Color.RED);
-            g.fillOval((int)(ball.p1),(int)(ball.p2),5,5);
-            g.setColor(Color.PINK);
-            g.fillOval((int)(ball.p1),(int)(ball.p2),5,5);
-            g.fillOval((int)(ball.nextBallX+ball.ballRadius),(int)(ball.nextBallY+ball.ballRadius),5,5);
+        {   
+            if (ball.isPresent()){
+                g.setColor(Color.BLACK);
+                g.fillOval((int)ball.ballX,(int)ball.ballY,(int)ball.ballRadius*2,(int)ball.ballRadius*2);
+            }
+
+            //g.setColor(Color.BLUE);
+            // g.fillOval((int)ball.x,(int)ball.y,5,5);
+            // g.setColor(Color.RED);
+            // g.fillOval((int)(ball.p1),(int)(ball.p2),5,5);
+            // g.setColor(Color.PINK);
+            // g.fillOval((int)(ball.p1),(int)(ball.p2),5,5);
         }
         //remove ball hit the ground
         for (int i=0;i<balls.size();i++) {
@@ -161,6 +178,9 @@ public class GameView extends JFrame implements MouseInputListener{
                 balls.remove(i);
             }
         }
+
+        //g.drawRect((int)sceau.X, (int)sceau.Y, (int)sceau.longeur, (int)sceau.hauteur);
+        g.drawImage(sceau.getImage(), (int) sceau.X, (int)sceau.Y, this);
 
 
         g.setColor(Color.RED);

@@ -30,6 +30,8 @@ public class Ball{
 
     double x,y;
 
+
+
     /* Important coordonée de la balle centre en X mais tout en haut pour Y */
 
     public GameView getCourt() {
@@ -47,7 +49,15 @@ public class Ball{
         return g;
     }
 
-    public void updateBall(double deltaT) {
+    public void setPresent(boolean b){
+        ispresent = b;
+    }
+
+    public boolean isPresent(){
+        return ispresent;
+    }
+
+    public void updateBall(double deltaT,Sceau sceau) {
         // first, compute possible next position if nothing stands in the way
         nextBallX = ballX + deltaT * ballSpeedX;
         nextBallY = ballY + deltaT * ballSpeedY + 1/2*g*(deltaT*deltaT);
@@ -64,6 +74,10 @@ public class Ball{
         if (touchedWallX(nextBallX)){
             ballSpeedX = -ballSpeedX;
             nextBallX = ballX + deltaT * ballSpeedX;
+        }
+
+        if (sceau.inside(this)){
+            ispresent=false;
         }
         
 
