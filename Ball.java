@@ -127,7 +127,7 @@ public class Ball{
     public Pegs touchedPegs(){
         Pegs p=null;
         for (Pegs peg:court.getPegs()){
-            if (Math.sqrt(Math.pow(peg.getX()-ballX,2)+Math.pow(peg.getY()-ballY,2)) < ballRadius+(peg.getRadius())){
+            if (Math.sqrt(Math.pow(peg.getX()-(nextBallX),2)+Math.pow(peg.getY()-(nextBallY),2)) < (peg.getRadius())){
                 p=peg;
             }
         }

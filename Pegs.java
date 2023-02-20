@@ -23,6 +23,12 @@ public class Pegs {
     public boolean getHit() {
         return toucher;
     }
+    public boolean contains(int i, int j) {
+        if (Math.sqrt(Math.pow(i-x, 2)+Math.pow(j-y, 2))<=radius) {
+            return true;
+        }
+        return false;
+    }
     
     
 }

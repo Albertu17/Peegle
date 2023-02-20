@@ -65,9 +65,10 @@ public class GameView extends JFrame implements MouseInputListener{
     // balls.add(new Ball(225,300,0,0,this));
     // rectanlgle.add(new Rectangle(200, 400, 100, -45));
     // balls.add(new Ball(20,30,10,-10,this));
-    for (int i = 0; i < 10; i++) {
-        for (int j = 0; j < 10; j++) {
-            pegs.add(new Pegs(50 + i * 100, 150 + j * 100, 20));
+    //generate triangle of pegs
+    for (int i=0;i<10;i++){
+        for (int j=0;j<i;j++){
+            pegs.add(new Pegs(100+i*50,700+j*50,20));
         }
     }
     
@@ -130,9 +131,15 @@ public class GameView extends JFrame implements MouseInputListener{
     }
 
     public class Shapes extends JPanel{
-  
-
     public void paint(Graphics g){
+        int toucher=0;
+        for (Pegs peg:pegs) {
+            if (peg.getHit()) {
+                toucher++;
+
+            }
+        }
+        System.out.println(toucher);
         canon.repaint();
         setSize(width,heigth);
         g.setColor(Color.BLACK);
@@ -146,6 +153,7 @@ public class GameView extends JFrame implements MouseInputListener{
             g.fillOval((int)(ball.p1),(int)(ball.p2),5,5);
             g.setColor(Color.PINK);
             g.fillOval((int)(ball.p1),(int)(ball.p2),5,5);
+            g.fillOval((int)(ball.nextBallX+ball.ballRadius),(int)(ball.nextBallY+ball.ballRadius),5,5);
         }
         //remove ball hit the ground
         for (int i=0;i<balls.size();i++) {

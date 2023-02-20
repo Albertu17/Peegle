@@ -31,6 +31,8 @@ public class Canon extends JPanel{
         private int maxDistanceLigneTir ;
         private Point pivotDeRotation ;
         private double vitesseTir = 600 ;
+        private double vitesseTirX = 0 ;
+        private double vitesseTirY = 0 ;
         private double tailleCanon = 9/100.0; // en pourcentage de la taille de l'écran
 
 
@@ -140,12 +142,16 @@ public class Canon extends JPanel{
         Point depart = new Point((int)(pivotDeRotation.x + court.getInsets().left -  Math.cos(angleOrientation)*(this.getHeight()/2)), (int)(pivotDeRotation.y + Math.sin(angleOrientation)*(this.getHeight()/2) + court.getInsets().top )) ;
         
         //calcul du point d'arrivé de la ligne de visée
-
-        double deltaT = calculDeltaT(depart) ; // adapte le deltaT pour que la ligne de viser s'adpate avec la taille maximun imposer
+        boolean touchpegs = false;
+        double deltaT = calculDeltaT(depart) ;
+        int i = 0; // adapte le deltaT pour que la ligne de viser s'adpate avec la taille maximun imposer
         if(angleOrientation != angleOrientation_old){
+            vitesseTirX = -vitesseTir*Math.cos(angleOrientation);
+            vitesseTirY = vitesseTir*Math.sin(angleOrientation);
             for (int t = 1; t < 11; t++) {
                 x[t-1] = (int)(depart.x - deltaT*t * vitesseTir * Math.cos(angleOrientation));
                 y[t-1] = (int)(depart.y + deltaT *t* vitesseTir * Math.sin(angleOrientation) + gravity*deltaT * deltaT*t*t  / 2.0);
+                
             }
         }
         angleOrientation_old = angleOrientation;
@@ -153,9 +159,10 @@ public class Canon extends JPanel{
         // traçage ligne de viser
             g2DGameview.setColor(Color.RED);
             float dash1[] = {20.0f};
-            BasicStroke dashed = new BasicStroke(5.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
-            g2DGameview.setStroke(dashed);
+            //BasicStroke dashed = new BasicStroke(5.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
+            //g2DGameview.setStroke(dashed);
             g2DGameview.drawPolyline(x, y, 10);
+        
         
         
         super.paint(g);
