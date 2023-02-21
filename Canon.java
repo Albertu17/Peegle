@@ -23,7 +23,7 @@ public class Canon extends JPanel{
     // Pointer à gauche revient à 0, à droite pi
     // en Radiant
     private double angleOrientation ;
-    private GameView court ;
+    private Court court;
 
     
     // parametre du canon :
@@ -37,23 +37,23 @@ public class Canon extends JPanel{
 
 
 
-    public Canon(GameView court){ 
+    public Canon(Court court){ 
 
         
         
         // definition du Gameview
         this.court = court ;
-        int largeurFrame = court.getWidth() ;
+        int largeurTerrain = court.getWidth() ;
         
         // Mise à l'echelle du canon :
-        int tailleImage = (int) (largeurFrame* tailleCanon ) ;
+        int tailleImage = (int) (largeurTerrain * tailleCanon ) ;
         image = ImageImport.getImage("cannonGrand.png", tailleImage, tailleImage) ;
  
         
         // position du canon initial à la vertical
         angleOrientation = Math.PI/2 ;     
         
-        setBounds(largeurFrame/2 - image.getWidth()/2, getHeight()/4, image.getWidth(), image.getHeight());
+        setBounds(largeurTerrain/2 - image.getWidth()/2, getHeight()/4, image.getWidth(), image.getHeight());
 
         // definition point de pivot de rotation
         pivotDeRotation = new Point(getX() + getWidth()/2, getY() + getHeight()/2) ;
@@ -61,6 +61,8 @@ public class Canon extends JPanel{
 
         // def max distance ligne tir :
             maxDistanceLigneTir = court.getHeight()/3 ;
+
+        setOpaque(false);
     }
 
     // TODO pas forcément utile ça dépend de l'implémentation futur
@@ -131,14 +133,9 @@ public class Canon extends JPanel{
         double delta = b*b - 4*a*(depart.y - maxDistanceLigneTir) ;
 
         return  (-b + Math.sqrt(delta))/(2*a) ; //racine du polynome
-    } 
-    
+    }
 
-    @Override
-    public void paint(Graphics g) {
-
-        Graphics2D g2DGameview = (Graphics2D) court.getGraphics() ;
-       
+    public void updateTrajetLigne()  {
         Point depart = new Point((int)(pivotDeRotation.x + court.getInsets().left -  Math.cos(angleOrientation)*(this.getHeight()/2)), (int)(pivotDeRotation.y + Math.sin(angleOrientation)*(this.getHeight()/2) + court.getInsets().top )) ;
         
         //calcul du point d'arrivé de la ligne de visée
@@ -155,18 +152,46 @@ public class Canon extends JPanel{
             }
         }
         angleOrientation_old = angleOrientation;
-
-        // traçage ligne de viser
-            g2DGameview.setColor(Color.RED);
-            float dash1[] = {20.0f};
-            //BasicStroke dashed = new BasicStroke(5.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
-            //g2DGameview.setStroke(dashed);
-            g2DGameview.drawPolyline(x, y, 10);
-        
-        
-        
-        super.paint(g);
     }
+    
+    public int[] getXTab() {
+        return x;
+    }
+
+    public int[] getYTab() {
+        return y;
+    }
+
+    // @Override
+    // public void paint(Graphics g) {
+    //     super.paint(g);
+
+    //     Graphics2D g2DGameview = (Graphics2D) court.getGraphics() ;
+       
+    //     Point depart = new Point((int)(pivotDeRotation.x + court.getInsets().left -  Math.cos(angleOrientation)*(this.getHeight()/2)), (int)(pivotDeRotation.y + Math.sin(angleOrientation)*(this.getHeight()/2) + court.getInsets().top )) ;
+        
+    //     //calcul du point d'arrivé de la ligne de visée
+    //     boolean touchpegs = false;
+    //     double deltaT = calculDeltaT(depart) ;
+    //     int i = 0; // adapte le deltaT pour que la ligne de viser s'adpate avec la taille maximun imposer
+    //     if(angleOrientation != angleOrientation_old){
+    //         vitesseTirX = -vitesseTir*Math.cos(angleOrientation);
+    //         vitesseTirY = vitesseTir*Math.sin(angleOrientation);
+    //         for (int t = 1; t < 11; t++) {
+    //             x[t-1] = (int)(depart.x - deltaT*t * vitesseTir * Math.cos(angleOrientation));
+    //             y[t-1] = (int)(depart.y + deltaT *t* vitesseTir * Math.sin(angleOrientation) + gravity*deltaT * deltaT*t*t  / 2.0);
+                
+    //         }
+    //     }
+    //     angleOrientation_old = angleOrientation;
+
+    //     // traçage ligne de viser
+    //         g2DGameview.setColor(Color.RED);
+    //         float dash1[] = {20.0f};
+    //         BasicStroke dashed = new BasicStroke(5.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
+    //         g2DGameview.setStroke(dashed);
+    //         g2DGameview.drawPolyline(x, y, 10);
+    // }
     
     @Override
     protected void paintComponent(Graphics g) {

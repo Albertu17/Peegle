@@ -26,7 +26,7 @@ public class Ball{
     private double g=300; // m/s
     private double coeffRebond = 0.8;
 
-    private GameView court;
+    private Court court;
 
     double x,y;
 
@@ -34,16 +34,16 @@ public class Ball{
 
     /* Important coordonée de la balle centre en X mais tout en haut pour Y */
 
-    public GameView getCourt() {
+    public Court getCourt() {
         return court;
     }
 
-    Ball(int x,int y,int vx0,int vy0,GameView g){
+    Ball(int x,int y,int vx0,int vy0,Court c){
         ballX=x;
         ballY=y;
         ballSpeedX=vx0;
         ballSpeedY=vy0;
-        court=g;
+        court=c;
     }
     public double getG() {
         return g;
@@ -152,7 +152,7 @@ public class Ball{
     }
     public Rectangle touchedWall(double deltaT){
         Rectangle r=null;
-        for (Rectangle rect:court.getRectangle()){
+        for (Rectangle rect:court.getRectangles()){
             if (Math.min(rect.x0,rect.x1) <= nextBallX && nextBallX <= Math.max(rect.x0,rect.x1) &&
             Math.min(rect.y0,rect.y1) <= nextBallY && nextBallY <= Math.max(rect.y0,rect.y1)) { // Je regarde si ma balle est dans la surface de mon trait/rectangle 
                     // je vais chercher à résoudre l'équation d'un point qui appartient à ma droite de la forme y=ax+b

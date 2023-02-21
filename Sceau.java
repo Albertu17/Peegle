@@ -10,11 +10,11 @@ public class Sceau{
 
     public double X, Y; // m
     public double speedX = 100; // m
-    private GameView court;
+    private Court court;
     private BufferedImage image; 
 
-    Sceau(GameView c){
-        court=c;
+    Sceau(Court court){
+        this.court = court;
         X = court.getWidth()/2 - longeur/2;
         Y = court.getWidth() - (hauteur + hauteur/2);
 
