@@ -134,6 +134,16 @@ public class GameView extends JPanel implements MouseInputListener{
     
             g.setColor(Color.RED);
             for (Rectangle rect:rectanlgle) g.drawLine(rect.x0, rect.y0, rect.caculX1(), rect.caculY1());
+
+
+            // ligne de viser du canon :
+            canon.calculCordonnéeLigneViser();
+            Graphics2D g2D = (Graphics2D) g ; 
+            g2D.setColor(Color.RED);
+            float dash1[] = {20.0f};
+            BasicStroke dashed = new BasicStroke(3.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
+            g2D.setStroke(dashed);
+            g2D.drawPolyline(canon.getXLigneViser(), canon.getYLigneViser(), 6);
     
         }
 
