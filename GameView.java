@@ -57,9 +57,10 @@ public class GameView extends JFrame implements MouseInputListener{
     // balls.add(new Ball(220,3,2,0,this));
     // rectanlgle.add(new Rectangle(100, 300, 300,45));
 
-    balls.add(new Ball(5,0,20,1,this));
+    // balls.add(new Ball(5,0,20,1,this));
     sceau = new Sceau(this);
-    //rectanlgle.add(new Rectangle(0, 400, 500,45));
+    //rectanlgle.add(new Rectangle( (int) sceau.X  , (int) sceau.Y +15 , 10,0));
+    // rectanlgle.add(new Rectangle( (int) sceau.X + sceau.longeur - 20  , (int) sceau.Y   , 30,-20));
 
 
     // creation canon :
@@ -154,8 +155,8 @@ public class GameView extends JFrame implements MouseInputListener{
 
             }
         }
-        System.out.println(toucher);
         canon.repaint();
+        g.drawImage(sceau.getImage(), (int) sceau.X, (int)sceau.Y, this);
         setSize(width,heigth);
         g.setColor(Color.BLACK);
         for (Ball ball:balls) 
@@ -180,7 +181,7 @@ public class GameView extends JFrame implements MouseInputListener{
         }
 
         //g.drawRect((int)sceau.X, (int)sceau.Y, (int)sceau.longeur, (int)sceau.hauteur);
-        g.drawImage(sceau.getImage(), (int) sceau.X, (int)sceau.Y, this);
+
 
 
         g.setColor(Color.RED);

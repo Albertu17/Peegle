@@ -67,7 +67,7 @@ public class Ball{
         // next, see if the ball would meet some obstacle
         if (touchedWallY(nextBallY)) { 
             ballSpeedY = -ballSpeedY*coeffRebond;
-            System.out.println("touched wall Y");
+            //System.out.println("touched wall Y");
             nextBallY = ballY + deltaT * ballSpeedY + 1/2*g*(deltaT*deltaT);
         }
 
@@ -76,7 +76,11 @@ public class Ball{
             nextBallX = ballX + deltaT * ballSpeedX;
         }
 
+        if (sceau.toucheBordureSceau(this)){
+            ballSpeedY =- ballSpeedY;
+        }
         if (sceau.inside(this)){
+            System.out.println("inside");
             ispresent=false;
         }
         
@@ -255,7 +259,7 @@ public class Ball{
 
                     }
                 }
-                else ispresent=false;
+                else {return r;} 
             }
 
         return r;
