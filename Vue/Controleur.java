@@ -11,7 +11,7 @@ public class Controleur extends JFrame{
     Controleur(){
 
         // lancement de l'import des images 
-        ImageImport.setImage(true); //TODO voir le probleme quand le menu ne se lance pas avec le thread = true
+        ImageImport.setImage(true); 
 
 
         // mise en pleine ecran

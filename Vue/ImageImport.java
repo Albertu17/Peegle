@@ -70,7 +70,7 @@ public class ImageImport {
     }
     
 
-     /**
+    /**
      *
      * @param path chemin de l'image (chemin relatif depuis Le dossier "/Image") 
      * @param pourcentage (0-100) resize l'image en pourcenatge de la taille original 
