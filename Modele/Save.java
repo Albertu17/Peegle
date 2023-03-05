@@ -1,6 +1,8 @@
 package Modele;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.io.* ;
 
 
@@ -10,11 +12,7 @@ public class Save {
     List<String> pegs ;
     String nomSauvegarde ;
 
-    public void save(String nomSauvegarde, int widthCourt, int heightCourt){
-        this.nomSauvegarde = nomSauvegarde ;
-        save(widthCourt, heightCourt) ;
-    }
-
+    
     /*
      * data type in csv file
      * Premiére ligne avec la taille de l'air de jeu 
@@ -25,44 +23,64 @@ public class Save {
      * Peggles type ; width ; heigth ; pos x ; pos y ; ? color? ; resistance peegles ;
      */
 
+    
+    public void save(String nomSauvegarde, int widthCourt, int heightCourt) throws FileNotFoundException{
+        this.nomSauvegarde = nomSauvegarde ;
+        save(widthCourt, heightCourt) ;
+    }
 
-    public void save(int widthCourt, int heightCourt){
+    public void save(int widthCourt, int heightCourt) throws FileNotFoundException{
         // save les lignes de l'array list dans un fichier csv
         
-        int t = 0 ; 
+    
+        PrintWriter file = new PrintWriter("Modele/Map/" + nomSauvegarde + ".csv");
+
+        // premiere ligne d'info :
+        String ligne  = String.valueOf(widthCourt) +";"+ String.valueOf(heightCourt) ;
+        file.println(ligne);
+        
+
+        // remplacer par les valeurs à enregistrer
+        for (String peg : pegs){
+            ligne =  peg ;
+            // ligne  = String.valueOf(widthCourt) +";"
+            //             + String.valueOf(widthCourt) +";"
+            //             + String.valueOf(widthCourt) +";"
+            //             + String.valueOf(heightCourt) ;
+            file.println(ligne);
+
+        }
+        file.close();
+        // enregistrement réussi
+
+
 
     }
     
-    public List<String> importPegles(String name, int widthCourt, int heightCourt){
-        // double ajustement = new size / last size ;
-    
+    public List<String> importPegles(String name, int widthCourt, int heightCourt) throws IOException{
         List<String> pegs = new ArrayList<String>() ;
 
-        // update des nouveau coordonnées en fonction de la taille de l'écran precédent
-        try {
-            File file = new File("Map/" + nomSauvegarde + ".csv");
-            FileReader fr = new FileReader(file);
-            BufferedReader br = new BufferedReader(fr);
-            String[] line = br.readLine().split(";");
+       Scanner save  = new Scanner(new File("Modele/Map/" + nomSauvegarde + ".csv")) ;
 
-            // obtenir les valeurs de réajustement des pegs
-            double reajustementH = widthCourt / Double.valueOf(line[0]);
-            double reajustementV = heightCourt /Double.valueOf(line[1]) ;
+       String[] line = save.nextLine().split(";") ;
+       
+       // obtenir les valeurs de réajustement des pegs pour qu'il s'adepete à la nouvelle taille de l'écran 
+       double reajustementH = widthCourt / Double.valueOf(line[0]);
+       double reajustementV = heightCourt /Double.valueOf(line[1]) ;
 
-            while ((line = br.readLine().split(";")) != null) { //detecte quand on est à la derniére ligne 
-                // creation des pegs en fonction des infos que on a 
+        while(save.hasNextLine()){
+            line = save.nextLine().split(";") ;
 
-            }
+            // creation des pegs en fonction des infos que on a 
+            // update des nouveau coordonnées en fonction de la taille de l'écran actuel
 
-            br.close();
-          }
-          catch(IOException ioe) {
-            ioe.printStackTrace();
-          }
+        }
 
+        save.close();
 
         // return un objet de type 
         return pegs ;
     }
+
 }
 
