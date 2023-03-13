@@ -5,14 +5,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
+
 import java.awt.*;
 import javax.swing.*;
 import java.awt.geom.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.FileInputStream;
 import java.util.ArrayList;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -78,7 +78,7 @@ public class GameView extends JFrame implements MouseInputListener{
     //generate triangle of pegs
     for (int i=0;i<10;i++){
         for (int j=0;j<i;j++){
-            pegs.add(new Pegs(100+i*50,700+j*50,20));
+            pegs.add(new Pegs(100+i*50,100+j*50,20));
         }
     }
     
@@ -147,14 +147,23 @@ public class GameView extends JFrame implements MouseInputListener{
     }
 
     public class Shapes extends JPanel{
+    int toucher=0;
+    ArrayList<Pegs> toucherPegs = new ArrayList<>();
     public void paint(Graphics g){
-        int toucher=0;
-        for (Pegs peg:pegs) {
-            if (peg.getHit()) {
-                toucher++;
-
-            }
+        //Use ARCADE_N.TTF font
+        try {
+            InputStream targetStream = new FileInputStream("./ARCADE_N.TTF");
+            Font newFont =  Font.createFont(Font.TRUETYPE_FONT, targetStream);
+            g.setFont(newFont.deriveFont(20f));
+        } catch (FontFormatException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
+        g.drawString("Score: "+toucher, 10, 50);
+        
         canon.repaint();
         g.drawImage(sceau.getImage(), (int) sceau.X, (int)sceau.Y, this);
         setSize(width,heigth);
@@ -173,11 +182,37 @@ public class GameView extends JFrame implements MouseInputListener{
             // g.setColor(Color.PINK);
             // g.fillOval((int)(ball.p1),(int)(ball.p2),5,5);
         }
+        for (Pegs peg:pegs) {
+            if (peg.getHit()) {
+                g.setColor(Color.GREEN);
+            }
+            else {
+                g.setColor(Color.RED);
+            }
+            g.fillOval(peg.getX(), peg.getY(), peg.getRadius(), peg.getRadius());
+        }
         //remove ball hit the ground
+        boolean remove = false;
         for (int i=0;i<balls.size();i++) {
             if (balls.get(i).getHitGround()) {
                 balls.remove(i);
+                remove = true;
+                
             }
+        }
+        if (remove) {
+        for (Pegs peg:pegs) {
+            if (peg.getHit()) {
+                toucher++;
+                toucherPegs.add(peg);
+            }
+        }
+    }
+        if (toucherPegs.size()>0){
+        Pegs peganim = toucherPegs.get(0);
+        g.drawOval(peganim.getX(), peganim.getY(), peganim.getRadius(), peganim.getRadius());
+        pegs.remove(peganim);
+        toucherPegs.remove(peganim);
         }
 
         //g.drawRect((int)sceau.X, (int)sceau.Y, (int)sceau.longeur, (int)sceau.hauteur);
