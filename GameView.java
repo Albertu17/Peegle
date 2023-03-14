@@ -78,7 +78,7 @@ public class GameView extends JFrame implements MouseInputListener{
     //generate triangle of pegs
     for (int i=0;i<10;i++){
         for (int j=0;j<i;j++){
-            pegs.add(new Pegs(100+i*50,100+j*50,20));
+            pegs.add(new Pegs(100+i*50,100+j*50,20, 2));
         }
     }
     
@@ -182,15 +182,6 @@ public class GameView extends JFrame implements MouseInputListener{
             // g.setColor(Color.PINK);
             // g.fillOval((int)(ball.p1),(int)(ball.p2),5,5);
         }
-        for (Pegs peg:pegs) {
-            if (peg.getHit()) {
-                g.setColor(Color.GREEN);
-            }
-            else {
-                g.setColor(Color.RED);
-            }
-            g.fillOval(peg.getX(), peg.getY(), peg.getRadius(), peg.getRadius());
-        }
         //remove ball hit the ground
         boolean remove = false;
         for (int i=0;i<balls.size();i++) {
@@ -223,14 +214,19 @@ public class GameView extends JFrame implements MouseInputListener{
         for (Rectangle rect:rectanlgle) {
             g.drawLine(rect.x0, rect.y0, rect.caculX1(), rect.caculY1());}
         for (Pegs peg:pegs) {
+            Graphics2D g2d = (Graphics2D) g;
+            
+        
             if (peg.getHit()) {
-                g.setColor(Color.GREEN);
+                g2d.drawImage(ImageImport.getImage(peg.getImageStringTouche()), peg.getX(), peg.getY(), peg.getRadius(), peg.getRadius(), this);
+        
             }
             else {
-                g.setColor(Color.RED);
+                g2d.drawImage(ImageImport.getImage(peg.getImageString()), peg.getX(), peg.getY(), peg.getRadius(), peg.getRadius(), this);
+        
             }
-            g.fillOval(peg.getX(), peg.getY(), peg.getRadius(), peg.getRadius());
-        }
+            //image pegs toucher
+            }
     }
 
     }
