@@ -1,11 +1,17 @@
 package Vue;
 import java.awt.event.MouseEvent;
+import java.io.InputStream;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.FileInputStream;
 
 import java.util.ArrayList;
 
@@ -22,9 +28,11 @@ public class Court extends JPanel implements MouseInputListener {
     private int height;
     private Canon canon;
     private Sceau sceau;
+    private int toucher;
     private ArrayList<Ball> balls;
     private ArrayList<Rectangle> rectangles;
     private ArrayList<Pegs> pegs;
+    ArrayList<Pegs> toucherPegs;
 
     public Court(int courtWith, int courtHeight)  {
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -39,6 +47,7 @@ public class Court extends JPanel implements MouseInputListener {
         balls = new ArrayList<>();
         rectangles = new ArrayList<>();
         pegs = new ArrayList<>();
+        toucherPegs = new ArrayList<>();
 
         // Canon
         canon = new Canon(this) ;
@@ -48,14 +57,8 @@ public class Court extends JPanel implements MouseInputListener {
 
         // Balls
         balls.add(new Ball(5,0,20,1,this));
-        // balls.add(new Ball(220,3,2,0,this));
-        // rectangles.add(new Rectangle(100, 300, 300,45));
-        //rectangles.add(new Rectangle(0, 400, 500,45));
-
-        // balls.add(new Ball(225,300,0,0,this));
-        // rectangles.add(new Rectangle(200, 400, 100, -45));
-        // balls.add(new Ball(20,30,10,-10,this));
-        // setLayout(null);
+        toucher = 0 ;
+        
 
         // Sceau
         sceau = new Sceau(this);
@@ -63,7 +66,7 @@ public class Court extends JPanel implements MouseInputListener {
         //generate triangle of pegs
         for (int i=0;i<10;i++){
             for (int j=0;j<i;j++){
-                pegs.add(new Pegs(100+i*50,300+j*50,20));
+                pegs.add(new Pegs(100+i*50,300+j*50,20,1));
             }
         }  
         animate();
@@ -90,6 +93,20 @@ public class Court extends JPanel implements MouseInputListener {
 
     public void paint(Graphics g) {
         super.paint(g);
+
+         //Use ARCADE_N.TTF font
+         try {
+            InputStream targetStream = new FileInputStream("./Vue/Font/ARCADE_N.TTF");
+            Font newFont =  Font.createFont(Font.TRUETYPE_FONT, targetStream);
+            g.setFont(newFont.deriveFont(20f));
+        } catch (FontFormatException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        g.drawString("Score: "+toucher, 10, 50);
         int toucher = 0;
         for (Pegs peg:pegs) {
             if (peg.getHit()) toucher++;
@@ -103,17 +120,31 @@ public class Court extends JPanel implements MouseInputListener {
                 g.fillOval((int)ball.ballX, (int)ball.ballY, (int)ball.ballRadius*2, (int)ball.ballRadius*2);
             }
 
-            //g.setColor(Color.BLUE);
-            // g.fillOval((int)ball.x,(int)ball.y,5,5);
-            // g.setColor(Color.RED);
-            // g.fillOval((int)(ball.p1),(int)(ball.p2),5,5);
-            // g.setColor(Color.PINK);
-            // g.fillOval((int)(ball.p1),(int)(ball.p2),5,5);
+            
         }
 
         //remove ball hit the ground
+        boolean remove = false;
         for (int i=0;i<balls.size();i++) {
-            if (balls.get(i).getHitGround()) balls.remove(i);
+            if (balls.get(i).getHitGround()) {
+                balls.remove(i);
+                remove = true;
+                
+            }
+        }
+        if (remove) {
+        for (Pegs peg:pegs) {
+            if (peg.getHit()) {
+                toucher++;
+                toucherPegs.add(peg);
+            }
+        }
+    }
+        if (toucherPegs.size()>0){
+        Pegs peganim = toucherPegs.get(0);
+        g.drawOval(peganim.getX(), peganim.getY(), peganim.getRadius(), peganim.getRadius());
+        pegs.remove(peganim);
+        toucherPegs.remove(peganim);
         }
 
         //g.drawRect((int)sceau.X, (int)sceau.Y, (int)sceau.longeur, (int)sceau.hauteur);
@@ -125,9 +156,14 @@ public class Court extends JPanel implements MouseInputListener {
             g.drawLine(rect.x0, rect.y0, rect.caculX1(), rect.caculY1());
         }
         for (Pegs peg:pegs) {
-            if (peg.getHit()) g.setColor(Color.GREEN);
-            else g.setColor(Color.RED);
-            g.fillOval(peg.getX(), peg.getY(), peg.getRadius(), peg.getRadius());
+            Graphics2D g2d = (Graphics2D) g;        
+            if (peg.getHit()) {
+                g2d.drawImage(ImageImport.getImage(peg.getImageStringTouche()), peg.getX(), peg.getY(), peg.getRadius(), peg.getRadius(), this);
+            }
+            else {
+                g2d.drawImage(ImageImport.getImage(peg.getImageString()), peg.getX(), peg.getY(), peg.getRadius(), peg.getRadius(), this);
+            }
+            //image pegs toucher
         }
 
         // traçage ligne de viser
