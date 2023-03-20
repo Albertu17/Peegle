@@ -110,7 +110,7 @@ public class Court extends JPanel implements MouseInputListener {
         for (Pegs peg:pegs) {
             if (peg.getHit()) toucher++;
         }
-        System.out.println(toucher);
+        // System.out.println(toucher);
         // canon.repaint();
         g.setColor(Color.BLACK);
         for (Ball ball:balls) {   

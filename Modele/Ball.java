@@ -84,7 +84,7 @@ public class Ball{
         }
 
         if (sceau.inside(this)){
-            System.out.println("inside");
+            // System.out.println("inside");
             hitground=true;
             ispresent=false;
         }
