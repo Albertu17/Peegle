@@ -1,16 +1,11 @@
 package Vue;
-import java.awt.BasicStroke;
+import Modele.*;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Color;
 import java.awt.event.MouseEvent ;
 import java.awt.image.BufferedImage;
-import java.awt.*;
 import javax.swing.JPanel;
-import javax.swing.*;
-
-import Modele.Ball;
 
 
 
@@ -34,8 +29,9 @@ public class Canon extends JPanel{
     private double gravity = 100 ; 
     private int maxDistanceLigneTir ;
     private Point pivotDeRotation ;
-    private double vitesseTir = 150 ;
+    private double vitesseTir = 450 ;
     private double tailleCanon = 4/100.0; // en pourcentage de la taille de l'écran
+    private int angleMaxBord = 5 ;
     
     
     
@@ -134,11 +130,11 @@ public class Canon extends JPanel{
         angleOrientation = Math.atan2((e.getY() - pivotDeRotation.y), (pivotDeRotation.x-e.getX()));
 
         // Correction pour eviter des positions incongrue
-            if (angleOrientation >= 170*(Math.PI/180) || angleOrientation < 10*(Math.PI/180) ){
+            if (angleOrientation >= (180-angleMaxBord)*(Math.PI/180) || angleOrientation < (angleMaxBord)*(Math.PI/180) ){
                 if (e.getX()> pivotDeRotation.x) {
-                    angleOrientation = 170*(Math.PI/180);
+                    angleOrientation = (180-angleMaxBord)*(Math.PI/180);
                 }else{
-                    angleOrientation = 10*(Math.PI/180) ; 
+                    angleOrientation = (angleMaxBord)*(Math.PI/180) ; 
                 }
             }
 

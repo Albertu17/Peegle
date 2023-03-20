@@ -56,7 +56,6 @@ public class Court extends JPanel implements MouseInputListener {
         canon.setBalleATirer(new Ball(0, 0, 0, 0, this));
 
         // Balls
-        balls.add(new Ball(5,0,20,1,this));
         toucher = 0 ;
         
 

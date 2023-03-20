@@ -5,6 +5,9 @@ public class Pegs {
     private int y;
     private int radius;
     private int couleur;
+    public int getCouleur() {
+        return couleur;
+    }
     private String imageString;
     private boolean toucher = false;
     // int 1 à 4 couleur image 

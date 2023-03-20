@@ -51,7 +51,7 @@ public class Controleur extends JFrame{
 
 
         // decide de comment tu veux demarrer le jeux
-        boolean menu = true ;
+        boolean menu = false ;
 
         SwingUtilities.invokeLater(new Runnable(){
             @Override
