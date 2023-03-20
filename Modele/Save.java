@@ -9,6 +9,50 @@ import java.util.List;
 import java.util.Scanner;
 
 
+/*
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+
+        A SUPPRIMER BIENTOT EN DOUBLE DANS NIVEAU
+
+
+
+
+
+
+
+
+
+
+
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // le code se trouvant ici sera surement déplacer vers une classe plus intérrésante 
 public class Save {
     
