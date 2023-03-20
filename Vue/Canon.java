@@ -27,7 +27,7 @@ public class Canon extends JPanel{
     // Pointer à gauche revient à 0, à droite pi
     // en Radiant
     private double angleOrientation ;
-    private GameView court ;
+    private Court court ;
 
     
     // parametre du canon :
@@ -39,11 +39,11 @@ public class Canon extends JPanel{
     
     
     
-    public Canon(GameView court){ 
+    public Canon(Court court){ 
 
         
         
-        // definition du Gameview
+        // definition du Court
         this.court = court ;
         int largeurFrame = court.getWidth() ;
         setOpaque(false); //les balles ne passent plus derriere le jpanel du canon
