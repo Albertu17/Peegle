@@ -2,6 +2,7 @@ package Vue;
 import Modele.*;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.MouseEvent ;
 import java.awt.image.BufferedImage;
@@ -43,6 +44,7 @@ public class Canon extends JPanel{
         this.court = court ;
         int largeurFrame = court.getWidth() ;
         setOpaque(false); //les balles ne passent plus derriere le jpanel du canon
+        //background color black
 
         
         // Mise à l'echelle du canon :
@@ -50,10 +52,12 @@ public class Canon extends JPanel{
         image = ImageImport.getImage("cannonGrand.png", tailleImage, tailleImage) ;
         
         
+        
         // position du canon initial à la vertical
         angleOrientation = Math.PI/2 ;     
         
         setBounds(largeurFrame/2 - image.getWidth()/2, getHeight()/4, image.getWidth(), image.getHeight());
+        // tester si le canon est dans le court
         
         // definition point de pivot de rotation
         pivotDeRotation = new Point(getX() + getWidth()/2, getY() + getHeight()/2) ;
@@ -177,6 +181,10 @@ public class Canon extends JPanel{
 
         // System.out.println("In paint cannon");
         
+    }
+
+    public Image getImage() {
+        return image;
     }
 
 

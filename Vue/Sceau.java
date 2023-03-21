@@ -20,9 +20,11 @@ public class Sceau{
     Sceau(Court court){
         this.court = court;
         X = court.getWidth()/2 - longeur/2;
-        Y = court.getWidth() - (hauteur + hauteur/2);
+        Y = court.getHeight() - (hauteur);
 
         image = ImageImport.getImage("bucket.png", longeur, hauteur);
+        // tester si le sceau est bien dans le court
+        
     }
 
 

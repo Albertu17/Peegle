@@ -51,8 +51,11 @@ public class Court extends JPanel implements MouseInputListener {
 
         // Canon
         canon = new Canon(this) ;
+        setLayout(null);
         add(canon);
         canon.setVisible(true);
+        //the canon doesn't show up fix the problem
+
         canon.setBalleATirer(new Ball(0, 0, 0, 0, this));
 
         // Balls
@@ -66,6 +69,7 @@ public class Court extends JPanel implements MouseInputListener {
         for (int i=0;i<10;i++){
             for (int j=0;j<i;j++){
                 pegs.add(new Pegs(100+i*50,300+j*50,20,1));
+                pegs.add(new Pegs(100+i*50,600-j*50,20,3));
             }
         }  
         animate();
@@ -89,7 +93,6 @@ public class Court extends JPanel implements MouseInputListener {
         });
         timer.start();
     }
-
     public void paint(Graphics g) {
         super.paint(g);
 
@@ -106,10 +109,6 @@ public class Court extends JPanel implements MouseInputListener {
             e.printStackTrace();
         }
         g.drawString("Score: "+toucher, 10, 50);
-        int toucher = 0;
-        for (Pegs peg:pegs) {
-            if (peg.getHit()) toucher++;
-        }
         // System.out.println(toucher);
         // canon.repaint();
         g.setColor(Color.BLACK);
@@ -134,7 +133,6 @@ public class Court extends JPanel implements MouseInputListener {
         if (remove) {
         for (Pegs peg:pegs) {
             if (peg.getHit()) {
-                toucher++;
                 toucherPegs.add(peg);
             }
         }
@@ -144,6 +142,7 @@ public class Court extends JPanel implements MouseInputListener {
         g.drawOval(peganim.getX(), peganim.getY(), peganim.getRadius(), peganim.getRadius());
         pegs.remove(peganim);
         toucherPegs.remove(peganim);
+        toucher++;
         }
 
         //g.drawRect((int)sceau.X, (int)sceau.Y, (int)sceau.longeur, (int)sceau.hauteur);
