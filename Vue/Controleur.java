@@ -6,13 +6,13 @@ import Vue.Menu.Menu;
 
 public class Controleur extends JFrame{
     
-    public GameView gameview ;
-    public Menu menu ;
+    public GameView gameview;
+    public Menu menu;
+
     Controleur(){
 
         // lancement de l'import des images 
         ImageImport.setImage(true); 
-
 
         // mise en pleine ecran
         setExtendedState(JFrame.MAXIMIZED_BOTH); 

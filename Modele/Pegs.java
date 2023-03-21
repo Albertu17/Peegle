@@ -1,15 +1,14 @@
 package Modele;
 
 public class Pegs {
+    
     private int x;
     private int y;
     private int radius;
     private int couleur;
-    public int getCouleur() {
-        return couleur;
-    }
     private String imageString;
     private boolean toucher = false;
+
     // int 1 à 4 couleur image 
     public Pegs(int x, int y, int radius, int couleur) {
         this.x = x;
@@ -32,27 +31,38 @@ public class Pegs {
     public int getX() {
         return x;
     }
+
     public int getY() {
         return y;
     }
+
     public int getRadius() {
         return radius;
     }
+
+    public int getCouleur() {
+        return couleur;
+    }
+
     public void toucher() {
         toucher = true;
     }
+
     public boolean getHit() {
         return toucher;
     }
+
     public boolean contains(int i, int j) {
         if (Math.sqrt(Math.pow(i-x, 2)+Math.pow(j-y, 2))<=radius) {
             return true;
         }
         return false;
     }
+
     public String getImageString() {
         return imageString;
     }
+
     public String getImageStringTouche() {
         if (couleur != 2){
             return "redball.png";
@@ -60,6 +70,4 @@ public class Pegs {
             return "violetball.png";
         }
     }
-    
-    
 }
