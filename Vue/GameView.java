@@ -23,8 +23,8 @@ public class GameView extends JPanel {
 
         this.controleur = c ;
 
-        width= controleur.getWidth();
-        heigth= controleur.getHeight() ;
+        width = controleur.getWidth();
+        heigth = controleur.getHeight();
         setSize(width, heigth);
         setLayout(null);
         setVisible(true); 

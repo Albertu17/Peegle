@@ -1,4 +1,7 @@
 package Vue;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -8,6 +11,8 @@ public class Controleur extends JFrame{
     
     public GameView gameview;
     public Menu menu;
+    public int width;
+    public int height;
 
     Controleur(){
 
@@ -15,7 +20,11 @@ public class Controleur extends JFrame{
         ImageImport.setImage(true); 
 
         // mise en pleine ecran
-        setExtendedState(JFrame.MAXIMIZED_BOTH); 
+        // setExtendedState(JFrame.MAXIMIZED_BOTH); 
+        Dimension size = Toolkit.getDefaultToolkit().getScreenSize(); // Récupère taille de l'écran utilisateur.
+        width = (int) size.getWidth();
+        height = (int) size.getHeight();
+        setSize(width, height); // Met la fenêtre en plein écran.
         setUndecorated(true);
        
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -25,6 +34,15 @@ public class Controleur extends JFrame{
         setResizable(false);
        
         setVisible(true);
+    }
+
+    // override pour prendre l'attribut width de cette classe et pas celui de la frame (plus stable).
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public void launchMenu(){
