@@ -2,18 +2,22 @@ package Modele;
 
 public class Pegs {
     
-    private int x;
-    private int y;
-    private int radius;
+    private double x;
+    
+    private double y;
+    
+    private double radius;
+    
+    
     private int couleur;
     private String imageString;
     private boolean toucher = false;
-
+    
     // int 1 à 4 couleur image 
     public Pegs(int x, int y, int radius, int couleur) {
-        this.x = x;
-        this.y = y;
-        this.radius = radius;
+        this.x = (double)x;
+        this.y = (double)y;
+        this.radius = (double)radius;
         this.couleur = couleur;
         if (couleur == 1) {
             imageString = "blueball.png";
@@ -26,17 +30,27 @@ public class Pegs {
         }
         else if (couleur == 4) {
             imageString = "vertball.png";
+        }
     }
-}
-    public int getX() {
+
+    public void setY(Double y) {
+        this.y = y;
+    }
+    public void setRadius(Double radius) {
+        this.radius = radius;
+    }
+    public void setX(Double x) {
+        this.x = x;
+    }
+    public Double getX() {
         return x;
     }
 
-    public int getY() {
+    public Double getY() {
         return y;
     }
 
-    public int getRadius() {
+    public Double getRadius() {
         return radius;
     }
 

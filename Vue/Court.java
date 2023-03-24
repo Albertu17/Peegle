@@ -34,7 +34,9 @@ public class Court extends JPanel implements MouseInputListener {
     private ArrayList<Pegs> pegs;
     ArrayList<Pegs> toucherPegs;
 
-    public Court(int courtWith, int courtHeight)  {
+    
+
+    public Court(int courtWith, int courtHeight, Niveau niveau)  {
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
         width = courtWith;
         height = courtHeight;
@@ -65,14 +67,15 @@ public class Court extends JPanel implements MouseInputListener {
         // Sceau
         sceau = new Sceau(this);
 
-        //generate triangle of pegs
-        for (int i=0;i<10;i++){
-            for (int j=0;j<i;j++){
-                pegs.add(new Pegs(100+i*50,300+j*50,20,1));
-                pegs.add(new Pegs(100+i*50,600-j*50,20,3));
-            }
-        }  
+        // ajout des pegs
+        if (niveau != null){
+            pegs = niveau.getPegs() ;
+        } 
         animate();
+    }
+
+    public Court(int courtWith, int courtHeight){
+        this(courtWith, courtHeight, null) ;
     }
 
     public void animate() {

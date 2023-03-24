@@ -17,7 +17,8 @@ import java.util.Scanner;
  * 
  * 
 
-        A SUPPRIMER BIENTOT EN DOUBLE DANS NIVEAU
+       Alternative à une sauvegarde java serializable
+       
 
 
 
