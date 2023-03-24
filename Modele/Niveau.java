@@ -40,36 +40,57 @@ public class Niveau implements Serializable {
     }
 
     public Niveau(String nom, Dimension tailleCourt){
+        this = importDepuisSauvegarde(nom, tailleCourt) ;
+    }
 
-        this.tailleCourt = tailleCourt ;
-        // import le fichier de sauvegarde
-        try {
+
+
+    
+    
+    
+    
+    
+    // tout ce qui est liéer à la sauvegarde des niveaux
+
+    public static Niveau importDepuisSauvegarde(String nom, Dimension tailleCourt){
+        Niveau nv = new Niveau(nom) ;
+         //permet de savoir où recreer les pegs
+        nv.tailleCourt = tailleCourt ;
+         // import le fichier de sauvegarde
+         try {
             final FileInputStream fichier = new FileInputStream(cheminDosierSauvegarde+ nom +".peggles");
             ObjectInputStream obj = new ObjectInputStream(fichier) ;
-            this = (Niveau) obj.readObject() ;
-            
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+            nv = (Niveau) obj.readObject() ;
 
+            obj.close();
+            fichier.close();
+             
+         } catch (Exception e) {
+             System.out.println(e);
+         }
+
+         return nv ;
     }
 
     private void writeObject(ObjectOutputStream out) throws IOException {
-        
+        Double minHeight_Width = Math.min(tailleCourt.getWidth(), tailleCourt.getHeight());
+        //permet de stocker les coordonnées en pourcentage de la taille de l'écran 
         for(Pegs peg :pegs){
-            peg.setX(peg.getX()/tailleCourt.getWidth());
-            peg.setY(peg.getY()/tailleCourt.getWidth());
-            peg.setRadius(peg.getX()/Math.min((tailleCourt.getWidth(), tailleCourt.getHeight()));
+            peg.setX(peg.getX(true)/tailleCourt.getWidth());
+            peg.setY(peg.getY(true)/tailleCourt.getWidth());
+            peg.setRadius(peg.getX(true)/minHeight_Width);
         }
         out.defaultWriteObject();
     }
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
+
+        //permet de decompresser les coordonnées en entier 
         for(Pegs peg :pegs){
-            peg.setX(peg.getX()*tailleCourt.getWidth());
-            peg.setY(peg.getY()*tailleCourt.getWidth());
-            peg.setRadius(peg.getX()*Math.min((tailleCourt.getWidth(), tailleCourt.getHeight()));
+            peg.setX(peg.getX(true)*tailleCourt.getWidth());
+            peg.setY(peg.getY(true)*tailleCourt.getWidth());
+            peg.setRadius(peg.getX(true)*Math.min((tailleCourt.getWidth(), tailleCourt.getHeight()));
         }
 
     }

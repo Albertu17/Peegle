@@ -33,6 +33,7 @@ public class Pegs {
         }
     }
 
+    // setters avec des doubles
     public void setY(Double y) {
         this.y = y;
     }
@@ -42,17 +43,44 @@ public class Pegs {
     public void setX(Double x) {
         this.x = x;
     }
-    public Double getX() {
+
+    // setters avec des int
+    public void setY(int y) {
+        this.y = y;
+    }
+    public void setRadius(int radius) {
+        this.radius = radius;
+    }
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    // getters doubles 
+    public Double getX(boolean t) {
         return x;
     }
-
-    public Double getY() {
+    
+    public Double getY(boolean t) {
         return y;
     }
-
-    public Double getRadius() {
+    public Double getRadius(boolean t) {
         return radius;
     }
+
+    
+    // getters int
+    public int getX(){
+        return (int)x ;
+    }
+    public int getY(){
+        return (int)y ;
+    }
+
+    public int getRadius(){
+        return (int)radius ;
+    }
+
+
 
     public int getCouleur() {
         return couleur;
