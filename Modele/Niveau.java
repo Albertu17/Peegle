@@ -39,9 +39,9 @@ public class Niveau implements Serializable {
         this.nom = nom;
     }
 
-    public Niveau(String nom, Dimension tailleCourt){
-        this = importDepuisSauvegarde(nom, tailleCourt) ;
-    }
+    // public Niveau(String nom, Dimension tailleCourt){
+    //     this = importDepuisSauvegarde(nom, tailleCourt) ;
+    // }
 
 
 
@@ -51,7 +51,7 @@ public class Niveau implements Serializable {
     
     
     // tout ce qui est liéer à la sauvegarde des niveaux
-
+        
     public static Niveau importDepuisSauvegarde(String nom, Dimension tailleCourt){
         Niveau nv = new Niveau(nom) ;
          //permet de savoir où recreer les pegs
