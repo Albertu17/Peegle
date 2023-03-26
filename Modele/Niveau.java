@@ -1,5 +1,6 @@
 package Modele;
 
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -8,68 +9,36 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import java.util.ArrayList;
 
-/*
- * 
- * 
- * 
- * 
- * 
- * 
-
-        A SUPPRIMER BIENTOT EN DOUBLE DANS NIVEAU
-
-
-
-
-
-
-
-
-
-
-
- */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// le code se trouvant ici sera surement déplacer vers une classe plus intérrésante 
-public class Save {
+public class Niveau {
     
-    List<Pegs> listpegs ;
-    String nomSauvegarde ;
+    private ArrayList<Pegs> pegs;
 
-    
-    public void save(String nomSauvegarde, int widthCourt, int heightCourt) throws FileNotFoundException{
-        this.nomSauvegarde = nomSauvegarde ;
-        save(widthCourt, heightCourt) ;
+    public ArrayList<Pegs> getPegs() {
+        return pegs;
     }
+
+    public void setPegs(ArrayList<Pegs> pegs) {
+        this.pegs = pegs;
+    }
+
+    private final String nom;
+    private int nbBillesInitiales;
+    private int score1Etoile;
+    private int score2Etoiles;
+    private int score3Etoiles;
+
+    public Niveau (String nom) {
+        this.nom = nom;
+    }
+    
 
     public void save(int widthCourt, int heightCourt) throws FileNotFoundException{
         // save les lignes de l'array list dans un fichier csv
         
     
-        PrintWriter file = new PrintWriter("Modele/Map/" + nomSauvegarde + ".csv");
+        PrintWriter file = new PrintWriter("Modele/Map/" + nom + ".csv");
 
         // premiere ligne d'info :
         String ligne  = String.valueOf(widthCourt) +";"+ String.valueOf(heightCourt) ;
@@ -77,7 +46,7 @@ public class Save {
         
 
         // remplacer par les valeurs à enregistrer
-        for (Pegs peg : listpegs){
+        for (Pegs peg : pegs){
             ligne  = String.valueOf(peg.getX()) +";" 
                         + String.valueOf(peg.getY()) +";" 
                         + String.valueOf(peg.getRadius()) +";" 
@@ -88,13 +57,12 @@ public class Save {
         file.close();
         // enregistrement réussi
 
-
     }
     
     public List<Pegs> importPegles(String name, int widthCourt, int heightCourt) throws IOException{
-        List<Pegs> listpegs = new ArrayList<Pegs>() ;
+        pegs = new ArrayList<Pegs>() ;
 
-       Scanner save  = new Scanner(new File("Modele/Map/" + nomSauvegarde + ".csv")) ;
+       Scanner save  = new Scanner(new File("Modele/Map/" + nom + ".csv")) ;
 
        String[] line = save.nextLine().split(";") ;
        
@@ -112,15 +80,14 @@ public class Save {
             int radius = (int)(Double.valueOf(line[2]) * Math.min(reajustementH, reajustementV) ) ;
             int couleur = Integer.valueOf(line[3]) ;
 
-            listpegs.add(new Pegs(x, y, radius, couleur)) ;
+            pegs.add(new Pegs(x, y, radius, couleur)) ;
 
         }
 
         save.close();
 
         // return un objet de type 
-        return listpegs ;
+        return pegs ;
     }
 
 }
-

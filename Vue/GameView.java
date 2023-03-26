@@ -1,104 +1,44 @@
 package Vue;
 
 
-import javax.swing.Action;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.*;
 import javax.swing.*;
-import java.awt.geom.*;
-import java.util.ArrayList;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
 
-import javax.swing.Timer;
-import javax.swing.event.MouseInputListener;
+public class GameView extends JPanel {
 
-import Modele.Ball;
-import Modele.Rectangle;
-import Vue.Canon;
-import Vue.ImageImport;
-
-
-
-public class GameView extends JPanel implements MouseInputListener{
-
-    private Controleur controleur ;
+    public Controleur controleur ;
 
     private int width;
     private int heigth;
 
+    // Court
+    Court court;
+    private int courtWidth;
+    private int courtHeight;
 
+    GameView(Controleur c) {
 
-    //private Circle ball;
-    private ArrayList<Ball> balls=new ArrayList<>();
-    private ArrayList<Rectangle> rectanlgle=new ArrayList<>();
+        this.controleur = c ;
 
-    // Canon
+        width = controleur.getWidth();
+        heigth = controleur.getHeight();
+        setSize(width, heigth);
+        setLayout(null);
+        setVisible(true); 
 
-    Canon canon ;
-    Shapes s;
-
-
-    public GameView(Controleur c) {
-    
-    this.controleur = c ;
-
-    
-
-
-    
-    width= controleur.getWidth();
-    heigth= controleur.getHeight() ;
-
-    setSize(width, heigth);
-    setLayout(null);
-    setVisible(true);  
-
-    
-    // creation canon :
-        canon = new Canon(this) ;
-        this.add(canon) ;
-        canon.setVisible(true);
-        canon.setBalleATirer(new Ball(0, 0, 0, 0, this));
-    
-    // Creation de de la Shape // paint les balles
-        s = new Shapes();
-        add(s);
-        s.setVisible(true);
-    
-   
-    animate();
-    
-
-
-    this.addMouseListener(this);
-    this.addMouseMotionListener(this);
-    }
-
-    public void animate() {
-        Timer timer = new Timer(10, new ActionListener() {
-            double now=System.nanoTime();
-            double last;
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                last = System.nanoTime();
-                for (Ball b:balls){
-                    b.updateBall((last-now)*1.0e-9);
-                }
-                repaint() ;
-                now=last;
-                
-            }
-        });
-        timer.start();
+        
+        courtWidth = width - 200;
+        courtHeight = heigth - 200;
+        
+        // Court
+        court = new Court(courtWidth, courtHeight);
+        court.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        court.setBounds((width-courtWidth)/2, (heigth-courtHeight)/2, courtWidth, courtHeight);
+        court.setVisible(true);
+        add(court);
     }
 
     public int getWidth(){
@@ -109,74 +49,12 @@ public class GameView extends JPanel implements MouseInputListener{
         return width;
     }
 
-    public ArrayList<Rectangle> getRectangle(){
-        return rectanlgle;
+    public int getCourtWidth() {
+        return courtWidth;
     }
 
-
-
-
-    
-    
-    
-    
-    public class Shapes extends JPanel{
-
-        Shapes(){
-            setSize(width,heigth);
-        }
-        
-        public void paint(Graphics g){
-            super.paint(g);
-            g.setColor(Color.BLACK);
-            for (Ball ball:balls) g.fillOval((int)ball.ballX,(int)ball.ballY,(int)ball.ballRadius,(int)ball.ballRadius);
-    
-    
-            g.setColor(Color.RED);
-            for (Rectangle rect:rectanlgle) g.drawLine(rect.x0, rect.y0, rect.caculX1(), rect.caculY1());
-    
-        }
-
+    public int getCourtHeight() {
+        return courtHeight;
     }
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        // lancer une balle
-        balls.add(canon.tirer()) ;
-        
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-        
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
-        // Déplacement du canon en fonction de la possition de la souris
-        canon.DeplacementCanon(e);
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        // Déplacement du canon en fonction de la possition de la souris
-        canon.DeplacementCanon(e);    
-    } 
-
-    
 }
