@@ -179,7 +179,6 @@ public class Canon extends JPanel{
         g2D.rotate( Math.PI/2- angleOrientation, getWidth()/2, getHeight()/2);
         g2D.drawImage(image, 0, 0, this) ;
 
-        // System.out.println("In paint cannon");
         
     }
 

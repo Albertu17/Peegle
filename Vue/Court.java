@@ -68,7 +68,7 @@ public class Court extends JPanel implements MouseInputListener {
 
 
         if (nomLevel != null){
-            this.niveau = Niveau.importPegles(nomLevel, courtWith, courtHeight) ;
+            this.niveau = Niveau.importPegles(nomLevel, true, courtWith, courtHeight) ;
             pegs = niveau.getPegs() ;
         } 
 

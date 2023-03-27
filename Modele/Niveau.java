@@ -5,15 +5,18 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.DrbgParameters.Capability;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import javax.swing.text.StyledEditorKit.BoldAction;
 
 import java.util.ArrayList;
 
 public class Niveau {
 
-    private static String dosierSauvegarde ="Maps/" ;
+    private static String dosierSauvegarde ="Niveau/" ;
     private static String nomExtension = ".pegs" ;
 
     private ArrayList<Pegs> pegs;
@@ -31,10 +34,17 @@ public class Niveau {
     private int score1Etoile;
     private int score2Etoiles;
     private int score3Etoiles;
+    private boolean campagne; 
 
     public Niveau (String nom) {
         this.nom = nom;
+        campagne = false ;
         pegs = new ArrayList<>() ;
+    }
+
+
+    private String pathDossier(){
+        return dosierSauvegarde + (campagne ? "Campagne" : "Perso"  )+"/";
     }
     
 
@@ -44,7 +54,7 @@ public class Niveau {
     
         PrintWriter file;
         try {
-            file = new PrintWriter(dosierSauvegarde + nom + nomExtension);
+            file = new PrintWriter(pathDossier()  + nom + nomExtension);
     
             // premiere ligne d'info :
             String ligne  = String.valueOf(widthCourt) +";"
@@ -52,7 +62,8 @@ public class Niveau {
                                 + String.valueOf(nbBillesInitiales) +";"
                                 + String.valueOf(score1Etoile) +";"
                                 + String.valueOf(score2Etoiles) +";"
-                                + String.valueOf(score3Etoiles) ;
+                                + String.valueOf(score3Etoiles) +";"
+                                + (campagne? "1":"0" );
             file.println(ligne);
             
     
@@ -74,10 +85,11 @@ public class Niveau {
 
     }
     
-    public static Niveau importPegles(String name, int widthCourt, int heightCourt){
+    public static Niveau importPegles(String name, boolean campagne, int widthCourt, int heightCourt){
         Niveau nv = new Niveau(name) ;
+        nv.campagne = campagne ;
 
-       try (Scanner save = new Scanner(new File(dosierSauvegarde + name + nomExtension))) {
+       try (Scanner save = new Scanner(new File(nv.pathDossier() + name + nomExtension))) {
         String[] line = save.nextLine().split(";") ;
            
            // obtenir les valeurs de réajustement des des pegs pour qu'il s'adepete à la nouvelle taille de l'écran 
@@ -89,6 +101,7 @@ public class Niveau {
             nv.score1Etoile = Integer.valueOf(line[3]);
             nv.score2Etoiles = Integer.valueOf(line[4]);
             nv.score3Etoiles = Integer.valueOf(line[5]);
+            nv.campagne = line[6].equals("1") ;
 
 
            // creation des pegs en fonction des infos que on a 
