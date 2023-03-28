@@ -117,7 +117,7 @@ public class Ball{
             atoucher=false;
         } else {}
         Pegs p = touchedPegs();
-        if (p!=null && !p.atoucherpegs){
+        if (p!=null && !atoucherpegs){
             p.toucher();
             double ux = (nextBallX+ ballRadius) - (p.getX() + p.getRadius()/2);
             double uy = (nextBallY+ballRadius) - (p.getY()+ p.getRadius()/2);
@@ -128,7 +128,10 @@ public class Ball{
             ballSpeedX = coeffRebond * ballSpeedX;
             ballSpeedY = coeffRebond * ballSpeedY;
             
-            p.atoucherpegs=true;
+            atoucherpegs=true;
+        }
+        else if (p==null){
+            atoucherpegs=false;
         }
         ballX = nextBallX;
         ballY = nextBallY;

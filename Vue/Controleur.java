@@ -5,16 +5,13 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import Vue.Menu.Menu;
-
 public class Controleur extends JFrame{
     
     public GameView gameview;
-    public Menu menu;
     public int width;
     public int height;
 
-    Controleur(){
+    public Controleur(){
 
         // lancement de l'import des images 
         ImageImport.setImage(true); 
@@ -45,21 +42,12 @@ public class Controleur extends JFrame{
         return height;
     }
 
-    public void launchMenu(){
-        if (menu == null){
-            menu = new Menu(this) ;
-            add(menu) ;
-        }
-        if (gameview != null ) gameview.setVisible(false) ;
-        menu.setVisible(true);
-    }
 
     public void launchGameview(){
         if (gameview == null){
             gameview = new GameView(this);
             add(gameview) ;
         }
-        if (menu != null) menu.setVisible(false) ;
         gameview.setVisible(true);
     }
 
@@ -68,23 +56,12 @@ public class Controleur extends JFrame{
     public static void main(String[] args) {
 
 
-        // decide de comment tu veux demarrer le jeux
-        boolean menu = false ;
 
         SwingUtilities.invokeLater(new Runnable(){
             @Override
             public void run() {
                 Controleur c = new Controleur() ;
-
-                if (menu){
-                    // lance le menu
-                    c.launchMenu();
-                }else{
-                    // lance direct le jeu
-                    c.launchGameview();
-                }
-        
-        
+                c.launchGameview();
                 c.repaint();
                 
             }
