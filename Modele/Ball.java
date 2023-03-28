@@ -5,11 +5,13 @@ import java.util.Random;
 import java.math.*;
 import java.sql.Array;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+
 import Vue.* ;
 import Modele.* ;
 public class Ball{
 
-    public final double ballRadius = 14/2; // m
+    public final static double ballRadius = 10; // m
 
     public double ballX, ballY; // m
     public double ballSpeedX, ballSpeedY; // m
@@ -29,6 +31,7 @@ public class Ball{
 
     private double g=300; // m/s
     private double coeffRebond = 0.8;
+    private BufferedImage image = ImageImport.getImage("ball.png", 20, 20);
 
     private Court court;
 
@@ -114,21 +117,19 @@ public class Ball{
             atoucher=false;
         } else {}
         Pegs p = touchedPegs();
-        if (p!=null && !atoucherpegs){
+        if (p!=null && !p.atoucherpegs){
             p.toucher();
-            double ux = nextBallX - p.getX();
-            double uy = nextBallY - p.getY();
+            double ux = (nextBallX+ ballRadius) - (p.getX() + p.getRadius()/2);
+            double uy = (nextBallY+ballRadius) - (p.getY()+ p.getRadius()/2);
             double vx = ballSpeedX;
             double vy = ballSpeedY;
             ballSpeedX = vx - 2*ux*(ux*vx + uy*vy)/(ux*ux + uy*uy);
             ballSpeedY = vy - 2*uy*(ux*vx + uy*vy)/(ux*ux + uy*uy);
-            ballSpeedX = 0.9 * ballSpeedX;
-            ballSpeedY = 0.9 * ballSpeedY;
+            ballSpeedX = coeffRebond * ballSpeedX;
+            ballSpeedY = coeffRebond * ballSpeedY;
             
-            atoucherpegs=true;
-        } else if (p==null){
-            atoucherpegs=false;
-        } else {}
+            p.atoucherpegs=true;
+        }
         ballX = nextBallX;
         ballY = nextBallY;
     }
@@ -150,7 +151,8 @@ public class Ball{
     public Pegs touchedPegs(){
         Pegs p=null;
         for (Pegs peg:court.getPegs()){
-            if (Math.sqrt(Math.pow(peg.getX()-(nextBallX),2)+Math.pow(peg.getY()-(nextBallY),2)) < (peg.getRadius())){
+            
+            if(peg.contains(nextBallX + ballRadius, nextBallY + ballRadius )){
                 p=peg;
             }
         }
@@ -271,6 +273,10 @@ public class Ball{
     }
     public boolean getHitGround(){
         return hitground;
+    }
+
+    public Image getImage() {
+        return image;
     }
 
 

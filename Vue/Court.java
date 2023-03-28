@@ -65,6 +65,11 @@ public class Court extends JPanel implements MouseInputListener {
 
         // Sceau
         sceau = new Sceau(this);
+        for (int i=0;i<50;i++){
+            for (int j=0;j<25;j++){
+                pegs.add(new Pegs(600+i*20,300+j*20,10,1));
+            }
+        }
 
 
         if (nomLevel != null){
@@ -115,7 +120,7 @@ public class Court extends JPanel implements MouseInputListener {
         for (Ball ball:balls) {   
             if (ball.isPresent()) {
                 g.setColor(Color.BLACK);
-                g.fillOval((int)ball.ballX, (int)ball.ballY, (int)ball.ballRadius*2, (int)ball.ballRadius*2);
+                g.drawImage(ball.getImage(), (int)ball.ballX, (int)ball.ballY, this);
             }
 
             

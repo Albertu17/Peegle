@@ -4,10 +4,11 @@ public class Pegs {
     
     private int x;
     private int y;
-    private int radius;
+    private int radius;//DIAMETRE PAS CONFONDRE
     private int couleur;
     private String imageString;
     private boolean toucher = false;
+    public boolean atoucherpegs = false;
     // int 1 à 4 couleur image 
     public Pegs(int x, int y, int radius, int couleur) {
         this.x = x;
@@ -51,8 +52,8 @@ public class Pegs {
         return toucher;
     }
 
-    public boolean contains(int i, int j) {
-        if (Math.sqrt(Math.pow(i-x, 2)+Math.pow(j-y, 2))<=radius) {
+    public boolean contains(double i, double j) {
+        if (Math.sqrt(Math.pow(i-(x +radius/2) , 2)+Math.pow(j-(y+radius/2), 2))< radius/2 + Ball.ballRadius) {
             return true;
         }
         return false;
