@@ -76,7 +76,7 @@ public class Court extends JPanel implements MouseInputListener {
         //     this.niveau = Niveau.importPegles(nomLevel, courtWith, courtHeight) ;
         //     pegs = niveau.getPegs() ;
         // }
-        this.niveau = Niveau.aletoireNiveau(width, height, 20, 10) ;
+        this.niveau = Niveau.aletoireNiveau2(width, height, 10, 20) ;
         pegs = niveau.getPegs(); 
         animate();
     }

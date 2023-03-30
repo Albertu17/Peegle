@@ -40,6 +40,33 @@ public class Niveau {
         pegs = new ArrayList<>() ;
     }
 
+
+    public static Niveau aletoireNiveau2(int widthCourt, int heightCourt, int radiusBall, int radiusPegs){
+        Niveau nv = new Niveau("Aleatoire") ;
+        int nbrPegs = 40; //aproximatif
+        int x,y ;
+        int nbrSegParPegs = (int) 3 ;
+        // int nbrSegParPegs = (int) Math.min(10, radiusPegs+3*radiusBall) ;
+        int debutHeight = heightCourt/4 ;
+        // segmentation du court (10 fois plus que de nombre de pegs):
+        int nbrSegW  = (int) (Math.sqrt(nbrPegs*nbrSegParPegs)*(widthCourt/(double) (heightCourt-debutHeight))  ) +1;
+        int nbrSegH  = (int) (Math.sqrt(nbrPegs*nbrSegParPegs)*((heightCourt-debutHeight)/(double) widthCourt)  ) +1;
+        
+        for (int w = 0 ; w < nbrSegW ; w++){
+            for(int h = 0 ; h < nbrSegH ; h++ ){
+                if (randInt(1, nbrSegParPegs) == 1){ // placer un élément 
+                    x=  (int) ( (w+0.5)*(widthCourt/(double)nbrSegW) ) ;
+                    y=  (int) ( (h+0.5)*((heightCourt-debutHeight)/(double)nbrSegH)  + debutHeight) ;
+
+                    nv.pegs.add(new Pegs(x, y, radiusPegs, randInt(1, 4))) ;
+                }
+            }
+        }
+
+        return nv ;
+    }
+
+
     public static Niveau aletoireNiveau(int widthCourt, int heightCourt, int radiusPegs, int radiusBall){
         Niveau nv = new Niveau("Aleatoire") ;
         int nbrPegs = 50;
@@ -74,8 +101,8 @@ public class Niveau {
         return nv ;
     }
 
-    public static int randInt(SecureRandom rand, int a, int b){
-        return rand.nextInt(b-a +1) +a ;
+    public static int randInt(int a, int b){
+        return (new SecureRandom()).nextInt(b-a +1) +a ;
     }
 
 
