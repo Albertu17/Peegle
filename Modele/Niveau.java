@@ -42,18 +42,23 @@ public class Niveau {
 
     public static Niveau aletoireNiveau(int widthCourt, int heightCourt, int radiusPegs, int radiusBall){
         Niveau nv = new Niveau("Aleatoire") ;
-        int nbrPegs = 5 ;
+        int nbrPegs = 50;
         int x,y ;
         boolean posible ;
-        SecureRandom rand = new SecureRandom();
+        SecureRandom rand ;
+        
         for(int comptpeg = 0 ; comptpeg<nbrPegs; comptpeg++){
-            
             do{
+                rand = new SecureRandom();
                 posible = true ;
                 x = randInt(rand, 2*radiusPegs, widthCourt-2*radiusPegs) ;
                 y = randInt(rand, heightCourt/4, heightCourt-2*radiusPegs) ;
+                System.out.print("x, y :");
+                System.out.print(x);
+                System.out.print(", ");
+                System.out.println(y);
                 for(Pegs peg : nv.pegs){
-                    if (Math.abs(x - peg.getX()) < 2*radiusPegs+3*radiusBall  || Math.abs(y - peg.getY()) < 2*radiusPegs+3*radiusBall ){
+                    if (Math.abs(x - peg.getX()) < 2*radiusPegs+3*radiusBall  && Math.abs(y - peg.getY()) < 2*radiusPegs+3*radiusBall ){
                         posible = false;
                         break ;
                     }
@@ -62,9 +67,9 @@ public class Niveau {
             while(! posible) ;
             nv.pegs.add(new Pegs(x, y, radiusPegs, randInt(rand, 1, 4))) ;
             System.out.println(comptpeg);
+            nv.save(widthCourt, heightCourt);
         }
 
-        System.out.println(nv.pegs.size());
 
         return nv ;
     }
