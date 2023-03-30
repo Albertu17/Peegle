@@ -5,9 +5,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import javax.swing.text.StyledEditorKit.BoldAction;
 
 import java.util.ArrayList;
 
@@ -36,7 +39,42 @@ public class Niveau {
         this.nom = nom;
         pegs = new ArrayList<>() ;
     }
-    
+
+    public static Niveau aletoireNiveau(int widthCourt, int heightCourt, int radiusPegs, int radiusBall){
+        Niveau nv = new Niveau("Aleatoire") ;
+        int nbrPegs = 5 ;
+        int x,y ;
+        boolean posible ;
+        SecureRandom rand = new SecureRandom();
+        for(int comptpeg = 0 ; comptpeg<nbrPegs; comptpeg++){
+            
+            do{
+                posible = true ;
+                x = randInt(rand, 2*radiusPegs, widthCourt-2*radiusPegs) ;
+                y = randInt(rand, heightCourt/4, heightCourt-2*radiusPegs) ;
+                for(Pegs peg : nv.pegs){
+                    if (Math.abs(x - peg.getX()) < 2*radiusPegs+3*radiusBall  || Math.abs(y - peg.getY()) < 2*radiusPegs+3*radiusBall ){
+                        posible = false;
+                        break ;
+                    }
+                }
+            }
+            while(! posible) ;
+            nv.pegs.add(new Pegs(x, y, radiusPegs, randInt(rand, 1, 4))) ;
+            System.out.println(comptpeg);
+        }
+
+        System.out.println(nv.pegs.size());
+
+        return nv ;
+    }
+
+    public static int randInt(SecureRandom rand, int a, int b){
+        return rand.nextInt(b-a +1) +a ;
+    }
+
+
+    // enregistrement d'un niveau    
 
     public void save(int widthCourt, int heightCourt){
         // save les lignes de l'array list dans un fichier csv
