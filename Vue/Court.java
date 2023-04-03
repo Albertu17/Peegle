@@ -38,7 +38,7 @@ public class Court extends JPanel implements MouseInputListener {
     private Background background;
 
     public Court(int courtWith, int courtHeight, String nomLevel)  {
-        setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        // setBorder(BorderFactory.createLineBorder(Color.BLACK));
         setOpaque(false);
         width = courtWith;
         height = courtHeight;
@@ -236,6 +236,10 @@ public class Court extends JPanel implements MouseInputListener {
     public int getScore() {
         return toucher;
     } 
+
+    public int scoreMax(){
+        return pegs.size()*5; // a changer selon les niveaux
+    }
     public void setBackground(Background background) {
         this.background = background;
     }

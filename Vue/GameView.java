@@ -34,7 +34,7 @@ public class GameView extends JPanel {
         setBackground(Color.BLACK);
 
         
-        courtWidth = width - 200;
+        courtWidth = width - 400;
         courtHeight = heigth - 200;
         
         // Court
@@ -42,7 +42,7 @@ public class GameView extends JPanel {
         court.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         court.setBounds((width-courtWidth)/2, (heigth-courtHeight)/2, courtWidth, courtHeight);
         court.setVisible(true);
-        Background background = new Background("test.jpg", court);
+        Background background = new Background("test.jpg", court,heigth,width);
         background.setBounds(0, 0, width, heigth);
         background.setOpaque(false);
         add(court);

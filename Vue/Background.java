@@ -27,10 +27,21 @@ public class Background extends JPanel{
     private Court court;
 
 
+    private int longeur,largeur;
+    private int midBordureCourtX,midBordureCourtY;
+    private BufferedImage scoreSign;
+    private int ancien_point = 0;
+
+    private int width;
+    private int heigth;
+
+
   // Some code to initialize the background image.
   // Here, we use the constructor to load the image. This
   // can vary depending on the use case of the panel.
-  public Background(String fileName, Court court) {
+  public Background(String fileName, Court court, int h, int w) {
+    heigth=h;
+    width=w;
     this.court = court;
     this.court.setBackground(this);
     Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
@@ -54,7 +65,16 @@ public class Background extends JPanel{
             e.printStackTrace();
         }
         }
-        
+
+        int bordureDroiteLargeur = (width-court.getWidth())/2 + court.getWidth();
+        int bordureDroiteHauteur = (heigth-court.getHeight())/2 + court.getHeight();
+    
+        midBordureCourtX = bordureDroiteLargeur + 30; 
+        midBordureCourtY = bordureDroiteHauteur - court.getHeight() + 50;
+        largeur = (width -30) - midBordureCourtX;
+        longeur =  (bordureDroiteHauteur - 50) - midBordureCourtY; 
+
+        scoreSign = ImageImport.getImage("scoreSign.png", largeur -30, 60);
         ball = ImageImport.getImage("ball.png", 50, 50);
 
     }
@@ -67,14 +87,44 @@ public class Background extends JPanel{
     super.paintComponent(g);
 
     // Draw the background image.
-      Graphics2D g2d = (Graphics2D) g;
-      g2d.drawImage(backgroundImage, null, 3, 3);
-      
-      g.setFont(newFont.deriveFont(20f));
-      g.setColor(Color.WHITE);
-        //Use ARCADE_N.TTF font
-        g.drawString("Score: "+court.getScore(), 10, 50);
+    Graphics2D g2d = (Graphics2D) g;
+    g2d.drawImage(backgroundImage, null, 3, 3);
+    
+    g.setFont(newFont.deriveFont(20f));
+    g.setColor(Color.WHITE);
+      //Use ARCADE_N.TTF font
+     g.drawString("Score: "+court.getScore(), 10, 50);
+    
 
+
+    g.drawRect(midBordureCourtX , midBordureCourtY, largeur, longeur);
+    scoreSign.getHeight();
+    g.drawImage(scoreSign,midBordureCourtX +15 ,(midBordureCourtY - scoreSign.getHeight() -5),this);
+
+
+    
+
+    int score = court.getScore() * longeur / court.scoreMax();
+    int point = midBordureCourtY+longeur-score;
+
+    if (score<=longeur*1/3){
+      g.setColor(Color.RED);
+    }
+    else if (score<=longeur*2/3){
+      g.setColor(Color.ORANGE);
+    }
+    else {
+      g.setColor(Color.GREEN);
+    }
+
+    if (point!=ancien_point){
+      for (int i = ancien_point;i>point;i--){
+        g.fillRect(midBordureCourtX+1,i,largeur-1,(midBordureCourtY+longeur)-i);
+      }
+      ancien_point= point;
+    }
+
+    //g.fillRect(midBordureCourtX+1,point,largeur-1,(midBordureCourtY+longeur)-point);
     
 
     
