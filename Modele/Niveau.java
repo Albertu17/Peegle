@@ -1,18 +1,11 @@
 package Modele;
 
-
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
-
-import javax.swing.text.StyledEditorKit.BoldAction;
-
-import java.util.ArrayList;
 
 public class Niveau {
 
@@ -41,62 +34,31 @@ public class Niveau {
     }
 
 
-    public static Niveau aletoireNiveau2(int widthCourt, int heightCourt, int radiusBall, int radiusPegs){
+    public static Niveau NiveauAleatoire(int widthCourt, int heightCourt, int radiusBall, int diametrePegs){
         Niveau nv = new Niveau("Aleatoire") ;
-        int nbrPegs = 40; //aproximatif
+        int nbrPegs = randInt(60, 200); //aproximatif
+        int espaceMinEntre2Pegs = (int) 2.5*radiusBall ;
         int x,y ;
-        int nbrSegParPegs = (int) 3 ;
-        // int nbrSegParPegs = (int) Math.min(10, radiusPegs+3*radiusBall) ;
-        int debutHeight = heightCourt/4 ;
-        // segmentation du court (10 fois plus que de nombre de pegs):
-        int nbrSegW  = (int) (Math.sqrt(nbrPegs*nbrSegParPegs)*(widthCourt/(double) (heightCourt-debutHeight))  ) +1;
-        int nbrSegH  = (int) (Math.sqrt(nbrPegs*nbrSegParPegs)*((heightCourt-debutHeight)/(double) widthCourt)  ) +1;
+
+        int debutHeight = heightCourt/4 ; //evite d'avoir des balels trop hautes
         
-        for (int w = 0 ; w < nbrSegW ; w++){
-            for(int h = 0 ; h < nbrSegH ; h++ ){
-                if (randInt(1, nbrSegParPegs) == 1){ // placer un élément 
+        // segemente l'aire de jeux en carré le plus petit possible tel que les contraintes soit respecté
+        int nbrSegW  = (int) (widthCourt / (espaceMinEntre2Pegs + diametrePegs)  );
+        int nbrSegH  = (int) ((heightCourt-debutHeight) / (espaceMinEntre2Pegs + diametrePegs)  );
+
+        int nbrSegParPegs = (int) (((nbrSegH-1)*(nbrSegW-1))/nbrPegs) ; // Nombre de segmentation pour chaque pegs, permet de savoir la probabilité d'avoir un pegs dans ce carré
+
+        for (int w = 0 ; w < nbrSegW -1 ; w++){
+            for(int h = 0 ; h < nbrSegH -1; h++ ){
+                if (randInt(1, nbrSegParPegs) == 1){ // placer un élément au hasard
                     x=  (int) ( (w+0.5)*(widthCourt/(double)nbrSegW) ) ;
                     y=  (int) ( (h+0.5)*((heightCourt-debutHeight)/(double)nbrSegH)  + debutHeight) ;
-
-                    nv.pegs.add(new Pegs(x, y, radiusPegs, randInt(1, 4))) ;
+                    nv.pegs.add(new Pegs(x, y, diametrePegs, randInt(1, 4))) ;
                 }
             }
         }
 
-        return nv ;
-    }
-
-
-    public static Niveau aletoireNiveau(int widthCourt, int heightCourt, int radiusPegs, int radiusBall){
-        Niveau nv = new Niveau("Aleatoire") ;
-        int nbrPegs = 50;
-        int x,y ;
-        boolean posible ;
-        SecureRandom rand ;
-        
-        for(int comptpeg = 0 ; comptpeg<nbrPegs; comptpeg++){
-            do{
-                rand = new SecureRandom();
-                posible = true ;
-                x = randInt(rand, 2*radiusPegs, widthCourt-2*radiusPegs) ;
-                y = randInt(rand, heightCourt/4, heightCourt-2*radiusPegs) ;
-                System.out.print("x, y :");
-                System.out.print(x);
-                System.out.print(", ");
-                System.out.println(y);
-                for(Pegs peg : nv.pegs){
-                    if (Math.abs(x - peg.getX()) < 2*radiusPegs+3*radiusBall  && Math.abs(y - peg.getY()) < 2*radiusPegs+3*radiusBall ){
-                        posible = false;
-                        break ;
-                    }
-                }
-            }
-            while(! posible) ;
-            nv.pegs.add(new Pegs(x, y, radiusPegs, randInt(rand, 1, 4))) ;
-            System.out.println(comptpeg);
-            nv.save(widthCourt, heightCourt);
-        }
-
+        // TODO determiner le scoreEtoiles et nombres de balles initials
 
         return nv ;
     }
