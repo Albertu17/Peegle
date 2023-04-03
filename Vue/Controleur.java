@@ -68,7 +68,7 @@ public class Controleur extends JFrame{
     public static void main(String[] args) {
 
 
-        // decide de comment tu veux demarrer le jeux
+        // décide du démrrage avec ou sans menu
         boolean menu = false ;
 
         SwingUtilities.invokeLater(new Runnable(){
