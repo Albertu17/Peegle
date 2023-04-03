@@ -23,6 +23,10 @@ public class Niveau {
     }
 
     private final String nom;
+    public String getNom() {
+        return nom;
+    }
+
     private int nbBillesInitiales;
     private int score1Etoile;
     private int score2Etoiles;
