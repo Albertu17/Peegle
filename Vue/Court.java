@@ -1,5 +1,6 @@
 package Vue;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,11 +36,15 @@ public class Court extends JPanel implements MouseInputListener {
     private ArrayList<Pegs> pegs;
     ArrayList<Pegs> toucherPegs;
 
+    BufferedImage back;
+
     public Court(int courtWith, int courtHeight, String nomLevel)  {
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
         width = courtWith;
         height = courtHeight;
 
+        back = ImageImport.getImage("test.jpg") ;
+        System.out.println(back);
         // Listeners
         this.addMouseListener(this);
         this.addMouseMotionListener(this);

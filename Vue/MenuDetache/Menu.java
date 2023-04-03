@@ -194,6 +194,7 @@ class Menu extends JFrame {
         public Test() {
             try {
                 background = ImageImport.getImage("Menu/menuBackground.jpg");
+                System.out.println(background);
                 background = resizeImage(background, largeur, hauteur);
                 title = ImageImport.getImage("Menu/trucjojo.png");
             } catch (IOException ex) {
