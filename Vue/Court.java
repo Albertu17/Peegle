@@ -36,15 +36,14 @@ public class Court extends JPanel implements MouseInputListener {
     private ArrayList<Pegs> pegs;
     ArrayList<Pegs> toucherPegs;
 
-    BufferedImage back;
+    BufferedImage background;
 
     public Court(int courtWith, int courtHeight, String nomLevel)  {
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
         width = courtWith;
         height = courtHeight;
 
-        back = ImageImport.getImage("test.jpg") ;
-        System.out.println(back);
+        background = ImageImport.getImage("test.jpg",width,height) ;
         // Listeners
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
@@ -104,8 +103,11 @@ public class Court extends JPanel implements MouseInputListener {
         timer.start();
     }
     public void paint(Graphics g) {
+        
         super.paint(g);
+        g.drawImage(background, 0, 0, null);
 
+       
          //Use ARCADE_N.TTF font
          try {
             InputStream targetStream = new FileInputStream("./Vue/Font/ARCADE_N.TTF");
@@ -182,6 +184,7 @@ public class Court extends JPanel implements MouseInputListener {
         BasicStroke dashed = new BasicStroke(5.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
         g2DGameview.setStroke(dashed);
         g2DGameview.drawPolyline(canon.getXLigneViser(), canon.getYLigneViser(), 10);
+        
     }
 
     public int getWidth() {

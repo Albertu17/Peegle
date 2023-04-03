@@ -31,6 +31,7 @@ public class GameView extends JPanel {
         setSize(width, heigth);
         setLayout(null);
         setVisible(true); 
+        setBackground(Color.BLACK);
 
         
         courtWidth = width - 200;
