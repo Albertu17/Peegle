@@ -35,15 +35,15 @@ public class Court extends JPanel implements MouseInputListener {
     private ArrayList<Rectangle> rectangles;
     private ArrayList<Pegs> pegs;
     ArrayList<Pegs> toucherPegs;
-
-    BufferedImage background;
+    private Background background;
 
     public Court(int courtWith, int courtHeight, String nomLevel)  {
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        setOpaque(false);
         width = courtWith;
         height = courtHeight;
 
-        background = ImageImport.getImage("test.jpg",width,height) ;
+       
         // Listeners
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
@@ -105,22 +105,8 @@ public class Court extends JPanel implements MouseInputListener {
     public void paint(Graphics g) {
         
         super.paint(g);
-        g.drawImage(background, 0, 0, null);
 
        
-         //Use ARCADE_N.TTF font
-         try {
-            InputStream targetStream = new FileInputStream("./Vue/Font/ARCADE_N.TTF");
-            Font newFont =  Font.createFont(Font.TRUETYPE_FONT, targetStream);
-            g.setFont(newFont.deriveFont(20f));
-        } catch (FontFormatException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        g.drawString("Score: "+toucher, 10, 50);
         // System.out.println(toucher);
         // canon.repaint();
         g.setColor(Color.BLACK);
@@ -155,6 +141,7 @@ public class Court extends JPanel implements MouseInputListener {
         pegs.remove(peganim);
         toucherPegs.remove(peganim);
         toucher++;
+        background.repaint();
         }
 
         //g.drawRect((int)sceau.X, (int)sceau.Y, (int)sceau.longeur, (int)sceau.hauteur);
@@ -244,5 +231,12 @@ public class Court extends JPanel implements MouseInputListener {
     public void mouseMoved(MouseEvent e) {
         // Déplacement du canon en fonction de la possition de la souris
         canon.DeplacementCanon(e);    
+    }
+
+    public int getScore() {
+        return toucher;
     } 
+    public void setBackground(Background background) {
+        this.background = background;
+    }
 }
