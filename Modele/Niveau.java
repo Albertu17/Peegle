@@ -1,15 +1,11 @@
 package Modele;
 
-
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
-
-import java.util.ArrayList;
 
 public class Niveau {
 
@@ -36,7 +32,43 @@ public class Niveau {
         this.nom = nom;
         pegs = new ArrayList<>() ;
     }
-    
+
+
+    public static Niveau NiveauAleatoire(int widthCourt, int heightCourt, int radiusBall, int diametrePegs){
+        Niveau nv = new Niveau("Aleatoire") ;
+        int nbrPegs = randInt(60, 200); //aproximatif
+        int espaceMinEntre2Pegs = (int) 2.5*radiusBall ;
+        int x,y ;
+
+        int debutHeight = heightCourt/4 ; //evite d'avoir des balels trop hautes
+        
+        // segemente l'aire de jeux en carré le plus petit possible tel que les contraintes soit respecté
+        int nbrSegW  = (int) (widthCourt / (espaceMinEntre2Pegs + diametrePegs)  );
+        int nbrSegH  = (int) ((heightCourt-debutHeight) / (espaceMinEntre2Pegs + diametrePegs)  );
+
+        int nbrSegParPegs = (int) (((nbrSegH-1)*(nbrSegW-1))/nbrPegs) ; // Nombre de segmentation pour chaque pegs, permet de savoir la probabilité d'avoir un pegs dans ce carré
+
+        for (int w = 0 ; w < nbrSegW -1 ; w++){
+            for(int h = 0 ; h < nbrSegH -1; h++ ){
+                if (randInt(1, nbrSegParPegs) == 1){ // placer un élément au hasard
+                    x=  (int) ( (w+0.5)*(widthCourt/(double)nbrSegW) ) ;
+                    y=  (int) ( (h+0.5)*((heightCourt-debutHeight)/(double)nbrSegH)  + debutHeight) ;
+                    nv.pegs.add(new Pegs(x, y, diametrePegs, randInt(1, 4))) ;
+                }
+            }
+        }
+
+        // TODO determiner le scoreEtoiles et nombres de balles initials
+
+        return nv ;
+    }
+
+    public static int randInt(int a, int b){
+        return (new SecureRandom()).nextInt(b-a +1) +a ;
+    }
+
+
+    // enregistrement d'un niveau    
 
     public void save(int widthCourt, int heightCourt){
         // save les lignes de l'array list dans un fichier csv
