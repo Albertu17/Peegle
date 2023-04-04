@@ -11,7 +11,7 @@ import Vue.* ;
 import Modele.* ;
 public class Ball{
 
-    public final static double ballRadius = 10; // m
+    public final static int ballRadius = 10; // m
 
     public double ballX, ballY; // m
     public double ballSpeedX, ballSpeedY; // m
@@ -31,7 +31,7 @@ public class Ball{
 
     private double g=300; // m/s
     private double coeffRebond = 0.8;
-    private BufferedImage image = ImageImport.getImage("ball.png", 20, 20);
+    private static BufferedImage image = ImageImport.getImage("ball.png", (int) ballRadius*2, (int) ballRadius*2);
 
     private Court court;
 
@@ -39,10 +39,15 @@ public class Ball{
 
 
 
+
     /* Important coordonée de la balle centre en X mais tout en haut pour Y */
 
     public Court getCourt() {
         return court;
+    }
+
+    public static BufferedImage getImgBall(){
+        return image;
     }
 
     public Ball(int x,int y,int vx0,int vy0,Court c){
@@ -88,6 +93,7 @@ public class Ball{
 
         if (sceau.inside(this)){
             // System.out.println("inside");
+            sceau.getCourt().augmenteNbDeBall();
             hitground=true;
             ispresent=false;
         }

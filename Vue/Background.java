@@ -2,6 +2,8 @@ package Vue;
 
 import javax.swing.JPanel;
 
+import Modele.Ball;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -21,12 +23,12 @@ import java.io.InputStream;
 
 public class Background extends JPanel{
     private BufferedImage backgroundImage;
-    private BufferedImage ball;
+    
     private InputStream targetStream;
     private Font newFont;
     private Court court;
 
-
+  // score 
     private int longeur,largeur;
     private int midBordureCourtX,midBordureCourtY;
     private BufferedImage scoreSign;
@@ -35,6 +37,12 @@ public class Background extends JPanel{
     private int width;
     private int heigth;
     private int scoreMax;
+
+    // balle
+    private BufferedImage tubeBall;
+    private int bordurePix = 10;
+    private BufferedImage ball;
+
 
 
   // Some code to initialize the background image.
@@ -78,6 +86,10 @@ public class Background extends JPanel{
         scoreSign = ImageImport.getImage("scoreSign.png", largeur -30, 60);
         ball = ImageImport.getImage("ball.png", 50, 50);
 
+        tubeBall = ImageImport.getImage("tubeball.png", court.getBallRadius()*5*2+20, court.getHeight());
+
+        ball = court.getBall();
+
     }
     else{
         System.out.println("Image not found");
@@ -96,14 +108,14 @@ public class Background extends JPanel{
     g.setColor(Color.WHITE);
       //Use ARCADE_N.TTF font
      g.drawString("Score: "+court.getScore(), 10, 50);
+
+
     
 
 
+    // score 
     g.drawRect(midBordureCourtX , midBordureCourtY, largeur, longeur);
     g.drawImage(scoreSign,midBordureCourtX +15 ,(midBordureCourtY - scoreSign.getHeight() -5),this);
-
-
-    
 
     int score = court.getScore() * longeur / scoreMax;
     int point = midBordureCourtY+longeur-score;
@@ -118,9 +130,34 @@ public class Background extends JPanel{
       g.setColor(Color.GREEN);
     }
     g.fillRect(midBordureCourtX+1,point,largeur-1,(midBordureCourtY+longeur)-point);
+
+    // balle 
+
+
+
+    int ligne = 0;
+    int pointDeDepartX = 60;
+    int pointDeDepartY = court.getY() + tubeBall.getHeight();
+
+    int XBall = pointDeDepartX + tubeBall.getWidth()/2 - Ball.ballRadius;
+
+    // for (int i = 0; i<court.getNbDeBall();i++){
+    //   if (i==2) ligne++;
+    //   else if (i-3%5==0) ligne++;
+    //   g.drawImage(ball,pointDeDepartX,(pointDeDepartY- Ball.ballRadius*2),this);
+
+      
+    // }
+
+    for (int i = 0; i<court.getNbDeBall();i++){
+      g.drawImage(ball,XBall ,pointDeDepartY - i*Ball.ballRadius*2 - Ball.ballRadius*2 - bordurePix,this);
+    }
+
+    g.drawImage(tubeBall , pointDeDepartX, court.getY(), this);
+
     
 
-    //g.fillRect(midBordureCourtX+1,point,largeur-1,(midBordureCourtY+longeur)-point);
+
     
 
     

@@ -37,6 +37,10 @@ public class Court extends JPanel implements MouseInputListener {
     ArrayList<Pegs> toucherPegs;
     private Background background;
 
+    private int NbDeBall = 25 ;
+    private boolean nbDeBallChange=true;
+
+
     public Court(int courtWith, int courtHeight, String nomLevel)  {
         // setBorder(BorderFactory.createLineBorder(Color.BLACK));
         setOpaque(false);
@@ -102,6 +106,10 @@ public class Court extends JPanel implements MouseInputListener {
         });
         timer.start();
     }
+
+    public BufferedImage getBall(){
+        return Ball.getImgBall();
+    }
     public void paint(Graphics g) {
         
         super.paint(g);
@@ -162,8 +170,7 @@ public class Court extends JPanel implements MouseInputListener {
             }
             //image pegs toucher
         }
-
-        // traçage ligne de viser
+                // traçage ligne de viser
         canon.calculCordonnéeLigneViser();
         Graphics2D g2DGameview = (Graphics2D) g;
         g2DGameview.setColor(Color.RED);
@@ -172,7 +179,7 @@ public class Court extends JPanel implements MouseInputListener {
         g2DGameview.setStroke(dashed);
         g2DGameview.drawPolyline(canon.getXLigneViser(), canon.getYLigneViser(), 10);
         
-    }
+    }   
 
     public int getWidth() {
         return width;
@@ -194,11 +201,34 @@ public class Court extends JPanel implements MouseInputListener {
         return pegs;
     }
 
+    public void augmenteNbDeBall(){
+        nbDeBallChange=true;
+        NbDeBall ++;
+    }
+
+
+    public void setBallChanged(boolean b){
+        nbDeBallChange=b;
+    }
+    
+    public int getNbDeBall(){
+        return  NbDeBall;
+    }
+
     @Override
     public void mouseClicked(MouseEvent e) {
         // lancer une balle
-        balls.add(canon.tirer()) ;
+        if (NbDeBall>0){ 
+            background.repaint();
+            nbDeBallChange=true;
+            balls.add(canon.tirer());
+            NbDeBall--;
+        }
         
+    }
+
+    public boolean nbBallHasChanged(){
+        return nbDeBallChange;
     }
 
     @Override
@@ -238,9 +268,13 @@ public class Court extends JPanel implements MouseInputListener {
     } 
 
     public int getScoreMax(){
-        return pegs.size(); // a changer selon les niveaux
+        return  89; // a changer selon les niveaux
     }
     public void setBackground(Background background) {
         this.background = background;
+    }
+
+    public int getBallRadius(){
+        return (int) Ball.ballRadius;
     }
 }
