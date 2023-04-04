@@ -1,3 +1,4 @@
+package Vue;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -9,7 +10,7 @@ import javax.imageio.ImageIO;
 
 public class ImageImport {
     private static HashMap<String, BufferedImage> allimage ;
-    private static String pathDossierImage = "Image/" ;
+    private static String pathDossierImage = "Vue/Image/" ;
     private static boolean importFini = false ;
 
     
@@ -69,7 +70,7 @@ public class ImageImport {
     }
     
 
-     /**
+    /**
      *
      * @param path chemin de l'image (chemin relatif depuis Le dossier "/Image") 
      * @param pourcentage (0-100) resize l'image en pourcenatge de la taille original 
@@ -83,7 +84,6 @@ public class ImageImport {
         while(! importFini){System.out.print("");} ;  //attend  que l'import des images par le thread soit fini
         
         BufferedImage image = allimage.get(path) ;
-        // TODO faut-il supprimer l'image du hashmap apres ?
 
         if (pourcentage != 100){
             int width = (int) ((image.getWidth()*pourcentage)/100.0 );
@@ -115,7 +115,6 @@ public class ImageImport {
         // laisser le print sinon ça ne fonctionne pas 
 
         BufferedImage image = allimage.get(path) ;
-        // TODO faut-il supprimer l'image du hashmap apres ?
 
         // resize de l'image :
         BufferedImage resizedImage = new BufferedImage(width, heigth, image.getType());

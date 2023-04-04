@@ -1,8 +1,12 @@
+package Modele;
+
 import java.util.ArrayList;
 import java.util.Random;
 import java.math.*;
 import java.sql.Array;
 import java.awt.*;
+import Vue.* ;
+import Modele.* ;
 public class Ball{
 
     public final double ballRadius = 14/2; // m
@@ -38,7 +42,7 @@ public class Ball{
         return court;
     }
 
-    Ball(int x,int y,int vx0,int vy0,Court c){
+    public Ball(int x,int y,int vx0,int vy0,Court c){
         ballX=x;
         ballY=y;
         ballSpeedX=vx0;
@@ -67,7 +71,7 @@ public class Ball{
         // next, see if the ball would meet some obstacle
         if (touchedWallY(nextBallY)) { 
             ballSpeedY = -ballSpeedY*coeffRebond;
-            System.out.println("touched wall Y");
+            // System.out.println("touched wall Y");
             nextBallY = ballY + deltaT * ballSpeedY + 1/2*g*(deltaT*deltaT);
         }
 
@@ -75,8 +79,13 @@ public class Ball{
             ballSpeedX = -ballSpeedX;
             nextBallX = ballX + deltaT * ballSpeedX;
         }
+        if (sceau.toucheBordureSceau(this)){
+            ballSpeedY =- ballSpeedY;
+        }
 
         if (sceau.inside(this)){
+            // System.out.println("inside");
+            hitground=true;
             ispresent=false;
         }
         
@@ -255,7 +264,7 @@ public class Ball{
 
                     }
                 }
-                else ispresent=false;
+                else {return r;} 
             }
 
         return r;

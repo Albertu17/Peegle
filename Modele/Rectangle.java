@@ -1,3 +1,5 @@
+package Modele;
+
 public class Rectangle {
     public double angle;
     
