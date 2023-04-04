@@ -1,4 +1,4 @@
-
+package Vue;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -16,9 +16,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-
-import Vue.Controleur;
-import Vue.ImageImport;
 
 class Menu extends JFrame {
 
@@ -114,9 +111,16 @@ class Menu extends JFrame {
            }
               public void mouseClicked(MouseEvent evt) 
               {
-                Controleur c = new Controleur() ;
-                c.launchGameview();
-                c.repaint();
+                SwingUtilities.invokeLater(new Runnable(){
+                    @Override
+                    public void run() {
+                        Controleur c = new Controleur() ;
+                        c.launchGameview();
+                        c.repaint();
+                        
+                    }
+        
+                });
               }
         });
 

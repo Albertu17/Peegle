@@ -1,4 +1,4 @@
-package Vue.Menu;
+package Vue.Menu2;
 
 import java.awt.Color;
 

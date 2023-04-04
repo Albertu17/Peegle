@@ -34,6 +34,7 @@ public class Background extends JPanel{
 
     private int width;
     private int heigth;
+    private int scoreMax;
 
 
   // Some code to initialize the background image.
@@ -44,6 +45,7 @@ public class Background extends JPanel{
     width=w;
     this.court = court;
     this.court.setBackground(this);
+    this.scoreMax = court.getScoreMax();
     Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
     System.out.println(size.width);
     System.out.println(size.height);
@@ -61,7 +63,7 @@ public class Background extends JPanel{
             // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+            System.out.println("Font not found");
             e.printStackTrace();
         }
         }
@@ -72,8 +74,7 @@ public class Background extends JPanel{
         midBordureCourtX = bordureDroiteLargeur + 30; 
         midBordureCourtY = bordureDroiteHauteur - court.getHeight() + 50;
         largeur = (width -30) - midBordureCourtX;
-        longeur =  (bordureDroiteHauteur - 50) - midBordureCourtY; 
-
+        longeur =  (bordureDroiteHauteur - 50) - midBordureCourtY;
         scoreSign = ImageImport.getImage("scoreSign.png", largeur -30, 60);
         ball = ImageImport.getImage("ball.png", 50, 50);
 
@@ -89,8 +90,9 @@ public class Background extends JPanel{
     // Draw the background image.
     Graphics2D g2d = (Graphics2D) g;
     g2d.drawImage(backgroundImage, null, 3, 3);
-    
+    if (newFont != null) {
     g.setFont(newFont.deriveFont(20f));
+    }
     g.setColor(Color.WHITE);
       //Use ARCADE_N.TTF font
      g.drawString("Score: "+court.getScore(), 10, 50);
@@ -98,13 +100,12 @@ public class Background extends JPanel{
 
 
     g.drawRect(midBordureCourtX , midBordureCourtY, largeur, longeur);
-    scoreSign.getHeight();
     g.drawImage(scoreSign,midBordureCourtX +15 ,(midBordureCourtY - scoreSign.getHeight() -5),this);
 
 
     
 
-    int score = court.getScore() * longeur / court.scoreMax();
+    int score = court.getScore() * longeur / scoreMax;
     int point = midBordureCourtY+longeur-score;
 
     if (score<=longeur*1/3){
@@ -116,13 +117,8 @@ public class Background extends JPanel{
     else {
       g.setColor(Color.GREEN);
     }
-
-    if (point!=ancien_point){
-      for (int i = ancien_point;i>point;i--){
-        g.fillRect(midBordureCourtX+1,i,largeur-1,(midBordureCourtY+longeur)-i);
-      }
-      ancien_point= point;
-    }
+    g.fillRect(midBordureCourtX+1,point,largeur-1,(midBordureCourtY+longeur)-point);
+    
 
     //g.fillRect(midBordureCourtX+1,point,largeur-1,(midBordureCourtY+longeur)-point);
     

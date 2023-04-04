@@ -69,8 +69,8 @@ public class Court extends JPanel implements MouseInputListener {
 
         // Sceau
         sceau = new Sceau(this);
-        for (int i=0;i<50;i++){
-            for (int j=0;j<25;j++){
+        for (int i=0;i<10;i++){
+            for (int j=0;j<10;j++){
                 pegs.add(new Pegs(600+i*20,300+j*20,10,1));
             }
         }
@@ -237,8 +237,8 @@ public class Court extends JPanel implements MouseInputListener {
         return toucher;
     } 
 
-    public int scoreMax(){
-        return pegs.size()*5; // a changer selon les niveaux
+    public int getScoreMax(){
+        return pegs.size(); // a changer selon les niveaux
     }
     public void setBackground(Background background) {
         this.background = background;

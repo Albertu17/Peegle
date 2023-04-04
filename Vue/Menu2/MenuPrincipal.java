@@ -1,4 +1,4 @@
-package Vue.Menu;
+package Vue.Menu2;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;

@@ -11,7 +11,7 @@ import javax.imageio.ImageIO;
 public class ImageImport {
     private static HashMap<String, BufferedImage> allimage ;
     private static String pathDossierImage = "Vue/Image/" ;
-    private static boolean importFini = false ;
+    public static boolean importFini = false ;
 
     
     /**
@@ -22,6 +22,7 @@ public class ImageImport {
      * 
      */
     public static void setImage(Boolean Thread){
+        if (allimage != null) return ; // si les images sont deja importé on ne fait rien
         allimage = new HashMap<>() ;
 
         if (Thread){
