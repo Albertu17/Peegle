@@ -36,7 +36,7 @@ public class Niveau {
 
     public static Niveau NiveauAleatoire(int widthCourt, int heightCourt, int radiusBall, int diametrePegs){
         Niveau nv = new Niveau("Aleatoire") ;
-        int nbrPegs = randInt(60, 200); //aproximatif
+        int nbrPegs = randInt(60, 100   ); //aproximatif
         int espaceMinEntre2Pegs = (int) 2.5*radiusBall ;
         int x,y ;
 
