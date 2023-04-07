@@ -62,7 +62,7 @@ public class ImageImport {
      */
     public static void reloadImageFile(String pathFolder){
         if (allimage == null){
-            setImage(true);
+            setImage(false);
             return  ;
         }
 

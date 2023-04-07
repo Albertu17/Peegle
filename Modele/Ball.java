@@ -1,14 +1,9 @@
 package Modele;
 
-import java.util.ArrayList;
-import java.util.Random;
-import java.math.*;
-import java.sql.Array;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-
 import Vue.* ;
-import Modele.* ;
+
 public class Ball{
 
     public final static double ballRadius = 10; // m

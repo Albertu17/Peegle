@@ -91,11 +91,13 @@ public class Niveau {
     // creation icone 
 
     
-    public static void scren(String niveau){
+    public static void createIconeNiveau(String niveau){
         int width = 1080 ;
         int height = 520 ;
 
-        Niveau nv = Niveau.importPegles(niveau, width, height);
+        // Niveau nv = Niveau.importPegles(niveau, width, height);
+        Niveau nv = Niveau.NiveauAleatoire(width, height, 20, 15);
+
 
         BufferedImage tempImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics g = (tempImage.createGraphics());
@@ -112,17 +114,13 @@ public class Niveau {
             System.out.println("Impossible d'enregistrer l'image.");
             System.out.println(ex);
         }
-
-
     }
     
     public static void main(String[] args) {
-    ImageImport.setImage(false);
-    // crt.setSize(720, 500);
-    scren("Perso/Triangle");
-    scren("Campagne/Level1");
-    scren("Campagne/2Carre");
-    // scren("Perso/Triangle");
+        ImageImport.setImage(false);
+        createIconeNiveau("Perso/Triangle");
+        createIconeNiveau("Campagne/Level1");
+        createIconeNiveau("Campagne/2Carre");
     }
 
 
@@ -143,7 +141,8 @@ public class Niveau {
                                 + String.valueOf(nbBillesInitiales) +";"
                                 + String.valueOf(score1Etoile) +";"
                                 + String.valueOf(score2Etoiles) +";"
-                                + String.valueOf(score3Etoiles) ;
+                                + String.valueOf(score3Etoiles) +";"
+                                + String.valueOf(campagne ? "1" : "0") ;
             file.println(ligne);
             
     
@@ -180,6 +179,7 @@ public class Niveau {
             nv.score1Etoile = Integer.valueOf(line[3]);
             nv.score2Etoiles = Integer.valueOf(line[4]);
             nv.score3Etoiles = Integer.valueOf(line[5]);
+            nv.campagne = line[6].equals("1") ? true : false ;
 
 
            // creation des pegs en fonction des infos que on a 
