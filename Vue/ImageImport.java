@@ -13,6 +13,12 @@ public class ImageImport {
     private static String pathDossierImage = "Vue/Image/" ;
     private static boolean importFini = false ;
 
+    // TODO a supprimer apres dev
+    public static void printAllkey(){
+       for (String name : allimage.keySet()) {
+            System.out.println(name);
+       }
+    }
     
     /**
      * @description Lance l'import de toute les images du dossier image (ainsi que ses sous dossier)
@@ -47,13 +53,36 @@ public class ImageImport {
         
     }
 
+    /**
+     * @description Relance l'import de toute les images du dossier image (ainsi que ses sous dossier)
+     * Les images sont récuperable avec la fonction statique getImage(path) ;
+     * @param pathFolder dossier à reimporter
+     * @author Thibault
+     * 
+     */
+    public static void reloadImageFile(String pathFolder){
+        if (allimage == null){
+            setImage(true);
+            return  ;
+        }
+
+        importFini = false ; // fait attendre tout appel aux fonctions get image
+        try {
+            scanFile(new File(pathDossierImage +pathFolder), pathFolder+"/") ;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        importFini = true ;
+        
+    }
+
     private static void scanFile(File parent, String path) throws IOException {
         for (File f : parent.listFiles() ){
             if (f.isDirectory()){
                 scanFile(f, path + f.getName() + "/");
             }else{
                 allimage.put( path + f.getName(), ImageIO.read(f)) ;
-                // System.out.println( path + f.getName() +":"+ (allimage.get(path + f.getName()) == null ? "null" : "good") );
+                System.out.println( path + f.getName() +":"+ (allimage.get(path + f.getName()) == null ? "null" : "good") );
             }
         }
     }

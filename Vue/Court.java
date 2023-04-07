@@ -208,7 +208,11 @@ public class Court extends JPanel implements MouseInputListener {
     public void mouseClicked(MouseEvent e) {
         // lancer une balle
         balls.add(canon.tirer()) ;
-        screnShot(this);
+        // TODO pour des testes
+        // ImageImport.printAllkey();
+        // screnShot(this);
+        // ImageImport.reloadImageFile("IconeNiveau");
+        // ImageImport.printAllkey();
         
     }
 
@@ -269,6 +273,7 @@ public class Court extends JPanel implements MouseInputListener {
             // }
     }
 
+    
 
 
 }
