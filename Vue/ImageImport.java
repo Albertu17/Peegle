@@ -82,7 +82,7 @@ public class ImageImport {
                 scanFile(f, path + f.getName() + "/");
             }else{
                 allimage.put( path + f.getName(), ImageIO.read(f)) ;
-                System.out.println( path + f.getName() +":"+ (allimage.get(path + f.getName()) == null ? "null" : "good") );
+                // System.out.println( path + f.getName() +":"+ (allimage.get(path + f.getName()) == null ? "null" : "good") );
             }
         }
     }

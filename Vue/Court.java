@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import ScreenImage;
+// import ScreenImage;
 
 import java.util.ArrayList;
 
@@ -83,6 +83,8 @@ public class Court extends JPanel implements MouseInputListener {
         } 
 
         animate();
+        System.out.println(width);
+        System.out.println(height);
     }
 
     public void animate() {
@@ -249,31 +251,32 @@ public class Court extends JPanel implements MouseInputListener {
     }
 
     public void screnShot(JPanel jpanel){
-
+        
+        // System.out.println("in fonction");
         BufferedImage tempImage = new BufferedImage((int)jpanel.getSize().getWidth(), (int)(jpanel.getSize().getHeight()), BufferedImage.TYPE_INT_RGB);
+
         jpanel.paint(tempImage.createGraphics());
         try{
+            // System.out.println("in try");
             ImageIO.write(tempImage, "png", new File("Vue/Image/IconeNiveau/"+ niveau.getNom() +".png"));
         }catch(Exception ex){
             System.out.println("Impossible d'enregistrer l'image.");
             System.out.println(ex);
         }
-
+        
         // version qui enleve le 1/4 en haut de l'image:
-            // BufferedImage tempImage = new BufferedImage((int)jpanel.getSize().getWidth(), (int)(jpanel.getSize().getHeight()), BufferedImage.TYPE_INT_RGB);
-            // BufferedImage tempImage2 = new BufferedImage((int)jpanel.getSize().getWidth(), (int)(3*jpanel.getSize().getHeight()/4.0), BufferedImage.TYPE_INT_RGB);
+        // BufferedImage tempImage = new BufferedImage((int)jpanel.getSize().getWidth(), (int)(jpanel.getSize().getHeight()), BufferedImage.TYPE_INT_RGB);
+        // BufferedImage tempImage2 = new BufferedImage((int)jpanel.getSize().getWidth(), (int)(3*jpanel.getSize().getHeight()/4.0), BufferedImage.TYPE_INT_RGB);
             // jpanel.paint(tempImage.createGraphics());
             // (tempImage2.createGraphics()).drawImage(tempImage, 0, -(int)(jpanel.getSize().getHeight()/4.0), (int)jpanel.getSize().getWidth(), (int)jpanel.getSize().getHeight(), null);
         
             // try{
             //     ImageIO.write(tempImage2, "png", new File("Vue/Image/IconeNiveau/"+ niveau.getNom() +".png"));
             // }catch(Exception ex){
-            //     System.out.println("Impossible d'enregistrer l'image.");
-            //     System.out.println(ex);
-            // }
-    }
-
-    
+                //     System.out.println("Impossible d'enregistrer l'image.");
+                //     System.out.println(ex);
+                // }
+            }
 
 
 }

@@ -1,5 +1,9 @@
 package Modele;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -7,30 +11,42 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.imageio.ImageIO;
+
+import Vue.ImageImport;
+
 public class Niveau {
 
-    private static String dosierSauvegarde ="Maps/" ;
+    private static String dosierSauvegarde ="Niveau/" ;
     private static String nomExtension = ".pegs" ;
 
     private ArrayList<Pegs> pegs;
-
-    public ArrayList<Pegs> getPegs() {
-        return pegs;
-    }
-
-    public void setPegs(ArrayList<Pegs> pegs) {
-        this.pegs = pegs;
-    }
-
-    private final String nom;
-    public String getNom() {
-        return nom;
-    }
-
     private int nbBillesInitiales;
     private int score1Etoile;
     private int score2Etoiles;
     private int score3Etoiles;
+    private boolean campagne ;
+    private final String nom;
+
+    
+    public ArrayList<Pegs> getPegs() {
+        return pegs;
+    }
+    
+    public void setPegs(ArrayList<Pegs> pegs) {
+        this.pegs = pegs;
+    }
+    public void isCampagne(boolean campagne) {
+        this.campagne = campagne;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+    private String getDossier(){
+        return campagne ? "Campagne" : "Perso" ;
+    }
+
 
     public Niveau (String nom) {
         this.nom = nom;
@@ -72,6 +88,45 @@ public class Niveau {
     }
 
 
+    // creation icone 
+
+    
+    public static void scren(String niveau){
+        int width = 1080 ;
+        int height = 520 ;
+
+        Niveau nv = Niveau.importPegles(niveau, width, height);
+
+        BufferedImage tempImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        Graphics g = (tempImage.createGraphics());
+        Graphics2D g2d = (Graphics2D) g;      
+        g2d.setColor(Color.white);
+        g2d.fillRect(0, 0, width, height);   
+        
+        for (Pegs peg:nv.getPegs()) {
+            g2d.drawImage(ImageImport.getImage(peg.getImageString()), peg.getX(), peg.getY(), peg.getRadius(), peg.getRadius(), null);
+        }
+        try{
+            ImageIO.write(tempImage, "png", new File("Vue/Image/IconeNiveau/" + nv.getNom() +".png"));
+        }catch(Exception ex){
+            System.out.println("Impossible d'enregistrer l'image.");
+            System.out.println(ex);
+        }
+
+
+    }
+    
+    public static void main(String[] args) {
+    ImageImport.setImage(false);
+    // crt.setSize(720, 500);
+    scren("Perso/Triangle");
+    scren("Campagne/Level1");
+    scren("Campagne/2Carre");
+    // scren("Perso/Triangle");
+    }
+
+
+
     // enregistrement d'un niveau    
 
     public void save(int widthCourt, int heightCourt){
@@ -80,7 +135,7 @@ public class Niveau {
     
         PrintWriter file;
         try {
-            file = new PrintWriter(dosierSauvegarde + nom + nomExtension);
+            file = new PrintWriter(dosierSauvegarde + getDossier()+ nom + nomExtension);
     
             // premiere ligne d'info :
             String ligne  = String.valueOf(widthCourt) +";"
