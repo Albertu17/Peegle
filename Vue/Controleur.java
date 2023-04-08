@@ -43,9 +43,9 @@ public class Controleur extends JFrame{
     }
 
 
-    public void launchGameview(){
+    public void launchGameview(String nomNiveau){
+        gameview = new GameView(this, nomNiveau);
         if (gameview == null){
-            gameview = new GameView(this);
             add(gameview) ;
         }
         gameview.setVisible(true);
@@ -61,7 +61,7 @@ public class Controleur extends JFrame{
             @Override
             public void run() {
                 Controleur c = new Controleur() ;
-                c.launchGameview();
+                c.launchGameview("Triangle");
                 c.repaint();
                 
             }

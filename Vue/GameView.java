@@ -22,7 +22,7 @@ public class GameView extends JPanel {
     private int courtWidth;
     private int courtHeight;
 
-    GameView(Controleur c) {
+    GameView(Controleur c, String nomNiveau) {
 
         this.controleur = c ;
 
@@ -37,7 +37,7 @@ public class GameView extends JPanel {
         courtHeight = heigth - 200;
         
         // Court
-        court = new Court(courtWidth, courtHeight, "Level1"); // spécifier le niveau à importer
+        court = new Court(courtWidth, courtHeight, nomNiveau); // spécifier le niveau à importer
         court.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         court.setBounds((width-courtWidth)/2, (heigth-courtHeight)/2, courtWidth, courtHeight);
         court.setVisible(true);

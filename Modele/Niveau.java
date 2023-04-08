@@ -44,7 +44,7 @@ public class Niveau {
         return nom;
     }
     private String getDossier(){
-        return campagne ? "Campagne" : "Perso" ;
+        return campagne ? "Campagne/" : "Perso/" +getNom();
     }
 
 
@@ -104,6 +104,8 @@ public class Niveau {
         Graphics2D g2d = (Graphics2D) g;      
         g2d.setColor(Color.white);
         g2d.fillRect(0, 0, width, height);   
+        g2d.drawRoundRect(0, 0, width, height, 10, 10);
+
         
         for (Pegs peg:nv.getPegs()) {
             g2d.drawImage(ImageImport.getImage(peg.getImageString()), peg.getX(), peg.getY(), peg.getRadius(), peg.getRadius(), null);
@@ -118,8 +120,8 @@ public class Niveau {
     
     public static void main(String[] args) {
         ImageImport.setImage(false);
-        createIconeNiveau("Perso/Triangle");
-        createIconeNiveau("Campagne/Level1");
+        // createIconeNiveau("Perso/Triangle");
+        // createIconeNiveau("Campagne/Level1");
         createIconeNiveau("Campagne/2Carre");
     }
 
