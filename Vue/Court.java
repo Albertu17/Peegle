@@ -33,13 +33,22 @@ public class Court extends JPanel implements MouseInputListener {
     private ArrayList<Rectangle> rectangles;
     private ArrayList<Pegs> pegs;
     ArrayList<Pegs> toucherPegs;
-    boolean animated;
 
-    public Court(int courtWith, int courtHeight)  {
+    // Pour l'éditeur de niveaux
+    boolean editMode;
+    EditeurNiveaux eN;
+
+    Niveau niveau;
+
+    public Court(int courtWith, int courtHeight, Niveau niveau)  {
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
         width = courtWith;
         height = courtHeight;
-        animated = true; // Par défault
+        this.niveau = niveau;
+
+        // Pour l'éditeur de niveaux
+        editMode = false; // Par défault
+        eN = null; // Par défault
 
         // Listeners
         this.addMouseListener(this);
@@ -68,6 +77,10 @@ public class Court extends JPanel implements MouseInputListener {
         animate();
     }
 
+    public Niveau getNiveau() {
+        return niveau;
+    }
+
     //generate triangle of pegs
     public void addTriangleOfPegs() {
         for (int i=0;i<10;i++){
@@ -85,7 +98,7 @@ public class Court extends JPanel implements MouseInputListener {
             double last;
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (animated) { // animate doit forcément être appelée, même en non-animée, pour repaint le court et ainsi le rendre visible.
+                if (!editMode) { // animate doit forcément être appelée, même en non-animée, pour repaint le court et ainsi le rendre visible.
                     last = System.nanoTime();
                     for (Ball b:balls){
                         if (b.isPresent()) b.updateBall((last-now)*1.0e-9,sceau);
@@ -131,11 +144,10 @@ public class Court extends JPanel implements MouseInputListener {
             if (balls.get(i).getHitGround()) {
                 balls.remove(i);
                 remove = true;
-                
             }
         }
         if (remove) {
-            for (Pegs peg:pegs) {
+            for (Pegs peg: niveau.getPegs()) {
                 if (peg.getHit()) {
                     toucherPegs.add(peg);
                 }
@@ -157,7 +169,7 @@ public class Court extends JPanel implements MouseInputListener {
         for (Rectangle rect:rectangles) {
             g.drawLine(rect.x0, rect.y0, rect.caculX1(), rect.caculY1());
         }
-        for (Pegs peg:pegs) {
+        for (Pegs peg: niveau.getPegs()) {
             Graphics2D g2d = (Graphics2D) g;        
             if (peg.getHit()) {
                 g2d.drawImage(ImageImport.getImage(peg.getImageStringTouche()), peg.getX(), peg.getY(), peg.getRadius(), peg.getRadius(), this);
@@ -169,7 +181,7 @@ public class Court extends JPanel implements MouseInputListener {
         }
 
         // traçage ligne de viser
-        if (animated) {
+        if (!editMode) {
             canon.calculCordonnéeLigneViser();
             Graphics2D g2DGameview = (Graphics2D) g;
             g2DGameview.setColor(Color.RED);
@@ -203,7 +215,16 @@ public class Court extends JPanel implements MouseInputListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         // lancer une balle
-        if (animated) balls.add(canon.tirer());
+        if (!editMode) balls.add(canon.tirer());
+        else if (eN.enModif) {
+            for (Pegs p : niveau.getPegs()) {
+                if (Math.pow(e.getX() - p.getX(), 2) + Math.pow(e.getY() - p.getY(), 2) <= Math.pow(p.getRadius(),2)) eN.pegSelectionne = p;
+            }
+        }
+        else {
+            niveau.getPegs().add(new Pegs(e.getX(), e.getY(), eN.caseActive.radius, eN.caseActive.couleur));
+            paint(this.getGraphics());
+        }
     }
 
     @Override
@@ -229,12 +250,12 @@ public class Court extends JPanel implements MouseInputListener {
     @Override
     public void mouseDragged(MouseEvent e) {
         // Déplacement du canon en fonction de la possition de la souris
-        if (animated) canon.DeplacementCanon(e);
+        if (!editMode) canon.DeplacementCanon(e);
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
         // Déplacement du canon en fonction de la possition de la souris
-        if (animated) canon.DeplacementCanon(e);
+        if (!editMode) canon.DeplacementCanon(e);
     } 
 }

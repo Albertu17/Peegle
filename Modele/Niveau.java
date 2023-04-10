@@ -31,6 +31,7 @@ public class Niveau {
 
     public Niveau (String nom) {
         this.nom = nom;
+        pegs = new ArrayList<Pegs>();
     }
     
 

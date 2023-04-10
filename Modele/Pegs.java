@@ -48,6 +48,10 @@ public class Pegs {
         return couleur;
     }
 
+    public void setCouleur(int couleur) {
+        this.couleur = couleur;
+    }
+
     public void toucher() {
         toucher = true;
     }
