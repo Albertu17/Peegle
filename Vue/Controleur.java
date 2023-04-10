@@ -3,8 +3,9 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import MenuDetache.SelectNiveau ;
+// import MenuDetache.SelectNiveau ;
 
 public class Controleur extends JFrame{
     
@@ -45,12 +46,25 @@ public class Controleur extends JFrame{
 
 
     public void launchGameview(String nomNiveau){
+        
         // this.removeAll();
+        // this.setLayout(null);
         gameview = new GameView(this, nomNiveau);
-        if (gameview == null){
+        if (gameview != null){
             add(gameview) ;
         }
         gameview.setVisible(true);
+        this.repaint();
+    }
+    public void launchMenu(){
+
+    }
+    public void launchMenu(JPanel menu){
+        this.removeAll();
+        if (menu != null){
+            add(menu) ;
+        }
+        menu.setVisible(true);
     }
 
 
@@ -63,7 +77,7 @@ public class Controleur extends JFrame{
             @Override
             public void run() {
                 Controleur c = new Controleur() ;
-                c.launchGameview("Triangle");
+                c.launchGameview("Campagne/Level1");
                 c.repaint();
                 
             }

@@ -1,7 +1,10 @@
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -13,11 +16,14 @@ import java.io.StreamCorruptedException;
 import java.io.FileInputStream;
 
 import javax.management.PersistentMBean;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.xml.transform.Templates;
 
 import Vue.Controleur;
@@ -32,6 +38,7 @@ public class SelectNiveau extends JPanel{
     private Controleur controleur ;
 
     private JPanel[] affichage ;
+    private BufferedImage background ;
 
     private Fleche next ;
     private Fleche previous ;
@@ -43,6 +50,9 @@ public class SelectNiveau extends JPanel{
         this.setVisible(true); 
         this.setLayout(null);
         
+        // setImage background
+        background = ImageImport.getImage("Menu/menuBackground.jpg", this.getWidth(), this.getHeight());
+
         this.campagne = campagne ;
         allNameNiveau = getAllNameNiveau(campagne) ;
 
@@ -50,8 +60,10 @@ public class SelectNiveau extends JPanel{
         try {
             InputStream targetStream = new FileInputStream("./Vue/Font/cartoonist_kooky.ttf");
             font =  Font.createFont(Font.TRUETYPE_FONT, targetStream);
+            font = font.deriveFont(25f);
             // font.setFont(font.deriveFont(font.getStyle() | Font.BOLD)); //mets en gras
         } catch (Exception e) {
+            System.out.println("ereur font");
             e.printStackTrace();
         }
 
@@ -78,11 +90,11 @@ public class SelectNiveau extends JPanel{
             imageBlanche = new ImageIcon(ImageImport.getImage("Menu/Fleche/"+ (next?"D":"G") + " blanche.png", width, height));
             imageJaune = new ImageIcon(ImageImport.getImage("Menu/Fleche/"+ (next?"D":"G") + " jaune.png", width, height));
             // enlever tout les contours du JButton ne laisse que l'image
-            this.setBorderPainted(false); 
-            this.setContentAreaFilled(false); 
-            this.setFocusPainted(false); 
-            this.setOpaque(false);
-            this.addMouseListener((MouseListener) new MouseAdapter() 
+                this.setBorderPainted(false); 
+                this.setContentAreaFilled(false); 
+                this.setFocusPainted(false); 
+                this.setOpaque(false);
+                this.addMouseListener((MouseListener) new MouseAdapter() 
             {
                 public void mouseEntered(MouseEvent evt) 
                 {
@@ -103,24 +115,28 @@ public class SelectNiveau extends JPanel{
         }
     }
 
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(background, 0, 0, this);
+    }
+
     private void afficherPage(int page){
         if (affichage != null) for (JPanel	pan : affichage) if (pan != null) this.remove(pan); //nettoye les anciens images et texte
         affichage  = new JPanel[6] ;
 
-        int espacementLargeurPres = this.getWidth()/12 ;
+        int espacementLargeurPres = this.getWidth()/13 ;
         int largeurPres = espacementLargeurPres*3 ;
         int milieu  = this.getHeight() /2 ;
-        int hauteur_pres  = milieu - 250 ;
+        int hauteur_pres  = milieu - 150 ;
         int x,y ;
 
         // affichage icone plus bouton de selections
         String[] aafficher = getNamePage(page) ;
         for(int i = 0 ; i < aafficher.length ; i++){
             affichage[i] = new PresNiveau(aafficher[i], largeurPres, hauteur_pres) ;
-            x = (1+i*4)*largeurPres ;
+            x = (1+(i%3)*4)*espacementLargeurPres ;
             if (i < 3) y = milieu - hauteur_pres -25 ;
             else y  = milieu +25 ;
-
             affichage[i].setBounds(x, y, largeurPres, hauteur_pres); 
             this.add(affichage[i]) ;
             affichage[i].setVisible(true);
@@ -130,10 +146,7 @@ public class SelectNiveau extends JPanel{
         previous.setVisible(page > 0) ;
         next.setVisible((page+1)*6 < allNameNiveau.length);
 
-        // pour dev //TODO erreur les boutons ne s'affiche pas au debut ??? je sais pas pk 
-        // previous.setVisible(true);
-        // next.setVisible(true);
-
+        this.repaint();
     }
 
     private String pathIcone(){
@@ -164,24 +177,44 @@ public class SelectNiveau extends JPanel{
         private ButtonBJ button ;
 
         PresNiveau(String nomNiveau, int largeurPres, int hauteur_pres){
-            // setLayout(null);
+            setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
             int hauteurBouton  = 40 ; 
-            // System.out.println(pathIcone()+nomNiveau+".png"); //TODO supprimer
-            apercu = ImageImport.getImage(pathIcone()+nomNiveau+".png", largeurPres, hauteur_pres-hauteurBouton) ;
-            // afficher l'image
-            // (apercu.createGraphics()).drawImage(apercu, 0, 0, apercu.getWidth(), apercu.getHeight(), this);
-            button = new ButtonBJ(nomNiveau, largeurPres, hauteurBouton) ;
+            apercu = ImageImport.getImage(pathIcone()+nomNiveau+".png", largeurPres, hauteur_pres - hauteurBouton-10) ;
+            Component invisiblePhoto = Box.createRigidArea(new Dimension(0, hauteur_pres - hauteurBouton-7)) ;
+            this.add(invisiblePhoto); //ajout d'un bloc pour l'image et l'affichage du layout
+            button = new ButtonBJ(nomNiveau, hauteurBouton) ;
+            this.add(Box.createRigidArea(new Dimension((largeurPres-button.getWidth())/2, 0))); //ajout d'un bloc pour l'image et l'affichage du layout
             this.add(button); 
+
+
             button.setVisible(true);
-            // this.setBounds(, ,this.getWidth(), hauteurBouton );
-            // repaint();
+            this.setOpaque(false);
+            (invisiblePhoto).addMouseListener((MouseListener) new MouseAdapter() 
+                {
+                    public void mouseEntered(MouseEvent evt) 
+                    {
+                        button.setIcon(button.imageJaune);
+                    }
+                    public void mouseExited(MouseEvent evt) 
+                    {
+                        button.setIcon(button.imageBlanche);
+                    }
+                    public void mouseClicked(MouseEvent evt) 
+                    {   
+                        // TODO mettre ouverture de la partie
+                        System.out.print("lancera la partie : ");
+                        System.out.println((campagne? "Campagne/" : "Perso/") + nomNiveau);
+                        controleur.remove(SelectNiveau.this); //TODO faire un truc dans le controleur
+                        controleur.launchGameview((campagne? "Campagne/" : "Perso/") + nomNiveau);
+                    }
+                });
         }
         
         @Override
         protected void paintComponent(Graphics g) {
-            g.drawImage(apercu, 0, 0, apercu.getWidth(), apercu.getHeight(), this);
-            // TODO Auto-generated method stub
             super.paintComponent(g);
+            // afficher background
+            g.drawImage(apercu, 0, 0, apercu.getWidth(), apercu.getHeight(), this);
         }
      
 
@@ -189,31 +222,41 @@ public class SelectNiveau extends JPanel{
             Icon imageBlanche;
             Icon imageJaune;
 
-            ButtonBJ(String nomNiveau, int largeur, int hauteur){
+            ButtonBJ(String nomNiveau, int hauteur){
                 // super();
-                BufferedImage imageBTemp  = ImageImport.getImage("Menu/planche blanche.png", largeur, hauteur) ;
-                BufferedImage imageJTemp  = ImageImport.getImage("Menu/planche jaune.png", largeur, hauteur);
-                // imageBlanche = new ImageIcon(ImageImport.getImage("Menu/planche blanche.png", largeur, hauteur));
-                // imageJaune = new ImageIcon(ImageImport.getImage("Menu/planche jaune.png", largeur, hauteur));
 
-                Font font = new Font("Arial", Font.BOLD, 20);
+                BufferedImage imageBTemp  = ImageImport.getImage("Menu/planche blanche.png", 100, 100) ;
+                Graphics g = imageBTemp.getGraphics();
+                FontMetrics metrics = (g).getFontMetrics(font);
+                int largeurtexte = metrics.stringWidth(nomNiveau) ;
+                int hauteurtexte = metrics.getHeight() ;
+                int largeur = largeurtexte+ (hauteur - hauteurtexte)/2 ;
+               
+
+                imageBTemp  = ImageImport.getImage("Menu/planche blanche.png", largeur, hauteur) ;
+                BufferedImage imageJTemp  = ImageImport.getImage("Menu/planche jaune.png", largeur, hauteur);
+
+                setSize(largeur, hauteur);
+                
                 // ajouter le nom de la partie sur l'image bouton 
                 //TODO selectionner la bonne font et ajuster la taille de la font ainsi que positionnenment
-                    // blanc
-                    Graphics g = imageBTemp.getGraphics();
+                // blanc
+
+                    g = imageBTemp.getGraphics();
                     g.setFont(font);
                     g.setColor(Color.WHITE);
-                    g.drawString(nomNiveau, 30, 20);
-
+                    g.drawString(nomNiveau, (largeur - largeurtexte)/2, (hauteur - hauteurtexte)/2+hauteurtexte);
+                    
                     // jaune
                     g = imageJTemp.getGraphics();
                     g.setFont(font);
                     g.setColor(Color.YELLOW);
-                    g.drawString(nomNiveau, 30, 20);
+                    g.drawString(nomNiveau, (largeur - largeurtexte)/2, (hauteur - hauteurtexte)/2+hauteurtexte);
 
 
                 imageBlanche =  new ImageIcon(imageBTemp);
                 imageJaune =  new ImageIcon(imageJTemp) ;
+
                 // enlever tout les contours du JButton ne laisse que l'image
                     this.setBorderPainted(false); 
                     this.setContentAreaFilled(false); 
@@ -236,7 +279,8 @@ public class SelectNiveau extends JPanel{
                         // TODO mettre ouverture de la partie
                         System.out.print("lancera la partie : ");
                         System.out.println((campagne? "Campagne/" : "Perso/") + nomNiveau);
-                        // controleur.launchGameview((campagne? "Campagne/" : "Perso/") + nomNiveau);
+                        controleur.remove(SelectNiveau.this); //TODO faire un truc dans le controleur
+                        controleur.launchGameview((campagne? "Campagne/" : "Perso/") + nomNiveau);
                     }
                 });
             
@@ -246,18 +290,16 @@ public class SelectNiveau extends JPanel{
     }
 
     public static void main(String[] args){
-        // ImageImport.setImage(false) ;
-        // Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize(); 
-        // int hauteur = (int)tailleEcran.getHeight(); 
-        // int largeur = (int)tailleEcran.getWidth();
-        // // SelectNiveau sn  =new SelectNiveau(new Controleur(), true) ;
-        // JFrame frame = new JFrame() ;
-        // frame.setSize(tailleEcran);
-        // frame.setVisible(true);
-        // // frame.add(sn) ;
-        // // sn.setVisible(true);
 
-        Controleur c  = new Controleur() ;
-        SelectNiveau sn  = new SelectNiveau(c, true) ;
+        SwingUtilities.invokeLater(new Runnable(){
+            @Override
+            public void run() {
+                Controleur c  = new Controleur() ;
+                // c.launchMenu(new SelectNiveau(c, true));
+                SelectNiveau sn  = new SelectNiveau(c, true) ;
+                
+            }
+
+        });
     }
 }
