@@ -1,4 +1,6 @@
 package Vue;
+import java.awt.Container;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
@@ -9,10 +11,11 @@ import Vue.Menu.Menu;
 
 public class Controleur extends JFrame{
     
+    public Container container;
     public GameView gameview;
     public Menu menu;
-    public int width;
-    public int height;
+    public static int width;
+    public static int height;
 
     Controleur(){
 
@@ -26,14 +29,18 @@ public class Controleur extends JFrame{
         height = (int) size.getHeight();
         setSize(width, height); // Met la fenêtre en plein écran.
         setUndecorated(true);
-       
+        // setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Peggle");
 
         // empeche l'utilisateur de resize la fenetre :
         setResizable(false);
        
+        // pack();
         setVisible(true);
+
+        container = getContentPane();
+        container.setLayout(null);
     }
 
     // override pour prendre l'attribut width de cette classe et pas celui de la frame (plus stable).
@@ -56,7 +63,7 @@ public class Controleur extends JFrame{
 
     public void launchGameview(){
         if (gameview == null){
-            gameview = new GameView(this, true);
+            gameview = new GameView(this);
             add(gameview);
         }
         if (menu != null) menu.setVisible(false);
@@ -82,8 +89,6 @@ public class Controleur extends JFrame{
                     // lance direct le jeu
                     // c.launchGameview();
                     EditeurNiveaux e = new EditeurNiveaux(c);
-                    c.add(e);
-
                 }
                 c.repaint();
             }

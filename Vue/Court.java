@@ -35,11 +35,11 @@ public class Court extends JPanel implements MouseInputListener {
     ArrayList<Pegs> toucherPegs;
     boolean animated;
 
-    public Court(int courtWith, int courtHeight, boolean animated)  {
+    public Court(int courtWith, int courtHeight)  {
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
         width = courtWith;
         height = courtHeight;
-        this.animated = animated; 
+        animated = true; // Par défault
 
         // Listeners
         this.addMouseListener(this);
@@ -57,7 +57,6 @@ public class Court extends JPanel implements MouseInputListener {
         add(canon);
         canon.setVisible(true);
         //the canon doesn't show up fix the problem
-
         canon.setBalleATirer(new Ball(0, 0, 0, 0, this));
 
         // Balls
@@ -66,7 +65,6 @@ public class Court extends JPanel implements MouseInputListener {
         // Sceau
         sceau = new Sceau(this);
 
-        if (animated) addTriangleOfPegs();
         animate();
     }
 
@@ -81,18 +79,19 @@ public class Court extends JPanel implements MouseInputListener {
     }
 
     public void animate() {
-        Timer timer = new Timer(10, new ActionListener() {
+        final Timer timer = new Timer(10, null);
+        timer.addActionListener(new ActionListener() {
             double now=System.nanoTime();
             double last;
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (animated) {
+                if (animated) { // animate doit forcément être appelée, même en non-animée, pour repaint le court et ainsi le rendre visible.
                     last = System.nanoTime();
                     for (Ball b:balls){
                         if (b.isPresent()) b.updateBall((last-now)*1.0e-9,sceau);
                     }
                     sceau.move(((last-now)*1.0e-9));
-                }   
+                } // else timer.stop(); En cas de besoin de stopper tout le timer.
                 repaint();
                 now=last;
             }
@@ -102,7 +101,7 @@ public class Court extends JPanel implements MouseInputListener {
 
     public void paint(Graphics g) {
         super.paint(g);
-
+        
         //Use ARCADE_N.TTF font
         try {
             InputStream targetStream = new FileInputStream("./Vue/Font/ARCADE_N.TTF");
@@ -204,8 +203,7 @@ public class Court extends JPanel implements MouseInputListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         // lancer une balle
-        balls.add(canon.tirer()) ;
-        
+        if (animated) balls.add(canon.tirer());
     }
 
     @Override
@@ -231,12 +229,12 @@ public class Court extends JPanel implements MouseInputListener {
     @Override
     public void mouseDragged(MouseEvent e) {
         // Déplacement du canon en fonction de la possition de la souris
-        canon.DeplacementCanon(e);
+        if (animated) canon.DeplacementCanon(e);
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
         // Déplacement du canon en fonction de la possition de la souris
-        canon.DeplacementCanon(e);    
+        if (animated) canon.DeplacementCanon(e);
     } 
 }

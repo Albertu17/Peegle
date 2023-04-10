@@ -40,6 +40,10 @@ public class Pegs {
         return radius;
     }
 
+    public void setRadius(int radius) {
+        this.radius = radius;
+    }
+
     public int getCouleur() {
         return couleur;
     }
