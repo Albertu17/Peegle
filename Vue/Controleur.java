@@ -88,7 +88,7 @@ public class Controleur extends JFrame{
             @Override
             public void run() {
                 Controleur c = new Controleur() ;
-                c.launchParametre();
+                c.launchGameview();
                 c.repaint();
             }
 

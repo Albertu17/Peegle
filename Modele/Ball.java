@@ -282,5 +282,13 @@ public class Ball{
         return image;
     }
 
+    public void putSkin1(){
+        image = ImageImport.getImage("ball.png", 20, 20);
+    }
+
+    public void putSkin2(){
+        image = ImageImport.getImage("soccerBall.png", 20, 20);
+    }
+
 
 }

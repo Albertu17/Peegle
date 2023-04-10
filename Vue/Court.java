@@ -238,4 +238,10 @@ public class Court extends JPanel implements MouseInputListener {
         // Déplacement du canon en fonction de la possition de la souris
         canon.DeplacementCanon(e);    
     } 
+
+    public void setSkin2(){
+        for(Ball ball:balls){
+            ball.putSkin2();
+        }
+    }
 }

@@ -70,7 +70,7 @@ public class GameView extends JPanel {
                public void mouseClicked(MouseEvent evt) 
                {
                 //c.backMenuFromGameView();
-                System.exit(0);
+                setSkin2();
                }
         });
         add(back);
@@ -91,6 +91,10 @@ public class GameView extends JPanel {
 
     public int getCourtHeight() {
         return courtHeight;
+    }
+
+    public void setSkin2(){
+        court.setSkin2();
     }
 
 }
