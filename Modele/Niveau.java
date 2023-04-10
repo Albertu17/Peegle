@@ -3,6 +3,7 @@ package Modele;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -92,19 +93,19 @@ public class Niveau {
 
     
     public static void createIconeNiveau(String niveau){
-        int width = 1080 ;
-        int height = 520 ;
+        int width = 1080/3 ;
+        int height = 520/3 ;
 
-        // Niveau nv = Niveau.importPegles(niveau, width, height);
-        Niveau nv = Niveau.NiveauAleatoire(width, height, 20, 15);
-
+        Niveau nv = Niveau.importPegles(niveau, width, height);
 
         BufferedImage tempImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics g = (tempImage.createGraphics());
         Graphics2D g2d = (Graphics2D) g;      
         g2d.setColor(Color.white);
-        g2d.fillRect(0, 0, width, height);   
-        g2d.drawRoundRect(0, 0, width, height, 10, 10);
+        // g2d.fillRect(0, 0, width, height);   
+        // g2d.drawRoundRect(0, 0, width, height, 10, 10);
+        g2d.fill(new RoundRectangle2D.Float(0, 0, width, height, 40,
+                40));
 
         
         for (Pegs peg:nv.getPegs()) {
@@ -120,9 +121,14 @@ public class Niveau {
     
     public static void main(String[] args) {
         ImageImport.setImage(false);
+        boolean campagne = true ;
+        for(String name : new File("Niveau/"+ (campagne? "Campagne" : "Perso")).list()){
+            name  = name.substring(0, name.length() -5) ;
+            createIconeNiveau((campagne? "Campagne/" : "Perso/")+name);
+        }
         // createIconeNiveau("Perso/Triangle");
         // createIconeNiveau("Campagne/Level1");
-        createIconeNiveau("Campagne/2Carre");
+        // createIconeNiveau("Campagne/2Carre");
     }
 
 

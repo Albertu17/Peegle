@@ -115,8 +115,8 @@ class Menu extends JFrame {
               public void mouseClicked(MouseEvent evt) 
               {
                 Controleur c = new Controleur() ;
-                c.launchGameview();
-                c.repaint();
+                // c.launchGameview();
+                // c.repaint();
               }
         });
 

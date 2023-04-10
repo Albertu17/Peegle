@@ -4,6 +4,7 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import MenuDetache.SelectNiveau ;
 
 public class Controleur extends JFrame{
     
@@ -44,6 +45,7 @@ public class Controleur extends JFrame{
 
 
     public void launchGameview(String nomNiveau){
+        // this.removeAll();
         gameview = new GameView(this, nomNiveau);
         if (gameview == null){
             add(gameview) ;
