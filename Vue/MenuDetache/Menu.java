@@ -1,4 +1,4 @@
-
+package Vue.MenuDetache;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -20,7 +20,7 @@ import javax.swing.*;
 import Vue.Controleur;
 import Vue.ImageImport;
 
-class Menu extends JFrame {
+public class Menu extends JPanel {
 
     private int largeur;
     private int hauteur;
@@ -45,10 +45,13 @@ class Menu extends JFrame {
     Icon imageIconQuit2;
     Icon imageIconQuit;
 
-    Menu(int hauteur,int largeur) { 
+    private BufferedImage background;
+    private BufferedImage title;
+
+    public Menu(Controleur c) { 
         ImageImport.setImage(true);
-        this.hauteur=hauteur;
-        this.largeur=largeur;
+        this.hauteur=c.height;
+        this.largeur=c.width;
         imageIconPlay = new ImageIcon(ImageImport.getImage("Menu/planche police blanche.png"));
         Image image = ((ImageIcon) imageIconPlay).getImage(); // transform it 
         Image newimg = image.getScaledInstance(200, 50,  java.awt.Image.SCALE_SMOOTH);
@@ -155,7 +158,9 @@ class Menu extends JFrame {
            }
            public void mouseClicked(MouseEvent evt) 
            {
-            //System.exit(0);
+            Controleur c = new Controleur();
+            c.launchParametre();
+            c.repaint();
            }
         });
 
@@ -182,35 +187,28 @@ class Menu extends JFrame {
         add(btnCampagne);
         add(btnOption);
         add(btnQuit);
-        add(new Test());
+
+        
         
         setSize(largeur, hauteur);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    }
 
-    public class Test extends JPanel{
-        private BufferedImage background;
-        private BufferedImage title;
-        public Test() {
-            try {
-                background = ImageImport.getImage("Menu/menuBackground.jpg");
-                background = resizeImage(background, largeur, hauteur);
-                title = ImageImport.getImage("Menu/trucjojo.png");
-            } catch (IOException ex) {
-                
-            }
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            Graphics2D g2d = (Graphics2D) g.create();
-            g2d.drawImage(background, 0, 0, this);
-            g2d.drawImage(title, middleW-title.getWidth()/2-10, 40, this);
+        try {
+            background = ImageImport.getImage("Menu/menuBackground.jpg");
+            background = resizeImage(background, largeur, hauteur);
+            title = ImageImport.getImage("Menu/trucjojo.png");
+        } catch (IOException ex) {
             
-
-
         }
+    
+    }
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g.create();
+        g2d.drawImage(background, 0, 0, this);
+        g2d.drawImage(title, middleW-title.getWidth()/2-10, 40, this);
+        
+
 
     }
     
@@ -221,11 +219,9 @@ class Menu extends JFrame {
         return outputImage;
     }
     public static void main(String[] args){
-        Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize(); 
-        int hauteur = (int)tailleEcran.getHeight(); 
-        int largeur = (int)tailleEcran.getWidth();
-        Menu m = new Menu(hauteur,largeur);
-        m.setVisible(true);
+        Controleur c = new Controleur();
+        c.launchMenu();
+        c.repaint();
     }
 
 }

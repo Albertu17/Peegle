@@ -4,10 +4,15 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import Vue.MenuDetache.Menu;
+
+
 
 public class Controleur extends JFrame{
-    
+
+    public MenuParametre menuParametre;
     public GameView gameview;
+    public Menu menu;
     public int width;
     public int height;
 
@@ -42,6 +47,14 @@ public class Controleur extends JFrame{
         return height;
     }
 
+    public void launchMenu(){
+        if(menu == null){
+            menu = new Menu(this);
+            add(menu);
+        }
+        menu.setVisible(true);
+    }
+
 
     public void launchGameview(){
         if (gameview == null){
@@ -51,6 +64,20 @@ public class Controleur extends JFrame{
         gameview.setVisible(true);
     }
 
+    public void launchParametre(){
+        if (menuParametre == null){
+            menuParametre = new MenuParametre(this);
+            add(menuParametre);
+        }
+        menuParametre.setVisible(true);
+        this.repaint();
+    }
+
+    public void backMenuFromGameView(){
+        gameview.setVisible(false);
+        launchParametre();
+        
+    }
 
 
     public static void main(String[] args) {
@@ -61,9 +88,8 @@ public class Controleur extends JFrame{
             @Override
             public void run() {
                 Controleur c = new Controleur() ;
-                c.launchGameview();
+                c.launchParametre();
                 c.repaint();
-                
             }
 
         });
