@@ -88,7 +88,9 @@ public class Controleur extends JFrame{
                 }else{
                     // lance direct le jeu
                     // c.launchGameview();
-                    EditeurNiveaux e = new EditeurNiveaux(c);
+                    EditeurNiveaux e = new EditeurNiveaux(width, height);
+                    e.setBounds(0, 0, width, height);
+                    c.container.add(e);
                 }
                 c.repaint();
             }

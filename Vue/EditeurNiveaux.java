@@ -23,13 +23,7 @@ import javax.swing.event.MouseInputListener;
 import Modele.Niveau;
 import Modele.Pegs;
 
-public class EditeurNiveaux {
-
-    public Controleur controleur;
-    Container fond;
-
-    private int width;
-    private int height;
+public class EditeurNiveaux extends JPanel {
 
     // Court
     Court court;
@@ -51,12 +45,9 @@ public class EditeurNiveaux {
 
     // TODO: imageicon boutons, rebond sur pegs (chmt l 152 BALL)
 
-    EditeurNiveaux(Controleur c) {
+    EditeurNiveaux(int width, int height) {
 
-        this.controleur = c;
-        fond = c.container;
-        width = controleur.getWidth();
-        height = controleur.getHeight();
+        setLayout(null);
 
         niveauCree = new Niveau("enAttente");
 
@@ -69,33 +60,33 @@ public class EditeurNiveaux {
         court.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         court.setBounds(0, 0, courtWidth, courtHeight);
         court.setVisible(true);
-        fond.add(court, BorderLayout.CENTER);
+        add(court, BorderLayout.CENTER);
 
         // case Peg bleu
         CasePeg casePegBleu = new CasePeg(width-courtWidth, courtHeight * 1/4, 1);
         casePegBleu.setBounds(courtWidth, 0, width - courtWidth, courtHeight * 1/4);
-        fond.add(casePegBleu);
+        add(casePegBleu);
 
         // case Peg Rouge
         CasePeg casePegRouge = new CasePeg(width-courtWidth, courtHeight * 1/4, 2);
         casePegRouge.setBounds(courtWidth, courtHeight * 1/4, width - courtWidth, courtHeight * 1/4);
-        fond.add(casePegRouge);
+        add(casePegRouge);
 
         // case Peg Violet
         CasePeg casePegViolet = new CasePeg(width-courtWidth, courtHeight * 1/4, 3);
         casePegViolet.setBounds(courtWidth, courtHeight * 1/2, width - courtWidth, courtHeight * 1/4);
-        fond.add(casePegViolet);
+        add(casePegViolet);
 
         // case peg Vert
         CasePeg casePegVert = new CasePeg(width-courtWidth, courtHeight * 1/4, 4);
         casePegVert.setBounds(courtWidth, courtHeight * 3/4, width - courtWidth, courtHeight * 1/4);
-        fond.add(casePegVert);
+        add(casePegVert);
 
         // JPanel panelBoutons
         JPanel panelBoutons = new JPanel();
         panelBoutons.setBounds(0, courtHeight, width, height - courtHeight);
         panelBoutons.setLayout(null);
-        fond.add(panelBoutons);
+        add(panelBoutons);
 
         // Bouton pause
         JButton pause = new JButton("||");
