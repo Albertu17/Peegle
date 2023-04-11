@@ -1,11 +1,13 @@
 package Vue;
 import java.awt.Dimension;
+import java.awt.Menu;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-// import MenuDetache.SelectNiveau ;
+
+import Vue.Menu.*; 
 
 public class Controleur extends JFrame{
     
@@ -46,9 +48,8 @@ public class Controleur extends JFrame{
 
 
     public void launchGameview(String nomNiveau){
-        
-        // this.removeAll();
-        // this.setLayout(null);
+        this.getContentPane().removeAll();
+        this.setLayout(null);
         gameview = new GameView(this, nomNiveau);
         if (gameview != null){
             add(gameview) ;
@@ -56,15 +57,16 @@ public class Controleur extends JFrame{
         gameview.setVisible(true);
         this.repaint();
     }
-    public void launchMenu(){
-
-    }
+    // public void launchMenu(){
+    //     launchMenu(new Menu(this));
+    // }
     public void launchMenu(JPanel menu){
-        this.removeAll();
+        this.getContentPane().removeAll();
         if (menu != null){
             add(menu) ;
         }
         menu.setVisible(true);
+        this.repaint();
     }
 
 
@@ -77,7 +79,8 @@ public class Controleur extends JFrame{
             @Override
             public void run() {
                 Controleur c = new Controleur() ;
-                c.launchGameview("Campagne/Level1");
+                // c.launchGameview("Campagne/Level1");
+                c.launchMenu(new SelectNiveau(c, true));
                 c.repaint();
                 
             }

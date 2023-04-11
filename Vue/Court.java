@@ -83,8 +83,6 @@ public class Court extends JPanel implements MouseInputListener {
         } 
 
         animate();
-        System.out.println(width);
-        System.out.println(height);
     }
 
     public void animate() {

@@ -1,38 +1,31 @@
+package Vue.Menu;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.StreamCorruptedException;
+import java.util.List;
 import java.io.FileInputStream;
 
-import javax.management.PersistentMBean;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.xml.transform.Templates;
-
 import Modele.*;
 import Vue.Controleur;
 import Vue.ImageImport;
 
 public class SelectNiveau extends JPanel{
 
-    private String[] allNameNiveau ;
+    private List<String> allNameNiveau ;
     private int page_act ;
     private boolean campagne ;
     private Font font ;
@@ -44,7 +37,7 @@ public class SelectNiveau extends JPanel{
     private Fleche next ;
     private Fleche previous ;
 
-    SelectNiveau(Controleur c, boolean campagne){
+    public SelectNiveau(Controleur c, boolean campagne){
         controleur = c ;
         setBounds(0, 0, controleur.getWidth(), controleur.getHeight());
         c.add(this) ;
@@ -55,7 +48,7 @@ public class SelectNiveau extends JPanel{
         background = ImageImport.getImage("Menu/menuBackground.jpg", this.getWidth(), this.getHeight());
 
         this.campagne = campagne ;
-        allNameNiveau = getAllNameNiveau(campagne) ;
+        allNameNiveau = Niveau.getAllNameNiveau(campagne) ;
 
         // import de la police 
         try {
@@ -145,7 +138,7 @@ public class SelectNiveau extends JPanel{
 
         // affichage des boutons retour et suivant :
         previous.setVisible(page > 0) ;
-        next.setVisible((page+1)*6 < allNameNiveau.length);
+        next.setVisible((page+1)*6 < allNameNiveau.size());
 
         this.repaint();
     }
@@ -155,34 +148,25 @@ public class SelectNiveau extends JPanel{
     }
 
     private String[] getNamePage(int page){
-        int NbrElement = allNameNiveau.length - page*6 ;
+        int NbrElement = allNameNiveau.size() - page*6 ;
         if (NbrElement > 6) NbrElement  =6 ;
         String[] ret = new String[NbrElement] ;
         for (int i = 0 ; i < ret.length ;i++){
-            ret[i] = allNameNiveau[page*6 + i] ;
+            ret[i] = allNameNiveau.get(page*6 + i) ;
         }
         return ret ;
     }
 
-    public String[] getAllNameNiveau(boolean campagne){
-        String[] atraiter = new File("Niveau/"+ (campagne? "Campagne" : "Perso")).list() ;
-        String[] ret = new String[atraiter.length] ;
-        for (int i = 0 ; i < ret.length ; i++){
-            ret[i] = atraiter[i].substring(0, atraiter[i].length() -5) ; //enlever l'extension .pegs
-        }
-        return ret ;
-    }
-    
     class PresNiveau extends JPanel{
         private BufferedImage apercu ;
+        private BufferedImage cadre ;
         private ButtonBJ button ;
 
         PresNiveau(String nomNiveau, int largeurPres, int hauteur_pres){
             setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
             int hauteurBouton  = 40 ; 
-            // apercu = Niveau.getIconeNiveau(pathIcone()+nomNiveau, largeurPres, hauteur_pres - hauteurBouton-10) ;
             apercu = ImageImport.getImage(pathIcone()+nomNiveau+".png", largeurPres, hauteur_pres - hauteurBouton-10) ;
-            // Component invisiblePhoto = Box.createRigidArea(new Dimension(0, hauteur_pres - hauteurBouton-7)) ;
+            cadre = ImageImport.getImage("Menu/CadreCampagne.png", largeurPres, hauteur_pres - hauteurBouton-10) ;
             JPanel invisiblePhoto = new JPanel() ;
             invisiblePhoto.setSize(largeurPres, hauteur_pres - hauteurBouton-7);
             invisiblePhoto.setOpaque(false);
@@ -206,10 +190,6 @@ public class SelectNiveau extends JPanel{
                     }
                     public void mouseClicked(MouseEvent evt) 
                     {   
-                        // TODO mettre ouverture de la partie
-                        System.out.print("lancera la partie : ");
-                        System.out.println((campagne? "Campagne/" : "Perso/") + nomNiveau);
-                        controleur.remove(SelectNiveau.this); //TODO faire un truc dans le controleur
                         controleur.launchGameview((campagne? "Campagne/" : "Perso/") + nomNiveau);
                     }
                 });
@@ -220,6 +200,7 @@ public class SelectNiveau extends JPanel{
             super.paintComponent(g);
             // afficher background
             g.drawImage(apercu, 0, 0, apercu.getWidth(), apercu.getHeight(), this);
+            g.drawImage(cadre, 0, 0, cadre.getWidth(), cadre.getHeight(), this);
         }
      
 
@@ -228,13 +209,11 @@ public class SelectNiveau extends JPanel{
             Icon imageJaune;
 
             ButtonBJ(String nomNiveau, int hauteur){
-                // super();
-
                 BufferedImage imageBTemp  = ImageImport.getImage("Menu/planche blanche.png", 100, 100) ;
                 Graphics g = imageBTemp.getGraphics();
                 FontMetrics metrics = (g).getFontMetrics(font);
                 int largeurtexte = metrics.stringWidth(nomNiveau) ;
-                int hauteurtexte = metrics.getHeight() ;
+                int hauteurtexte = metrics.getAscent() ;
                 int largeur = largeurtexte+ (hauteur - hauteurtexte)/2 ;
                
 
@@ -244,7 +223,6 @@ public class SelectNiveau extends JPanel{
                 setSize(largeur, hauteur);
                 
                 // ajouter le nom de la partie sur l'image bouton 
-                //TODO selectionner la bonne font et ajuster la taille de la font ainsi que positionnenment
                 // blanc
 
                     g = imageBTemp.getGraphics();
@@ -281,10 +259,6 @@ public class SelectNiveau extends JPanel{
                     }
                     public void mouseClicked(MouseEvent evt) 
                     {   
-                        // TODO mettre ouverture de la partie
-                        System.out.print("lancera la partie : ");
-                        System.out.println((campagne? "Campagne/" : "Perso/") + nomNiveau);
-                        controleur.remove(SelectNiveau.this); //TODO faire un truc dans le controleur
                         controleur.launchGameview((campagne? "Campagne/" : "Perso/") + nomNiveau);
                     }
                 });
@@ -300,9 +274,7 @@ public class SelectNiveau extends JPanel{
             @Override
             public void run() {
                 Controleur c  = new Controleur() ;
-                // c.launchMenu(new SelectNiveau(c, true));
-                SelectNiveau sn  = new SelectNiveau(c, true) ;
-                
+                c.launchMenu(new SelectNiveau(c, true));                
             }
 
         });

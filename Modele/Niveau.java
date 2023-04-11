@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
@@ -90,13 +91,17 @@ public class Niveau {
 
 
     // creation icone 
-
-
     public static void createIconeNiveau(String niveau){
         int width = 1080/3 ;
         int height = 520/3 ;
-
         Niveau nv = Niveau.importPegles(niveau, width, height);
+        createIconeNiveau(nv);
+    }
+    
+    public static void createIconeNiveau(Niveau nv){
+        int width = 1080/3 ;
+        int height = 520/3 ;
+
 
         BufferedImage tempImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics g = (tempImage.createGraphics());
@@ -104,27 +109,24 @@ public class Niveau {
         g2d.setColor(Color.white);
         // g2d.fillRect(0, 0, width, height);   
         // g2d.drawRoundRect(0, 0, width, height, 10, 10);
-        g2d.fill(new RoundRectangle2D.Float(0, 0, width, height, 40,
-                40));
+        g2d.fill(new RoundRectangle2D.Float(0, 0, width, height, 40, 40));
 
         
         for (Pegs peg:nv.getPegs()) {
             g2d.drawImage(ImageImport.getImage(peg.getImageString()), peg.getX(), peg.getY(), peg.getRadius(), peg.getRadius(), null);
         }
         try{
-            ImageIO.write(tempImage, "png", new File("Vue/Image/IconeNiveau/" + nv.getNom() +".png"));
+            ImageIO.write(tempImage, "png", new File("Vue/Image/IconeNiveau/" +(nv.campagne? "Campagne/" : "Perso/")+ nv.getNom() +".png"));
         }catch(Exception ex){
             System.out.println("Impossible d'enregistrer l'image.");
             System.out.println(ex);
         }
 
-        // update l'icone du niveau
-        createIconeNiveau((nv.campagne? "Campagne/" : "Perso/") + niveau); 
     }
     
     public static void main(String[] args) {
         ImageImport.setImage(false);
-        boolean campagne = false ;
+        boolean campagne = true ;
         for(String name : new File("Niveau/"+ (campagne? "Campagne" : "Perso")).list()){
             name  = name.substring(0, name.length() -5) ;
             createIconeNiveau((campagne? "Campagne/" : "Perso/")+name);
@@ -135,6 +137,19 @@ public class Niveau {
     }
 
 
+    public static List<String> getAllNameNiveau(boolean campagne){
+        String[] atraiter = new File(dosierSauvegarde+ (campagne? "Campagne" : "Perso")).list() ;
+        List<String> ret = new ArrayList<>() ;
+        for (int i = 0 ; i < atraiter.length ; i++){
+            ret.add(atraiter[i].substring(0, atraiter[i].length() -5) ); //enlever l'extension .pegs
+        }
+        return ret ;
+    }
+    public static List<String> getAllNameNiveau(){
+        List<String> tout  = getAllNameNiveau(true) ;
+        tout.addAll(getAllNameNiveau(false) );
+        return tout ;
+    }
 
     // enregistrement d'un niveau    
 
@@ -173,10 +188,12 @@ public class Niveau {
             e.printStackTrace();
         }
 
+        // update l'icone du niveau
+        createIconeNiveau(this); 
     }
     
     public static Niveau importPegles(String name, int widthCourt, int heightCourt){
-        Niveau nv = new Niveau(name) ;
+        Niveau nv = new Niveau(name.split("/")[name.split("/").length -1]) ;//permet de récupéré uniquement le nom et pas le chemin d'accés
 
        try (Scanner save = new Scanner(new File(dosierSauvegarde + name + nomExtension))) {
         String[] line = save.nextLine().split(";") ;
