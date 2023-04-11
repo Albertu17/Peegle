@@ -68,7 +68,7 @@ public class GameView extends JPanel {
             }
             public void mouseClicked(MouseEvent evt) 
             {
-                controleur.launchMenu(new Menu(controleur));
+                controleur.launchMenu() ;
                 setSkin2();
             }
         });
