@@ -31,14 +31,24 @@ public class Court extends JPanel implements MouseInputListener {
     private Sceau sceau;
     private Niveau niveau ;
     private int toucher;
+    private String nom;
     private ArrayList<Ball> balls;
     private ArrayList<Rectangle> rectangles;
     private ArrayList<Pegs> pegs;
     ArrayList<Pegs> toucherPegs;
     private Background background;
 
-    private int NbDeBall = 25 ;
+    private int NbDeBall = 250 ;
     private boolean nbDeBallChange=true;
+    private int MaxCombo = 0;
+    private Font newFont = ImageImport.newFont;
+    private int mouseX = 0;
+    private int mouseY = 0;
+    private boolean GameOver = false;
+    private int ScoreMax = 0;
+    private int ComboEncours = 0;
+    private int frameCount = 0;
+    private int afficageCombo = 0;
 
 
     public Court(int courtWith, int courtHeight, String nomLevel)  {
@@ -46,6 +56,7 @@ public class Court extends JPanel implements MouseInputListener {
         setOpaque(false);
         width = courtWith;
         height = courtHeight;
+        nom = nomLevel;
 
        
         // Listeners
@@ -73,10 +84,9 @@ public class Court extends JPanel implements MouseInputListener {
 
         // Sceau
         sceau = new Sceau(this);
-        for (int i=0;i<10;i++){
-            for (int j=0;j<10;j++){
-                pegs.add(new Pegs(600+i*20,300+j*20,10,1));
-            }
+        for (int i=0;i<50;i++){
+            pegs.add(new Pegs(100+i*25, 400, 20, 1));
+            pegs.add(new Pegs(100+i*25, 500, 20, 1));
         }
 
 
@@ -113,6 +123,34 @@ public class Court extends JPanel implements MouseInputListener {
     public void paint(Graphics g) {
         
         super.paint(g);
+        //FIN DE PARTIE
+        if(pegs.size()==0){
+            BufferedImage WinScreen;
+            if (mouseX>535 && mouseX<985 && mouseY>695 && mouseY<765){
+             WinScreen = ImageImport.getImage("WinScreen.png", width, height);
+            }
+            else {
+                 WinScreen = ImageImport.getImage("WinScreenDisabled.png", width, height);
+            }
+            GameOver = true;
+            setBorder(null);
+            g.drawImage(WinScreen, 0, 0, this);
+            background.setOver(true);
+            background.repaint();
+            g.setFont(newFont.deriveFont(18f));
+            g.setColor(Color.WHITE);
+            g.drawString("Level "+nom + " Completed !", 550, 125);
+            g.setFont(newFont.deriveFont(26f));
+            g.drawString("Score: "+toucher, 500, 210);
+            g.drawString("Balles Restantes: "+NbDeBall, 500, 260);
+            g.drawString("Balles Utilisees: "+(250-NbDeBall), 500, 310);
+            g.drawString("Max Score: "+ ScoreMax, 500, 360);
+            if (toucher>ScoreMax){
+                g.drawString("Nouveau Max Score !!!", 500, 610);
+            }
+            return;
+        }
+        
 
        
         // System.out.println(toucher);
@@ -126,30 +164,52 @@ public class Court extends JPanel implements MouseInputListener {
 
             
         }
-
+        frameCount++;
+        if (ComboEncours != 0) {
+        g.setFont(newFont.deriveFont(144f));
+        if (ComboEncours>MaxCombo) MaxCombo = ComboEncours;
+        if (afficageCombo>5) g.setColor(Color.RED);
+        else if (afficageCombo>3) g.setColor(Color.ORANGE);
+        else g.setColor(Color.YELLOW);
+        if(frameCount>=10){
+            g.drawString("Combo x"+afficageCombo, (int)150, (int)400);
+            toucher += afficageCombo*afficageCombo;
+            background.repaint();
+            frameCount = 0;
+            if (afficageCombo<ComboEncours) afficageCombo++;
+            else {
+                ComboEncours = 0;
+                afficageCombo = 0;
+            }
+        }
+    
+        else {
+            g.drawString("Combo x"+afficageCombo, (int)150, (int)400);
+        }
+    }
         //remove ball hit the ground
         boolean remove = false;
         for (int i=0;i<balls.size();i++) {
-            if (balls.get(i).getHitGround()) {
-                balls.remove(i);
-                remove = true;
-                
-            }
+            if (balls.get(i).getHitGround()) { 
+                        ComboEncours = balls.get(i).getCombo();
+                        balls.remove(i);
+                        remove = true;
+                    }
         }
+        
         if (remove) {
-        for (Pegs peg:pegs) {
-            if (peg.getHit()) {
-                toucherPegs.add(peg);
+            for (Pegs peg:pegs) {
+                if (peg.getHit() && !toucherPegs.contains(peg)) {
+                    toucherPegs.add(peg);
+                }
             }
-        }
     }
+    
         if (toucherPegs.size()>0){
         Pegs peganim = toucherPegs.get(0);
         g.drawOval(peganim.getX(), peganim.getY(), peganim.getRadius(), peganim.getRadius());
         pegs.remove(peganim);
         toucherPegs.remove(peganim);
-        toucher++;
-        background.repaint();
         }
 
         //g.drawRect((int)sceau.X, (int)sceau.Y, (int)sceau.longeur, (int)sceau.hauteur);
@@ -178,6 +238,7 @@ public class Court extends JPanel implements MouseInputListener {
         BasicStroke dashed = new BasicStroke(5.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
         g2DGameview.setStroke(dashed);
         g2DGameview.drawPolyline(canon.getXLigneViser(), canon.getYLigneViser(), 10);
+
         
     }   
 
@@ -218,12 +279,19 @@ public class Court extends JPanel implements MouseInputListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         // lancer une balle
+        if (!GameOver) {
+        
         if (NbDeBall>0){ 
             background.repaint();
             nbDeBallChange=true;
             balls.add(canon.tirer());
             NbDeBall--;
         }
+    } else {
+        if (mouseX>535 && mouseX<985 && mouseY>695 && mouseY<765){
+            //Button next level! clicked
+    }
+}
         
     }
 
@@ -253,12 +321,17 @@ public class Court extends JPanel implements MouseInputListener {
 
     @Override
     public void mouseDragged(MouseEvent e) {
+        mouseX = e.getX();
+        mouseY = e.getY();
         // Déplacement du canon en fonction de la possition de la souris
         canon.DeplacementCanon(e);
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
+        mouseX = e.getX();
+        mouseY = e.getY();
+
         // Déplacement du canon en fonction de la possition de la souris
         canon.DeplacementCanon(e);    
     }

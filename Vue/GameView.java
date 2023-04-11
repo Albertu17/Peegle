@@ -38,7 +38,7 @@ public class GameView extends JPanel {
         courtHeight = heigth - 200;
         
         // Court
-        court = new Court(courtWidth, courtHeight, "Triangle"); // spécifier le niveau à importer
+        court = new Court(courtWidth, courtHeight, null); // spécifier le niveau à importer
         court.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         court.setBounds((width-courtWidth)/2, (heigth-courtHeight)/2, courtWidth, courtHeight);
         court.setVisible(true);

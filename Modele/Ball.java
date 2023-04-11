@@ -31,6 +31,7 @@ public class Ball{
 
     private double g=300; // m/s
     private double coeffRebond = 0.8;
+    private int combo = 0;
     private static BufferedImage image = ImageImport.getImage("ball.png", (int) ballRadius*2, (int) ballRadius*2);
 
     private Court court;
@@ -123,7 +124,10 @@ public class Ball{
             atoucher=false;
         } else {}
         Pegs p = touchedPegs();
+
+        
         if (p!=null && !atoucherpegs){
+            if (!p.getHit()){combo++;}
             p.toucher();
             double ux = (nextBallX+ ballRadius) - (p.getX() + p.getRadius()/2);
             double uy = (nextBallY+ballRadius) - (p.getY()+ p.getRadius()/2);
@@ -286,6 +290,14 @@ public class Ball{
 
     public Image getImage() {
         return image;
+    }
+
+    public int getCombo() {
+        return combo;
+    }
+
+    public void setCombo(int i) {
+        combo = i;
     }
 
 

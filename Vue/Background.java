@@ -24,8 +24,7 @@ import java.io.InputStream;
 public class Background extends JPanel{
     private BufferedImage backgroundImage;
     
-    private InputStream targetStream;
-    private Font newFont;
+    private Font newFont = ImageImport.newFont;
     private Court court;
 
   // score 
@@ -42,6 +41,7 @@ public class Background extends JPanel{
     private BufferedImage tubeBall;
     private int bordurePix = 10;
     private BufferedImage ball;
+    private boolean GameOver = false;
 
 
 
@@ -64,16 +64,6 @@ public class Background extends JPanel{
         BufferedImageOp blur = new ConvolveOp(new Kernel(3, 3, blurKernel));
         backgroundImage = blur.filter(backgroundImage, null);
         
-        try {
-            targetStream = new FileInputStream("./Vue/Font/ARCADE_N.TTF");
-            newFont =  Font.createFont(Font.TRUETYPE_FONT, targetStream);
-        } catch (FontFormatException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            System.out.println("Font not found");
-            e.printStackTrace();
-        }
         }
 
         int bordureDroiteLargeur = (width-court.getWidth())/2 + court.getWidth();
@@ -98,10 +88,15 @@ public class Background extends JPanel{
 
   public void paintComponent(Graphics g) {
     super.paintComponent(g);
+    
+    Graphics2D g2d = (Graphics2D) g;
+    
 
     // Draw the background image.
-    Graphics2D g2d = (Graphics2D) g;
     g2d.drawImage(backgroundImage, null, 3, 3);
+    if (GameOver){
+      return;
+    }
     if (newFont != null) {
     g.setFont(newFont.deriveFont(20f));
     }
@@ -162,5 +157,8 @@ public class Background extends JPanel{
 
     
 }
+public void setOver(boolean gameOver) {
+  GameOver = gameOver;
 
+}
 }
