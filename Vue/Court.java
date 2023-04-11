@@ -259,12 +259,10 @@ public class Court extends JPanel implements MouseInputListener {
         // Déplacement du canon en fonction de la possition de la souris
         if (!editMode) canon.DeplacementCanon(e);
         else if (eN != null && eN.enModif) {
-            // for (Pegs p : niveau.getPegs()) {
-            //     if (Math.pow(e.getX() - p.getX(), 2) + Math.pow(e.getY() - p.getY(), 2) <= Math.pow(p.getRadius(),2)) eN.pegSelectionne = p;
-            // }
             if (eN.pegSelectionne != null) {
                 eN.pegSelectionne.setX(e.getX());
                 eN.pegSelectionne.setY(e.getY());
+                repaint();
             }
         }
     }

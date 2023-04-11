@@ -104,6 +104,7 @@ public class EditeurNiveaux {
             court.animate();
             resume.setEnabled(false);
             pause.setEnabled(true);
+            caseActive.unclicked();
         });
         fond.add(resume);
 
@@ -111,13 +112,17 @@ public class EditeurNiveaux {
             court.editMode = true;
             resume.setEnabled(true);
             pause.setEnabled(false);
+            casePegBleu.mouseClicked(null);
         });
 
         // slider peg selectionné
         sliderPegSelectionne = new JSlider(10, 110, 50);
         sliderPegSelectionne.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         sliderPegSelectionne.setBounds(0, courtHeight, width - courtWidth, courtHeight * 1/16);
-        sliderPegSelectionne.addChangeListener(e -> pegSelectionne.setRadius(sliderPegSelectionne.getValue()));
+        sliderPegSelectionne.addChangeListener(e -> {
+            pegSelectionne.setRadius(sliderPegSelectionne.getValue());
+            court.repaint();
+        });
         fond.add(sliderPegSelectionne);
 
         // BoutonCouleur bleu
@@ -272,6 +277,7 @@ public class EditeurNiveaux {
             addActionListener(e -> {
                 pegSelectionne.setCouleur(couleur);
                 pegSelectionne.setImageString(Pegs.intColorToString(couleur));
+                court.repaint();
             });
             Icon icon = new ImageIcon(ImageImport.getImage(Pegs.intColorToString(couleur)));
             setIcon(icon);
