@@ -20,7 +20,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import Modele.*;
-import Vue.Controleur;
+import Vue.ControleurVThibault;
 import Vue.ImageImport;
 
 public class SelectNiveau extends JPanel{
@@ -29,7 +29,7 @@ public class SelectNiveau extends JPanel{
     private int page_act ;
     private boolean campagne ;
     private Font font ;
-    private Controleur controleur ;
+    private ControleurVThibault controleur ;
 
     private JPanel[] affichage ;
     private BufferedImage background ;
@@ -37,7 +37,7 @@ public class SelectNiveau extends JPanel{
     private Fleche next ;
     private Fleche previous ;
 
-    public SelectNiveau(Controleur c, boolean campagne){
+    public SelectNiveau(ControleurVThibault c, boolean campagne){
         controleur = c ;
         setBounds(0, 0, controleur.getWidth(), controleur.getHeight());
         c.add(this) ;
@@ -273,7 +273,7 @@ public class SelectNiveau extends JPanel{
         SwingUtilities.invokeLater(new Runnable(){
             @Override
             public void run() {
-                Controleur c  = new Controleur() ;
+                ControleurVThibault c  = new ControleurVThibault() ;
                 c.launchMenu(new SelectNiveau(c, true));                
             }
 

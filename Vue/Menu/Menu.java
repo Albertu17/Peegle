@@ -28,6 +28,8 @@ public class Menu extends JPanel {
     private int middleH;
     private int middleW;
 
+    private Controleur controleur ;
+
     JButton btnPlay;
     JButton btnCampagne;
     JButton btnOption;
@@ -48,8 +50,8 @@ public class Menu extends JPanel {
     private BufferedImage background;
     private BufferedImage title;
 
-    public Menu(Controleur c) { 
-        // ImageImport.setImage(true);
+    public Menu(Controleur c) {
+        this.controleur = c ;
         this.hauteur=c.height;
         this.largeur=c.width;
         imageIconPlay = new ImageIcon(ImageImport.getImage("Menu/planche police blanche.png"));
@@ -120,14 +122,16 @@ public class Menu extends JPanel {
            }
               public void mouseClicked(MouseEvent evt) 
               {
-                Controleur c = new Controleur() ;
-                c.launchGameview();
-                c.repaint();
+                controleur.launchGameview("Perso/Triangle"); //TODO remplacer par la campagne
               }
         });
 
         btnCampagne = new JButton(imageIconCampaing);
         btnCampagne.setBounds(middleW-100,middleH-25-70,200,50);
+        btnCampagne.setBorderPainted(false); 
+        btnCampagne.setContentAreaFilled(false); 
+        btnCampagne.setFocusPainted(false); 
+        btnCampagne.setOpaque(false);
         
         btnCampagne.addMouseListener((MouseListener) new MouseAdapter() 
         {
@@ -148,7 +152,10 @@ public class Menu extends JPanel {
 
         btnOption = new JButton(imageIconOptions);
         btnOption.setBounds(middleW-100,middleH-25,200,50);  
-
+        btnOption.setBorderPainted(false); 
+        btnOption.setContentAreaFilled(false); 
+        btnOption.setFocusPainted(false); 
+        btnOption.setOpaque(false);
         btnOption.addMouseListener((MouseListener) new MouseAdapter() 
         {
            public void mouseEntered(MouseEvent evt) 
@@ -161,15 +168,16 @@ public class Menu extends JPanel {
            }
            public void mouseClicked(MouseEvent evt) 
            {
-            Controleur c = new Controleur();
-            c.launchParametre();
-            c.repaint();
+            controleur.launchParametre();
            }
         });
 
         btnQuit = new JButton(imageIconQuit);
         btnQuit.setBounds(middleW-100,middleH-25+70,200,50);  
-
+        btnQuit.setBorderPainted(false); 
+        btnQuit.setContentAreaFilled(false); 
+        btnQuit.setFocusPainted(false); 
+        btnQuit.setOpaque(false);
         btnQuit.addMouseListener((MouseListener) new MouseAdapter() 
         {
            public void mouseEntered(MouseEvent evt) 
@@ -221,10 +229,10 @@ public class Menu extends JPanel {
         outputImage.getGraphics().drawImage(resultingImage, 0, 0, null);
         return outputImage;
     }
-    public static void main(String[] args){
-        Controleur c = new Controleur();
-        c.launchMenu();
-        c.repaint();
-    }
+    // public static void main(String[] args){
+    //     Controleur c = new Controleur();
+    //     c.launchMenu();
+    //     c.repaint();
+    // }
 
 }

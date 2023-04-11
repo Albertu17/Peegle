@@ -7,7 +7,7 @@ import Modele.Pegs;
 
 public class EditeurNiveaux extends GameView {
 
-    EditeurNiveaux(Controleur c) {
+    EditeurNiveaux(ControleurVThibault c) {
         super(c);
         Pegs p = new Pegs(0, 0, 20, 1);
     }

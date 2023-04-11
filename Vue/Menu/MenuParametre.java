@@ -19,13 +19,13 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import Vue.ControleurLukas;
+import Vue.Controleur;
 import Vue.ImageImport;
 
 
 
 public class MenuParametre extends JPanel {
-    public ControleurLukas controleur;
+    public Controleur controleur;
 
     private BufferedImage background;
 
@@ -49,8 +49,7 @@ public class MenuParametre extends JPanel {
 
 
 
-     public MenuParametre(ControleurLukas c){
-           ImageImport.setImage(true);
+     public MenuParametre(Controleur c){
         this.controleur = c ;
 
         largeur = controleur.getWidth();

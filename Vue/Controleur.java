@@ -1,17 +1,22 @@
 package Vue;
-import java.awt.Dimension;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import Vue.Menu.*; 
+import Vue.Menu.Menu;
+import Vue.Menu.MenuParametre;
+
+
 
 public class Controleur extends JFrame{
-    
+
+    public MenuParametre menuParametre;
     public GameView gameview;
+    public Menu menu;
     public int width;
     public int height;
     public Container container;
@@ -22,7 +27,6 @@ public class Controleur extends JFrame{
         ImageImport.setImage(true); 
 
         // mise en pleine ecran
-        // setExtendedState(JFrame.MAXIMIZED_BOTH); 
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize(); // Récupère taille de l'écran utilisateur.
         width = (int) size.getWidth();
         height = (int) size.getHeight();
@@ -36,6 +40,8 @@ public class Controleur extends JFrame{
         setResizable(false);
        
         setVisible(true);
+
+        
         container = getContentPane();
         container.setLayout(null);
     }
@@ -48,11 +54,37 @@ public class Controleur extends JFrame{
     public int getHeight() {
         return height;
     }
-
-
-    public void launchGameview(String nomNiveau){
+    public void removeAll(){
         this.getContentPane().removeAll();
         this.setLayout(null);
+    }
+
+    public void launchMenu(){
+        if(menu == null){
+            menu = new Menu(this);
+            add(menu);
+        }
+        menu.setVisible(true);
+        this.repaint();
+    }
+
+
+    public void launchParametre(){
+        if (menuParametre == null){
+            menuParametre = new MenuParametre(this);
+            add(menuParametre);
+        }
+        menuParametre.setVisible(true);
+        this.repaint();
+    }
+
+    public void backMenuFromGameView(){
+        gameview.setVisible(false);
+        launchParametre();
+        this.repaint();
+    }
+    public void launchGameview(String nomNiveau){
+        this.removeAll();
         gameview = new GameView(this, nomNiveau);
         if (gameview != null){
             add(gameview) ;
@@ -60,12 +92,12 @@ public class Controleur extends JFrame{
         gameview.setVisible(true);
         this.repaint();
     }
+    
     // public void launchMenu(){
     //     launchMenu(new Menu(this));
     // }
     public void launchMenu(JPanel menu){
-        this.getContentPane().removeAll();
-        this.setLayout(null);
+        this.removeAll();
         if (menu != null){
             add(menu) ;
         }
@@ -74,18 +106,15 @@ public class Controleur extends JFrame{
     }
 
 
-
     public static void main(String[] args) {
-
 
 
         SwingUtilities.invokeLater(new Runnable(){
             @Override
             public void run() {
                 Controleur c = new Controleur() ;
-                c.launchMenu(new SelectNiveau(c, true));
-                c.repaint();
-                
+                c.launchMenu();
+                // c.repaint();
             }
 
         });
