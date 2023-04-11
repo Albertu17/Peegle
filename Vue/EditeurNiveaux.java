@@ -49,7 +49,7 @@ public class EditeurNiveaux {
     JButton croix;
     JButton modif;
 
-    // TODO: imageicon boutons, rebond sur pegs (chmt l 152 BALL),fix bug sceau qui disparaît
+    // TODO: imageicon boutons, rebond sur pegs (chmt l 152 BALL)
 
     EditeurNiveaux(Controleur c) {
 
@@ -91,14 +91,20 @@ public class EditeurNiveaux {
         casePegVert.setBounds(courtWidth, courtHeight * 3/4, width - courtWidth, courtHeight * 1/4);
         fond.add(casePegVert);
 
+        // JPanel panelBoutons
+        JPanel panelBoutons = new JPanel();
+        panelBoutons.setBounds(0, courtHeight, width, height - courtHeight);
+        panelBoutons.setLayout(null);
+        fond.add(panelBoutons);
+
         // Bouton pause
         JButton pause = new JButton("||");
-        pause.setBounds(courtWidth - 100, courtHeight, 50, 50);
-        fond.add(pause);
+        pause.setBounds(courtWidth - 100, 0, 50, 50);
+        panelBoutons.add(pause);
 
         // Bouton resume
         JButton resume = new JButton("|>");
-        resume.setBounds(courtWidth - 50, courtHeight, 50, 50);
+        resume.setBounds(courtWidth - 50, 0, 50, 50);
         resume.addActionListener(e -> {
             court.editMode = false;
             court.animate();
@@ -106,57 +112,57 @@ public class EditeurNiveaux {
             pause.setEnabled(true);
             caseActive.unclicked();
         });
-        fond.add(resume);
+        panelBoutons.add(resume);
 
         pause.addActionListener(e -> {
             court.editMode = true;
             resume.setEnabled(true);
             pause.setEnabled(false);
-            casePegBleu.mouseClicked(null);
+            casePegBleu.mousePressed(null);
         });
 
         // slider peg selectionné
         sliderPegSelectionne = new JSlider(10, 110, 50);
         sliderPegSelectionne.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        sliderPegSelectionne.setBounds(0, courtHeight, width - courtWidth, courtHeight * 1/16);
+        sliderPegSelectionne.setBounds(0, 0, width - courtWidth, courtHeight * 1/16);
         sliderPegSelectionne.addChangeListener(e -> {
             pegSelectionne.setRadius(sliderPegSelectionne.getValue());
             court.repaint();
         });
-        fond.add(sliderPegSelectionne);
+        panelBoutons.add(sliderPegSelectionne);
 
         // BoutonCouleur bleu
         bleu = new BoutonCouleur(1);
-        bleu.setBounds(width - courtWidth, courtHeight, courtHeight * 1/16, courtHeight * 1/16);
-        fond.add(bleu);
+        bleu.setBounds(width - courtWidth, 0, courtHeight * 1/16, courtHeight * 1/16);
+        panelBoutons.add(bleu);
 
         // BoutonCouleur rouge
         rouge = new BoutonCouleur(2);
-        rouge.setBounds(width - courtWidth + courtHeight * 1/16, courtHeight, courtHeight * 1/16, courtHeight * 1/16);
-        fond.add(rouge);
+        rouge.setBounds(width - courtWidth + courtHeight * 1/16, 0, courtHeight * 1/16, courtHeight * 1/16);
+        panelBoutons.add(rouge);
 
         // BoutonCouleur violet
         violet = new BoutonCouleur(3);
-        violet.setBounds(width - courtWidth + courtHeight * 1/8, courtHeight, courtHeight * 1/16, courtHeight * 1/16);
-        fond.add(violet);
+        violet.setBounds(width - courtWidth + courtHeight * 1/8, 0, courtHeight * 1/16, courtHeight * 1/16);
+        panelBoutons.add(violet);
 
         // BoutonCouleur vert
         vert = new BoutonCouleur(4);
-        vert.setBounds(width - courtWidth + courtHeight * 3/16, courtHeight, courtHeight * 1/16, courtHeight * 1/16);
-        fond.add(vert);
+        vert.setBounds(width - courtWidth + courtHeight * 3/16, 0, courtHeight * 1/16, courtHeight * 1/16);
+        panelBoutons.add(vert);
 
         // JButton croix
         croix = new JButton("supp");
-        croix.setBounds(width - courtWidth + courtHeight * 1/4, courtHeight, courtHeight * 1/16, courtHeight * 1/16);
+        croix.setBounds(width - courtWidth + courtHeight * 1/4, 0, courtHeight * 1/16, courtHeight * 1/16);
         croix.addActionListener(e -> {
             niveauCree.getPegs().remove(pegSelectionne);
             court.repaint();
         });
-        fond.add(croix);
+        panelBoutons.add(croix);
 
         //JButton modif
         modif = new JButton("modif");
-        modif.setBounds(width - courtWidth + courtHeight * 5/16, courtHeight, courtHeight * 1/16, courtHeight * 1/16);
+        modif.setBounds(width - courtWidth + courtHeight * 5/16, 0, courtHeight * 1/16, courtHeight * 1/16);
         modif.addActionListener(e -> {
             enModif = true;
             boutonsModifActifs(true);
@@ -166,25 +172,25 @@ public class EditeurNiveaux {
         // TODO ajout icon
         // Icon icon = new ImageIcon(ImageImport.getImage("curseurMain.jpg"));
         // modif.setIcon(icon);
-        fond.add(modif);
+        panelBoutons.add(modif);
 
         // JTextField nomNiveau
         String[] placeHolders = new String[]{" Nom du niveau", " Nom déjà utilisé"};
         JTextField nomNiveau = new JTextField();
         nomNiveau.setText(placeHolders[0]);
-        nomNiveau.setBounds(5, courtHeight + courtHeight * 1/16 + 20, (width - courtWidth) - courtHeight * 1/16 - 10, courtHeight * 1/16);
+        nomNiveau.setBounds(5, courtHeight * 1/16 + 20, (width - courtWidth) - courtHeight * 1/16 - 10, courtHeight * 1/16);
         nomNiveau.addFocusListener(new FocusPlaceholder(nomNiveau, placeHolders));
-        fond.add(nomNiveau);
+        panelBoutons.add(nomNiveau);
 
         // JButton save Nom
         JButton saveNom = new JButton("OK");
-        saveNom.setBounds((width - courtWidth) - courtHeight * 1/16 + 5, courtHeight + courtHeight * 1/16 + 20, courtHeight * 1/16, courtHeight * 1/16);
-        fond.add(saveNom);
+        saveNom.setBounds((width - courtWidth) - courtHeight * 1/16 + 5, courtHeight * 1/16 + 20, courtHeight * 1/16, courtHeight * 1/16);
+        panelBoutons.add(saveNom);
 
         // JButton save
         JButton save = new JButton("Save");
         save.setEnabled(false);
-        save.setBounds(courtWidth, courtHeight, width - courtWidth, height - courtHeight);
+        save.setBounds(courtWidth, 0, width - courtWidth, height - courtHeight);
         save.addActionListener(e -> {
             try {
                 niveauCree.save(courtWidth, courtHeight);
@@ -192,18 +198,18 @@ public class EditeurNiveaux {
                 System.out.println(e1.getMessage());
             }
         });
-        fond.add(save);
+        panelBoutons.add(save);
 
         saveNom.addActionListener(e -> {
-            if (true) {
-                niveauCree.setNom(saveNom.getText()); // TODO Ajout test nom déjà utilisé
+            if (true) { // TODO Ajout test nom déjà utilisé
+                niveauCree.setNom(saveNom.getText());
                 save.setEnabled(true);
             }
             else nomNiveau.setText(placeHolders[1]);
         });
 
         // Réglages par défaut
-        casePegBleu.mouseClicked(null);
+        casePegBleu.mousePressed(null);
     }
 
     public void boutonsModifActifs(boolean activer) {
@@ -214,6 +220,9 @@ public class EditeurNiveaux {
         vert.setEnabled(activer);
         croix.setEnabled(activer);
     }
+
+
+
 
     public class CasePeg extends JPanel implements MouseInputListener{
 
@@ -251,7 +260,11 @@ public class EditeurNiveaux {
             g2d.drawImage(ImageImport.getImage(peg.getImageString()), x-radius/2, y-radius/2, radius, radius, this);
         }
 
-        public void mouseClicked(MouseEvent e) {
+        public void unclicked() {
+            setBackground(UIManager.getColor("Panel.background")); // Rend au panel son background originel.
+        }
+
+        public void mousePressed(MouseEvent e) {
             if (caseActive != null) caseActive.unclicked();
             caseActive = this;
             enModif = false;
@@ -259,11 +272,7 @@ public class EditeurNiveaux {
             setBackground(Color.LIGHT_GRAY);
         }
 
-        public void unclicked() {
-            setBackground(UIManager.getColor("Panel.background"));
-        }
-
-        public void mousePressed(MouseEvent e) {}
+        public void mouseClicked(MouseEvent e) {}
         public void mouseReleased(MouseEvent e) {}
         public void mouseEntered(MouseEvent e) {}
         public void mouseExited(MouseEvent e) {}

@@ -98,13 +98,13 @@ public class Court extends JPanel implements MouseInputListener {
             double last;
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!editMode) { // animate doit forcément être appelée, même en non-animée, pour repaint le court et ainsi le rendre visible.
+                if (!editMode) {
                     last = System.nanoTime();
                     for (Ball b:balls){
                         if (b.isPresent()) b.updateBall((last-now)*1.0e-9,sceau);
                     }
                     sceau.move(((last-now)*1.0e-9));
-                } else timer.stop(); // En cas de besoin de stopper tout le timer.
+                } else timer.stop(); // Arrêt de tout le timer.
                 repaint();
                 now=last;
             }
@@ -127,7 +127,7 @@ public class Court extends JPanel implements MouseInputListener {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        g.drawString("Score: "+toucher, 10, 50);
+        g.drawString("Score: " + toucher, 10, 50);
         // System.out.println(toucher);
         // canon.repaint();
         g.setColor(Color.BLACK);
@@ -169,6 +169,7 @@ public class Court extends JPanel implements MouseInputListener {
         for (Rectangle rect:rectangles) {
             g.drawLine(rect.x0, rect.y0, rect.caculX1(), rect.caculY1());
         }
+
         for (Pegs peg: niveau.getPegs()) {
             Graphics2D g2d = (Graphics2D) g;        
             if (peg.getHit()) {
@@ -189,7 +190,7 @@ public class Court extends JPanel implements MouseInputListener {
             BasicStroke dashed = new BasicStroke(5.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
             g2DGameview.setStroke(dashed);
             g2DGameview.drawPolyline(canon.getXLigneViser(), canon.getYLigneViser(), 10);
-        }
+        };
     }
 
     public int getWidth() {
@@ -212,8 +213,7 @@ public class Court extends JPanel implements MouseInputListener {
         return pegs;
     }
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
+    public void mousePressed(MouseEvent e) {
         // lancer une balle
         if (!editMode) balls.add(canon.tirer());
         else if (eN != null && eN.enModif) {
@@ -230,31 +230,10 @@ public class Court extends JPanel implements MouseInputListener {
         else {
             int radius = eN.caseActive.radius;
             niveau.getPegs().add(new Pegs(e.getX() - radius/2, e.getY() - radius/2, radius, eN.caseActive.couleur));
-            paint(this.getGraphics());
+            repaint();
         }
     }
 
-    @Override
-    public void mousePressed(MouseEvent e) {
-        
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-        
-    }
-
-    @Override
     public void mouseDragged(MouseEvent e) {
         // Déplacement du canon en fonction de la possition de la souris
         if (!editMode) canon.DeplacementCanon(e);
@@ -267,9 +246,13 @@ public class Court extends JPanel implements MouseInputListener {
         }
     }
 
-    @Override
     public void mouseMoved(MouseEvent e) {
         // Déplacement du canon en fonction de la possition de la souris
         if (!editMode) canon.DeplacementCanon(e);
-    } 
+    }
+
+    public void mouseClicked(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) {}
 }
