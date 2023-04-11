@@ -148,7 +148,10 @@ public class EditeurNiveaux {
         // JButton croix
         croix = new JButton("supp");
         croix.setBounds(width - courtWidth + courtHeight * 1/4, courtHeight, courtHeight * 1/16, courtHeight * 1/16);
-        croix.addActionListener(e -> niveauCree.getPegs().remove(pegSelectionne));
+        croix.addActionListener(e -> {
+            niveauCree.getPegs().remove(pegSelectionne);
+            court.repaint();
+        });
         fond.add(croix);
 
         //JButton modif
