@@ -91,14 +91,14 @@ public class Niveau {
 
     // creation icone 
 
-    
+
     public static void createIconeNiveau(String niveau){
         int width = 1080/3 ;
         int height = 520/3 ;
 
         Niveau nv = Niveau.importPegles(niveau, width, height);
 
-        BufferedImage tempImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        BufferedImage tempImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics g = (tempImage.createGraphics());
         Graphics2D g2d = (Graphics2D) g;      
         g2d.setColor(Color.white);
@@ -117,11 +117,14 @@ public class Niveau {
             System.out.println("Impossible d'enregistrer l'image.");
             System.out.println(ex);
         }
+
+        // update l'icone du niveau
+        createIconeNiveau((nv.campagne? "Campagne/" : "Perso/") + niveau); 
     }
     
     public static void main(String[] args) {
         ImageImport.setImage(false);
-        boolean campagne = true ;
+        boolean campagne = false ;
         for(String name : new File("Niveau/"+ (campagne? "Campagne" : "Perso")).list()){
             name  = name.substring(0, name.length() -5) ;
             createIconeNiveau((campagne? "Campagne/" : "Perso/")+name);

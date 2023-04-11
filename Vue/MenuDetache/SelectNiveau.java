@@ -26,6 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.xml.transform.Templates;
 
+import Modele.*;
 import Vue.Controleur;
 import Vue.ImageImport;
 
@@ -60,7 +61,7 @@ public class SelectNiveau extends JPanel{
         try {
             InputStream targetStream = new FileInputStream("./Vue/Font/cartoonist_kooky.ttf");
             font =  Font.createFont(Font.TRUETYPE_FONT, targetStream);
-            font = font.deriveFont(25f);
+            font = font.deriveFont(26f);
             // font.setFont(font.deriveFont(font.getStyle() | Font.BOLD)); //mets en gras
         } catch (Exception e) {
             System.out.println("ereur font");
@@ -179,8 +180,12 @@ public class SelectNiveau extends JPanel{
         PresNiveau(String nomNiveau, int largeurPres, int hauteur_pres){
             setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
             int hauteurBouton  = 40 ; 
+            // apercu = Niveau.getIconeNiveau(pathIcone()+nomNiveau, largeurPres, hauteur_pres - hauteurBouton-10) ;
             apercu = ImageImport.getImage(pathIcone()+nomNiveau+".png", largeurPres, hauteur_pres - hauteurBouton-10) ;
-            Component invisiblePhoto = Box.createRigidArea(new Dimension(0, hauteur_pres - hauteurBouton-7)) ;
+            // Component invisiblePhoto = Box.createRigidArea(new Dimension(0, hauteur_pres - hauteurBouton-7)) ;
+            JPanel invisiblePhoto = new JPanel() ;
+            invisiblePhoto.setSize(largeurPres, hauteur_pres - hauteurBouton-7);
+            invisiblePhoto.setOpaque(false);
             this.add(invisiblePhoto); //ajout d'un bloc pour l'image et l'affichage du layout
             button = new ButtonBJ(nomNiveau, hauteurBouton) ;
             this.add(Box.createRigidArea(new Dimension((largeurPres-button.getWidth())/2, 0))); //ajout d'un bloc pour l'image et l'affichage du layout
