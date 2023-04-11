@@ -15,18 +15,28 @@ public class Pegs {
         this.y = y;
         this.radius = radius;
         this.couleur = couleur;
-        if (couleur == 1) {
-            imageString = "blueball.png";
-        }
-        else if (couleur == 2) {
-            imageString = "redball.png";
-        }
-        else if (couleur == 3) {
-            imageString = "violetball.png";
-        }
-        else if (couleur == 4) {
-            imageString = "vertball.png";
+        imageString = intColorToString(couleur);
+}
+public static String intColorToString(int couleur) {
+    String s = "";
+    switch (couleur) {
+        case 1:
+            s = "blueball.png";
+            break;
+        case 2:
+            s = "redball.png";
+            break;
+        case 3:
+            s = "violetball.png";
+            break;
+        case 4:
+            s = "vertball.png";
+            break;
     }
+    return s;
+}
+public void setImageString(String imageString) {
+    this.imageString = imageString;
 }
     public int getX() {
         return x;
@@ -35,13 +45,25 @@ public class Pegs {
     public int getY() {
         return y;
     }
+    public void setX(int x) {
+        this.x = x;
+    }
+    public void setY(int y) {
+        this.y = y;
+    }
 
     public int getRadius() {
         return radius;
     }
+    public void setRadius(int radius) {
+        this.radius = radius;
+    }
 
     public int getCouleur() {
         return couleur;
+    }
+    public void setCouleur(int couleur) {
+        this.couleur = couleur;
     }
 
     public void toucher() {
@@ -54,6 +76,13 @@ public class Pegs {
 
     public boolean contains(double i, double j) {
         if (Math.sqrt(Math.pow(i-(x +radius/2) , 2)+Math.pow(j-(y+radius/2), 2))< radius/2 + Ball.ballRadius) {
+            return true;
+        }
+        return false;
+    }
+    // celui d'albert
+    public boolean contains(int i, int j) {
+        if (Math.sqrt(Math.pow(i-x, 2)+Math.pow(j-y, 2))<=radius) {
             return true;
         }
         return false;

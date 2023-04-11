@@ -1,12 +1,17 @@
 package Modele;
 
+import java.util.ArrayList;
+import java.util.Random;
+import java.math.*;
+import java.sql.Array;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import Vue.* ;
 
+import Vue.* ;
+import Modele.* ;
 public class Ball{
 
-    public final static double ballRadius = 10; // m
+    public final static int ballRadius = 10; // m
 
     public double ballX, ballY; // m
     public double ballSpeedX, ballSpeedY; // m
@@ -26,7 +31,8 @@ public class Ball{
 
     private double g=300; // m/s
     private double coeffRebond = 0.8;
-    private BufferedImage image = ImageImport.getImage("ball.png", 20, 20);
+    private int combo = 0;
+    private static BufferedImage image = ImageImport.getImage("ball.png", (int) ballRadius*2, (int) ballRadius*2);
 
     private Court court;
 
@@ -34,10 +40,15 @@ public class Ball{
 
 
 
+
     /* Important coordonée de la balle centre en X mais tout en haut pour Y */
 
     public Court getCourt() {
         return court;
+    }
+
+    public static BufferedImage getImgBall(){
+        return image;
     }
 
     public Ball(int x,int y,int vx0,int vy0,Court c){
@@ -83,6 +94,7 @@ public class Ball{
 
         if (sceau.inside(this)){
             // System.out.println("inside");
+            sceau.getCourt().augmenteNbDeBall();
             hitground=true;
             ispresent=false;
         }
@@ -112,7 +124,10 @@ public class Ball{
             atoucher=false;
         } else {}
         Pegs p = touchedPegs();
+
+        
         if (p!=null && !atoucherpegs){
+            if (!p.getHit()){combo++;}
             p.toucher();
             double ux = (nextBallX+ ballRadius) - (p.getX() + p.getRadius()/2);
             double uy = (nextBallY+ballRadius) - (p.getY()+ p.getRadius()/2);
@@ -275,6 +290,21 @@ public class Ball{
 
     public Image getImage() {
         return image;
+    }
+
+    public int getCombo() {
+        return combo;
+    }
+
+    public void setCombo(int i) {
+        combo = i;
+    }
+    public void putSkin1(){
+        image = ImageImport.getImage("ball.png", 20, 20);
+    }
+
+    public void putSkin2(){
+        image = ImageImport.getImage("soccerBall.png", 20, 20);
     }
 
 

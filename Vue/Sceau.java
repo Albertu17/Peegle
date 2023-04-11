@@ -58,4 +58,8 @@ public class Sceau{
         return ((X <= b.nextBallX + b.ballRadius*2 && b.nextBallX  <= X + bordure) || (X + longeur - bordure  <= b.nextBallX + b.ballRadius*2 && b.nextBallX <= X  + longeur) ) && 
         Y + 10  <= b.nextBallY && b.nextBallY + 10 <= Y + hauteur; //hardcoding pour toucher plus bas
     }
+
+    public Court getCourt(){
+        return court;
+    }
 }

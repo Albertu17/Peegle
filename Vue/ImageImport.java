@@ -1,7 +1,10 @@
 package Vue;
 import java.awt.Graphics2D;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -12,6 +15,8 @@ public class ImageImport {
     private static HashMap<String, BufferedImage> allimage ;
     private static String pathDossierImage = "Vue/Image/" ;
     private static boolean importFini = false ;
+    public static Font newFont;
+    public static FileInputStream targetStream ;
 
     // TODO a supprimer apres dev
     public static void printAllkey(){
@@ -28,6 +33,18 @@ public class ImageImport {
      * 
      */
     public static void setImage(Boolean Thread){
+        try {
+            targetStream = new FileInputStream("./Vue/Font/ARCADE_N.TTF");
+            newFont =  Font.createFont(Font.TRUETYPE_FONT, targetStream);
+        } catch (FontFormatException e) {
+            System.out.println("Font not found");
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e1) {
+            System.out.println("Font not found");
+            e1.printStackTrace();
+        }
+        if (allimage != null) return ; // si les images sont deja importé on ne fait rien
         allimage = new HashMap<>() ;
 
         if (Thread){

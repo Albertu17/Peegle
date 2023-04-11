@@ -1,22 +1,24 @@
 package Vue;
 import java.awt.Dimension;
-import java.awt.Container;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import Vue.Menu.*; 
+import Vue.Menu.Menu;
+import Vue.Menu.MenuParametre;
 
-public class Controleur extends JFrame{
-    
+
+
+public class ControleurLukas extends JFrame{
+
+    public MenuParametre menuParametre;
     public GameView gameview;
+    public Menu menu;
     public int width;
     public int height;
-    public Container container;
 
-    public Controleur(){
+    public ControleurLukas(){
 
         // lancement de l'import des images 
         ImageImport.setImage(true); 
@@ -36,8 +38,6 @@ public class Controleur extends JFrame{
         setResizable(false);
        
         setVisible(true);
-        container = getContentPane();
-        container.setLayout(null);
     }
 
     // override pour prendre l'attribut width de cette classe et pas celui de la frame (plus stable).
@@ -49,30 +49,37 @@ public class Controleur extends JFrame{
         return height;
     }
 
+    public void launchMenu(){
+        if(menu == null){
+            menu = new Menu(this);
+            add(menu);
+        }
+        menu.setVisible(true);
+    }
 
-    public void launchGameview(String nomNiveau){
-        this.getContentPane().removeAll();
-        this.setLayout(null);
-        gameview = new GameView(this, nomNiveau);
-        if (gameview != null){
+
+    public void launchGameview(){
+        if (gameview == null){
+            gameview = new GameView(this);
             add(gameview) ;
         }
         gameview.setVisible(true);
-        this.repaint();
     }
-    // public void launchMenu(){
-    //     launchMenu(new Menu(this));
-    // }
-    public void launchMenu(JPanel menu){
-        this.getContentPane().removeAll();
-        this.setLayout(null);
-        if (menu != null){
-            add(menu) ;
+
+    public void launchParametre(){
+        if (menuParametre == null){
+            menuParametre = new MenuParametre(this);
+            add(menuParametre);
         }
-        menu.setVisible(true);
+        menuParametre.setVisible(true);
         this.repaint();
     }
 
+    public void backMenuFromGameView(){
+        gameview.setVisible(false);
+        launchParametre();
+        
+    }
 
 
     public static void main(String[] args) {
@@ -82,10 +89,9 @@ public class Controleur extends JFrame{
         SwingUtilities.invokeLater(new Runnable(){
             @Override
             public void run() {
-                Controleur c = new Controleur() ;
-                c.launchMenu(new SelectNiveau(c, true));
+                ControleurLukas c = new ControleurLukas() ;
+                c.launchGameview();
                 c.repaint();
-                
             }
 
         });

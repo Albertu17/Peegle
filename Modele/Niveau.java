@@ -29,11 +29,14 @@ public class Niveau {
     private int score2Etoiles;
     private int score3Etoiles;
     private boolean campagne ;
-    private final String nom;
+    private String nom;
 
     
     public ArrayList<Pegs> getPegs() {
         return pegs;
+    }
+    public void setNom(String nom) {
+        this.nom = nom;
     }
     
     public void setPegs(ArrayList<Pegs> pegs) {
