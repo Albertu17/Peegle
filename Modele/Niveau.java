@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
+import javax.swing.FocusManager;
 
 import Vue.ImageImport;
 
@@ -107,8 +108,6 @@ public class Niveau {
         Graphics g = (tempImage.createGraphics());
         Graphics2D g2d = (Graphics2D) g;      
         g2d.setColor(Color.white);
-        // g2d.fillRect(0, 0, width, height);   
-        // g2d.drawRoundRect(0, 0, width, height, 10, 10);
         g2d.fill(new RoundRectangle2D.Float(0, 0, width, height, 40, 40));
 
         
@@ -126,14 +125,11 @@ public class Niveau {
     
     public static void main(String[] args) {
         ImageImport.setImage(false);
-        boolean campagne = true ;
+        boolean campagne =false ;
         for(String name : new File("Niveau/"+ (campagne? "Campagne" : "Perso")).list()){
             name  = name.substring(0, name.length() -5) ;
             createIconeNiveau((campagne? "Campagne/" : "Perso/")+name);
         }
-        // createIconeNiveau("Perso/Triangle");
-        // createIconeNiveau("Campagne/Level1");
-        // createIconeNiveau("Campagne/2Carre");
     }
 
 
