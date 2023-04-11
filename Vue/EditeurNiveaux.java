@@ -101,6 +101,7 @@ public class EditeurNiveaux {
         JButton pause = new JButton("||");
         pause.setBounds(courtWidth - 100, 0, 50, 50);
         panelBoutons.add(pause);
+        pause.setEnabled(false);
 
         // Bouton resume
         JButton resume = new JButton("|>");

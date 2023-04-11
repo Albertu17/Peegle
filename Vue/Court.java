@@ -10,7 +10,6 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.FileInputStream;
 
 import java.util.ArrayList;
@@ -239,8 +238,8 @@ public class Court extends JPanel implements MouseInputListener {
         if (!editMode) canon.DeplacementCanon(e);
         else if (eN != null && eN.enModif) {
             if (eN.pegSelectionne != null) {
-                eN.pegSelectionne.setX(e.getX());
-                eN.pegSelectionne.setY(e.getY());
+                eN.pegSelectionne.setX(e.getX() - eN.pegSelectionne.getRadius()/2);
+                eN.pegSelectionne.setY(e.getY() - eN.pegSelectionne.getRadius()/2);
                 repaint();
             }
         }
