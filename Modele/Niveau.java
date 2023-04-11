@@ -131,6 +131,11 @@ public class Niveau {
             name  = name.substring(0, name.length() -5) ;
             createIconeNiveau((campagne? "Campagne/" : "Perso/")+name);
         }
+        campagne =true ;
+        for(String name : new File("Niveau/"+ (campagne? "Campagne" : "Perso")).list()){
+            name  = name.substring(0, name.length() -5) ;
+            createIconeNiveau((campagne? "Campagne/" : "Perso/")+name);
+        }
     }
 
 
