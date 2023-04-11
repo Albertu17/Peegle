@@ -104,7 +104,7 @@ public class Court extends JPanel implements MouseInputListener {
                         if (b.isPresent()) b.updateBall((last-now)*1.0e-9,sceau);
                     }
                     sceau.move(((last-now)*1.0e-9));
-                } // else timer.stop(); En cas de besoin de stopper tout le timer.
+                } else timer.stop(); // En cas de besoin de stopper tout le timer.
                 repaint();
                 now=last;
             }
@@ -216,13 +216,20 @@ public class Court extends JPanel implements MouseInputListener {
     public void mouseClicked(MouseEvent e) {
         // lancer une balle
         if (!editMode) balls.add(canon.tirer());
-        else if (eN.enModif) {
+        else if (eN != null && eN.enModif) {
+            boolean sourisSurPeg = false;
             for (Pegs p : niveau.getPegs()) {
-                if (Math.pow(e.getX() - p.getX(), 2) + Math.pow(e.getY() - p.getY(), 2) <= Math.pow(p.getRadius(),2)) eN.pegSelectionne = p;
+                if (Math.pow(e.getX() - p.getX(), 2) + Math.pow(e.getY() - p.getY(), 2) <= Math.pow(p.getRadius(),2)) {
+                    eN.pegSelectionne = p;
+                    sourisSurPeg = true;
+                    break;
+                }
+                if (!sourisSurPeg) eN.pegSelectionne = null;
             }
         }
         else {
-            niveau.getPegs().add(new Pegs(e.getX(), e.getY(), eN.caseActive.radius, eN.caseActive.couleur));
+            int radius = eN.caseActive.radius;
+            niveau.getPegs().add(new Pegs(e.getX() - radius/2, e.getY() - radius/2, radius, eN.caseActive.couleur));
             paint(this.getGraphics());
         }
     }
@@ -251,6 +258,15 @@ public class Court extends JPanel implements MouseInputListener {
     public void mouseDragged(MouseEvent e) {
         // Déplacement du canon en fonction de la possition de la souris
         if (!editMode) canon.DeplacementCanon(e);
+        else if (eN != null && eN.enModif) {
+            // for (Pegs p : niveau.getPegs()) {
+            //     if (Math.pow(e.getX() - p.getX(), 2) + Math.pow(e.getY() - p.getY(), 2) <= Math.pow(p.getRadius(),2)) eN.pegSelectionne = p;
+            // }
+            if (eN.pegSelectionne != null) {
+                eN.pegSelectionne.setX(e.getX());
+                eN.pegSelectionne.setY(e.getY());
+            }
+        }
     }
 
     @Override

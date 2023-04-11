@@ -15,25 +15,46 @@ public class Pegs {
         this.y = y;
         this.radius = radius;
         this.couleur = couleur;
-        if (couleur == 1) {
-            imageString = "blueball.png";
-        }
-        else if (couleur == 2) {
-            imageString = "redball.png";
-        }
-        else if (couleur == 3) {
-            imageString = "violetball.png";
-        }
-        else if (couleur == 4) {
-            imageString = "vertball.png";
+        imageString = intColorToString(couleur);
     }
-}
+
+    public static String intColorToString(int couleur) {
+        String s = "";
+        switch (couleur) {
+            case 1:
+                s = "blueball.png";
+                break;
+            case 2:
+                s = "redball.png";
+                break;
+            case 3:
+                s = "violetball.png";
+                break;
+            case 4:
+                s = "vertball.png";
+                break;
+        }
+        return s;
+    }
+
+    public void setImageString(String imageString) {
+        this.imageString = imageString;
+    }
+
     public int getX() {
         return x;
     }
 
+    public void setX(int x) {
+        this.x = x;
+    }
+
     public int getY() {
         return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 
     public int getRadius() {

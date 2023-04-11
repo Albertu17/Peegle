@@ -2,8 +2,7 @@ package Vue;
 
 
 import javax.swing.JFrame;
-import java.awt.Color;
-import java.awt.Dimension;
+
 import java.awt.*;
 import javax.swing.*;
 
@@ -19,26 +18,24 @@ public class GameView extends JPanel {
     private int courtWidth;
     private int courtHeight;
 
-    GameView(Controleur c, boolean animated) {
+    GameView(Controleur c) {
 
         this.controleur = c ;
 
         width = controleur.getWidth();
         heigth = controleur.getHeight();
         setSize(width, heigth);
-        setLayout(null);
+        setLayout(new BorderLayout());
         setVisible(true); 
 
-        
         courtWidth = width - 200;
         courtHeight = heigth - 200;
         
         // Court
-        court = new Court(courtWidth, courtHeight, animated);
-        court.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        court.setBounds((width-courtWidth)/2, (heigth-courtHeight)/2, courtWidth, courtHeight);
+        //court = new Court(courtWidth, courtHeight);
+        //court.setBounds((width-courtWidth)/2, (heigth-courtHeight)/2, courtWidth, courtHeight);
         court.setVisible(true);
-        add(court);
+        add(court, BorderLayout.CENTER);
     }
 
     public int getWidth(){

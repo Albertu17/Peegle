@@ -23,7 +23,7 @@ public class Niveau {
         this.pegs = pegs;
     }
 
-    private final String nom;
+    private String nom;
     private int nbBillesInitiales;
     private int score1Etoile;
     private int score2Etoiles;
@@ -33,8 +33,11 @@ public class Niveau {
         this.nom = nom;
         pegs = new ArrayList<Pegs>();
     }
-    
 
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+    
     public void save(int widthCourt, int heightCourt) throws FileNotFoundException{
         // save les lignes de l'array list dans un fichier csv
         

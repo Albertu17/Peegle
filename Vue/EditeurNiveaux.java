@@ -5,12 +5,18 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
+import java.io.FileNotFoundException;
 
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.event.MouseInputListener;
 
@@ -23,7 +29,7 @@ public class EditeurNiveaux {
     Container fond;
 
     private int width;
-    private int heigth;
+    private int height;
 
     // Court
     Court court;
@@ -43,21 +49,20 @@ public class EditeurNiveaux {
     JButton croix;
     JButton modif;
 
-    // TODO: imageicon boutons, connexion boutons couleurs et slider, rebond sur pegs (chmt l 152 BALL)
-    // TODO: texte input nom niveau, bouton save, dragg pegs, fix bug sceau qui disparaît
+    // TODO: imageicon boutons, rebond sur pegs (chmt l 152 BALL),fix bug sceau qui disparaît
 
     EditeurNiveaux(Controleur c) {
 
         this.controleur = c;
         fond = c.container;
         width = controleur.getWidth();
-        heigth = controleur.getHeight();
+        height = controleur.getHeight();
 
         niveauCree = new Niveau("enAttente");
 
         // Court
         courtWidth = width * 5/6;
-        courtHeight = heigth * 5/6;
+        courtHeight = height * 5/6;
         court = new Court(courtWidth, courtHeight, niveauCree);
         court.editMode = true;
         court.eN = this;
@@ -87,15 +92,16 @@ public class EditeurNiveaux {
         fond.add(casePegVert);
 
         // Bouton pause
-        JButton pause = new JButton("Pause");
+        JButton pause = new JButton("||");
         pause.setBounds(courtWidth - 100, courtHeight, 50, 50);
         fond.add(pause);
 
         // Bouton resume
-        JButton resume = new JButton("Resume");
+        JButton resume = new JButton("|>");
         resume.setBounds(courtWidth - 50, courtHeight, 50, 50);
         resume.addActionListener(e -> {
             court.editMode = false;
+            court.animate();
             resume.setEnabled(false);
             pause.setEnabled(true);
         });
@@ -111,6 +117,7 @@ public class EditeurNiveaux {
         sliderPegSelectionne = new JSlider(10, 110, 50);
         sliderPegSelectionne.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         sliderPegSelectionne.setBounds(0, courtHeight, width - courtWidth, courtHeight * 1/16);
+        sliderPegSelectionne.addChangeListener(e -> pegSelectionne.setRadius(sliderPegSelectionne.getValue()));
         fond.add(sliderPegSelectionne);
 
         // BoutonCouleur bleu
@@ -148,7 +155,44 @@ public class EditeurNiveaux {
             caseActive.unclicked();
             pause.doClick();
         });
+        // TODO ajout icon
+        // Icon icon = new ImageIcon(ImageImport.getImage("curseurMain.jpg"));
+        // modif.setIcon(icon);
         fond.add(modif);
+
+        // JTextField nomNiveau
+        String[] placeHolders = new String[]{" Nom du niveau", " Nom déjà utilisé"};
+        JTextField nomNiveau = new JTextField();
+        nomNiveau.setText(placeHolders[0]);
+        nomNiveau.setBounds(5, courtHeight + courtHeight * 1/16 + 20, (width - courtWidth) - courtHeight * 1/16 - 10, courtHeight * 1/16);
+        nomNiveau.addFocusListener(new FocusPlaceholder(nomNiveau, placeHolders));
+        fond.add(nomNiveau);
+
+        // JButton save Nom
+        JButton saveNom = new JButton("OK");
+        saveNom.setBounds((width - courtWidth) - courtHeight * 1/16 + 5, courtHeight + courtHeight * 1/16 + 20, courtHeight * 1/16, courtHeight * 1/16);
+        fond.add(saveNom);
+
+        // JButton save
+        JButton save = new JButton("Save");
+        save.setEnabled(false);
+        save.setBounds(courtWidth, courtHeight, width - courtWidth, height - courtHeight);
+        save.addActionListener(e -> {
+            try {
+                niveauCree.save(courtWidth, courtHeight);
+            } catch (FileNotFoundException e1) {
+                System.out.println(e1.getMessage());
+            }
+        });
+        fond.add(save);
+
+        saveNom.addActionListener(e -> {
+            if (true) {
+                niveauCree.setNom(saveNom.getText()); // TODO Ajout test nom déjà utilisé
+                save.setEnabled(true);
+            }
+            else nomNiveau.setText(placeHolders[1]);
+        });
 
         // Réglages par défaut
         casePegBleu.mouseClicked(null);
@@ -225,9 +269,41 @@ public class EditeurNiveaux {
 
         public BoutonCouleur(int couleur) {
             this.couleur = couleur;
-            setText(String.valueOf(couleur));
-            // setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            addActionListener(e -> pegSelectionne.setCouleur(couleur));
+            addActionListener(e -> {
+                pegSelectionne.setCouleur(couleur);
+                pegSelectionne.setImageString(Pegs.intColorToString(couleur));
+            });
+            Icon icon = new ImageIcon(ImageImport.getImage(Pegs.intColorToString(couleur)));
+            setIcon(icon);
+        }
+    }
+
+    private class FocusPlaceholder implements FocusListener{
+        JTextField field; 
+        String[] placeHolders;
+        String currentHolder;
+
+        FocusPlaceholder(JTextField field, String[] placeHolders){
+            this.field = field ;
+            this.placeHolders = placeHolders.clone() ;
+            field.setForeground(Color.GRAY);
+        }
+
+        public void focusGained(FocusEvent e) {
+            for (String string : placeHolders) {
+                if (field.getText().equals(string)) {
+                    currentHolder = field.getText();
+                    field.setText("");
+                    field.setForeground(Color.BLACK);
+                }
+            }
+        }
+
+        public void focusLost(FocusEvent e) {
+            if (field.getText().isEmpty()) {
+                field.setForeground(Color.GRAY);
+                field.setText(currentHolder);
+            }
         }
     }
 }
