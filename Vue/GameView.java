@@ -1,12 +1,7 @@
 package Vue;
 
 
-import javax.swing.JFrame;
-
-import Modele.Niveau;
-
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -71,11 +66,11 @@ public class GameView extends JPanel {
             {
                 back.setIcon(imageBack);
             }
-               public void mouseClicked(MouseEvent evt) 
-               {
-                //c.backMenuFromGameView();
+            public void mouseClicked(MouseEvent evt) 
+            {
+                controleur.launchMenu(new Menu(controleur));
                 setSkin2();
-               }
+            }
         });
         add(back);
     }

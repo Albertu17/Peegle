@@ -1,22 +1,14 @@
 package Vue.Menu;
 
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import Vue.Controleur;
@@ -46,10 +38,7 @@ public class MenuParametre extends JPanel {
     JButton back;
 
 
-
-
-
-     public MenuParametre(Controleur c){
+    public MenuParametre(Controleur c){
         this.controleur = c ;
 
         largeur = controleur.getWidth();
@@ -59,10 +48,12 @@ public class MenuParametre extends JPanel {
         setSize(largeur, hauteur);
         setLayout(null);
         setVisible(true);
-        background = ImageImport.getImage("Menu/menuBackground.jpg");
+        
+        // setImage background
+        background = ImageImport.getImage("Menu/menuBackground.jpg", this.getWidth(), this.getHeight());
 
         
-        imageSkin1 = new ImageIcon(ImageImport.getImage("MenuParametre/skin1.png"));
+        imageSkin1 = new ImageIcon(ImageImport.getImage("Menu/Parametre/skin1.png"));
         Image image = ((ImageIcon) imageSkin1).getImage(); // transform it 
         Image newimg = image.getScaledInstance(200, 50,  java.awt.Image.SCALE_SMOOTH);
         imageSkin1 = new ImageIcon(newimg);
@@ -85,7 +76,7 @@ public class MenuParametre extends JPanel {
                 System.exit(0);
               }
         });
-        imageSkin2 = new ImageIcon(ImageImport.getImage("MenuParametre/skin2.png"));
+        imageSkin2 = new ImageIcon(ImageImport.getImage("Menu/Parametre/skin2.png"));
         image = ((ImageIcon) imageSkin2).getImage(); // transform it 
         newimg = image.getScaledInstance(200, 50,  java.awt.Image.SCALE_SMOOTH);
         imageSkin2 = new ImageIcon(newimg);
@@ -109,7 +100,7 @@ public class MenuParametre extends JPanel {
               }
         });
 
-        imageSkin3 = new ImageIcon(ImageImport.getImage("MenuParametre/skin3.png"));
+        imageSkin3 = new ImageIcon(ImageImport.getImage("Menu/Parametre/skin3.png"));
         image = ((ImageIcon) imageSkin3).getImage(); // transform it 
         newimg = image.getScaledInstance(200, 50,  java.awt.Image.SCALE_SMOOTH);
         imageSkin3 = new ImageIcon(newimg);
@@ -152,8 +143,7 @@ public class MenuParametre extends JPanel {
             }
                public void mouseClicked(MouseEvent evt) 
                {
-                //c.backMenuFromGameView();
-                System.exit(0);
+                controleur.launchMenu();
                }
         });
         add(back);
@@ -172,8 +162,7 @@ public class MenuParametre extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g.create();
-        g2d.drawImage(background, 0, 0, this);
+        g.drawImage(background, 0, 0, this);
     }
     
     BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) throws IOException {

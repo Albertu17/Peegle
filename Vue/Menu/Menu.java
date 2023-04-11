@@ -145,7 +145,8 @@ public class Menu extends JPanel {
            }
               public void mouseClicked(MouseEvent evt) 
               {
-                //System.exit(0);
+                //TODO par forcement le bon truc
+                controleur.launchSelectNiveau(true);
               }
         });
         
@@ -215,12 +216,8 @@ public class Menu extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g.create();
-        g2d.drawImage(background, 0, 0, this);
-        g2d.drawImage(title, middleW-title.getWidth()/2-10, 40, this);
-        
-
-
+        g.drawImage(background, 0, 0, this);
+        g.drawImage(title, middleW-title.getWidth()/2-10, 40, this);
     }
     
     BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) throws IOException {

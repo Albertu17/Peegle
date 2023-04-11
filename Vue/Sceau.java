@@ -1,11 +1,7 @@
 package Vue;
 import Modele.*;
 
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
-import java.awt.Image;
 
 public class Sceau{
     public final int longeur = 100; // m

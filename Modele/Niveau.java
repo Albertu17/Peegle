@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
-import javax.swing.FocusManager;
-
 import Vue.ImageImport;
 
 public class Niveau {

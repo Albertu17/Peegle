@@ -7,8 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import Vue.Menu.Menu;
-import Vue.Menu.MenuParametre;
+import Vue.Menu.*;
 
 
 
@@ -17,10 +16,9 @@ public class Controleur extends JFrame{
     public MenuParametre menuParametre;
     public GameView gameview;
     public Menu menu;
+    public SelectNiveau selectNiveau ;
     public int width;
     public int height;
-    public Container container;
-
     public Controleur(){
 
         // lancement de l'import des images 
@@ -40,10 +38,6 @@ public class Controleur extends JFrame{
         setResizable(false);
        
         setVisible(true);
-
-        
-        container = getContentPane();
-        container.setLayout(null);
     }
 
     // override pour prendre l'attribut width de cette classe et pas celui de la frame (plus stable).
@@ -60,24 +54,34 @@ public class Controleur extends JFrame{
     }
 
     public void launchMenu(){
+        removeAll();
         if(menu == null){
             menu = new Menu(this);
-            add(menu);
         }
+        add(menu);
         menu.setVisible(true);
         this.repaint();
     }
 
 
     public void launchParametre(){
+        removeAll();
         if (menuParametre == null){
             menuParametre = new MenuParametre(this);
-            add(menuParametre);
         }
+        add(menuParametre);
         menuParametre.setVisible(true);
         this.repaint();
     }
 
+    public void launchSelectNiveau(boolean campagne){
+        removeAll();
+        selectNiveau = new SelectNiveau(this, campagne);
+        add(selectNiveau);
+        selectNiveau.setVisible(true);
+        this.repaint();
+    }
+    
     public void backMenuFromGameView(){
         gameview.setVisible(false);
         launchParametre();
@@ -104,7 +108,9 @@ public class Controleur extends JFrame{
         menu.setVisible(true);
         this.repaint();
     }
-
+    
+  
+    
 
     public static void main(String[] args) {
 
