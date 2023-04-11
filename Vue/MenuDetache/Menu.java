@@ -49,7 +49,7 @@ public class Menu extends JPanel {
     private BufferedImage title;
 
     public Menu(Controleur c) { 
-        ImageImport.setImage(true);
+        // ImageImport.setImage(true);
         this.hauteur=c.height;
         this.largeur=c.width;
         imageIconPlay = new ImageIcon(ImageImport.getImage("Menu/planche police blanche.png"));
@@ -104,7 +104,10 @@ public class Menu extends JPanel {
 
         btnPlay = new JButton(imageIconPlay);
         btnPlay.setBounds(middleW-100,middleH-25-140,200,50); 
-
+        btnPlay.setBorderPainted(false); 
+        btnPlay.setContentAreaFilled(false); 
+        btnPlay.setFocusPainted(false); 
+        btnPlay.setOpaque(false);
         btnPlay.addMouseListener((MouseListener) new MouseAdapter() 
         {
            public void mouseEntered(MouseEvent evt) 
