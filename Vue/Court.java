@@ -34,9 +34,9 @@ public class Court extends JPanel implements MouseInputListener {
     private String nom;
     private ArrayList<Ball> balls;
     private ArrayList<Pegs> pegs;
-    ArrayList<Pegs> toucherPegs;
+    private ArrayList<Pegs> toucherPegs;
     private Background background;
-
+    private ArrayList<Rectangle> rectangles;
     private int NbDeBall = 250 ;
     private boolean nbDeBallChange=true;
     private int MaxCombo = 0;
@@ -64,6 +64,7 @@ public class Court extends JPanel implements MouseInputListener {
 
         // ArrayLists
         balls = new ArrayList<>();
+        rectangles = new ArrayList<>();
         pegs = new ArrayList<>();
         toucherPegs = new ArrayList<>();
 
@@ -216,7 +217,9 @@ public class Court extends JPanel implements MouseInputListener {
 
 
         g.setColor(Color.RED);
-    
+        for (Rectangle rect:rectangles) {
+            g.drawLine(rect.x0, rect.y0, rect.caculX1(), rect.caculY1());
+        }
         for (Pegs peg:pegs) {
             Graphics2D g2d = (Graphics2D) g;        
             if (peg.getHit()) {
@@ -246,7 +249,9 @@ public class Court extends JPanel implements MouseInputListener {
     public int getHeight() {
         return height;
     }
-
+    public ArrayList<Rectangle> getRectangles() {
+        return rectangles;
+    }
     public Sceau getSceau() {
         return sceau;
     }
