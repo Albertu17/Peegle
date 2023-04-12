@@ -55,7 +55,7 @@ public class EditeurNiveaux extends JPanel {
         courtWidth = width * 5/6;
         courtHeight = height * 5/6;
         court = new Court(courtWidth, courtHeight, niveauCree);
-        court.editMode = true;
+        court.enPause = true;
         court.eN = this;
         court.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         court.setBounds(0, 0, courtWidth, courtHeight);
@@ -98,7 +98,7 @@ public class EditeurNiveaux extends JPanel {
         JButton resume = new JButton("|>");
         resume.setBounds(courtWidth - 50, 0, 50, 50);
         resume.addActionListener(e -> {
-            court.editMode = false;
+            court.enPause = false;
             court.animate();
             resume.setEnabled(false);
             pause.setEnabled(true);
@@ -107,7 +107,7 @@ public class EditeurNiveaux extends JPanel {
         panelBoutons.add(resume);
 
         pause.addActionListener(e -> {
-            court.editMode = true;
+            court.enPause = true;
             resume.setEnabled(true);
             pause.setEnabled(false);
             casePegBleu.mousePressed(null);
@@ -157,7 +157,6 @@ public class EditeurNiveaux extends JPanel {
         modif.setBounds(width - courtWidth + courtHeight * 5/16, 0, courtHeight * 1/16, courtHeight * 1/16);
         modif.addActionListener(e -> {
             enModif = true;
-            boutonsModifActifs(true);
             caseActive.unclicked();
             pause.doClick();
         });
@@ -221,6 +220,7 @@ public class EditeurNiveaux extends JPanel {
         int largeur, hauteur;
         Pegs peg;
         int x, y, radius, couleur;
+        Pegs modeleActuel;
 
         public CasePeg(int largeur, int hauteur, int couleur) {
             this.largeur = largeur;
@@ -238,6 +238,7 @@ public class EditeurNiveaux extends JPanel {
             sliderTaillPeg.addChangeListener(e -> {
                 peg.setRadius(sliderTaillPeg.getValue());
                 paint(this.getGraphics());
+                modeleActuel.setRadius(sliderTaillPeg.getValue());
             });
             add(sliderTaillPeg);
 
@@ -254,6 +255,7 @@ public class EditeurNiveaux extends JPanel {
 
         public void unclicked() {
             setBackground(UIManager.getColor("Panel.background")); // Rend au panel son background originel.
+            modeleActuel = null;
         }
 
         public void mousePressed(MouseEvent e) {
@@ -262,6 +264,7 @@ public class EditeurNiveaux extends JPanel {
             enModif = false;
             boutonsModifActifs(false);
             setBackground(Color.LIGHT_GRAY);
+            modeleActuel = new Pegs(0, 0, radius, couleur);
         }
 
         public void mouseClicked(MouseEvent e) {}

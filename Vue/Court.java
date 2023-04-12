@@ -1,8 +1,10 @@
 package Vue;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.Color;
@@ -34,7 +36,7 @@ public class Court extends JPanel implements MouseInputListener {
     ArrayList<Pegs> toucherPegs;
 
     // Pour l'éditeur de niveaux
-    boolean editMode;
+    boolean enPause;
     EditeurNiveaux eN;
 
     Niveau niveau;
@@ -46,7 +48,7 @@ public class Court extends JPanel implements MouseInputListener {
         this.niveau = niveau;
 
         // Pour l'éditeur de niveaux
-        editMode = false; // Par défault
+        enPause = false; // Par défault
         eN = null; // Par défault
 
         // Listeners
@@ -97,15 +99,16 @@ public class Court extends JPanel implements MouseInputListener {
             double last;
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!editMode) {
+                if (enPause) timer.stop(); // Arrêt de tout le timer.
+                else {
                     last = System.nanoTime();
                     for (Ball b:balls){
                         if (b.isPresent()) b.updateBall((last-now)*1.0e-9,sceau);
                     }
                     sceau.move(((last-now)*1.0e-9));
-                } else timer.stop(); // Arrêt de tout le timer.
-                repaint();
-                now=last;
+                    repaint();
+                    now=last;
+                }
             }
         });
         timer.start();
@@ -169,8 +172,8 @@ public class Court extends JPanel implements MouseInputListener {
             g.drawLine(rect.x0, rect.y0, rect.caculX1(), rect.caculY1());
         }
 
-        for (Pegs peg: niveau.getPegs()) {
-            Graphics2D g2d = (Graphics2D) g;        
+        Graphics2D g2d = (Graphics2D) g;  
+        for (Pegs peg: niveau.getPegs()) {     
             if (peg.getHit()) {
                 g2d.drawImage(ImageImport.getImage(peg.getImageStringTouche()), peg.getX(), peg.getY(), peg.getRadius(), peg.getRadius(), this);
             }
@@ -181,7 +184,7 @@ public class Court extends JPanel implements MouseInputListener {
         }
 
         // traçage ligne de viser
-        if (!editMode) {
+        if (!enPause) {
             canon.calculCordonnéeLigneViser();
             Graphics2D g2DGameview = (Graphics2D) g;
             g2DGameview.setColor(Color.RED);
@@ -190,6 +193,15 @@ public class Court extends JPanel implements MouseInputListener {
             g2DGameview.setStroke(dashed);
             g2DGameview.drawPolyline(canon.getXLigneViser(), canon.getYLigneViser(), 10);
         };
+
+        // Draw preview pour l'editeur de niveaux
+        if (eN != null && eN.caseActive != null && eN.caseActive.modeleActuel != null) {
+            Pegs pV = eN.caseActive.modeleActuel; // preview transparent
+            float alpha = (float) 0.2; //draw at 20% opacity
+            AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,alpha);
+            g2d.setComposite(ac);
+            g2d.drawImage(ImageImport.getImage(pV.getImageString()), pV.getX() - pV.getRadius()/2, pV.getY() - pV.getRadius()/2, pV.getRadius(), pV.getRadius(), this);
+        }
     }
 
     public int getWidth() {
@@ -214,16 +226,20 @@ public class Court extends JPanel implements MouseInputListener {
 
     public void mousePressed(MouseEvent e) {
         // lancer une balle
-        if (!editMode) balls.add(canon.tirer());
+        if (!enPause) balls.add(canon.tirer());
         else if (eN != null && eN.enModif) {
             boolean sourisSurPeg = false;
             for (Pegs p : niveau.getPegs()) {
                 if (Math.pow(e.getX() - p.getX(), 2) + Math.pow(e.getY() - p.getY(), 2) <= Math.pow(p.getRadius(),2)) {
                     eN.pegSelectionne = p;
+                    eN.boutonsModifActifs(true);
                     sourisSurPeg = true;
                     break;
                 }
-                if (!sourisSurPeg) eN.pegSelectionne = null;
+                if (!sourisSurPeg) {
+                    eN.pegSelectionne = null;
+                    eN.boutonsModifActifs(false);
+                }
             }
         }
         else {
@@ -235,7 +251,7 @@ public class Court extends JPanel implements MouseInputListener {
 
     public void mouseDragged(MouseEvent e) {
         // Déplacement du canon en fonction de la possition de la souris
-        if (!editMode) canon.DeplacementCanon(e);
+        if (!enPause) canon.DeplacementCanon(e);
         else if (eN != null && eN.enModif) {
             if (eN.pegSelectionne != null) {
                 eN.pegSelectionne.setX(e.getX() - eN.pegSelectionne.getRadius()/2);
@@ -247,11 +263,24 @@ public class Court extends JPanel implements MouseInputListener {
 
     public void mouseMoved(MouseEvent e) {
         // Déplacement du canon en fonction de la possition de la souris
-        if (!editMode) canon.DeplacementCanon(e);
+        if (!enPause) canon.DeplacementCanon(e);
+        // Pour faire apparaître un preview du peg qu'on poserait à cet endroit
+        else if (eN != null && !eN.enModif) {
+            eN.caseActive.modeleActuel.setX(e.getX());
+            eN.caseActive.modeleActuel.setY(e.getY());
+            repaint();
+        }
+    }
+
+    public void mouseExited(MouseEvent e) {
+        if (enPause && eN != null && !eN.enModif) {
+            eN.caseActive.modeleActuel.setX(-1); // Fait disparaître le preview du court
+            eN.caseActive.modeleActuel.setY(-1);
+            repaint();
+        }
     }
 
     public void mouseClicked(MouseEvent e) {}
     public void mouseReleased(MouseEvent e) {}
     public void mouseEntered(MouseEvent e) {}
-    public void mouseExited(MouseEvent e) {}
 }
