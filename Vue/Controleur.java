@@ -13,6 +13,7 @@ public class Controleur extends JFrame{
 
     public MenuParametre menuParametre;
     public GameView gameview;
+    public EditeurNiveaux editeurNiveaux ;
     public Menu menu;
     public SelectNiveau selectNiveau ;
     public int width;
@@ -72,6 +73,15 @@ public class Controleur extends JFrame{
         menuParametre.setVisible(true);
         this.repaint();
     }
+    public void launchEditeurNiveau(){
+        // removeAll();
+        if (editeurNiveaux == null){
+            editeurNiveaux = new EditeurNiveaux(this);
+        }
+        add(editeurNiveaux);
+        editeurNiveaux.setVisible(true);
+        this.repaint();
+    }
 
     public void launchSelectNiveau(boolean campagne){
         removeAll();
@@ -116,10 +126,10 @@ public class Controleur extends JFrame{
             @Override
             public void run() {
                 Controleur c = new Controleur() ;
-                c.launchMenu();
-                c.repaint();
-                // Pour accéder à l'éditeur de niveaux pour l'instant:
-                // c.add(new EditeurNiveaux(c.width, c.height));
+                // c.launchMenu();
+                c.launchEditeurNiveau();
+                // c.launchSelectNiveau(true);
+                
             }
         });
     }

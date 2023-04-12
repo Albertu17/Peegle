@@ -24,7 +24,7 @@ public class ImageImport {
             System.out.println(name);
        }
     }
-    
+    public static boolean isAtif(){return allimage!=null;}
     /**
      * @description Lance l'import de toute les images du dossier image (ainsi que ses sous dossier)
      * Les images sont récuperable avec la fonction statique getImage(path) ;
@@ -73,19 +73,20 @@ public class ImageImport {
     /**
      * @description Relance l'import de toute les images du dossier image (ainsi que ses sous dossier)
      * Les images sont récuperable avec la fonction statique getImage(path) ;
-     * @param pathFolder dossier à reimporter
+     * @param path si c'est un dossier rajoute "/" à la fin
      * @author Thibault
      * 
      */
-    public static void reloadImageFile(String pathFolder){
+    public static void addImage(String path){
+        importFini = false ; // fait attendre tout appel aux fonctions get image
+        
         if (allimage == null){
             setImage(false);
             return  ;
         }
 
-        importFini = false ; // fait attendre tout appel aux fonctions get image
         try {
-            scanFile(new File(pathDossierImage +pathFolder), pathFolder+"/") ;
+            allimage.put(path, ImageIO.read(new File(pathDossierImage + path))) ;
         } catch (IOException e) {
             e.printStackTrace();
         }

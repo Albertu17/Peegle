@@ -48,7 +48,7 @@ public class Niveau {
         return nom;
     }
     private String getDossier(){
-        return campagne ? "Campagne/" : "Perso/" +getNom();
+        return (campagne ? "Campagne/" : "Perso/" )+getNom();
     }
 
 
@@ -90,21 +90,12 @@ public class Niveau {
     public static int randInt(int a, int b){
         return (new SecureRandom()).nextInt(b-a +1) +a ;
     }
-
-
-    // creation icone 
-    public static void createIconeNiveau(String niveau){
-        int width = 1080/3 ;
-        int height = 520/3 ;
-        Niveau nv = Niveau.importPegles(niveau, width, height);
-        createIconeNiveau(nv);
-    }
     
-    public static void createIconeNiveau(Niveau nv){
+    public static void createIconeNiveau(String niveau, boolean campagne){
         int width = 1080/3 ;
         int height = 520/3 ;
 
-
+        Niveau nv = importPegles((campagne? "Campagne/" : "Perso/") + niveau, width, height) ;
         BufferedImage tempImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics g = (tempImage.createGraphics());
         Graphics2D g2d = (Graphics2D) g;      
@@ -122,19 +113,24 @@ public class Niveau {
             System.out.println(ex);
         }
 
+        // ajout dans ImportImage si actif
+        if (ImageImport.isAtif()){
+            ImageImport.addImage("IconeNiveau/"+nv.getDossier()+".png");
+        } 
+
     }
     
     public static void main(String[] args) {
         ImageImport.setImage(false);
-        boolean campagne =false ;
+        boolean campagne =true ;
         for(String name : new File("Niveau/"+ (campagne? "Campagne" : "Perso")).list()){
             name  = name.substring(0, name.length() -5) ;
-            createIconeNiveau((campagne? "Campagne/" : "Perso/")+name);
+            createIconeNiveau(name, campagne);
         }
-        campagne =true ;
+        campagne =false ;
         for(String name : new File("Niveau/"+ (campagne? "Campagne" : "Perso")).list()){
             name  = name.substring(0, name.length() -5) ;
-            createIconeNiveau((campagne? "Campagne/" : "Perso/")+name);
+            createIconeNiveau(name, campagne);
         }
     }
 
@@ -158,10 +154,9 @@ public class Niveau {
     public void save(int widthCourt, int heightCourt){
         // save les lignes de l'array list dans un fichier csv
         
-    
         PrintWriter file;
         try {
-            file = new PrintWriter(dosierSauvegarde + getDossier()+ nom + nomExtension);
+            file = new PrintWriter(dosierSauvegarde + getDossier() + nomExtension);
     
             // premiere ligne d'info :
             String ligne  = String.valueOf(widthCourt) +";"
@@ -191,7 +186,7 @@ public class Niveau {
         }
 
         // update l'icone du niveau
-        createIconeNiveau(this); 
+        createIconeNiveau(this.getNom(), this.campagne); 
     }
     
     public static Niveau importPegles(String name, int widthCourt, int heightCourt){

@@ -38,7 +38,10 @@ public class SelectNiveau extends JPanel{
     private Fleche previous ;
 
     public SelectNiveau(Controleur c, boolean campagne){
+        
         controleur = c ;
+        this.campagne = campagne ;
+        
         setBounds(0, 0, controleur.getWidth(), controleur.getHeight());
         c.add(this) ;
         this.setVisible(true); 
@@ -46,16 +49,14 @@ public class SelectNiveau extends JPanel{
         
         // setImage background
         background = ImageImport.getImage("Menu/menuBackground.jpg", this.getWidth(), this.getHeight());
-
-        this.campagne = campagne ;
+        
         allNameNiveau = Niveau.getAllNameNiveau(campagne) ;
-
+        
         // import de la police 
         try {
             InputStream targetStream = new FileInputStream("./Vue/Font/cartoonist_kooky.ttf");
             font =  Font.createFont(Font.TRUETYPE_FONT, targetStream);
             font = font.deriveFont(26f);
-            // font.setFont(font.deriveFont(font.getStyle() | Font.BOLD)); //mets en gras
         } catch (Exception e) {
             System.out.println("ereur font");
             e.printStackTrace();
@@ -172,6 +173,10 @@ public class SelectNiveau extends JPanel{
             invisiblePhoto.setOpaque(false);
             this.add(invisiblePhoto); //ajout d'un bloc pour l'image et l'affichage du layout
             button = new ButtonBJ(nomNiveau, hauteurBouton) ;
+            // System.out.println(largeurPres);
+            // System.out.println(button.getWidth());
+            // System.out.println((largeurPres-button.getWidth())/2);
+            //TODO régler pb de centrage
             this.add(Box.createRigidArea(new Dimension((largeurPres-button.getWidth())/2, 0))); //ajout d'un bloc pour l'image et l'affichage du layout
             this.add(button); 
 
@@ -274,7 +279,7 @@ public class SelectNiveau extends JPanel{
             @Override
             public void run() {
                 Controleur c  = new Controleur() ;
-                c.launchMenu(new SelectNiveau(c, true));                
+                c.launchSelectNiveau(true);             
             }
 
         });

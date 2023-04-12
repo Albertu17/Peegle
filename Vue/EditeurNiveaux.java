@@ -7,6 +7,8 @@ import java.awt.Graphics2D;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
+import java.time.format.DecimalStyle;
+
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -26,7 +28,7 @@ public class EditeurNiveaux extends JPanel {
     Court court;
     private int courtWidth;
     private int courtHeight;
-
+    private Controleur controleur ;
     Niveau niveauCree;
     CasePeg caseActive;
     Pegs pegSelectionne;
@@ -42,12 +44,14 @@ public class EditeurNiveaux extends JPanel {
 
     // TODO: imageicon boutons, rebond sur pegs (chmt l 152 BALL)
 
-    EditeurNiveaux(int width, int height) {
-
+    EditeurNiveaux(Controleur controleur) {
+        this.controleur = controleur ;
+        int width = controleur.getWidth() ;
+        int height = controleur.getHeight() ;
         setLayout(null);
 
         niveauCree = new Niveau("enAttente");
-        niveauCree.isCampagne(true);
+        niveauCree.isCampagne(false);
 
         // Court
         courtWidth = width * 5/6;
@@ -187,9 +191,13 @@ public class EditeurNiveaux extends JPanel {
         save.addActionListener(e -> niveauCree.save(courtWidth, courtHeight));
         panelBoutons.add(save);
 
+        save.addActionListener(e->{
+            niveauCree.save(courtWidth, courtHeight);
+        });
+
         saveNom.addActionListener(e -> {
-            if (true) { // TODO Ajout test nom déjà utilisé
-                niveauCree.setNom(saveNom.getText());
+            if ( ! Niveau.getAllNameNiveau().contains(nomNiveau.getText()) && ! nomNiveau.getText().equals(placeHolders[0]) && ! nomNiveau.getText().equals(placeHolders[1])) { // TODO Ajout test nom déjà utilisé
+                niveauCree.setNom(nomNiveau.getText());
                 save.setEnabled(true);
             }
             else nomNiveau.setText(placeHolders[1]);
@@ -301,9 +309,9 @@ public class EditeurNiveaux extends JPanel {
         public void focusGained(FocusEvent e) {
             for (String string : placeHolders) {
                 if (field.getText().equals(string)) {
+                    field.setForeground(Color.BLACK);
                     currentHolder = field.getText();
                     field.setText("");
-                    field.setForeground(Color.BLACK);
                 }
             }
         }
