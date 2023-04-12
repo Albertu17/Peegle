@@ -8,12 +8,16 @@ import java.awt.event.MouseListener;
 import java.awt.*;
 import javax.swing.*;
 
+import Modele.Niveau;
+
 public class GameView extends JPanel {
 
     public Controleur controleur ;
 
     private int width;
     private int heigth;
+
+    Niveau niveau;
 
     // Court
     Court court;
@@ -37,9 +41,14 @@ public class GameView extends JPanel {
         
         courtWidth = width - 400;
         courtHeight = heigth - 200;
+
+        // Affectation du niveau
+        if (nomNiveau == null) niveau = new Niveau(nomNiveau);
+        else if (nomNiveau.toLowerCase().equals("aleatoire")) niveau = Niveau.NiveauAleatoire(width, heigth, 10, 20);
+        else niveau = Niveau.importPegles(nomNiveau, courtWidth, courtHeight);
         
         // Court
-        court = new Court(courtWidth, courtHeight, nomNiveau); // spécifier le niveau à importer
+        court = new Court(courtWidth, courtHeight, niveau);
         court.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         court.setBounds((width-courtWidth)/2, (heigth-courtHeight)/2, courtWidth, courtHeight);
         court.setVisible(true);

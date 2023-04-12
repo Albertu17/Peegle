@@ -9,6 +9,7 @@ public class Pegs {
     private String imageString;
     private boolean toucher = false;
     public boolean atoucherpegs = false;
+
     // int 1 à 4 couleur image 
     public Pegs(int x, int y, int radius, int couleur) {
         this.x = x;
@@ -16,28 +17,31 @@ public class Pegs {
         this.radius = radius;
         this.couleur = couleur;
         imageString = intColorToString(couleur);
-}
-public static String intColorToString(int couleur) {
-    String s = "";
-    switch (couleur) {
-        case 1:
-            s = "blueball.png";
-            break;
-        case 2:
-            s = "redball.png";
-            break;
-        case 3:
-            s = "violetball.png";
-            break;
-        case 4:
-            s = "vertball.png";
-            break;
     }
-    return s;
-}
-public void setImageString(String imageString) {
-    this.imageString = imageString;
-}
+
+    public static String intColorToString(int couleur) {
+        String s = "";
+        switch (couleur) {
+            case 1:
+                s = "blueball.png";
+                break;
+            case 2:
+                s = "redball.png";
+                break;
+            case 3:
+                s = "violetball.png";
+                break;
+            case 4:
+                s = "vertball.png";
+                break;
+        }
+        return s;
+    }
+
+    public void setImageString(String imageString) {
+        this.imageString = imageString;
+    }
+
     public int getX() {
         return x;
     }
@@ -80,6 +84,7 @@ public void setImageString(String imageString) {
         }
         return false;
     }
+    
     // celui d'albert
     public boolean contains(int i, int j) {
         if (Math.sqrt(Math.pow(i-x, 2)+Math.pow(j-y, 2))<=radius) {

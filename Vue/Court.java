@@ -3,6 +3,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.Color;
@@ -24,7 +25,6 @@ public class Court extends JPanel implements MouseInputListener {
     private Sceau sceau;
     private Niveau niveau ;
     private int toucher;
-    private String nom;
     private ArrayList<Ball> balls;
     private ArrayList<Pegs> pegs;
     private ArrayList<Pegs> toucherPegs;
@@ -42,15 +42,17 @@ public class Court extends JPanel implements MouseInputListener {
     private int frameCount = 0;
     private int afficageCombo = 0;
 
-
-    public Court(int courtWith, int courtHeight, String nomLevel)  {
+    // Pour l'éditeur de niveaux
+    private boolean enPause;
+    private EditeurNiveaux eN;
+    
+    public Court(int courtWith, int courtHeight, Niveau niveau) {
         // setBorder(BorderFactory.createLineBorder(Color.BLACK));
         setOpaque(false);
         width = courtWith;
         height = courtHeight;
-        nom = nomLevel;
+        this.niveau = niveau;
 
-       
         // Listeners
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
@@ -73,38 +75,29 @@ public class Court extends JPanel implements MouseInputListener {
         // Balls
         toucher = 0 ;
         
-
         // Sceau
         sceau = new Sceau(this);
-        // for (int i=0;i<50;i++){
-        //     pegs.add(new Pegs(100+i*25, 400, 20, 1));
-        //     pegs.add(new Pegs(100+i*25, 500, 20, 1));
-        // }
-
-
-        if (nomLevel != null){
-            if(nomLevel.toLowerCase().equals("aleatoire")) this.niveau = Niveau.NiveauAleatoire(width, height, 10, 20) ;
-            else this.niveau = Niveau.importPegles(nomLevel, courtWith, courtHeight) ;
-            pegs = niveau.getPegs() ;
-        } 
 
         animate();
     }
 
     public void animate() {
-        Timer timer = new Timer(10, new ActionListener() {
+        final Timer timer = new Timer(10, null);
+        timer.addActionListener(new ActionListener() {
             double now=System.nanoTime();
             double last;
             @Override
             public void actionPerformed(ActionEvent e) {
-                last = System.nanoTime();
-                for (Ball b:balls){
-                    if (b.isPresent()) b.updateBall((last-now)*1.0e-9,sceau);
+                if (enPause) timer.stop(); // Arrêt de tout le timer.
+                else {
+                    last = System.nanoTime();
+                    for (Ball b:balls){
+                        if (b.isPresent()) b.updateBall((last-now)*1.0e-9,sceau);
+                    }
+                    sceau.move(((last-now)*1.0e-9));
+                    repaint();
+                    now=last;
                 }
-                sceau.move(((last-now)*1.0e-9));
-                repaint();
-                now=last;
-                
             }
         });
         timer.start();
@@ -113,6 +106,7 @@ public class Court extends JPanel implements MouseInputListener {
     public BufferedImage getBall(){
         return Ball.getImgBall();
     }
+
     public void paint(Graphics g) {
         
         super.paint(g);
@@ -132,7 +126,7 @@ public class Court extends JPanel implements MouseInputListener {
             background.repaint();
             g.setFont(newFont.deriveFont(18f));
             g.setColor(Color.WHITE);
-            g.drawString("Level "+nom + " Completed !", 550, 125);
+            g.drawString("Level "+ niveau.getNom() + " Completed !", 550, 125);
             g.setFont(newFont.deriveFont(26f));
             g.drawString("Score: "+toucher, 500, 210);
             g.drawString("Balles Restantes: "+NbDeBall, 500, 260);
@@ -144,8 +138,6 @@ public class Court extends JPanel implements MouseInputListener {
             return;
         }
         
-
-       
         // System.out.println(toucher);
         // canon.repaint();
         g.setColor(Color.BLACK);
@@ -213,26 +205,33 @@ public class Court extends JPanel implements MouseInputListener {
         for (Rectangle rect:rectangles) {
             g.drawLine(rect.x0, rect.y0, rect.caculX1(), rect.caculY1());
         }
-        for (Pegs peg:pegs) {
-            Graphics2D g2d = (Graphics2D) g;        
-            if (peg.getHit()) {
-                g2d.drawImage(ImageImport.getImage(peg.getImageStringTouche()), peg.getX(), peg.getY(), peg.getRadius(), peg.getRadius(), this);
-            }
-            else {
-                g2d.drawImage(ImageImport.getImage(peg.getImageString()), peg.getX(), peg.getY(), peg.getRadius(), peg.getRadius(), this);
-            }
+
+        Graphics2D g2d = (Graphics2D) g;   
+        for (Pegs peg:pegs) {       
+            if (peg.getHit()) g2d.drawImage(ImageImport.getImage(peg.getImageStringTouche()), peg.getX(), peg.getY(), peg.getRadius(), peg.getRadius(), this);
+            else g2d.drawImage(ImageImport.getImage(peg.getImageString()), peg.getX(), peg.getY(), peg.getRadius(), peg.getRadius(), this);
             //image pegs toucher
         }
-                // traçage ligne de viser
-        canon.calculCordonnéeLigneViser();
-        Graphics2D g2DGameview = (Graphics2D) g;
-        g2DGameview.setColor(Color.RED);
-        float dash1[] = {20.0f};
-        BasicStroke dashed = new BasicStroke(5.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
-        g2DGameview.setStroke(dashed);
-        g2DGameview.drawPolyline(canon.getXLigneViser(), canon.getYLigneViser(), 10);
 
-        
+        // traçage ligne de viser
+        if (!enPause) {
+            canon.calculCordonnéeLigneViser();
+            Graphics2D g2DGameview = (Graphics2D) g;
+            g2DGameview.setColor(Color.RED);
+            float dash1[] = {20.0f};
+            BasicStroke dashed = new BasicStroke(5.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, dash1, 0.0f);
+            g2DGameview.setStroke(dashed);
+            g2DGameview.drawPolyline(canon.getXLigneViser(), canon.getYLigneViser(), 10);
+        }
+
+        // Draw preview pour l'editeur de niveaux
+        if (eN != null && eN.caseActive != null && eN.caseActive.modeleActuel != null) {
+            Pegs pV = eN.caseActive.modeleActuel; // preview transparent
+            float alpha = (float) 0.2; //draw at 20% opacity
+            AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,alpha);
+            g2d.setComposite(ac);
+            g2d.drawImage(ImageImport.getImage(pV.getImageString()), pV.getX() - pV.getRadius()/2, pV.getY() - pV.getRadius()/2, pV.getRadius(), pV.getRadius(), this);
+        }
     }   
 
     public int getWidth() {
@@ -267,64 +266,8 @@ public class Court extends JPanel implements MouseInputListener {
         return  NbDeBall;
     }
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        // lancer une balle
-        if (!GameOver) {
-        
-        if (NbDeBall>0){ 
-            background.repaint();
-            nbDeBallChange=true;
-            balls.add(canon.tirer());
-            NbDeBall--;
-        }
-    } else {
-        if (mouseX>535 && mouseX<985 && mouseY>695 && mouseY<765){
-            //Button next level! clicked
-    }
-}
-        
-    }
-
     public boolean nbBallHasChanged(){
         return nbDeBallChange;
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-        
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-        
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent e) {
-        mouseX = e.getX();
-        mouseY = e.getY();
-        // Déplacement du canon en fonction de la possition de la souris
-        canon.DeplacementCanon(e);
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        mouseX = e.getX();
-        mouseY = e.getY();
-
-        // Déplacement du canon en fonction de la possition de la souris
-        canon.DeplacementCanon(e);    
     }
 
     public int getScore() {
@@ -334,6 +277,7 @@ public class Court extends JPanel implements MouseInputListener {
     public int getScoreMax(){
         return  89; // a changer selon les niveaux
     }
+
     public void setBackground(Background background) {
         this.background = background;
     }
@@ -341,9 +285,87 @@ public class Court extends JPanel implements MouseInputListener {
     public int getBallRadius(){
         return (int) Ball.ballRadius;
     }
+
     public void setSkin2(){
         for(Ball ball:balls){
             ball.putSkin2();
         }
     }
+
+    public void mouseClicked(MouseEvent e) {
+        // lancer une balle
+        if (!GameOver) {
+            if (NbDeBall>0){ 
+                background.repaint();
+                nbDeBallChange=true;
+                balls.add(canon.tirer());
+                NbDeBall--;
+            }
+        } else if (mouseX>535 && mouseX<985 && mouseY>695 && mouseY<765){
+            //Button next level! clicked
+        }
+    }
+
+    public void mousePressed(MouseEvent e) {
+        // lancer une balle
+        if (!enPause) balls.add(canon.tirer());
+        else if (eN != null && eN.enModif) {
+            boolean sourisSurPeg = false;
+            for (Pegs p : niveau.getPegs()) {
+                if (Math.pow(e.getX() - p.getX(), 2) + Math.pow(e.getY() - p.getY(), 2) <= Math.pow(p.getRadius(),2)) {
+                    eN.pegSelectionne = p;
+                    eN.boutonsModifActifs(true);
+                    sourisSurPeg = true;
+                    break;
+                }
+                if (!sourisSurPeg) {
+                    eN.pegSelectionne = null;
+                    eN.boutonsModifActifs(false);
+                }
+            }
+        }
+        else {
+            int radius = eN.caseActive.radius;
+            niveau.getPegs().add(new Pegs(e.getX() - radius/2, e.getY() - radius/2, radius, eN.caseActive.couleur));
+            repaint();
+        }
+    }
+
+    public void mouseExited(MouseEvent e) {
+        if (enPause && eN != null && !eN.enModif) {
+            eN.caseActive.modeleActuel.setX(-1); // Fait disparaître le preview du court
+            eN.caseActive.modeleActuel.setY(-1);
+            repaint();
+        }
+    }
+
+    public void mouseDragged(MouseEvent e) {
+        mouseX = e.getX();
+        mouseY = e.getY();
+        // Déplacement du canon en fonction de la possition de la souris
+        if (!enPause) canon.DeplacementCanon(e);
+        else if (eN != null && eN.enModif) {
+            if (eN.pegSelectionne != null) {
+                eN.pegSelectionne.setX(e.getX() - eN.pegSelectionne.getRadius()/2);
+                eN.pegSelectionne.setY(e.getY() - eN.pegSelectionne.getRadius()/2);
+                repaint();
+            }
+        }
+    }
+
+    public void mouseMoved(MouseEvent e) {
+        mouseX = e.getX();
+        mouseY = e.getY();
+        // Déplacement du canon en fonction de la position de la souris
+        if (!enPause) canon.DeplacementCanon(e);
+        // Pour faire apparaître un preview du peg qu'on poserait à cet endroit
+        else if (eN != null && !eN.enModif) {
+            eN.caseActive.modeleActuel.setX(e.getX());
+            eN.caseActive.modeleActuel.setY(e.getY());
+            repaint();
+        }
+    }
+
+    public void mouseEntered(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e) {}
 }
