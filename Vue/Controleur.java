@@ -116,10 +116,10 @@ public class Controleur extends JFrame{
             @Override
             public void run() {
                 Controleur c = new Controleur() ;
-                //c.launchMenu();
-                //c.repaint();
+                c.launchMenu();
+                c.repaint();
                 // Pour accéder à l'éditeur de niveaux pour l'instant:
-                c.add(new EditeurNiveaux(c.width, c.height));
+                // c.add(new EditeurNiveaux(c.width, c.height));
             }
         });
     }

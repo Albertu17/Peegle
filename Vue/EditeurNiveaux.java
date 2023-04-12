@@ -47,6 +47,7 @@ public class EditeurNiveaux extends JPanel {
         setLayout(null);
 
         niveauCree = new Niveau("enAttente");
+        niveauCree.isCampagne(true);
 
         // Court
         courtWidth = width * 5/6;
@@ -225,6 +226,7 @@ public class EditeurNiveaux extends JPanel {
             radius = peg.getRadius();
             x = peg.getX();
             y = peg.getY();
+            modeleActuel = new Pegs(0, 0, radius, couleur);
 
             setLayout(null);
             JSlider sliderTaillPeg = new JSlider(10, 110, 50);
@@ -258,7 +260,6 @@ public class EditeurNiveaux extends JPanel {
             enModif = false;
             boutonsModifActifs(false);
             setBackground(Color.LIGHT_GRAY);
-            modeleActuel = new Pegs(0, 0, radius, couleur);
         }
 
         public void mouseClicked(MouseEvent e) {}

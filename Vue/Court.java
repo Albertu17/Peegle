@@ -366,6 +366,8 @@ public class Court extends JPanel implements MouseInputListener {
             for (Pegs p : niveau.getPegs()) {
                 if (Math.pow(e.getX() - p.getX(), 2) + Math.pow(e.getY() - p.getY(), 2) <= Math.pow(p.getRadius(),2)) {
                     eN.pegSelectionne = p;
+                    eN.sliderPegSelectionne.setValue(p.getRadius());
+                    eN.sliderPegSelectionne.repaint();
                     eN.boutonsModifActifs(true);
                     sourisSurPeg = true;
                     break;
@@ -389,8 +391,8 @@ public class Court extends JPanel implements MouseInputListener {
 
     public void mouseExited(MouseEvent e) {
         if (editMode && enPause && !eN.enModif) {
-            eN.caseActive.modeleActuel.setX(-1); // Fait disparaître le preview du court
-            eN.caseActive.modeleActuel.setY(-1);
+            eN.caseActive.modeleActuel.setX(-100); // Fait disparaître le preview du court
+            eN.caseActive.modeleActuel.setY(-100);
             repaint();
         }
     }
