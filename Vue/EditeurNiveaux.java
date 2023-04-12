@@ -188,7 +188,6 @@ public class EditeurNiveaux extends JPanel {
         JButton save = new JButton("Save");
         save.setEnabled(false);
         save.setBounds(courtWidth, 0, width - courtWidth, height - courtHeight);
-        save.addActionListener(e -> niveauCree.save(courtWidth, courtHeight));
         panelBoutons.add(save);
 
         save.addActionListener(e->{
