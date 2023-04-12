@@ -42,7 +42,7 @@ public class Sceau{
     }
 
     public boolean inside(Ball b){
-        return X <= b.nextBallX && b.nextBallX + b.ballRadius*2 <= X + longeur &&
+        return X <= b.nextBallX && b.nextBallX + Ball.ballRadius*2 <= X + longeur &&
         Y  + 20 <= b.nextBallY && b.nextBallY + 20 <= Y + hauteur;
 
     }
@@ -51,7 +51,7 @@ public class Sceau{
         return nextX < 0 || nextX> court.getWidth() - longeur;
     }
     public boolean toucheBordureSceau(Ball b){
-        return ((X <= b.nextBallX + b.ballRadius*2 && b.nextBallX  <= X + bordure) || (X + longeur - bordure  <= b.nextBallX + b.ballRadius*2 && b.nextBallX <= X  + longeur) ) && 
+        return ((X <= b.nextBallX + Ball.ballRadius*2 && b.nextBallX  <= X + bordure) || (X + longeur - bordure  <= b.nextBallX + Ball.ballRadius*2 && b.nextBallX <= X  + longeur) ) && 
         Y + 10  <= b.nextBallY && b.nextBallY + 10 <= Y + hauteur; //hardcoding pour toucher plus bas
     }
 
