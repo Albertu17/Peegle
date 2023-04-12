@@ -125,7 +125,7 @@ public class Ball{
         
         if (p!=null && !atoucherpegs){
             if (!p.getHit()){combo++;}
-            p.toucher();
+            p.setTouche(true);
             double ux = (nextBallX+ ballRadius) - (p.getX() + p.getRadius()/2);
             double uy = (nextBallY+ballRadius) - (p.getY()+ p.getRadius()/2);
             double vx = ballSpeedX;
@@ -160,7 +160,7 @@ public class Ball{
 
     public Pegs touchedPegs(){
         Pegs p=null;
-        for (Pegs peg:court.getPegs()){
+        for (Pegs peg: court.getPegs()){
             
             if(peg.contains(nextBallX + ballRadius, nextBallY + ballRadius )){
                 p=peg;

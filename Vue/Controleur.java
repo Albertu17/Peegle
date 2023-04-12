@@ -9,8 +9,6 @@ import javax.swing.SwingUtilities;
 
 import Vue.Menu.*;
 
-
-
 public class Controleur extends JFrame{
 
     public MenuParametre menuParametre;
@@ -19,7 +17,8 @@ public class Controleur extends JFrame{
     public SelectNiveau selectNiveau ;
     public int width;
     public int height;
-    public Controleur(){
+
+    public Controleur() {
 
         // lancement de l'import des images 
         ImageImport.setImage(true); 
@@ -48,6 +47,7 @@ public class Controleur extends JFrame{
     public int getHeight() {
         return height;
     }
+
     public void removeAll(){
         this.getContentPane().removeAll();
         this.setLayout(null);
@@ -62,7 +62,6 @@ public class Controleur extends JFrame{
         menu.setVisible(true);
         this.repaint();
     }
-
 
     public void launchParametre(){
         removeAll();
@@ -87,6 +86,7 @@ public class Controleur extends JFrame{
         launchParametre();
         this.repaint();
     }
+    
     public void launchGameview(String nomNiveau){
         this.removeAll();
         gameview = new GameView(this, nomNiveau);
@@ -109,22 +109,18 @@ public class Controleur extends JFrame{
         this.repaint();
     }
     
-  
-    
 
     public static void main(String[] args) {
-
 
         SwingUtilities.invokeLater(new Runnable(){
             @Override
             public void run() {
                 Controleur c = new Controleur() ;
                 c.launchMenu();
-                // c.repaint();
+                c.repaint();
+                // Pour accéder à l'éditeur de niveaux pour l'instant:
+                // c.add(new EditeurNiveaux(c.width, c.height));
             }
-
         });
-
-
     }
 }

@@ -1,13 +1,13 @@
 package Modele;
 
-public class Pegs {
+public class Pegs implements Cloneable {
     
     private int x;
     private int y;
     private int radius;//DIAMETRE PAS CONFONDRE
     private int couleur;
     private String imageString;
-    private boolean toucher = false;
+    private boolean touche = false;
     public boolean atoucherpegs = false;
 
     // int 1 à 4 couleur image 
@@ -70,12 +70,12 @@ public class Pegs {
         this.couleur = couleur;
     }
 
-    public void toucher() {
-        toucher = true;
+    public void setTouche(boolean touche) {
+        this.touche = touche;
     }
 
     public boolean getHit() {
-        return toucher;
+        return touche;
     }
 
     public boolean contains(double i, double j) {
@@ -84,7 +84,7 @@ public class Pegs {
         }
         return false;
     }
-    
+
     // celui d'albert
     public boolean contains(int i, int j) {
         if (Math.sqrt(Math.pow(i-x, 2)+Math.pow(j-y, 2))<=radius) {
@@ -103,5 +103,10 @@ public class Pegs {
         } else {
             return "violetball.png";
         }
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }
