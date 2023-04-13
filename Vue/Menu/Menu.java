@@ -32,25 +32,15 @@ public class Menu extends JPanel {
 
     JButton btnPlay;
     JButton btnCampagne;
-    JButton btnOption;
+    JButton btnOptions;
+    JButton btnEditeur;
     JButton btnQuit;
-
-    Icon imageIconPlay2;
-    Icon imageIconPlay;
-
-    Icon imageIconOptions2;
-    Icon imageIconOptions;
-
-    Icon imageIconCampaing2;
-    Icon imageIconCampaing;
-
-    Icon imageIconQuit2;
-    Icon imageIconQuit;
 
     private BufferedImage background;
     private BufferedImage title;
 
     public Menu(Controleur c) {
+
         this.controleur = c ;
         this.hauteur=c.height;
         this.largeur=c.width;
@@ -66,151 +56,32 @@ public class Menu extends JPanel {
             System.out.println(ex.getMessage());
         }
 
-        // imageIconPlay = new ImageIcon(ImageImport.getImage("Menu/planche police blanche.png"));
-        // Image image = ((ImageIcon) imageIconPlay).getImage(); // transform it 
-        // Image newimg = image.getScaledInstance(200, 50,  java.awt.Image.SCALE_SMOOTH);
-        // imageIconPlay = new ImageIcon(newimg);
-
-        // imageIconPlay2 = new ImageIcon(ImageImport.getImage("Menu/planche police jaune.png"));
-        // image = ((ImageIcon) imageIconPlay2).getImage(); // transform it 
-        // newimg = image.getScaledInstance(200, 50,  java.awt.Image.SCALE_SMOOTH);
-        // imageIconPlay2 = new ImageIcon(newimg);
-
-
-
-        imageIconOptions = new ImageIcon(ImageImport.getImage("Menu/planche option blanc.png"));
-        Image image = ((ImageIcon) imageIconOptions).getImage(); // transform it 
-        Image newimg = image.getScaledInstance(200, 50,  java.awt.Image.SCALE_SMOOTH);
-        imageIconOptions = new ImageIcon(newimg);
-
-        imageIconOptions2 = new ImageIcon(ImageImport.getImage("Menu/planche option jaune.png"));
-        image = ((ImageIcon) imageIconOptions2).getImage(); // transform it 
-        newimg = image.getScaledInstance(200, 50,  java.awt.Image.SCALE_SMOOTH);
-        imageIconOptions2 = new ImageIcon(newimg);
-
-
-
-        imageIconCampaing = new ImageIcon(ImageImport.getImage("Menu/planche campaing blanc.png"));
-        image = ((ImageIcon) imageIconCampaing).getImage(); // transform it 
-        newimg = image.getScaledInstance(200, 50,  java.awt.Image.SCALE_SMOOTH);
-        imageIconCampaing = new ImageIcon(newimg);
-
-        imageIconCampaing2 = new ImageIcon(ImageImport.getImage("Menu/planche CAMPAING JAUNE.png"));
-        image = ((ImageIcon) imageIconCampaing2).getImage(); // transform it 
-        newimg = image.getScaledInstance(200, 50,  java.awt.Image.SCALE_SMOOTH);
-        imageIconCampaing2 = new ImageIcon(newimg);
-
-
-
-        imageIconQuit = new ImageIcon(ImageImport.getImage("Menu/planche quit blanc.png"));
-        image = ((ImageIcon) imageIconQuit).getImage(); // transform it 
-        newimg = image.getScaledInstance(200, 50,  java.awt.Image.SCALE_SMOOTH);
-        imageIconQuit = new ImageIcon(newimg);
-
-        imageIconQuit2 = new ImageIcon(ImageImport.getImage("Menu/planche quit jaune.png"));
-        image = ((ImageIcon) imageIconQuit2).getImage(); // transform it 
-        newimg = image.getScaledInstance(200, 50,  java.awt.Image.SCALE_SMOOTH);
-        imageIconQuit2 = new ImageIcon(newimg);
-
-
-        middleW = largeur /2;
+        middleW = largeur/2;
         middleH = hauteur/2 + 50;
 
-        btnPlay = new BoutonMenu("play_");
-        // btnPlay = new JButton(imageIconPlay);
+        btnPlay = new BoutonMenu("planche_play_");
         btnPlay.setBounds(middleW-100,middleH-25-140,200,50); 
-        // btnPlay.setBorderPainted(false); 
-        // btnPlay.setContentAreaFilled(false); 
-        // btnPlay.setFocusPainted(false); 
-        // btnPlay.setOpaque(false);
-        // btnPlay.addMouseListener((MouseListener) new MouseAdapter() 
-        // {
-        //    public void mouseEntered(MouseEvent evt) 
-        //    {
-        //         btnPlay.setIcon(imageIconPlay2);
-        //    }
-        //    public void mouseExited(MouseEvent evt) 
-        //    {
-        //         btnPlay.setIcon(imageIconPlay);
-        //    }
-        //       public void mouseClicked(MouseEvent evt) 
-        //       {
-        //         controleur.launchGameview("Perso/Triangle"); //TODO remplacer par la campagne
-        //       }
-        // });
-
-        btnCampagne = new JButton(imageIconCampaing);
-        btnCampagne.setBounds(middleW-100,middleH-25-70,200,50);
-        btnCampagne.setBorderPainted(false); 
-        btnCampagne.setContentAreaFilled(false); 
-        btnCampagne.setFocusPainted(false); 
-        btnCampagne.setOpaque(false);
-        
-        btnCampagne.addMouseListener((MouseListener) new MouseAdapter() 
-        {
-           public void mouseEntered(MouseEvent evt) 
-           {
-            btnCampagne.setIcon(imageIconCampaing2);
-           }
-           public void mouseExited(MouseEvent evt) 
-           {
-            btnCampagne.setIcon(imageIconCampaing);
-           }
-              public void mouseClicked(MouseEvent evt) 
-              {
-                //TODO par forcement le bon truc
-                controleur.launchSelectNiveau(true);
-              }
-        });
-        
-
-        btnOption = new JButton(imageIconOptions);
-        btnOption.setBounds(middleW-100,middleH-25,200,50);  
-        btnOption.setBorderPainted(false); 
-        btnOption.setContentAreaFilled(false); 
-        btnOption.setFocusPainted(false); 
-        btnOption.setOpaque(false);
-        btnOption.addMouseListener((MouseListener) new MouseAdapter() 
-        {
-           public void mouseEntered(MouseEvent evt) 
-           {
-            btnOption.setIcon(imageIconOptions2);
-           }
-           public void mouseExited(MouseEvent evt) 
-           {
-            btnOption.setIcon(imageIconOptions);
-           }
-           public void mouseClicked(MouseEvent evt) 
-           {
-            controleur.launchParametre();
-           }
-        });
-
-        btnQuit = new JButton(imageIconQuit);
-        btnQuit.setBounds(middleW-100,middleH-25+70,200,50);  
-        btnQuit.setBorderPainted(false); 
-        btnQuit.setContentAreaFilled(false); 
-        btnQuit.setFocusPainted(false); 
-        btnQuit.setOpaque(false);
-        btnQuit.addMouseListener((MouseListener) new MouseAdapter() 
-        {
-           public void mouseEntered(MouseEvent evt) 
-           {
-            btnQuit.setIcon(imageIconQuit2);
-           }
-           public void mouseExited(MouseEvent evt) 
-           {
-            btnQuit.setIcon(imageIconQuit);
-           }
-           public void mouseClicked(MouseEvent evt) 
-           {
-            System.exit(0);
-           }
-        });
-
+        btnPlay.addActionListener(e -> controleur.launchGameview("Perso/Triangle")); //TODO remplacer par la campagne
         add(btnPlay);
+
+        btnCampagne = new BoutonMenu("planche_campaing_");
+        btnCampagne.setBounds(middleW-100,middleH-25-70,200,50);
+        btnCampagne.addActionListener(e -> controleur.launchSelectNiveau(true)); //TODO pas forcement le bon truc
         add(btnCampagne);
-        add(btnOption);
+        
+        btnOptions = new BoutonMenu("planche_options_");
+        btnOptions.setBounds(middleW-100,middleH-25,200,50); 
+        btnOptions.addActionListener(e -> controleur.launchParametre());
+        add(btnOptions);
+
+        btnEditeur = new BoutonMenu("planche_");
+        btnEditeur.setBounds(middleW-100,middleH-25+70,200,50); 
+        btnEditeur.addActionListener(e -> controleur.launchEditeurNiveaux());
+        add(btnEditeur);
+
+        btnQuit = new BoutonMenu("planche_quit_");
+        btnQuit.setBounds(middleW-100,middleH-25+140,200,50);
+        btnQuit.addActionListener(e -> System.exit(0));
         add(btnQuit);
     }
 
@@ -228,31 +99,39 @@ public class Menu extends JPanel {
         return outputImage;
     }
 
-    public class BoutonMenu extends JButton {
+    public static class BoutonMenu extends JButton {
 
         ImageIcon imageIconNormal;
         ImageIcon imageIconOnHover;
 
         public BoutonMenu(String texteImage) {
-            imageIconNormal = new ImageIcon(ImageImport.getImage("Menu/planche_" + texteImage + "blanche.png"));
-            Image image = ((ImageIcon) imageIconNormal).getImage(); // transform it 
-            Image newimg = image.getScaledInstance(200, 50,  java.awt.Image.SCALE_SMOOTH);
-            imageIconNormal = new ImageIcon(newimg);
-    
-            imageIconOnHover = new ImageIcon(ImageImport.getImage("Menu/planche_" + texteImage + "jaune.png"));
-            image = ((ImageIcon) imageIconOnHover).getImage(); // transform it 
-            newimg = image.getScaledInstance(200, 50,  java.awt.Image.SCALE_SMOOTH);
-            imageIconOnHover = new ImageIcon(newimg);
+            imageIconNormal = getImageIcon(texteImage + "blanche.png");
+            imageIconOnHover = getImageIcon(texteImage + "jaune.png");
+            setIcon(imageIconNormal);
+            addMouseListener((MouseListener) new MouseAdapter() {
+                public void mouseEntered(MouseEvent evt) {setIcon(imageIconOnHover);}
+                public void mouseExited(MouseEvent evt) {setIcon(imageIconNormal);}
+            });
+            parametrages();
+        }
 
+        public BoutonMenu(ImageIcon imageIcon) {
+            super(imageIcon);
+            parametrages();
+        }
+
+        public void parametrages() {
             setBorderPainted(false); 
             setContentAreaFilled(false); 
             setFocusPainted(false); 
             setOpaque(false);
-            setIcon(imageIconNormal);
-            addMouseListener((MouseListener) new MouseAdapter() {
-                public void mouseEntered(MouseEvent evt) { setIcon(imageIconOnHover);}
-                public void mouseExited(MouseEvent evt) { setIcon(imageIconNormal); }
-            });
+        }
+
+        public static ImageIcon getImageIcon(String texteImage) {
+            ImageIcon imageIcon = new ImageIcon(ImageImport.getImage("Menu/" + texteImage));
+            Image image = ((ImageIcon) imageIcon).getImage(); // transform it 
+            Image newimg = image.getScaledInstance(200, 50,  java.awt.Image.SCALE_SMOOTH);
+            return new ImageIcon(newimg);
         }
     }
  }

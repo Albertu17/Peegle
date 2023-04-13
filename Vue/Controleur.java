@@ -73,8 +73,9 @@ public class Controleur extends JFrame{
         menuParametre.setVisible(true);
         this.repaint();
     }
-    public void launchEditeurNiveau(){
-        // removeAll();
+
+    public void launchEditeurNiveaux(){
+        removeAll();
         if (editeurNiveaux == null){
             editeurNiveaux = new EditeurNiveaux(this);
         }
@@ -106,10 +107,7 @@ public class Controleur extends JFrame{
         gameview.setVisible(true);
         this.repaint();
     }
-    
-    // public void launchMenu(){
-    //     launchMenu(new Menu(this));
-    // }
+
     public void launchMenu(JPanel menu){
         this.removeAll();
         if (menu != null){
@@ -127,7 +125,7 @@ public class Controleur extends JFrame{
             public void run() {
                 Controleur c = new Controleur() ;
                 c.launchMenu();
-                //c.launchEditeurNiveau();
+                //c.launchEditeurNiveaux();
                 // c.launchSelectNiveau(true);
                 
             }

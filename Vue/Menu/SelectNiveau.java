@@ -37,6 +37,8 @@ public class SelectNiveau extends JPanel{
     private Fleche next ;
     private Fleche previous ;
 
+    private JButton btnRetour;
+
     public SelectNiveau(Controleur c, boolean campagne){
         
         controleur = c ;
@@ -49,6 +51,12 @@ public class SelectNiveau extends JPanel{
         
         // setImage background
         background = ImageImport.getImage("Menu/menuBackground.jpg", this.getWidth(), this.getHeight());
+
+        // JButton boutonRetour
+        btnRetour = new Menu.BoutonMenu(Menu.BoutonMenu.getImageIcon("back.png"));
+        btnRetour.setBounds(40,40,200,50);
+        btnRetour.addActionListener(e -> controleur.launchMenu());
+        add(btnRetour);
         
         allNameNiveau = Niveau.getAllNameNiveau(campagne) ;
         
@@ -214,7 +222,7 @@ public class SelectNiveau extends JPanel{
             Icon imageJaune;
 
             ButtonBJ(String nomNiveau, int hauteur){
-                BufferedImage imageBTemp  = ImageImport.getImage("Menu/planche blanche.png", 100, 100) ;
+                BufferedImage imageBTemp  = ImageImport.getImage("Menu/planche_blanche.png", 100, 100) ;
                 Graphics g = imageBTemp.getGraphics();
                 FontMetrics metrics = (g).getFontMetrics(font);
                 int largeurtexte = metrics.stringWidth(nomNiveau) ;
@@ -222,8 +230,8 @@ public class SelectNiveau extends JPanel{
                 int largeur = largeurtexte+ (hauteur - hauteurtexte)/2 ;
                
 
-                imageBTemp  = ImageImport.getImage("Menu/planche blanche.png", largeur, hauteur) ;
-                BufferedImage imageJTemp  = ImageImport.getImage("Menu/planche jaune.png", largeur, hauteur);
+                imageBTemp  = ImageImport.getImage("Menu/planche_blanche.png", largeur, hauteur) ;
+                BufferedImage imageJTemp  = ImageImport.getImage("Menu/planche_jaune.png", largeur, hauteur);
 
                 setSize(largeur, hauteur);
                 

@@ -15,164 +15,62 @@ import Vue.Controleur;
 import Vue.ImageImport;
 
 
-
 public class MenuParametre extends JPanel {
-    public Controleur controleur;
 
-    private BufferedImage background;
-
-    private int largeur;
-    private int hauteur;
+    // Controleur
+    private Controleur controleur;
+    int width;
+    int height;
 
     private int middleH;
     private int middleW;
 
-    JButton skin1;
-    Icon imageSkin1;
-    JButton skin2;
-    Icon imageSkin2;
-    JButton skin3;
-    Icon imageSkin3;
+    private BufferedImage background;
 
-    Icon imageBack;
-    JButton back;
-
+    JButton btnSkin1;
+    JButton btnSkin2;
+    JButton btnSkin3;
+    JButton btnRetour;
 
     public MenuParametre(Controleur c){
-        this.controleur = c ;
 
-        largeur = controleur.getWidth();
-        hauteur = controleur.getHeight();
-        middleW = largeur /2;
-        middleH = hauteur/2 + 50;
-        setSize(largeur, hauteur);
+        this.controleur = c ;
+        width = controleur.getWidth();
+        height = controleur.getHeight();
+        middleW = width /2;
+        middleH = height/2 + 50;
+        setSize(width, height);
         setLayout(null);
         setVisible(true);
         
         // setImage background
         background = ImageImport.getImage("Menu/menuBackground.jpg", this.getWidth(), this.getHeight());
 
-        
-        imageSkin1 = new ImageIcon(ImageImport.getImage("Menu/Parametre/skin1.png"));
-        Image image = ((ImageIcon) imageSkin1).getImage(); // transform it 
-        Image newimg = image.getScaledInstance(200, 50,  java.awt.Image.SCALE_SMOOTH);
-        imageSkin1 = new ImageIcon(newimg);
+        // On pourra utiliser le constructeur classique de BoutonMenu si les boutons ont aussi une version jaune.
+        btnSkin1 = new Menu.BoutonMenu(Menu.BoutonMenu.getImageIcon("Parametre/skin1.png"));
+        btnSkin1.setBounds(middleW-100,middleH-25-140,200,50);
+        btnSkin1.addActionListener(e -> System.exit(0)); // TODO à changer
+        add(btnSkin1);
 
-        skin1 = new JButton(imageSkin1);
-        skin1.setBounds(middleW-100,middleH-25-140,200,50);
+        btnSkin2 = new Menu.BoutonMenu(Menu.BoutonMenu.getImageIcon("Parametre/skin2.png"));
+        btnSkin2.setBounds(middleW-100,middleH-25-70,200,50);
+        btnSkin2.addActionListener(e -> System.exit(0)); // TODO à changer
+        add(btnSkin2);
 
-        skin1.addMouseListener((MouseListener) new MouseAdapter() 
-        {
-           public void mouseEntered(MouseEvent evt) 
-           {
-                //skin1.setIcon(imageIconPlay2);
-           }
-           public void mouseExited(MouseEvent evt) 
-           {
-                skin1.setIcon(imageSkin1);
-           }
-              public void mouseClicked(MouseEvent evt) 
-              {
-                System.exit(0);
-              }
-        });
-        imageSkin2 = new ImageIcon(ImageImport.getImage("Menu/Parametre/skin2.png"));
-        image = ((ImageIcon) imageSkin2).getImage(); // transform it 
-        newimg = image.getScaledInstance(200, 50,  java.awt.Image.SCALE_SMOOTH);
-        imageSkin2 = new ImageIcon(newimg);
+        btnSkin3 = new Menu.BoutonMenu(Menu.BoutonMenu.getImageIcon("Parametre/skin3.png"));
+        btnSkin3.setBounds(middleW-100,middleH-25,200,50);
+        btnSkin3.addActionListener(e -> System.exit(0)); // TODO à changer
+        add(btnSkin3);
 
-        skin2 = new JButton(imageSkin2);
-        skin2.setBounds(middleW-100,middleH-25-70,200,50);
-
-        skin2.addMouseListener((MouseListener) new MouseAdapter() 
-        {
-           public void mouseEntered(MouseEvent evt) 
-           {
-                //skin1.setIcon(imageIconPlay2);
-           }
-           public void mouseExited(MouseEvent evt) 
-           {
-                skin2.setIcon(imageSkin2);
-           }
-              public void mouseClicked(MouseEvent evt) 
-              {
-                System.exit(0);
-              }
-        });
-
-        imageSkin3 = new ImageIcon(ImageImport.getImage("Menu/Parametre/skin3.png"));
-        image = ((ImageIcon) imageSkin3).getImage(); // transform it 
-        newimg = image.getScaledInstance(200, 50,  java.awt.Image.SCALE_SMOOTH);
-        imageSkin3 = new ImageIcon(newimg);
-
-        skin3 = new JButton(imageSkin3);
-        skin3.setBounds(middleW-100,middleH-25,200,50);
-
-        skin3.addMouseListener((MouseListener) new MouseAdapter() 
-        {
-           public void mouseEntered(MouseEvent evt) 
-           {
-                //skin1.setIcon(imageIconPlay2);
-           }
-           public void mouseExited(MouseEvent evt) 
-           {
-                skin3.setIcon(imageSkin3);
-           }
-              public void mouseClicked(MouseEvent evt) 
-              {
-                
-              }
-        });
-
-        imageBack = new ImageIcon(ImageImport.getImage("back.png"));
-        image = ((ImageIcon) imageBack).getImage(); // transform it 
-        newimg = image.getScaledInstance(200, 50,  java.awt.Image.SCALE_SMOOTH);
-        imageBack = new ImageIcon(newimg);
-
-
-        back = new JButton(imageBack);
-        back.setBounds(40,40,200,50);
-        back.addMouseListener((MouseListener) new MouseAdapter() {
-            public void mouseEntered(MouseEvent evt) 
-            {
-                //skin1.setIcon(imageIconPlay2);
-            }
-            public void mouseExited(MouseEvent evt) 
-            {
-                back.setIcon(imageBack);
-            }
-               public void mouseClicked(MouseEvent evt) 
-               {
-                controleur.launchMenu();
-               }
-        });
-        add(back);
-
-        add(skin1);
-        add(skin2);
-        add(skin3);
-
-
-
-
-
+        btnRetour = new Menu.BoutonMenu(Menu.BoutonMenu.getImageIcon("back.png"));
+        btnRetour.setBounds(40,40,200,50);
+        btnRetour.addActionListener(e -> controleur.launchMenu());
+        add(btnRetour);
     }
-
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, this);
     }
-    
-    BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) throws IOException {
-        Image resultingImage = originalImage.getScaledInstance(targetWidth, targetHeight, Image.SCALE_DEFAULT);
-        BufferedImage outputImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
-        outputImage.getGraphics().drawImage(resultingImage, 0, 0, null);
-        return outputImage;
-    }
-
-
-
-    
 }

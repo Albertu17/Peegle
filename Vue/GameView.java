@@ -1,11 +1,7 @@
 package Vue;
 
-
+import Vue.Menu.Menu;
 import java.awt.Color;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.*;
 import javax.swing.*;
 
 import Modele.Niveau;
@@ -13,7 +9,6 @@ import Modele.Niveau;
 public class GameView extends JPanel {
 
     public Controleur controleur ;
-
     private int width;
     private int heigth;
 
@@ -24,8 +19,7 @@ public class GameView extends JPanel {
     private int courtWidth;
     private int courtHeight;
 
-    JButton back;
-    Icon imageBack;
+    JButton btnRetour;
 
     public GameView(Controleur c, String nomNiveau) {
 
@@ -38,7 +32,6 @@ public class GameView extends JPanel {
         setVisible(true); 
         setBackground(Color.BLACK);
 
-        
         courtWidth = width - 400;
         courtHeight = heigth - 200;
 
@@ -52,36 +45,19 @@ public class GameView extends JPanel {
         court.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         court.setBounds((width-courtWidth)/2, (heigth-courtHeight)/2, courtWidth, courtHeight);
         court.setVisible(true);
+        add(court);
+
+        // Background
         Background background = new Background("test.jpg", court,heigth,width);
         background.setBounds(0, 0, width, heigth);
         background.setOpaque(false);
-        add(court);
         add(background);
-    
-        imageBack = new ImageIcon(ImageImport.getImage("back.png"));
-        Image image = ((ImageIcon) imageBack).getImage(); // transform it 
-        Image newimg = image.getScaledInstance(200, 50,  java.awt.Image.SCALE_SMOOTH);
-        imageBack = new ImageIcon(newimg);
 
-
-        back = new JButton(imageBack);
-        back.setBounds(40,40,200,50);
-        back.addMouseListener((MouseListener) new MouseAdapter() {
-            public void mouseEntered(MouseEvent evt) 
-            {
-                //skin1.setIcon(imageIconPlay2);
-            }
-            public void mouseExited(MouseEvent evt) 
-            {
-                back.setIcon(imageBack);
-            }
-            public void mouseClicked(MouseEvent evt) 
-            {
-                controleur.launchMenu() ;
-                setSkin2();
-            }
-        });
-        add(back);
+        // JButton bouton retour
+        btnRetour = new Menu.BoutonMenu(Menu.BoutonMenu.getImageIcon("back.png"));
+        btnRetour.setBounds(40,40,200,50);
+        btnRetour.addActionListener(e -> controleur.launchMenu());
+        add(btnRetour);
     }
 
     public int getWidth(){
@@ -102,5 +78,4 @@ public class GameView extends JPanel {
     public void setSkin2(){
         court.setSkin2();
     }
-
 }

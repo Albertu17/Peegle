@@ -24,11 +24,15 @@ import Modele.Pegs;
 
 public class EditeurNiveaux extends JPanel {
 
+    // Controleur
+    private Controleur controleur;
+    int width;
+    int height;
+
     // Court
     Court court;
     private int courtWidth;
     private int courtHeight;
-    private Controleur controleur ;
     Niveau niveauCree;
     CasePeg caseActive;
     Pegs pegSelectionne;
@@ -46,9 +50,10 @@ public class EditeurNiveaux extends JPanel {
 
     EditeurNiveaux(Controleur controleur) {
         this.controleur = controleur ;
-        int width = controleur.getWidth() ;
-        int height = controleur.getHeight() ;
+        width = controleur.getWidth() ;
+        height = controleur.getHeight() ;
         setLayout(null);
+        setSize(width, height);
 
         niveauCree = new Niveau("enAttente");
         niveauCree.isCampagne(true);
@@ -185,15 +190,27 @@ public class EditeurNiveaux extends JPanel {
         saveNom.setBounds((width - courtWidth) - courtHeight * 1/16 + 5, courtHeight * 1/16 + 20, courtHeight * 1/16, courtHeight * 1/16);
         panelBoutons.add(saveNom);
 
+        // JButton back
+        JButton back = new JButton("Back");
+        back.setBounds(courtWidth, 0, (width - courtWidth)/2, (height - courtHeight)/2);
+        panelBoutons.add(back);
+        back.addActionListener(e -> controleur.launchMenu());
+
+        // JButton newLevel
+        JButton newLevel = new JButton("New");
+        newLevel.setBounds(courtWidth, (height - courtHeight)/2, (width - courtWidth)/2, (height - courtHeight)/2);
+        panelBoutons.add(newLevel);
+        newLevel.addActionListener(e -> {
+            controleur.editeurNiveaux = null;
+            controleur.launchEditeurNiveaux();
+        });
+
         // JButton save
         JButton save = new JButton("Save");
         save.setEnabled(false);
-        save.setBounds(courtWidth, 0, width - courtWidth, height - courtHeight);
+        save.setBounds(courtWidth + (width - courtWidth)/2, 0, (width - courtWidth)/2, height - courtHeight);
         panelBoutons.add(save);
-
-        save.addActionListener(e->{
-            niveauCree.save(courtWidth, courtHeight);
-        });
+        save.addActionListener(e->niveauCree.save(courtWidth, courtHeight));
 
         saveNom.addActionListener(e -> {
             if ( ! Niveau.getAllNameNiveau().contains(nomNiveau.getText()) && ! nomNiveau.getText().equals(placeHolders[0]) && ! nomNiveau.getText().equals(placeHolders[1])) { // TODO Ajout test nom déjà utilisé
@@ -215,8 +232,6 @@ public class EditeurNiveaux extends JPanel {
         vert.setEnabled(activer);
         croix.setEnabled(activer);
     }
-
-
 
 
     public class CasePeg extends JPanel implements MouseInputListener{
