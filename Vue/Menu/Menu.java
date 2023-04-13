@@ -54,6 +54,9 @@ public class Menu extends JPanel {
         this.controleur = c ;
         this.hauteur=c.height;
         this.largeur=c.width;
+        setLayout(null); // À mettre car selon les machines le layout par défault n'est pas
+        // le même
+
         imageIconPlay = new ImageIcon(ImageImport.getImage("Menu/planche police blanche.png"));
         Image image = ((ImageIcon) imageIconPlay).getImage(); // transform it 
         Image newimg = image.getScaledInstance(200, 50,  java.awt.Image.SCALE_SMOOTH);

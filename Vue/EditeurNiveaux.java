@@ -51,7 +51,7 @@ public class EditeurNiveaux extends JPanel {
         setLayout(null);
 
         niveauCree = new Niveau("enAttente");
-        niveauCree.isCampagne(false);
+        niveauCree.isCampagne(true);
 
         // Court
         courtWidth = width * 5/6;
@@ -154,6 +154,7 @@ public class EditeurNiveaux extends JPanel {
         croix.setBounds(width - courtWidth + courtHeight * 1/4, 0, courtHeight * 1/16, courtHeight * 1/16);
         croix.addActionListener(e -> {
             niveauCree.getPegs().remove(pegSelectionne);
+            court.setPegs(court.clonePegs(niveauCree.getPegs()));
             court.repaint();
         });
         panelBoutons.add(croix);
