@@ -38,6 +38,11 @@ public class BoutonMenu extends JButton{
         setSize(width, height);
     }
 
+    public void setCouleur(boolean jaune){
+        if (jaune) setIcon(imageIconOnHover) ;
+        else setIcon(imageIconNormal);
+    }
+
     public ImageIcon getEditedImageIcon (String texte, int width, int height, boolean normal) {
         BufferedImage buffImg;
         if (normal) buffImg = ImageImport.getImage("Menu/planche_blanche.png", width, height);

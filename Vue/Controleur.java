@@ -84,9 +84,9 @@ public class Controleur extends JFrame{
         this.repaint();
     }
 
-    public void launchSelectNiveau(boolean campagne){
+    public void launchSelectNiveau(){
         removeAll();
-        selectNiveau = new SelectNiveau(this, campagne);
+        selectNiveau = new SelectNiveau(this);
         add(selectNiveau);
         selectNiveau.setVisible(true);
         this.repaint();

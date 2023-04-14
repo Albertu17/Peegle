@@ -1,16 +1,11 @@
 package Vue.Menu;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.InputStream;
 import java.util.List;
-import java.io.FileInputStream;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -19,7 +14,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import Modele.*;
+
+import Modele.Niveau;
 import Vue.Controleur;
 import Vue.ImageImport;
 
@@ -38,10 +34,13 @@ public class SelectNiveau extends JPanel{
 
     private JButton btnRetour;
 
-    public SelectNiveau(Controleur c, boolean campagne){
+    // choix du type de partie
+    private BoutonMenu selectCampagne ;
+    private BoutonMenu selectPerso ;
+
+    public SelectNiveau(Controleur c){
         
         controleur = c ;
-        this.campagne = campagne ;
         
         setBounds(0, 0, controleur.getWidth(), controleur.getHeight());
         c.add(this) ;
@@ -56,7 +55,27 @@ public class SelectNiveau extends JPanel{
         btnRetour.setLocation(40,40);
         btnRetour.addActionListener(e -> controleur.launchMenu());
         add(btnRetour);
+
+        // demande de quoi afficher 
+        int middleW = controleur.getWidth()/2 ; 
+        int middleH = controleur.getHeight()/2 + 50;
+
+        selectCampagne = new BoutonMenu("Campagne", 200, 50);
+        selectCampagne.setLocation(middleW-100, middleH-25-140);
+        selectCampagne.addActionListener(e -> setSelecteur(true) );
+        add(selectCampagne);
         
+        selectPerso = new BoutonMenu("Perso", 200, 50);
+        selectPerso.setLocation(middleW-100,middleH-25-70);
+        selectPerso.addActionListener(e -> setSelecteur(false) );
+        add(selectPerso);
+    }
+
+    private void setSelecteur(boolean campagne){
+        if (selectCampagne != null) this.remove(selectCampagne);
+        if (selectPerso != null) this.remove(selectPerso);
+
+        this.campagne = campagne ;
         allNameNiveau = Niveau.getAllNameNiveau(campagne) ;
 
         page_act = 0 ;
@@ -65,14 +84,13 @@ public class SelectNiveau extends JPanel{
         int hauteurFleche = 50 ;
         int x = this.getWidth()-100 ;
         int y = this.getHeight()-100 ;
-
         // définir place des boutons 
-        next = new Fleche(true, largeurFleche, hauteurFleche);
-        previous = new Fleche(false, largeurFleche, hauteurFleche) ;
-        next.setBounds( x, y, largeurFleche, hauteurFleche);
-        previous.setBounds( x - (next.getWidth() + 15) , y, largeurFleche, hauteurFleche);
-        this.add(previous);
-        this.add(next) ;
+            next = new Fleche(true, largeurFleche, hauteurFleche);
+            previous = new Fleche(false, largeurFleche, hauteurFleche) ;
+            next.setBounds( x, y, largeurFleche, hauteurFleche);
+            previous.setBounds( x - (next.getWidth() + 15) , y, largeurFleche, hauteurFleche);
+            this.add(previous);
+            this.add(next) ;
         afficherPage(page_act);
     }
 
@@ -177,18 +195,9 @@ public class SelectNiveau extends JPanel{
             this.setOpaque(false);
             (invisiblePhoto).addMouseListener((MouseListener) new MouseAdapter() 
                 {
-                    public void mouseEntered(MouseEvent evt) 
-                    {
-                        // button.setIcon(button.imageJaune);
-                    }
-                    public void mouseExited(MouseEvent evt) 
-                    {
-                        // button.setIcon(button.imageBlanche);
-                    }
-                    public void mouseClicked(MouseEvent evt) 
-                    {   
-                        controleur.launchGameview((campagne? "Campagne/" : "Perso/") + nomNiveau);
-                    }
+                    public void mouseEntered(MouseEvent evt) {button.setCouleur(true);}
+                    public void mouseExited(MouseEvent evt){button.setCouleur(false);}
+                    public void mouseClicked(MouseEvent evt){controleur.launchGameview((campagne? "Campagne/" : "Perso/") + nomNiveau);}
                 });
         }
         
@@ -207,7 +216,7 @@ public class SelectNiveau extends JPanel{
             @Override
             public void run() {
                 Controleur c  = new Controleur() ;
-                c.launchSelectNiveau(true);             
+                c.launchSelectNiveau();             
             }
 
         });
