@@ -2,6 +2,9 @@ package Vue.Menu;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
@@ -11,7 +14,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -38,6 +43,7 @@ public class Menu extends JPanel {
 
     private BufferedImage background;
     private BufferedImage title;
+    private static Font font;
 
     public Menu(Controleur c) {
 
@@ -52,35 +58,40 @@ public class Menu extends JPanel {
             background = ImageImport.getImage("Menu/menuBackground.jpg");
             background = resizeImage(background, largeur, hauteur);
             title = ImageImport.getImage("Menu/trucjojo.png");
+            InputStream targetStream = new FileInputStream("./Vue/Font/cartoonist_kooky.ttf");
+            font =  Font.createFont(Font.TRUETYPE_FONT, targetStream);
+            font = font.deriveFont(100f);
         } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        } catch (FontFormatException ex) {
             System.out.println(ex.getMessage());
         }
 
         middleW = largeur/2;
         middleH = hauteur/2 + 50;
 
-        btnPlay = new BoutonMenu("planche_play_");
-        btnPlay.setBounds(middleW-100,middleH-25-140,200,50); 
+        btnPlay = new BoutonMenu("play", 200, 50);
+        btnPlay.setLocation(middleW-100, middleH-25-140);
         btnPlay.addActionListener(e -> controleur.launchGameview("Perso/Triangle")); //TODO remplacer par la campagne
         add(btnPlay);
 
-        btnCampagne = new BoutonMenu("planche_campaing_");
-        btnCampagne.setBounds(middleW-100,middleH-25-70,200,50);
+        btnCampagne = new BoutonMenu("campaing", 200, 50);
+        btnCampagne.setLocation(middleW-100,middleH-25-70);
         btnCampagne.addActionListener(e -> controleur.launchSelectNiveau(true)); //TODO pas forcement le bon truc
         add(btnCampagne);
         
-        btnOptions = new BoutonMenu("planche_options_");
-        btnOptions.setBounds(middleW-100,middleH-25,200,50); 
+        btnOptions = new BoutonMenu("options", 200, 50);
+        btnOptions.setLocation(middleW-100,middleH-25); 
         btnOptions.addActionListener(e -> controleur.launchParametre());
         add(btnOptions);
 
-        btnEditeur = new BoutonMenu("planche_");
-        btnEditeur.setBounds(middleW-100,middleH-25+70,200,50); 
+        btnEditeur = new BoutonMenu("editeur", 200, 50);
+        btnEditeur.setLocation(middleW-100,middleH-25+70); 
         btnEditeur.addActionListener(e -> controleur.launchEditeurNiveaux());
         add(btnEditeur);
 
-        btnQuit = new BoutonMenu("planche_quit_");
-        btnQuit.setBounds(middleW-100,middleH-25+140,200,50);
+        btnQuit = new BoutonMenu("quit", 200, 50);
+        btnQuit.setLocation(middleW-100,middleH-25+140);
         btnQuit.addActionListener(e -> System.exit(0));
         add(btnQuit);
     }
@@ -101,37 +112,69 @@ public class Menu extends JPanel {
 
     public static class BoutonMenu extends JButton {
 
+        int width, height;
         ImageIcon imageIconNormal;
         ImageIcon imageIconOnHover;
 
-        public BoutonMenu(String texteImage) {
-            imageIconNormal = getImageIcon(texteImage + "blanche.png");
-            imageIconOnHover = getImageIcon(texteImage + "jaune.png");
+        public BoutonMenu(String texteImage, int width, int height) {
+            this.width = width;
+            this.height = height;
+            imageIconNormal = getEditedImageIcon(texteImage, width, height, true);
+            imageIconOnHover = getEditedImageIcon(texteImage, width, height, false);
             setIcon(imageIconNormal);
             addMouseListener((MouseListener) new MouseAdapter() {
                 public void mouseEntered(MouseEvent evt) {setIcon(imageIconOnHover);}
                 public void mouseExited(MouseEvent evt) {setIcon(imageIconNormal);}
             });
-            parametrages();
-        }
-
-        public BoutonMenu(ImageIcon imageIcon) {
-            super(imageIcon);
-            parametrages();
-        }
-
-        public void parametrages() {
+            // Parametrages du bouton
             setBorderPainted(false); 
             setContentAreaFilled(false); 
             setFocusPainted(false); 
             setOpaque(false);
+            setSize(width, height);
         }
 
-        public static ImageIcon getImageIcon(String texteImage) {
-            ImageIcon imageIcon = new ImageIcon(ImageImport.getImage("Menu/" + texteImage));
-            Image image = ((ImageIcon) imageIcon).getImage(); // transform it 
-            Image newimg = image.getScaledInstance(200, 50,  java.awt.Image.SCALE_SMOOTH);
-            return new ImageIcon(newimg);
+        public ImageIcon getEditedImageIcon (String texte, int width, int height, boolean normal) {
+            BufferedImage buffImg;
+            if (normal) buffImg = ImageImport.getImage("Menu/planche_blanche.png", width, height);
+            else buffImg = ImageImport.getImage("Menu/planche_jaune.png", width, height);
+            Graphics g = buffImg.getGraphics();
+            Font rightFont = rightFont(texte, g);
+            FontMetrics metrics = g.getFontMetrics(rightFont);
+            g.setFont(rightFont);
+            if (normal) g.setColor(Color.WHITE);
+            else g.setColor(Color.YELLOW);
+            g.drawString(texte, width/2 - metrics.stringWidth(texte)/2, height * 3/4);
+            return new ImageIcon(buffImg);
+        }
+
+        // Retourne une font dont la taille est adaptée aux dimensions du bouton.
+        public Font rightFont (String texte, Graphics g) {
+            Font rightF = font;
+            FontMetrics metrics = g.getFontMetrics(rightF);
+            int fontSize = rightF.getSize();
+
+            // Rétrécit la taille de la font si la hauteur du texte sera trop grande.
+            int textHeight = metrics.getAscent();
+            int textHeightMax = height * 1/2;
+            if (textHeight > textHeightMax) {
+                double heightRatio = (double) textHeightMax / (double) textHeight;
+                rightF = rightF.deriveFont((float) Math.floor(fontSize * heightRatio));
+                fontSize = rightF.getSize();
+                metrics = g.getFontMetrics(rightF);
+            }
+
+            // Rétrécit la taille de la font si la largeur du texte sera trop grande.
+            int textWidth = metrics.stringWidth(texte);
+            int textWidthMax = width;
+            if (textWidth > textWidthMax) {
+                double widthRatio = (double) textWidthMax / (double) textWidth;
+                rightF = rightF.deriveFont((float) Math.floor(fontSize * widthRatio));
+                fontSize = rightF.getSize();
+                metrics = g.getFontMetrics(rightF);
+            }
+
+            return rightF;
         }
     }
  }

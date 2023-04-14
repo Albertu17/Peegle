@@ -46,24 +46,23 @@ public class MenuParametre extends JPanel {
         // setImage background
         background = ImageImport.getImage("Menu/menuBackground.jpg", this.getWidth(), this.getHeight());
 
-        // On pourra utiliser le constructeur classique de BoutonMenu si les boutons ont aussi une version jaune.
-        btnSkin1 = new Menu.BoutonMenu(Menu.BoutonMenu.getImageIcon("Parametre/skin1.png"));
-        btnSkin1.setBounds(middleW-100,middleH-25-140,200,50);
+        btnSkin1 = new Menu.BoutonMenu("skin1", 200, 50);
+        btnSkin1.setLocation(middleW-100,middleH-25-140);
         btnSkin1.addActionListener(e -> System.exit(0)); // TODO à changer
         add(btnSkin1);
 
-        btnSkin2 = new Menu.BoutonMenu(Menu.BoutonMenu.getImageIcon("Parametre/skin2.png"));
-        btnSkin2.setBounds(middleW-100,middleH-25-70,200,50);
+        btnSkin2 = new Menu.BoutonMenu("skin2", 200, 50);
+        btnSkin2.setLocation(middleW-100,middleH-25-70);
         btnSkin2.addActionListener(e -> System.exit(0)); // TODO à changer
         add(btnSkin2);
 
-        btnSkin3 = new Menu.BoutonMenu(Menu.BoutonMenu.getImageIcon("Parametre/skin3.png"));
-        btnSkin3.setBounds(middleW-100,middleH-25,200,50);
+        btnSkin3 = new Menu.BoutonMenu("skin3", 200, 50);
+        btnSkin3.setLocation(middleW-100,middleH-25);
         btnSkin3.addActionListener(e -> System.exit(0)); // TODO à changer
         add(btnSkin3);
 
-        btnRetour = new Menu.BoutonMenu(Menu.BoutonMenu.getImageIcon("back.png"));
-        btnRetour.setBounds(40,40,200,50);
+        btnRetour = new Menu.BoutonMenu("back", 200, 50);
+        btnRetour.setLocation(40,40);
         btnRetour.addActionListener(e -> controleur.launchMenu());
         add(btnRetour);
     }
