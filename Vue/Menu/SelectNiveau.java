@@ -242,7 +242,7 @@ public class SelectNiveau extends JPanel{
                     g.setFont(font);
                     g.setColor(Color.WHITE);
                     g.drawString(nomNiveau, (largeur - largeurtexte)/2, (hauteur - hauteurtexte)/2+hauteurtexte);
-                    
+                    imageBlanche =  new ImageIcon(imageBTemp);
                     // jaune
                     g = imageJTemp.getGraphics();
                     g.setFont(font);
@@ -250,7 +250,6 @@ public class SelectNiveau extends JPanel{
                     g.drawString(nomNiveau, (largeur - largeurtexte)/2, (hauteur - hauteurtexte)/2+hauteurtexte);
 
 
-                imageBlanche =  new ImageIcon(imageBTemp);
                 imageJaune =  new ImageIcon(imageJTemp) ;
 
                 // enlever tout les contours du JButton ne laisse que l'image
