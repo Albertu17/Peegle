@@ -7,8 +7,6 @@ import java.awt.Graphics2D;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
-import java.time.format.DecimalStyle;
-
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -45,8 +43,6 @@ public class EditeurNiveaux extends JPanel {
     BoutonCouleur vert;
     JButton croix;
     JButton modif;
-
-    // TODO: imageicon boutons, rebond sur pegs (chmt l 152 BALL)
 
     EditeurNiveaux(Controleur controleur) {
         this.controleur = controleur ;
@@ -213,7 +209,9 @@ public class EditeurNiveaux extends JPanel {
         save.addActionListener(e->niveauCree.save(courtWidth, courtHeight));
 
         saveNom.addActionListener(e -> {
-            if ( ! Niveau.getAllNameNiveau().contains(nomNiveau.getText()) && ! nomNiveau.getText().equals(placeHolders[0]) && ! nomNiveau.getText().equals(placeHolders[1])) { // TODO Ajout test nom déjà utilisé
+            if (!Niveau.getAllNameNiveau().contains(nomNiveau.getText())
+             && !nomNiveau.getText().equals(placeHolders[0])
+             && !nomNiveau.getText().equals(placeHolders[1])) {
                 niveauCree.setNom(nomNiveau.getText());
                 save.setEnabled(true);
             }
