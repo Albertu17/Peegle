@@ -9,7 +9,7 @@ import Vue.Controleur;
 import Vue.ImageImport;
 
 
-public class MenuParametre extends JPanel {
+public class MenuParametres extends JPanel {
 
     // Controleur
     private Controleur controleur;
@@ -26,7 +26,7 @@ public class MenuParametre extends JPanel {
     JButton btnSkin3;
     JButton btnRetour;
 
-    public MenuParametre(Controleur c){
+    public MenuParametres(Controleur c){
 
         this.controleur = c ;
         width = controleur.getWidth();

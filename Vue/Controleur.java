@@ -11,7 +11,7 @@ import Vue.Menu.*;
 
 public class Controleur extends JFrame{
 
-    public MenuParametre menuParametre;
+    public MenuParametres menuParametres;
     public GameView gameview;
     public EditeurNiveaux editeurNiveaux ;
     public Menu menu;
@@ -64,13 +64,13 @@ public class Controleur extends JFrame{
         this.repaint();
     }
 
-    public void launchParametre(){
+    public void launchParametres(){
         removeAll();
-        if (menuParametre == null){
-            menuParametre = new MenuParametre(this);
+        if (menuParametres == null){
+            menuParametres = new MenuParametres(this);
         }
-        add(menuParametre);
-        menuParametre.setVisible(true);
+        add(menuParametres);
+        menuParametres.setVisible(true);
         this.repaint();
     }
 
@@ -94,7 +94,7 @@ public class Controleur extends JFrame{
     
     public void backMenuFromGameView(){
         gameview.setVisible(false);
-        launchParametre();
+        launchParametres();
         this.repaint();
     }
     
@@ -125,9 +125,6 @@ public class Controleur extends JFrame{
             public void run() {
                 Controleur c = new Controleur() ;
                 c.launchMenu();
-                //c.launchEditeurNiveaux();
-                // c.launchSelectNiveau(true);
-                
             }
         });
     }
