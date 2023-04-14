@@ -213,7 +213,7 @@ public class EditeurNiveaux extends JPanel {
         save.addActionListener(e->niveauCree.save(courtWidth, courtHeight));
 
         saveNom.addActionListener(e -> {
-            if ( ! Niveau.getAllNameNiveau().contains(nomNiveau.getText()) && ! nomNiveau.getText().equals(placeHolders[0]) && ! nomNiveau.getText().equals(placeHolders[1])) { // TODO Ajout test nom déjà utilisé
+            if ( ! Niveau.getAllNameNiveau().contains(nomNiveau.getText()) && ! nomNiveau.getText().equals(placeHolders[0]) && ! nomNiveau.getText().equals(placeHolders[1])) {
                 niveauCree.setNom(nomNiveau.getText());
                 save.setEnabled(true);
             }
