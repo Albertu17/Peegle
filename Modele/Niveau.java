@@ -92,15 +92,15 @@ public class Niveau {
     }
     
     public static void createIconeNiveau(String niveau, boolean campagne){
-        int width = 1080/3 ;
-        int height = 520/3 ;
+        int width = 1080 ;
+        int height = 520;
 
         Niveau nv = importPegles((campagne? "Campagne/" : "Perso/") + niveau, width, height) ;
         BufferedImage tempImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics g = (tempImage.createGraphics());
         Graphics2D g2d = (Graphics2D) g;      
         g2d.setColor(Color.white);
-        g2d.fill(new RoundRectangle2D.Float(0, 0, width, height, 40, 40));
+        g2d.fill(new RoundRectangle2D.Float(0, 0, width, height, 60, 60));
 
         
         for (Pegs peg:nv.getPegs()) {
@@ -153,7 +153,6 @@ public class Niveau {
 
     public void save(int widthCourt, int heightCourt){
         // save les lignes de l'array list dans un fichier csv
-        
         PrintWriter file;
         try {
             file = new PrintWriter(dosierSauvegarde + getDossier() + nomExtension);
@@ -181,7 +180,7 @@ public class Niveau {
             file.close();
             // enregistrement réussi
         } catch (FileNotFoundException e) {
-            System.out.println("LA sauvegarde a raté");
+            System.out.println("La sauvegarde a raté");
             e.printStackTrace();
         }
 

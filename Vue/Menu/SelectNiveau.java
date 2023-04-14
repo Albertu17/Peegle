@@ -108,7 +108,7 @@ public class SelectNiveau extends JPanel{
         int espacementLargeurPres = this.getWidth()/13 ;
         int largeurPres = espacementLargeurPres*3 ;
         int milieu  = this.getHeight() /2 ;
-        int hauteur_pres  = milieu - 150 ;
+        int hauteur_pres  = milieu - 150  ;
         int x,y ;
 
         // affichage icone plus bouton de selections
@@ -192,10 +192,9 @@ public class SelectNiveau extends JPanel{
             add(invisiblePhoto); //ajout d'un bloc pour l'image et l'affichage du layout
 
             button = new BoutonMenu(nomNiveau, hauteurBouton*4, hauteurBouton);
-            button.setAlignmentX(Box.CENTER_ALIGNMENT);
             button.addActionListener(e -> controleur.launchGameview((campagne? "Campagne/" : "Perso/") + nomNiveau));
             button.setVisible(true);
-            add(Box.createRigidArea(new Dimension((largeurPres-button.getWidth())/2, 0))); //ajout d'un bloc pour l'image et l'affichage du layout
+            button.setAlignmentX(Box.CENTER_ALIGNMENT);
             add(button); 
 
             apercu = ImageImport.getImage(pathIcone()+nomNiveau+".png", largeurPres, hauteur_pres - hauteurBouton-10);

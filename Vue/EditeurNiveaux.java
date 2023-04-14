@@ -56,7 +56,7 @@ public class EditeurNiveaux extends JPanel {
         setSize(width, height);
 
         niveauCree = new Niveau("enAttente");
-        niveauCree.isCampagne(true);
+        niveauCree.isCampagne(false);
 
         // Court
         courtWidth = width * 5/6;
