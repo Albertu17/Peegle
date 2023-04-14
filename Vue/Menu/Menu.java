@@ -43,7 +43,6 @@ public class Menu extends JPanel {
 
     private BufferedImage background;
     private BufferedImage title;
-    private static Font font;
 
     public Menu(Controleur c) {
 
@@ -58,12 +57,7 @@ public class Menu extends JPanel {
             background = ImageImport.getImage("Menu/menuBackground.jpg");
             background = resizeImage(background, largeur, hauteur);
             title = ImageImport.getImage("Menu/trucjojo.png");
-            InputStream targetStream = new FileInputStream("./Vue/Font/cartoonist_kooky.ttf");
-            font =  Font.createFont(Font.TRUETYPE_FONT, targetStream);
-            font = font.deriveFont(100f);
         } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        } catch (FontFormatException ex) {
             System.out.println(ex.getMessage());
         }
 
@@ -150,7 +144,7 @@ public class Menu extends JPanel {
 
         // Retourne une font dont la taille est adaptée aux dimensions du bouton.
         public Font rightFont (String texte, Graphics g) {
-            Font rightF = font;
+            Font rightF = ImageImport.cartoon.deriveFont(1000f);
             FontMetrics metrics = g.getFontMetrics(rightF);
             int fontSize = rightF.getSize();
 

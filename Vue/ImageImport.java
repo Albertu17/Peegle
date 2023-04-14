@@ -15,7 +15,8 @@ public class ImageImport {
     private static HashMap<String, BufferedImage> allimage ;
     private static String pathDossierImage = "Vue/Image/" ;
     private static boolean importFini = false ;
-    public static Font newFont;
+    public static Font arcade;
+    public static Font cartoon;
     public static FileInputStream targetStream ;
 
     // TODO a supprimer apres dev
@@ -35,7 +36,9 @@ public class ImageImport {
     public static void setImage(Boolean Thread){
         try {
             targetStream = new FileInputStream("./Vue/Font/ARCADE_N.TTF");
-            newFont =  Font.createFont(Font.TRUETYPE_FONT, targetStream);
+            arcade =  Font.createFont(Font.TRUETYPE_FONT, targetStream);
+            targetStream = new FileInputStream("./Vue/Font/cartoonist_kooky.ttf");
+            cartoon =  Font.createFont(Font.TRUETYPE_FONT, targetStream);
         } catch (FontFormatException e) {
             System.out.println("Font not found");
             // TODO Auto-generated catch block

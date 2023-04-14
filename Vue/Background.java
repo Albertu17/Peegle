@@ -19,7 +19,7 @@ import java.awt.image.Kernel;
 public class Background extends JPanel{
     private BufferedImage backgroundImage;
     
-    private Font newFont = ImageImport.newFont;
+    private Font newFont = ImageImport.arcade;
     private Court court;
 
   // score 

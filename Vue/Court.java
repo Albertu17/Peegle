@@ -32,7 +32,7 @@ public class Court extends JPanel implements MouseInputListener {
     private int NbDeBall = 250 ;
     private boolean nbDeBallChange=true;
     private int MaxCombo = 0;
-    private Font newFont = ImageImport.newFont;
+    private Font arcade = ImageImport.arcade;
     private int mouseX = 0;
     private int mouseY = 0;
     private boolean GameOver = false;
@@ -234,10 +234,10 @@ public class Court extends JPanel implements MouseInputListener {
             g.drawImage(WinScreen, 0, 0, this);
             background.setOver(true);
             background.repaint();
-            g.setFont(newFont.deriveFont(18f));
+            g.setFont(arcade.deriveFont(18f));
             g.setColor(Color.WHITE);
             g.drawString("Level "+ niveau.getNom() + " Completed !", 550, 125);
-            g.setFont(newFont.deriveFont(26f));
+            g.setFont(arcade.deriveFont(26f));
             g.drawString("Score: "+toucher, 500, 210);
             g.drawString("Balles Restantes: "+NbDeBall, 500, 260);
             g.drawString("Balles Utilisees: "+(250-NbDeBall), 500, 310);
@@ -261,7 +261,7 @@ public class Court extends JPanel implements MouseInputListener {
         if (!editMode) {
             frameCount++;
             if (ComboEncours != 0) {
-                g.setFont(newFont.deriveFont(144f));
+                g.setFont(arcade.deriveFont(144f));
                 if (ComboEncours>MaxCombo) MaxCombo = ComboEncours;
                 if (afficageCombo>5) g.setColor(Color.RED);
                 else if (afficageCombo>3) g.setColor(Color.ORANGE);
