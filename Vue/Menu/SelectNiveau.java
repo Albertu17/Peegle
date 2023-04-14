@@ -1,4 +1,5 @@
 package Vue.Menu;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
@@ -7,6 +8,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
@@ -38,7 +40,7 @@ public class SelectNiveau extends JPanel{
     private BoutonMenu selectCampagne ;
     private BoutonMenu selectPerso ;
 
-    public SelectNiveau(Controleur c){
+    public SelectNiveau(Controleur c) {
         
         controleur = c ;
         
@@ -94,31 +96,6 @@ public class SelectNiveau extends JPanel{
         afficherPage(page_act);
     }
 
-    class Fleche extends JButton{
-        Icon imageBlanche;
-        Icon imageJaune;
-
-        Fleche(boolean next, int width, int height) {
-            imageBlanche = new ImageIcon(ImageImport.getImage("Menu/Fleche/"+ (next?"D":"G") + " blanche.png", width, height));
-            imageJaune = new ImageIcon(ImageImport.getImage("Menu/Fleche/"+ (next?"D":"G") + " jaune.png", width, height));
-
-            // enlever tout les contours du JButton ne laisse que l'image
-            setBorderPainted(false); 
-            setContentAreaFilled(false); 
-            setFocusPainted(false); 
-            setOpaque(false);
-            addMouseListener((MouseListener) new MouseAdapter() {
-                public void mouseEntered(MouseEvent evt) {Fleche.this.setIcon(imageJaune);}
-                public void mouseExited(MouseEvent evt) {Fleche.this.setIcon(imageBlanche);}
-                public void mouseClicked(MouseEvent evt) {   
-                    if (next) afficherPage(++page_act);
-                    else afficherPage(--page_act);
-                }
-            });
-            setIcon(imageBlanche);
-        }
-    }
-
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, this);
@@ -167,38 +144,62 @@ public class SelectNiveau extends JPanel{
         return ret ;
     }
 
-    class PresNiveau extends JPanel{
+    class Fleche extends JButton{
+        Icon imageBlanche;
+        Icon imageJaune;
+
+        Fleche(boolean next, int width, int height) {
+            imageBlanche = new ImageIcon(ImageImport.getImage("Menu/Fleche/"+ (next?"D":"G") + " blanche.png", width, height));
+            imageJaune = new ImageIcon(ImageImport.getImage("Menu/Fleche/"+ (next?"D":"G") + " jaune.png", width, height));
+
+            // enlever tout les contours du JButton ne laisse que l'image
+            setBorderPainted(false); 
+            setContentAreaFilled(false); 
+            setFocusPainted(false); 
+            setOpaque(false);
+            addMouseListener((MouseListener) new MouseAdapter() {
+                public void mouseEntered(MouseEvent evt) {Fleche.this.setIcon(imageJaune);}
+                public void mouseExited(MouseEvent evt) {Fleche.this.setIcon(imageBlanche);}
+                public void mouseClicked(MouseEvent evt) {   
+                    if (next) afficherPage(++page_act);
+                    else afficherPage(--page_act);
+                }
+            });
+            setIcon(imageBlanche);
+        }
+    }
+
+    class PresNiveau extends JPanel {
+
         private BufferedImage apercu ;
         private BufferedImage cadre ;
         private BoutonMenu button ;
 
-        PresNiveau(String nomNiveau, int largeurPres, int hauteur_pres){
+        PresNiveau(String nomNiveau, int largeurPres, int hauteur_pres) {
+
             setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-            int hauteurBouton  = 40 ; 
-            apercu = ImageImport.getImage(pathIcone()+nomNiveau+".png", largeurPres, hauteur_pres - hauteurBouton-10) ;
-            cadre = ImageImport.getImage("Menu/CadreCampagne.png", largeurPres, hauteur_pres - hauteurBouton-10) ;
+            setOpaque(false);
+            int hauteurBouton  = 40;
+
             JPanel invisiblePhoto = new JPanel() ;
             invisiblePhoto.setSize(largeurPres, hauteur_pres - hauteurBouton-7);
             invisiblePhoto.setOpaque(false);
-            this.add(invisiblePhoto); //ajout d'un bloc pour l'image et l'affichage du layout
+            (invisiblePhoto).addMouseListener((MouseListener) new MouseAdapter() {
+                public void mouseEntered(MouseEvent evt) {button.setCouleur(true);}
+                public void mouseExited(MouseEvent evt){button.setCouleur(false);}
+                public void mouseClicked(MouseEvent evt){controleur.launchGameview((campagne? "Campagne/" : "Perso/") + nomNiveau);}
+            });
+            add(invisiblePhoto); //ajout d'un bloc pour l'image et l'affichage du layout
+
             button = new BoutonMenu(nomNiveau, hauteurBouton*4, hauteurBouton);
+            button.setAlignmentX(Box.CENTER_ALIGNMENT);
             button.addActionListener(e -> controleur.launchGameview((campagne? "Campagne/" : "Perso/") + nomNiveau));
-            // System.out.println(largeurPres);
-            // System.out.println(button.getWidth());
-            // System.out.println((largeurPres-button.getWidth())/2);
-            //TODO régler pb de centrage
-            this.add(Box.createRigidArea(new Dimension((largeurPres-button.getWidth())/2, 0))); //ajout d'un bloc pour l'image et l'affichage du layout
-            this.add(button); 
-
-
             button.setVisible(true);
-            this.setOpaque(false);
-            (invisiblePhoto).addMouseListener((MouseListener) new MouseAdapter() 
-                {
-                    public void mouseEntered(MouseEvent evt) {button.setCouleur(true);}
-                    public void mouseExited(MouseEvent evt){button.setCouleur(false);}
-                    public void mouseClicked(MouseEvent evt){controleur.launchGameview((campagne? "Campagne/" : "Perso/") + nomNiveau);}
-                });
+            add(Box.createRigidArea(new Dimension((largeurPres-button.getWidth())/2, 0))); //ajout d'un bloc pour l'image et l'affichage du layout
+            add(button); 
+
+            apercu = ImageImport.getImage(pathIcone()+nomNiveau+".png", largeurPres, hauteur_pres - hauteurBouton-10);
+            cadre = ImageImport.getImage("Menu/CadreCampagne.png", largeurPres, hauteur_pres - hauteurBouton-10);
         }
         
         @Override
@@ -218,7 +219,6 @@ public class SelectNiveau extends JPanel{
                 Controleur c  = new Controleur() ;
                 c.launchSelectNiveau();             
             }
-
         });
     }
 }
