@@ -1,25 +1,8 @@
 package Vue.Menu;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import Vue.Controleur;
@@ -102,73 +85,5 @@ public class Menu extends JPanel {
         BufferedImage outputImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
         outputImage.getGraphics().drawImage(resultingImage, 0, 0, null);
         return outputImage;
-    }
-
-    public static class BoutonMenu extends JButton {
-
-        int width, height;
-        ImageIcon imageIconNormal;
-        ImageIcon imageIconOnHover;
-
-        public BoutonMenu(String texteImage, int width, int height) {
-            this.width = width;
-            this.height = height;
-            imageIconNormal = getEditedImageIcon(texteImage, width, height, true);
-            imageIconOnHover = getEditedImageIcon(texteImage, width, height, false);
-            setIcon(imageIconNormal);
-            addMouseListener((MouseListener) new MouseAdapter() {
-                public void mouseEntered(MouseEvent evt) {setIcon(imageIconOnHover);}
-                public void mouseExited(MouseEvent evt) {setIcon(imageIconNormal);}
-            });
-            // Parametrages du bouton
-            setBorderPainted(false); 
-            setContentAreaFilled(false); 
-            setFocusPainted(false); 
-            setOpaque(false);
-            setSize(width, height);
-        }
-
-        public ImageIcon getEditedImageIcon (String texte, int width, int height, boolean normal) {
-            BufferedImage buffImg;
-            if (normal) buffImg = ImageImport.getImage("Menu/planche_blanche.png", width, height);
-            else buffImg = ImageImport.getImage("Menu/planche_jaune.png", width, height);
-            Graphics g = buffImg.getGraphics();
-            Font rightFont = rightFont(texte, g);
-            FontMetrics metrics = g.getFontMetrics(rightFont);
-            g.setFont(rightFont);
-            if (normal) g.setColor(Color.WHITE);
-            else g.setColor(Color.YELLOW);
-            g.drawString(texte, width/2 - metrics.stringWidth(texte)/2, height * 3/4);
-            return new ImageIcon(buffImg);
-        }
-
-        // Retourne une font dont la taille est adaptée aux dimensions du bouton.
-        public Font rightFont (String texte, Graphics g) {
-            Font rightF = ImageImport.cartoon.deriveFont(1000f);
-            FontMetrics metrics = g.getFontMetrics(rightF);
-            int fontSize = rightF.getSize();
-
-            // Rétrécit la taille de la font si la hauteur du texte sera trop grande.
-            int textHeight = metrics.getAscent();
-            int textHeightMax = height * 1/2;
-            if (textHeight > textHeightMax) {
-                double heightRatio = (double) textHeightMax / (double) textHeight;
-                rightF = rightF.deriveFont((float) Math.floor(fontSize * heightRatio));
-                fontSize = rightF.getSize();
-                metrics = g.getFontMetrics(rightF);
-            }
-
-            // Rétrécit la taille de la font si la largeur du texte sera trop grande.
-            int textWidth = metrics.stringWidth(texte);
-            int textWidthMax = width;
-            if (textWidth > textWidthMax) {
-                double widthRatio = (double) textWidthMax / (double) textWidth;
-                rightF = rightF.deriveFont((float) Math.floor(fontSize * widthRatio));
-                fontSize = rightF.getSize();
-                metrics = g.getFontMetrics(rightF);
-            }
-
-            return rightF;
-        }
     }
  }

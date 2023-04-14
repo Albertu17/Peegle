@@ -1,5 +1,6 @@
 package Vue;
 
+import Vue.Menu.BoutonMenu;
 import Vue.Menu.Menu;
 import java.awt.Color;
 import javax.swing.*;
@@ -54,7 +55,7 @@ public class GameView extends JPanel {
         add(background);
 
         // JButton bouton retour
-        btnRetour = new Menu.BoutonMenu("back", 200, 50);
+        btnRetour = new BoutonMenu("back", 200, 50);
         btnRetour.setLocation(40,40);
         btnRetour.addActionListener(e -> controleur.launchMenu());
         add(btnRetour);
