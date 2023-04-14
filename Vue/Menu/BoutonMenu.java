@@ -14,7 +14,7 @@ import javax.swing.JButton;
 
 import Vue.ImageImport;
 
-public class BoutonMenu extends JButton{
+public class BoutonMenu extends JButton {
     
     int width, height;
     ImageIcon imageIconNormal;
@@ -29,6 +29,7 @@ public class BoutonMenu extends JButton{
         addMouseListener((MouseListener) new MouseAdapter() {
             public void mouseEntered(MouseEvent evt) {setIcon(imageIconOnHover);}
             public void mouseExited(MouseEvent evt) {setIcon(imageIconNormal);}
+            public void mousePressed(MouseEvent evt) {setIcon(imageIconNormal);}
         });
         // Parametrages du bouton
         setBorderPainted(false); 
