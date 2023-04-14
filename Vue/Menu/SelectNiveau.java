@@ -60,13 +60,13 @@ public class SelectNiveau extends JPanel{
         int middleW = controleur.getWidth()/2 ; 
         int middleH = controleur.getHeight()/2 + 50;
 
-        selectCampagne = new BoutonMenu("Campagne", 200, 50);
-        selectCampagne.setLocation(middleW-100, middleH-25-140);
+        selectCampagne = new BoutonMenu("Campagne", 400, 100);
+        selectCampagne.setLocation(middleW-selectCampagne.getWidth()/2, middleH-25-200);
         selectCampagne.addActionListener(e -> setSelecteur(true) );
         add(selectCampagne);
         
-        selectPerso = new BoutonMenu("Perso", 200, 50);
-        selectPerso.setLocation(middleW-100,middleH-25-70);
+        selectPerso = new BoutonMenu("Perso", 400, 100);
+        selectPerso.setLocation(middleW-selectPerso.getWidth()/2,middleH-25-70);
         selectPerso.addActionListener(e -> setSelecteur(false) );
         add(selectPerso);
     }
