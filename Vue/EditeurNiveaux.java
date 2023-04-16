@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.event.MouseInputListener;
 
+import Modele.Ball;
 import Modele.Niveau;
 import Modele.Pegs;
 
@@ -113,6 +114,10 @@ public class EditeurNiveaux extends JPanel {
             // Remet en place les pegs originels.
             court.setPegs(court.clonePegs(niveauCree.getPegs()));
             court.getToucherPegs().clear();
+            // Enlève les balles toujours sur le court
+            for (Ball ball: court.getBalls()) {
+                if (ball.isPresent()) ball.setPresent(false);
+            }
             court.repaint();
             resume.setEnabled(true);
             pause.setEnabled(false);

@@ -118,6 +118,10 @@ public class Court extends JPanel implements MouseInputListener {
         return rectangles;
     }
 
+    public ArrayList<Ball> getBalls() {
+        return balls;
+    }
+
     public ArrayList<Pegs> getToucherPegs() {
         return toucherPegs;
     }
