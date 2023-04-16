@@ -62,7 +62,7 @@ public class Menu extends JPanel {
         btnOptions.addActionListener(e -> controleur.launchParametres());
         add(btnOptions);
 
-        btnEditeur = new BoutonMenu("editeur", 200, 50);
+        btnEditeur = new BoutonMenu("editor", 200, 50);
         btnEditeur.setLocation(middleW-100,middleH-25+70); 
         btnEditeur.addActionListener(e -> controleur.launchEditeurNiveaux());
         add(btnEditeur);

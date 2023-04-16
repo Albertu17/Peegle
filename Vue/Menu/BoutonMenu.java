@@ -54,7 +54,7 @@ public class BoutonMenu extends JButton {
         g.setFont(rightFont);
         if (normal) g.setColor(Color.WHITE);
         else g.setColor(Color.YELLOW);
-        g.drawString(texte, width/2 - metrics.stringWidth(texte)/2, height * 3/4);
+        g.drawString(texte, width/2 - metrics.stringWidth(texte)/2, height/2 + metrics.getAscent()/2);
         return new ImageIcon(buffImg);
     }
 
