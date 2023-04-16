@@ -60,7 +60,7 @@ public class BoutonMenu extends JButton {
 
     // Retourne une font dont la taille est adaptée aux dimensions du bouton.
     public Font rightFont (String texte, Graphics g) {
-        Font rightF = ImageImport.cartoon.deriveFont(1000f);
+        Font rightF = ImageImport.cartoon.deriveFont(1000f); // Très grande taille de police par défault
         FontMetrics metrics = g.getFontMetrics(rightF);
         int fontSize = rightF.getSize();
 

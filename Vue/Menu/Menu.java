@@ -10,8 +10,8 @@ import Vue.ImageImport;
 
 public class Menu extends JPanel {
 
-    private int largeur;
-    private int hauteur;
+    private int width;
+    private int height;
 
     private int middleH;
     private int middleW;
@@ -29,23 +29,19 @@ public class Menu extends JPanel {
 
     public Menu(Controleur c) {
 
-        this.controleur = c ;
-        this.hauteur=c.height;
-        this.largeur=c.width;
+        controleur = c ;
+        width = c.width;
+        height = c.height;
         setLayout(null); // À mettre car selon les machines le layout par défault n'est pas
         // le même
-        setSize(largeur, hauteur);
+        setSize(width, height);
 
-        try {
-            background = ImageImport.getImage("Menu/menuBackground.jpg");
-            background = resizeImage(background, largeur, hauteur);
-            title = ImageImport.getImage("Menu/trucjojo.png");
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
+        // background
+        background = ImageImport.getImage("Menu/menuBackground.jpg", width, height);
+        title = ImageImport.getImage("Menu/trucjojo.png");
 
-        middleW = largeur/2;
-        middleH = hauteur/2 + 50;
+        middleW = width/2;
+        middleH = height/2 + 50;
 
         btnPlay = new BoutonMenu("play", 200, 50);
         btnPlay.setLocation(middleW-100, middleH-25-140);
@@ -80,6 +76,7 @@ public class Menu extends JPanel {
         g.drawImage(title, middleW-title.getWidth()/2-10, 40, this);
     }
     
+    // TODO pas utilisée car ImageImport.getImage() peut le faire
     BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) throws IOException {
         Image resultingImage = originalImage.getScaledInstance(targetWidth, targetHeight, Image.SCALE_DEFAULT);
         BufferedImage outputImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);

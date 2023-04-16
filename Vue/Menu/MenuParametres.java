@@ -37,8 +37,8 @@ public class MenuParametres extends JPanel {
         setLayout(null);
         setVisible(true);
         
-        // setImage background
-        background = ImageImport.getImage("Menu/menuBackground.jpg", this.getWidth(), this.getHeight());
+        // background
+        background = ImageImport.getImage("Menu/menuBackground.jpg", width, height);
 
         btnSkin1 = new BoutonMenu("skin1", 200, 50);
         btnSkin1.setLocation(middleW-100,middleH-25-140);
