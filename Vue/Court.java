@@ -29,7 +29,7 @@ public class Court extends JPanel implements MouseInputListener {
     private ArrayList<Pegs> toucherPegs;
     private Background background;
     private ArrayList<Rectangle> rectangles;
-    private int NbDeBall = 250 ;
+    private int NbDeBall = 125 ;
     private boolean nbDeBallChange=true;
     private int MaxCombo = 0;
     private Font arcade = ImageImport.arcade;
@@ -160,7 +160,7 @@ public class Court extends JPanel implements MouseInputListener {
     } 
 
     public int getScoreMax(){
-        return  89; // a changer selon les niveaux
+        return  89; // a changer selon les niveaux98
     }
 
     public void setBackground(Background background) {

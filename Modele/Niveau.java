@@ -229,5 +229,15 @@ public class Niveau {
        // return un objet de type 
         return nv ;
     }
+    public static List<String> RechercheNameNiveau(boolean campagne2, String nom2) {
+        List<String> ret = new ArrayList<>() ;
+        for (String name : getAllNameNiveau(campagne2)){
+            
+            if ((name.toLowerCase()).contains(nom2.toLowerCase())){
+                ret.add(name);
+            }
+        }
+        return ret ;
+    }
 
 }

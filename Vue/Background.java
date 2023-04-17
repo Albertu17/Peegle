@@ -26,15 +26,13 @@ public class Background extends JPanel{
     private int longeur,largeur;
     private int midBordureCourtX,midBordureCourtY;
     private BufferedImage scoreSign;
-    private int ancien_point = 0;
 
     private int width;
     private int heigth;
     private int scoreMax;
 
     // balle
-    private BufferedImage tubeBall;
-    private int bordurePix = 10;
+    private BufferedImage panneauBalle;
     private BufferedImage ball;
     private boolean GameOver = false;
 
@@ -71,7 +69,7 @@ public class Background extends JPanel{
         scoreSign = ImageImport.getImage("scoreSign.png", largeur -30, 60);
         ball = ImageImport.getImage("ball.png", 50, 50);
 
-        tubeBall = ImageImport.getImage("tubeball.png", court.getBallRadius()*5*2+20, court.getHeight());
+        panneauBalle = ImageImport.getImage("Menu/planche_blanche.png", largeur, 60);
 
         ball = court.getBall();
 
@@ -106,8 +104,9 @@ public class Background extends JPanel{
     // score 
     g.drawRect(midBordureCourtX , midBordureCourtY, largeur, longeur);
     g.drawImage(scoreSign,midBordureCourtX +15 ,(midBordureCourtY - scoreSign.getHeight() -5),this);
-
-    int score = court.getScore() * longeur / scoreMax;
+    int scorebarre = court.getScore();
+    if (scorebarre>scoreMax) scorebarre = scoreMax;
+    int score = scorebarre * longeur / scoreMax;
     int point = midBordureCourtY+longeur-score;
 
     if (score<=longeur*1/3){
@@ -126,10 +125,9 @@ public class Background extends JPanel{
 
 
     int ligne = 0;
-    int pointDeDepartX = 60;
-    int pointDeDepartY = court.getY() + tubeBall.getHeight();
-
-    int XBall = pointDeDepartX + tubeBall.getWidth()/2 - Ball.ballRadius;
+    int pointDeDepartX = 40;
+    int pointDeDepartY = court.getY() + court.getHeight() - 45;
+    int XBall = pointDeDepartX - Ball.ballRadius;
 
     // for (int i = 0; i<court.getNbDeBall();i++){
     //   if (i==2) ligne++;
@@ -138,12 +136,18 @@ public class Background extends JPanel{
 
       
     // }
-
     for (int i = 0; i<court.getNbDeBall();i++){
-      g.drawImage(ball,XBall ,pointDeDepartY - i*Ball.ballRadius*2 - Ball.ballRadius*2 - bordurePix,this);
+      if (i%5==0) ligne++;
+      g.drawImage(ball,XBall+ i%5 * (Ball.ballRadius*2 + 10),pointDeDepartY - ligne * (Ball.ballRadius*2 + 10),this);
     }
-
-    g.drawImage(tubeBall , pointDeDepartX, court.getY(), this);
+    g.setColor(Color.WHITE);
+    g.drawRect(XBall- 10, pointDeDepartY- ligne * (Ball.ballRadius*2 + 10) - 10, 5* (Ball.ballRadius*2 + 10) + 10, ligne * (Ball.ballRadius*2 + 10) );
+    g.drawImage(panneauBalle, XBall, pointDeDepartY - ligne * (Ball.ballRadius*2 + 10) - 80, this);
+    g .setFont(newFont.deriveFont(18f));
+    g.drawString("Balle ", XBall + 10, pointDeDepartY - ligne * (Ball.ballRadius*2 + 10) - 60);
+    g.drawString("x"+court.getNbDeBall(), XBall + 10, pointDeDepartY - ligne * (Ball.ballRadius*2 + 10) - 40);
+    
+    
 
     
 
