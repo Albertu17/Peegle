@@ -5,6 +5,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.Array;
 import java.util.List;
 
 import javax.swing.Box;
@@ -13,6 +14,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import Modele.Niveau;
@@ -31,6 +33,7 @@ public class SelectNiveau extends JPanel{
 
     private Fleche next ;
     private Fleche previous ;
+    private Recherche recherche;
 
     private JButton btnRetour;
 
@@ -87,10 +90,12 @@ public class SelectNiveau extends JPanel{
         // définir place des boutons 
             next = new Fleche(true, largeurFleche, hauteurFleche);
             previous = new Fleche(false, largeurFleche, hauteurFleche) ;
+            recherche = new Recherche(x-300,50, campagne);
             next.setBounds(x, y, largeurFleche, hauteurFleche);
             previous.setBounds( x - (next.getWidth() + 15) , y, largeurFleche, hauteurFleche);
             this.add(previous);
             this.add(next) ;
+            this.add(recherche);
         afficherPage(page_act);
     }
 
@@ -164,6 +169,25 @@ public class SelectNiveau extends JPanel{
                 }
             });
             setIcon(imageBlanche);
+        }
+    }
+    class Recherche extends JTextField{
+
+        Recherche(int width, int height, boolean campagne){
+            setBounds(width, height, 300, 45);
+            setText("Rechercher");
+            addMouseListener((MouseListener) new MouseAdapter() {
+                public void mouseClicked(MouseEvent evt) {   
+                    if (getText().equals("Rechercher")) setText("");
+                }
+            });
+            addActionListener(e -> {
+                String nom = getText() ;
+                allNameNiveau = Niveau.RechercheNameNiveau(campagne, nom);
+                page_act = 0 ;
+                afficherPage(page_act);
+
+            });
         }
     }
 
