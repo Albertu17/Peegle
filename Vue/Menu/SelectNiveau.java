@@ -88,7 +88,7 @@ public class SelectNiveau extends JPanel{
             next = new Fleche(true, largeurFleche, hauteurFleche);
             previous = new Fleche(false, largeurFleche, hauteurFleche) ;
             next.setBounds(x, y, largeurFleche, hauteurFleche);
-            previous.setBounds(x, y, largeurFleche, hauteurFleche);
+            previous.setBounds( x - (next.getWidth() + 15) , y, largeurFleche, hauteurFleche);
             this.add(previous);
             this.add(next) ;
         afficherPage(page_act);
