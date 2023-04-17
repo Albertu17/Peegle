@@ -85,12 +85,9 @@ public class Pegs implements Cloneable {
         return false;
     }
 
-    // celui d'albert
+    // Retourne true si le point dont les coordonnées sont passées en argument est au sein du peg.
     public boolean contains(int i, int j) {
-        if (Math.sqrt(Math.pow(i-x, 2)+Math.pow(j-y, 2))<=radius) {
-            return true;
-        }
-        return false;
+        return Math.pow(i - (x + radius/2), 2) + Math.pow(j - (y + radius/2), 2) <= Math.pow(radius,2);
     }
 
     public String getImageString() {

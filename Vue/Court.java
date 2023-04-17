@@ -368,7 +368,7 @@ public class Court extends JPanel implements MouseInputListener {
         else if (editMode && eN.enModif) {
             boolean sourisSurPeg = false;
             for (Pegs p : niveau.getPegs()) {
-                if (Math.pow(e.getX() - p.getX(), 2) + Math.pow(e.getY() - p.getY(), 2) <= Math.pow(p.getRadius(),2)) {
+                if (p.contains(e.getX(), e.getY())) {
                     eN.pegSelectionne = p;
                     eN.sliderPegSelectionne.setValue(p.getRadius());
                     eN.sliderPegSelectionne.repaint();
