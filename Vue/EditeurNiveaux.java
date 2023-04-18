@@ -6,11 +6,14 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
@@ -190,6 +193,17 @@ public class EditeurNiveaux extends JPanel {
         JButton saveNom = new JButton("OK");
         saveNom.setBounds((width - courtWidth) - courtHeight * 1/16 + 5, courtHeight * 1/16 + 20, courtHeight * 1/16, courtHeight * 1/16);
         panelBoutons.add(saveNom);
+
+        // JCheckBox campagne
+        JCheckBox campagne = new JCheckBox("Campagne", true);
+        campagne.setBounds((width - courtWidth) + 5, courtHeight * 1/16 + 20, courtHeight * 2/16, courtHeight * 1/16);
+        campagne.addItemListener(new ItemListener() {    
+            public void itemStateChanged(ItemEvent e) {           
+                if (e.getStateChange()==1) niveauCree.isCampagne(true);
+                else niveauCree.isCampagne(false);
+            }    
+         });   
+        panelBoutons.add(campagne);
 
         // JButton back
         JButton back = new JButton("Back");
