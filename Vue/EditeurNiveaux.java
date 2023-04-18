@@ -23,6 +23,7 @@ import javax.swing.event.MouseInputListener;
 import Modele.Ball;
 import Modele.Niveau;
 import Modele.Pegs;
+import Vue.Menu.BoutonMenu;
 
 public class EditeurNiveaux extends JPanel {
 
@@ -47,6 +48,7 @@ public class EditeurNiveaux extends JPanel {
     BoutonCouleur vert;
     JButton croix;
     JButton modif;
+    int largeurBouton;
 
     EditeurNiveaux(Controleur controleur) {
         this.controleur = controleur ;
@@ -67,6 +69,8 @@ public class EditeurNiveaux extends JPanel {
         court.setBounds(0, 0, courtWidth, courtHeight);
         court.setVisible(true);
         add(court, BorderLayout.CENTER);
+
+        largeurBouton = courtHeight * 1/16;
 
         // case Peg bleu
         CasePeg casePegBleu = new CasePeg(width-courtWidth, courtHeight * 1/4, 1);
@@ -94,15 +98,56 @@ public class EditeurNiveaux extends JPanel {
         panelBoutons.setLayout(null);
         add(panelBoutons);
 
+        // slider peg selectionné
+        sliderPegSelectionne = new JSlider(10, 110, 50);
+        sliderPegSelectionne.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        sliderPegSelectionne.setBounds(0, 0, width - courtWidth, largeurBouton);
+        sliderPegSelectionne.addChangeListener(e -> {
+            pegSelectionne.setRadius(sliderPegSelectionne.getValue());
+            court.setPegs(court.clonePegs(niveauCree.getPegs()));
+            court.repaint();
+        });
+        panelBoutons.add(sliderPegSelectionne);
+
+        // BoutonCouleur bleu
+        bleu = new BoutonCouleur(1);
+        bleu.setLocation(width - courtWidth, 0);
+        panelBoutons.add(bleu);
+
+        // BoutonCouleur rouge
+        rouge = new BoutonCouleur(2);
+        rouge.setLocation(width - courtWidth + largeurBouton, 0);
+        panelBoutons.add(rouge);
+
+        // BoutonCouleur violet
+        violet = new BoutonCouleur(3);
+        violet.setLocation(width - courtWidth + 2*largeurBouton, 0);
+        panelBoutons.add(violet);
+
+        // BoutonCouleur vert
+        vert = new BoutonCouleur(4);
+        vert.setLocation(width - courtWidth + 3*largeurBouton, 0);
+        panelBoutons.add(vert);
+
+        // JButton croix
+        croix = new JButton("supp");
+        croix.setBounds(width - courtWidth + 4*largeurBouton, 0, largeurBouton, largeurBouton);
+        croix.addActionListener(e -> {
+            niveauCree.getPegs().remove(pegSelectionne);
+            court.setPegs(court.clonePegs(niveauCree.getPegs()));
+            court.repaint();
+        });
+        panelBoutons.add(croix);
+
         // Bouton pause
         JButton pause = new JButton("||");
-        pause.setBounds(courtWidth - 100, 0, 50, 50);
+        pause.setBounds(courtWidth - 2*largeurBouton, 0, largeurBouton, largeurBouton);
         panelBoutons.add(pause);
         pause.setEnabled(false);
 
         // Bouton resume
-        JButton resume = new JButton("|>");
-        resume.setBounds(courtWidth - 50, 0, 50, 50);
+        JButton resume = new JButton("▶");
+        resume.setBounds(courtWidth - largeurBouton, 0, largeurBouton, largeurBouton);
         resume.addActionListener(e -> {
             court.setEnPause(false);
             court.animate();
@@ -127,50 +172,9 @@ public class EditeurNiveaux extends JPanel {
             casePegBleu.mousePressed(null);
         });
 
-        // slider peg selectionné
-        sliderPegSelectionne = new JSlider(10, 110, 50);
-        sliderPegSelectionne.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        sliderPegSelectionne.setBounds(0, 0, width - courtWidth, courtHeight * 1/16);
-        sliderPegSelectionne.addChangeListener(e -> {
-            pegSelectionne.setRadius(sliderPegSelectionne.getValue());
-            court.setPegs(court.clonePegs(niveauCree.getPegs()));
-            court.repaint();
-        });
-        panelBoutons.add(sliderPegSelectionne);
-
-        // BoutonCouleur bleu
-        bleu = new BoutonCouleur(1);
-        bleu.setBounds(width - courtWidth, 0, courtHeight * 1/16, courtHeight * 1/16);
-        panelBoutons.add(bleu);
-
-        // BoutonCouleur rouge
-        rouge = new BoutonCouleur(2);
-        rouge.setBounds(width - courtWidth + courtHeight * 1/16, 0, courtHeight * 1/16, courtHeight * 1/16);
-        panelBoutons.add(rouge);
-
-        // BoutonCouleur violet
-        violet = new BoutonCouleur(3);
-        violet.setBounds(width - courtWidth + courtHeight * 1/8, 0, courtHeight * 1/16, courtHeight * 1/16);
-        panelBoutons.add(violet);
-
-        // BoutonCouleur vert
-        vert = new BoutonCouleur(4);
-        vert.setBounds(width - courtWidth + courtHeight * 3/16, 0, courtHeight * 1/16, courtHeight * 1/16);
-        panelBoutons.add(vert);
-
-        // JButton croix
-        croix = new JButton("supp");
-        croix.setBounds(width - courtWidth + courtHeight * 1/4, 0, courtHeight * 1/16, courtHeight * 1/16);
-        croix.addActionListener(e -> {
-            niveauCree.getPegs().remove(pegSelectionne);
-            court.setPegs(court.clonePegs(niveauCree.getPegs()));
-            court.repaint();
-        });
-        panelBoutons.add(croix);
-
         //JButton modif
         modif = new JButton("modif");
-        modif.setBounds(width - courtWidth + courtHeight * 5/16, 0, courtHeight * 1/16, courtHeight * 1/16);
+        modif.setBounds(courtWidth - 3*largeurBouton, 0, largeurBouton, largeurBouton);
         modif.addActionListener(e -> {
             enModif = true;
             caseActive.unclicked();
@@ -185,7 +189,7 @@ public class EditeurNiveaux extends JPanel {
         String[] placeHolders = new String[]{" Nom du niveau", " Nom déjà utilisé"};
         JTextField nomNiveau = new JTextField();
         nomNiveau.setText(placeHolders[0]);
-        nomNiveau.setBounds(5, courtHeight * 1/16 + 20, (width - courtWidth) - courtHeight * 1/16 - 10, courtHeight * 1/16);
+        nomNiveau.setBounds(5, courtHeight * 1/16 + 20, (width - courtWidth) - courtHeight * 1/16, courtHeight * 1/16);
         nomNiveau.addFocusListener(new FocusPlaceholder(nomNiveau, placeHolders));
         panelBoutons.add(nomNiveau);
 
@@ -206,14 +210,16 @@ public class EditeurNiveaux extends JPanel {
         panelBoutons.add(campagne);
 
         // JButton back
-        JButton back = new JButton("Back");
-        back.setBounds(courtWidth, 0, (width - courtWidth)/2, (height - courtHeight)/2);
+        JButton back = new BoutonMenu("Back", (width - courtWidth)/2, (height - courtHeight)/2);
+        // back.setBounds(courtWidth, 0, (width - courtWidth)/2, (height - courtHeight)/2);
+        back.setLocation(courtWidth, 0);
         panelBoutons.add(back);
         back.addActionListener(e -> controleur.launchMenu());
 
         // JButton newLevel
-        JButton newLevel = new JButton("New");
-        newLevel.setBounds(courtWidth, (height - courtHeight)/2, (width - courtWidth)/2, (height - courtHeight)/2);
+        JButton newLevel = new BoutonMenu("New",(width - courtWidth)/2, (height - courtHeight)/2);
+        // newLevel.setBounds(courtWidth, (height - courtHeight)/2, (width - courtWidth)/2, (height - courtHeight)/2);
+        newLevel.setLocation(courtWidth, (height - courtHeight)/2);
         panelBoutons.add(newLevel);
         newLevel.addActionListener(e -> {
             controleur.editeurNiveaux = null;
@@ -221,9 +227,10 @@ public class EditeurNiveaux extends JPanel {
         });
 
         // JButton save
-        JButton save = new JButton("Save");
+        JButton save = new BoutonMenu("Save", (width - courtWidth)/2, height - courtHeight);
         save.setEnabled(false);
-        save.setBounds(courtWidth + (width - courtWidth)/2, 0, (width - courtWidth)/2, height - courtHeight);
+        // save.setBounds(courtWidth + (width - courtWidth)/2, 0, (width - courtWidth)/2, height - courtHeight);
+        save.setLocation(courtWidth + (width - courtWidth)/2, 0);
         panelBoutons.add(save);
         save.addActionListener(e->niveauCree.save(courtWidth, courtHeight));
 
@@ -324,6 +331,7 @@ public class EditeurNiveaux extends JPanel {
             });
             Icon icon = new ImageIcon(ImageImport.getImage(Pegs.intColorToString(couleur)));
             setIcon(icon);
+            setSize(largeurBouton, largeurBouton);
         }
     }
 

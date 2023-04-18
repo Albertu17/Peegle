@@ -76,7 +76,7 @@ public class BoutonMenu extends JButton {
 
         // Rétrécit la taille de la font si la largeur du texte sera trop grande.
         int textWidth = metrics.stringWidth(texte);
-        int textWidthMax = width;
+        int textWidthMax = width * 5/6;
         if (textWidth > textWidthMax) {
             double widthRatio = (double) textWidthMax / (double) textWidth;
             rightF = rightF.deriveFont((float) Math.floor(fontSize * widthRatio));

@@ -1,6 +1,10 @@
 package Vue;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Insets;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
@@ -26,8 +30,9 @@ public class Controleur extends JFrame{
 
         // mise en pleine ecran
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize(); // Récupère taille de l'écran utilisateur.
+        Insets insets = Toolkit.getDefaultToolkit().getScreenInsets(getGraphicsConfiguration());
         width = (int) size.getWidth();
-        height = (int) size.getHeight();
+        height = (int) size.getHeight() - insets.top; // Enlève la taille du bandeau d'options sur mac
         setSize(width, height); // Met la fenêtre en plein écran.
         setUndecorated(true);
        
