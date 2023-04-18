@@ -357,14 +357,12 @@ public class Court extends JPanel implements MouseInputListener {
 
     public void mousePressed(MouseEvent e) {
         // lancer une balle
-        if (!enPause && ! GameOver){
-            if (NbDeBall>0){ 
-                if (!editMode) {
-                    background.repaint();
-                    balls.add(canon.tirer());
-                }
+        if (!enPause && !GameOver){
+            if (NbDeBall>0) {
+                balls.add(canon.tirer());
                 nbDeBallChange=true;
                 NbDeBall--;
+                if (!editMode) background.repaint();
             }
         }
         else if (editMode && eN.enModif) {
