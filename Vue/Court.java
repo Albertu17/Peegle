@@ -349,6 +349,15 @@ public class Court extends JPanel implements MouseInputListener {
     public void mouseClicked(MouseEvent e) {
         // lancer une balle
         if (!GameOver) {
+            
+        } else if (mouseX>535 && mouseX<985 && mouseY>695 && mouseY<765){
+            //Button next level! clicked
+        }
+    }
+
+    public void mousePressed(MouseEvent e) {
+        // lancer une balle
+        if (!enPause && ! GameOver){
             if (NbDeBall>0){ 
                 if (!editMode) {
                     background.repaint();
@@ -357,14 +366,7 @@ public class Court extends JPanel implements MouseInputListener {
                 nbDeBallChange=true;
                 NbDeBall--;
             }
-        } else if (mouseX>535 && mouseX<985 && mouseY>695 && mouseY<765){
-            //Button next level! clicked
         }
-    }
-
-    public void mousePressed(MouseEvent e) {
-        // lancer une balle
-        if (!enPause) balls.add(canon.tirer());
         else if (editMode && eN.enModif) {
             boolean sourisSurPeg = false;
             for (Pegs p : niveau.getPegs()) {
