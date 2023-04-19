@@ -1,9 +1,5 @@
 package Vue;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
 import java.awt.Toolkit;
 
@@ -28,20 +24,18 @@ public class Controleur extends JFrame{
         // lancement de l'import des images 
         ImageImport.setImage(true); 
 
-        // mise en pleine ecran
+        // mise en pleine écran
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize(); // Récupère taille de l'écran utilisateur.
         Insets insets = Toolkit.getDefaultToolkit().getScreenInsets(getGraphicsConfiguration());
         width = (int) size.getWidth();
-        height = (int) size.getHeight() - insets.top; // Enlève la taille du bandeau d'options sur mac
+        height = (int) size.getHeight() - insets.top; // Recoupe la taille du bandeau d'options sur mac.
         setSize(width, height); // Met la fenêtre en plein écran.
-        setUndecorated(true);
-       
+
+        // Paramétrages supplémentaires de la fenêtre
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setTitle("Peggle");
-
-        // empeche l'utilisateur de resize la fenetre :
-        setResizable(false);
-       
+        setUndecorated(true);
+        setResizable(false); // empêche l'utilisateur de resize la fenêtre.
         setVisible(true);
     }
 
@@ -121,7 +115,6 @@ public class Controleur extends JFrame{
         menu.setVisible(true);
         this.repaint();
     }
-    
 
     public static void main(String[] args) {
 

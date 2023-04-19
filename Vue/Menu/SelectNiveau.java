@@ -1,11 +1,9 @@
 package Vue.Menu;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.lang.reflect.Array;
 import java.util.List;
 
 import javax.swing.Box;

@@ -64,6 +64,7 @@ public class Pegs implements Cloneable {
 
     public void setDiametre(int diametre) {
         this.diametre = diametre;
+        radius = diametre / 2;
     }
 
     public int getRadius() {

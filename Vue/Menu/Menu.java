@@ -32,8 +32,7 @@ public class Menu extends JPanel {
         controleur = c ;
         width = c.width;
         height = c.height;
-        setLayout(null); // À mettre car selon les machines le layout par défault n'est pas
-        // le même
+        setLayout(null); // À mettre car selon les machines le layout par défault n'est pas le même.
         setSize(width, height);
 
         // background
@@ -43,26 +42,31 @@ public class Menu extends JPanel {
         middleW = width/2;
         middleH = height/2 + 50;
 
+        // BoutonMenu play
         btnPlay = new BoutonMenu("play", 200, 50);
         btnPlay.setLocation(middleW-100, middleH-25-140);
         btnPlay.addActionListener(e -> controleur.launchGameview("Perso/Triangle")); //TODO remplacer par la campagne
         add(btnPlay);
 
+        // BoutonMenu campagne
         btnCampagne = new BoutonMenu("campaing", 200, 50);
         btnCampagne.setLocation(middleW-100,middleH-25-70);
-        btnCampagne.addActionListener(e -> controleur.launchSelectNiveau()); //TODO pas forcement le bon truc
+        btnCampagne.addActionListener(e -> controleur.launchSelectNiveau());
         add(btnCampagne);
         
+        // BoutonMenu options
         btnOptions = new BoutonMenu("options", 200, 50);
         btnOptions.setLocation(middleW-100,middleH-25); 
         btnOptions.addActionListener(e -> controleur.launchParametres());
         add(btnOptions);
 
+        // BoutonMenu editor
         btnEditeur = new BoutonMenu("editor", 200, 50);
         btnEditeur.setLocation(middleW-100,middleH-25+70); 
         btnEditeur.addActionListener(e -> controleur.launchEditeurNiveaux());
         add(btnEditeur);
 
+        // BoutonMenu quit
         btnQuit = new BoutonMenu("quit", 200, 50);
         btnQuit.setLocation(middleW-100,middleH-25+140);
         btnQuit.addActionListener(e -> System.exit(0));

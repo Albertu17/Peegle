@@ -51,9 +51,9 @@ public class EditeurNiveaux extends JPanel {
     int largeurBouton;
 
     EditeurNiveaux(Controleur controleur) {
-        this.controleur = controleur ;
-        width = controleur.getWidth() ;
-        height = controleur.getHeight() ;
+        this.controleur = controleur;
+        width = controleur.getWidth();
+        height = controleur.getHeight();
         setLayout(null);
         setSize(width, height);
 
@@ -261,9 +261,8 @@ public class EditeurNiveaux extends JPanel {
     public class CasePeg extends JPanel implements MouseInputListener{
 
         int largeur, hauteur, couleur;
-        Pegs peg; // Le peg représenté dans le case.
-        // int x, y, diametre, radius, couleur;
-        Pegs modeleActuel; // 
+        Pegs peg; // Le peg représenté dans la case.
+        Pegs modeleActuel; // Le peg utilisé en preview sur le court.
 
         public CasePeg(int largeur, int hauteur, int couleur) {
             this.largeur = largeur;
