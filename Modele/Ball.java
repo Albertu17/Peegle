@@ -126,8 +126,8 @@ public class Ball{
         if (p!=null && !atoucherpegs){
             if (!p.getHit()){combo++;}
             p.setTouche(true);
-            double ux = (nextBallX+ ballRadius) - (p.getX() + p.getRadius()/2);
-            double uy = (nextBallY+ballRadius) - (p.getY()+ p.getRadius()/2);
+            double ux = (nextBallX+ ballRadius) - (p.getX() + p.getRadius());
+            double uy = (nextBallY+ballRadius) - (p.getY()+ p.getRadius());
             double vx = ballSpeedX;
             double vy = ballSpeedY;
             ballSpeedX = vx - 2*ux*(ux*vx + uy*vy)/(ux*ux + uy*uy);

@@ -103,7 +103,7 @@ public class EditeurNiveaux extends JPanel {
         sliderPegSelectionne.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         sliderPegSelectionne.setBounds(0, 0, width - courtWidth, largeurBouton);
         sliderPegSelectionne.addChangeListener(e -> {
-            pegSelectionne.setRadius(sliderPegSelectionne.getValue());
+            pegSelectionne.setDiametre(sliderPegSelectionne.getValue());
             court.setPegs(court.clonePegs(niveauCree.getPegs()));
             court.repaint();
         });
@@ -260,29 +260,30 @@ public class EditeurNiveaux extends JPanel {
 
     public class CasePeg extends JPanel implements MouseInputListener{
 
-        int largeur, hauteur;
-        Pegs peg;
-        int x, y, radius, couleur;
-        Pegs modeleActuel;
+        int largeur, hauteur, couleur;
+        Pegs peg; // Le peg représenté dans le case.
+        // int x, y, diametre, radius, couleur;
+        Pegs modeleActuel; // 
 
         public CasePeg(int largeur, int hauteur, int couleur) {
             this.largeur = largeur;
             this.hauteur = hauteur;
             this.couleur = couleur;
             peg = new Pegs(largeur/2, hauteur*3/4/2, 50, couleur);
-            radius = peg.getRadius();
-            x = peg.getX();
-            y = peg.getY();
-            modeleActuel = new Pegs(0, 0, radius, couleur);
+            // diametre = peg.getDiametre();
+            // radius = peg.getRadius();
+            // x = peg.getX();
+            // y = peg.getY();
+            modeleActuel = new Pegs(0, 0, peg.getDiametre(), couleur);
 
             setLayout(null);
             JSlider sliderTaillPeg = new JSlider(10, 110, 50);
             sliderTaillPeg.setBounds(0, hauteur*3/4, largeur, hauteur*1/4);
             sliderTaillPeg.setBorder(BorderFactory.createLineBorder(Color.BLACK));
             sliderTaillPeg.addChangeListener(e -> {
-                peg.setRadius(sliderTaillPeg.getValue());
+                peg.setDiametre(sliderTaillPeg.getValue());
                 paint(this.getGraphics());
-                modeleActuel.setRadius(sliderTaillPeg.getValue());
+                modeleActuel.setDiametre(sliderTaillPeg.getValue());
             });
             add(sliderTaillPeg);
 
@@ -292,9 +293,8 @@ public class EditeurNiveaux extends JPanel {
 
         public void paint(Graphics g) {
             super.paint(g);
-            radius = peg.getRadius();
             Graphics2D g2d = (Graphics2D) g;
-            g2d.drawImage(ImageImport.getImage(peg.getImageString()), x-radius/2, y-radius/2, radius, radius, this);
+            g2d.drawImage(ImageImport.getImage(peg.getImageString()), peg.getX()-peg.getRadius(), peg.getY()-peg.getRadius(), peg.getDiametre(), peg.getDiametre(), this);
         }
 
         public void unclicked() {

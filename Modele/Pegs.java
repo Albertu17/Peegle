@@ -4,17 +4,19 @@ public class Pegs implements Cloneable {
     
     private int x;
     private int y;
-    private int radius;//DIAMETRE PAS CONFONDRE
+    private int diametre;
+    private int radius;
     private int couleur;
     private String imageString;
     private boolean touche = false;
     public boolean atoucherpegs = false;
 
     // int 1 à 4 couleur image 
-    public Pegs(int x, int y, int radius, int couleur) {
+    public Pegs(int x, int y, int diametre, int couleur) {
         this.x = x;
         this.y = y;
-        this.radius = radius;
+        this.diametre = diametre;
+        this.radius = diametre/2;
         this.couleur = couleur;
         imageString = intColorToString(couleur);
     }
@@ -54,6 +56,14 @@ public class Pegs implements Cloneable {
     }
     public void setY(int y) {
         this.y = y;
+    }
+
+    public int getDiametre() {
+        return diametre;
+    }
+
+    public void setDiametre(int diametre) {
+        this.diametre = diametre;
     }
 
     public int getRadius() {

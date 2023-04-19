@@ -304,7 +304,7 @@ public class Court extends JPanel implements MouseInputListener {
     
         if (toucherPegs.size()>0){
             Pegs peganim = toucherPegs.get(0);
-            g.drawOval(peganim.getX(), peganim.getY(), peganim.getRadius(), peganim.getRadius());
+            g.drawOval(peganim.getX(), peganim.getY(), peganim.getDiametre(), peganim.getDiametre());
             pegs.remove(peganim);
             toucherPegs.remove(peganim);
         }
@@ -320,8 +320,8 @@ public class Court extends JPanel implements MouseInputListener {
 
         Graphics2D g2d = (Graphics2D) g;   
         for (Pegs peg: pegs) {
-            if (peg.getHit()) g2d.drawImage(ImageImport.getImage(peg.getImageStringTouche()), peg.getX(), peg.getY(), peg.getRadius(), peg.getRadius(), this);
-            else g2d.drawImage(ImageImport.getImage(peg.getImageString()), peg.getX(), peg.getY(), peg.getRadius(), peg.getRadius(), this);
+            if (peg.getHit()) g2d.drawImage(ImageImport.getImage(peg.getImageStringTouche()), peg.getX(), peg.getY(), peg.getDiametre(), peg.getDiametre(), this);
+            else g2d.drawImage(ImageImport.getImage(peg.getImageString()), peg.getX(), peg.getY(), peg.getDiametre(), peg.getDiametre(), this);
             //image pegs toucher
         }
 
@@ -342,7 +342,7 @@ public class Court extends JPanel implements MouseInputListener {
             float alpha = (float) 0.2; //draw at 20% opacity
             AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,alpha);
             g2d.setComposite(ac);
-            g2d.drawImage(ImageImport.getImage(pV.getImageString()), pV.getX(), pV.getY(), pV.getRadius(), pV.getRadius(), this);
+            g2d.drawImage(ImageImport.getImage(pV.getImageString()), pV.getX(), pV.getY(), pV.getDiametre(), pV.getDiametre(), this);
         }
     }
 
@@ -370,7 +370,7 @@ public class Court extends JPanel implements MouseInputListener {
             for (Pegs p : niveau.getPegs()) {
                 if (p.contains(e.getX(), e.getY())) {
                     eN.pegSelectionne = p;
-                    eN.sliderPegSelectionne.setValue(p.getRadius());
+                    eN.sliderPegSelectionne.setValue(p.getDiametre());
                     eN.sliderPegSelectionne.repaint();
                     eN.boutonsModifActifs(true);
                     sourisSurPeg = true;
@@ -408,8 +408,8 @@ public class Court extends JPanel implements MouseInputListener {
         if (!enPause) canon.DeplacementCanon(e);
         else if (editMode && eN.enModif) {
             if (eN.pegSelectionne != null) {
-                eN.pegSelectionne.setX(e.getX() - eN.pegSelectionne.getRadius()/2);
-                eN.pegSelectionne.setY(e.getY() - eN.pegSelectionne.getRadius()/2);
+                eN.pegSelectionne.setX(e.getX() - eN.pegSelectionne.getRadius());
+                eN.pegSelectionne.setY(e.getY() - eN.pegSelectionne.getRadius());
                 setPegs(clonePegs(niveau.getPegs()));
                 repaint();
             }
@@ -423,8 +423,8 @@ public class Court extends JPanel implements MouseInputListener {
         if (!enPause) canon.DeplacementCanon(e);
         // Pour faire apparaître un preview du peg qu'on poserait à cet endroit
         else if (editMode && !eN.enModif) {
-            eN.caseActive.modeleActuel.setX(e.getX() - eN.caseActive.radius/2);
-            eN.caseActive.modeleActuel.setY(e.getY() - eN.caseActive.radius/2);
+            eN.caseActive.modeleActuel.setX(e.getX() - eN.caseActive.modeleActuel.getRadius());
+            eN.caseActive.modeleActuel.setY(e.getY() - eN.caseActive.modeleActuel.getRadius());
             repaint();
         }
     }
