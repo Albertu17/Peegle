@@ -99,11 +99,11 @@ public class EditeurNiveaux extends JPanel {
         add(panelBoutons);
 
         // slider peg selectionné
-        sliderPegSelectionne = new JSlider(10, 110, 50);
+        sliderPegSelectionne = new JSlider(5, 60, 25);
         sliderPegSelectionne.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         sliderPegSelectionne.setBounds(0, 0, width - courtWidth, largeurBouton);
         sliderPegSelectionne.addChangeListener(e -> {
-            pegSelectionne.setDiametre(sliderPegSelectionne.getValue());
+            pegSelectionne.setRadius(sliderPegSelectionne.getValue());
             court.setPegs(court.clonePegs(niveauCree.getPegs()));
             court.repaint();
         });
@@ -269,23 +269,19 @@ public class EditeurNiveaux extends JPanel {
             this.largeur = largeur;
             this.hauteur = hauteur;
             this.couleur = couleur;
-            peg = new Pegs(largeur/2, hauteur*3/4/2, 50, couleur);
-            // diametre = peg.getDiametre();
-            // radius = peg.getRadius();
-            // x = peg.getX();
-            // y = peg.getY();
-            modeleActuel = new Pegs(0, 0, peg.getDiametre(), couleur);
+            peg = new Pegs(largeur/2, hauteur*3/4/2, 25, couleur);
+            modeleActuel = new Pegs(0, 0, peg.getRadius(), couleur);
 
             setLayout(null);
-            JSlider sliderTaillPeg = new JSlider(10, 110, 50);
-            sliderTaillPeg.setBounds(0, hauteur*3/4, largeur, hauteur*1/4);
-            sliderTaillPeg.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            sliderTaillPeg.addChangeListener(e -> {
-                peg.setDiametre(sliderTaillPeg.getValue());
+            JSlider sliderRayonPeg = new JSlider(5, 60, 25);
+            sliderRayonPeg.setBounds(0, hauteur*3/4, largeur, hauteur*1/4);
+            sliderRayonPeg.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+            sliderRayonPeg.addChangeListener(e -> {
+                peg.setRadius(sliderRayonPeg.getValue());
                 paint(this.getGraphics());
-                modeleActuel.setDiametre(sliderTaillPeg.getValue());
+                modeleActuel.setRadius(sliderRayonPeg.getValue());
             });
-            add(sliderTaillPeg);
+            add(sliderRayonPeg);
 
             addMouseListener(this);
             addMouseMotionListener(this);

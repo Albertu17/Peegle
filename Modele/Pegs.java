@@ -2,21 +2,19 @@ package Modele;
 
 public class Pegs implements Cloneable {
     
-    private int x;
-    private int y;
-    private int diametre;
-    private int radius;
+    private int x, y; // Coordonnées du centre du peg
+    private int radius, diametre;
     private int couleur;
     private String imageString;
     private boolean touche = false;
     public boolean atoucherpegs = false;
 
     // int 1 à 4 couleur image 
-    public Pegs(int x, int y, int diametre, int couleur) {
+    public Pegs(int x, int y, int radius, int couleur) {
         this.x = x;
         this.y = y;
-        this.diametre = diametre;
-        this.radius = diametre/2;
+        this.radius = radius;
+        diametre = radius*2;
         this.couleur = couleur;
         imageString = intColorToString(couleur);
     }
@@ -51,9 +49,11 @@ public class Pegs implements Cloneable {
     public int getY() {
         return y;
     }
+
     public void setX(int x) {
         this.x = x;
     }
+
     public void setY(int y) {
         this.y = y;
     }
@@ -69,13 +69,16 @@ public class Pegs implements Cloneable {
     public int getRadius() {
         return radius;
     }
+
     public void setRadius(int radius) {
         this.radius = radius;
+        diametre = radius * 2;
     }
 
     public int getCouleur() {
         return couleur;
     }
+
     public void setCouleur(int couleur) {
         this.couleur = couleur;
     }
@@ -89,7 +92,7 @@ public class Pegs implements Cloneable {
     }
 
     public boolean contains(double i, double j) {
-        if (Math.sqrt(Math.pow(i-(x +radius/2) , 2)+Math.pow(j-(y+radius/2), 2))< radius/2 + Ball.ballRadius) {
+        if (Math.sqrt(Math.pow(i - x, 2) + Math.pow(j - y, 2)) < radius + Ball.ballRadius) {
             return true;
         }
         return false;
@@ -97,7 +100,7 @@ public class Pegs implements Cloneable {
 
     // Retourne true si le point dont les coordonnées sont passées en argument est au sein du peg.
     public boolean contains(int i, int j) {
-        return Math.pow(i - (x + radius/2), 2) + Math.pow(j - (y + radius/2), 2) <= Math.pow(radius,2);
+        return Math.pow(i - x, 2) + Math.pow(j - y, 2) <= Math.pow(radius,2);
     }
 
     public String getImageString() {
