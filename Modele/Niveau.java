@@ -213,7 +213,7 @@ public class Niveau {
 
                 int x =  (int) (reajustementH*Double.valueOf(line[0]) );
                 int y =  (int) (reajustementV*Double.valueOf(line[1]) );
-                int radius = (int)(Double.valueOf(line[2]) * Math.min(reajustementH, reajustementV) ) ;
+                int radius = (int)(Double.valueOf(line[2]) * Math.min(reajustementH, reajustementV))  ;
                 int couleur = Integer.valueOf(line[3]) ;
 
                 nv.pegs.add(new Pegs(x, y, radius, couleur)) ;

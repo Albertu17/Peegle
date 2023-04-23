@@ -1,8 +1,5 @@
 package Vue.Menu;
 import java.awt.Graphics;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -26,11 +23,10 @@ public class SelectNiveau extends JPanel{
 
     private List<String> allNameNiveau ;
     private int page_act ;
-    private double formatImage = 520/1080.0 ;
     private boolean campagne ;
     private Controleur controleur ;
 
-    private PresNiveau[] affichage ;
+    private JPanel[] affichage ;
     private BufferedImage background ;
 
     private Fleche next ;
@@ -74,21 +70,6 @@ public class SelectNiveau extends JPanel{
         selectPerso.setLocation(middleW-selectPerso.getWidth()/2,middleH-25-70);
         selectPerso.addActionListener(e -> setSelecteur(false) );
         add(selectPerso);
-        controleur.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed( KeyEvent e) {
-              if (e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_DOWN) {
-                System.out.println("dsdf");
-                // showPopupMenu();
-              }
-            }
-          });
-
-        // setFocusable(true) ;
-        // // setRequestFocusEnabled(true);
-        // requestFocus();
-        // controleur.res
-        // System.out.println(get);
     }
 
     private void setSelecteur(boolean campagne){
@@ -123,12 +104,12 @@ public class SelectNiveau extends JPanel{
 
     private void afficherPage(int page){
         if (affichage != null) for (JPanel	pan : affichage) if (pan != null) this.remove(pan); //nettoye les anciens images et texte
-        affichage  = new PresNiveau[6] ;
+        affichage  = new JPanel[6] ;
 
         int espacementLargeurPres = this.getWidth()/13 ;
         int largeurPres = espacementLargeurPres*3 ;
         int milieu  = this.getHeight() /2 ;
-        int hauteur_pres  = milieu - 150   ;
+        int hauteur_pres  = milieu - 150  ;
         int x,y ;
 
         // affichage icone plus bouton de selections
@@ -138,8 +119,6 @@ public class SelectNiveau extends JPanel{
             x = (1+(i%3)*4)*espacementLargeurPres ;
             if (i < 3) y = milieu - affichage[i].getHeight() -25 ;
             else y  = milieu +25 ;
-            affichage[i].invisiblePhoto.setLocation(x, y);
-            affichage[i].button.setLocation(x +(largeurPres- affichage[i].button.getWidth())/2, y + affichage[i].invisiblePhoto.getHeight()+10);
             affichage[i].setBounds(x, y, largeurPres, affichage[i].getHeight()); 
             this.add(affichage[i]) ;
             affichage[i].setVisible(true);
@@ -214,17 +193,17 @@ public class SelectNiveau extends JPanel{
 
         private BufferedImage apercu ;
         private BufferedImage cadre ;
-        public BoutonMenu button ;
-        public JPanel invisiblePhoto ;
+        private BoutonMenu button ;
+        private double formatImage = 520/1080.0 ;
 
         PresNiveau(String nomNiveau, int largeurPres, int hauteur_pres) {
 
-            // setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-            // setLayout(null);
+            setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
             setOpaque(false);
             int hauteurBouton  = 40;
             int hauteurPhoto = Math.min(hauteur_pres - hauteurBouton-7, (int)(formatImage*largeurPres)) ;
-            invisiblePhoto = new JPanel() ;
+
+            JPanel invisiblePhoto = new JPanel() ;
             invisiblePhoto.setSize(largeurPres, hauteurPhoto);
             invisiblePhoto.setOpaque(false);
             (invisiblePhoto).addMouseListener((MouseListener) new MouseAdapter() {
@@ -237,15 +216,12 @@ public class SelectNiveau extends JPanel{
             button = new BoutonMenu(nomNiveau, hauteurBouton*4, hauteurBouton);
             button.addActionListener(e -> controleur.launchGameview((campagne? "Campagne/" : "Perso/") + nomNiveau));
             button.setVisible(true);
-            // button.setAlignmentX(Box.CENTER_ALIGNMENT);
+            button.setAlignmentX(Box.CENTER_ALIGNMENT);
             add(button); 
+            setSize(largeurPres, hauteurPhoto+hauteurBouton+10);
 
-            apercu = ImageImport.getImage(pathIcone()+nomNiveau+".png", largeurPres, hauteurPhoto);
-            cadre = ImageImport.getImage("Menu/CadreCampagne.png", largeurPres, hauteurPhoto);
-            setSize(largeurPres, hauteurBouton+hauteurPhoto+10);
-
-            // invisiblePhoto.setLocation(x, y);
-            // button.setLocation(x +(largeurPres- button.getWidth())/2, y + hauteurPhoto+10);
+            apercu = ImageImport.getImage(pathIcone()+nomNiveau+".png", largeurPres,hauteurPhoto);
+            cadre = ImageImport.getImage("Menu/CadreCampagne.png", largeurPres,hauteurPhoto);
         }
         
         @Override
@@ -263,28 +239,8 @@ public class SelectNiveau extends JPanel{
             @Override
             public void run() {
                 Controleur c  = new Controleur() ;
-                c.launchSelectNiveau();  
-                           
+                c.launchSelectNiveau();             
             }
         });
     }
-
-    // @Override
-    // public void keyTyped(KeyEvent e) {
-    //     // TODO Auto-generated method stub
-    //     throw new UnsupportedOperationException("Unimplemented method 'keyTyped'");
-    // }
-
-    // @Override
-    // public void keyPressed(KeyEvent e) {
-    //     if (e.getKeyCode() == KeyEvent.VK_ESCAPE) btnRetour.doClick(); 
-    //     else if (e.getKeyCode() == KeyEvent.VK_LEFT && page_act > 0) previous.doClick(); 
-    //     else if (e.getKeyCode() == KeyEvent.VK_RIGHT && (page_act+1)*6 < allNameNiveau.size()) previous.doClick(); 
-    // }
-
-    // @Override
-    // public void keyReleased(KeyEvent e) {
-    //     // TODO Auto-generated method stub
-    //     throw new UnsupportedOperationException("Unimplemented method 'keyReleased'");
-    // }
 }
