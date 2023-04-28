@@ -21,10 +21,13 @@ public class Ball{
     private int yMarxgin = 3;
     public double p1,p2;
 
+    private Pegs dernierPegToucher = null;
+
     private boolean ispresent = true;
     private boolean atoucher = false;
     private boolean atoucherpegs = false;
     private boolean hitground = false;
+
 
     private double g=300; // m/s
     private double coeffRebond = 0.8;
@@ -98,9 +101,7 @@ public class Ball{
         
         Pegs p = touchedPegs();
 
-        
-        if (p!=null && !atoucherpegs){
-        //if (p!=null){
+        if (p!=null){
             if (!p.getHit()){combo++;}
             p.setTouche(true);
             double ux = (nextBallX+ballRadius) - (p.getX());
@@ -111,10 +112,10 @@ public class Ball{
             ballSpeedY = vy - 2*uy*(ux*vx + uy*vy)/(ux*ux + uy*uy);
             ballSpeedX = coeffRebond * ballSpeedX;
             ballSpeedY = coeffRebond * ballSpeedY;
-            
             atoucherpegs=true;
         }
         else if (p==null){
+            dernierPegToucher = null;
             atoucherpegs=false;
         }
         ballX = nextBallX;
@@ -136,16 +137,22 @@ public class Ball{
 
 
     public Pegs touchedPegs(){
-        Pegs p=null;
+        Pegs p = null;
         for (Pegs peg: court.getPegs()){
-            
             if (peg.contains(nextBallX + ballRadius, nextBallY + ballRadius)){
-                return peg;
-                // p=peg;
+                System.out.println("-------------------------------");
+                System.out.println(nextBallX + ballRadius + "    " + nextBallY + ballRadius + "  |   " + peg.getX() +"    " + peg.getY());
+                System.out.println(peg + " " + dernierPegToucher);
+                if (dernierPegToucher==null) {
+                    dernierPegToucher = peg;
+                    p = peg;
+                }
+
+                else if (!dernierPegToucher.contains(nextBallX + ballRadius, nextBallY + ballRadius)) {
+                    dernierPegToucher = peg;
+                    p = peg;
+                }
             }
-        }
-        if (p==null){
-            atoucherpegs=false;
         }
         return p;
     }

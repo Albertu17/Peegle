@@ -259,6 +259,7 @@ public class Court extends JPanel implements MouseInputListener {
             if (ball.isPresent()) {
                 g.setColor(Color.BLACK);
                 g.drawImage(ball.getImage(), (int)ball.ballX, (int)ball.ballY, this);
+                g.drawRect((int) ball.nextBallX + ball.ballRadius,(int)  ball.nextBallY + ball.ballRadius ,3, 3);
             }
         }
 
@@ -311,6 +312,7 @@ public class Court extends JPanel implements MouseInputListener {
 
         //g.drawRect((int)sceau.X, (int)sceau.Y, (int)sceau.longeur, (int)sceau.hauteur);
         g.drawImage(sceau.getImage(), (int) sceau.X, (int)sceau.Y, this);
+;
 
 
         g.setColor(Color.RED);
