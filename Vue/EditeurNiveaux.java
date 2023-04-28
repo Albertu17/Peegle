@@ -9,6 +9,8 @@ import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -38,7 +40,7 @@ public class EditeurNiveaux extends JPanel {
     private int courtHeight;
     Niveau niveauCree;
     CasePeg caseActive;
-    Pegs pegSelectionne;
+    ArrayList<Pegs> pegsSelectionnes;
     boolean enModif;
 
     JSlider sliderPegSelectionne;
@@ -59,6 +61,7 @@ public class EditeurNiveaux extends JPanel {
 
         niveauCree = new Niveau("enAttente");
         niveauCree.isCampagne(false);
+        pegsSelectionnes = new ArrayList<>();
 
         // Court
         courtWidth = width * 5/6;
@@ -103,7 +106,9 @@ public class EditeurNiveaux extends JPanel {
         sliderPegSelectionne.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         sliderPegSelectionne.setBounds(0, 0, width - courtWidth, largeurBouton);
         sliderPegSelectionne.addChangeListener(e -> {
-            pegSelectionne.setRadius(sliderPegSelectionne.getValue());
+            for (Pegs peg: pegsSelectionnes) {
+                peg.setRadius(sliderPegSelectionne.getValue());
+            }
             court.setPegs(court.clonePegs(niveauCree.getPegs()));
             court.repaint();
         });
@@ -133,7 +138,10 @@ public class EditeurNiveaux extends JPanel {
         croix = new JButton("supp");
         croix.setBounds(width - courtWidth + 4*largeurBouton, 0, largeurBouton, largeurBouton);
         croix.addActionListener(e -> {
-            niveauCree.getPegs().remove(pegSelectionne);
+            for (Pegs peg : pegsSelectionnes) {
+                niveauCree.getPegs().remove(peg);
+            }
+            pegsSelectionnes.clear();
             court.setPegs(court.clonePegs(niveauCree.getPegs()));
             court.repaint();
         });
@@ -176,9 +184,9 @@ public class EditeurNiveaux extends JPanel {
         modif = new JButton("modif");
         modif.setBounds(courtWidth - 3*largeurBouton, 0, largeurBouton, largeurBouton);
         modif.addActionListener(e -> {
+            pause.doClick();
             enModif = true;
             caseActive.unclicked();
-            pause.doClick();
         });
         // TODO ajout icon
         // Icon icon = new ImageIcon(ImageImport.getImage("curseurMain.jpg"));
@@ -319,8 +327,10 @@ public class EditeurNiveaux extends JPanel {
         public BoutonCouleur(int couleur) {
             this.couleur = couleur;
             addActionListener(e -> {
-                pegSelectionne.setCouleur(couleur);
-                pegSelectionne.setImageString(Pegs.intColorToString(couleur));
+                for (Pegs peg : pegsSelectionnes) {
+                    peg.setCouleur(couleur);
+                    peg.setImageString(Pegs.intColorToString(couleur));
+                }
                 court.setPegs(court.clonePegs(niveauCree.getPegs()));
                 court.repaint();
             });
@@ -330,12 +340,12 @@ public class EditeurNiveaux extends JPanel {
         }
     }
 
-    private class FocusPlaceholder implements FocusListener{
+    private class FocusPlaceholder implements FocusListener {
         JTextField field; 
         String[] placeHolders;
         String currentHolder;
 
-        FocusPlaceholder(JTextField field, String[] placeHolders){
+        FocusPlaceholder(JTextField field, String[] placeHolders) {
             this.field = field ;
             this.placeHolders = placeHolders.clone() ;
             field.setForeground(Color.GRAY);

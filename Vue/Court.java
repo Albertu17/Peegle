@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -42,9 +43,11 @@ public class Court extends JPanel implements MouseInputListener {
     private int afficageCombo = 0;
 
     private boolean enPause;
+
     // Pour l'éditeur de niveaux
     private EditeurNiveaux eN;
     private boolean editMode;
+    private Point pressPoint;
     
     public Court(int courtWith, int courtHeight, Niveau niveau) {
         // setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -58,6 +61,7 @@ public class Court extends JPanel implements MouseInputListener {
         enPause = false;
         eN = null;
         editMode = false;
+        pressPoint = null;
 
         // Listeners
         this.addMouseListener(this);
@@ -252,8 +256,7 @@ public class Court extends JPanel implements MouseInputListener {
             return;
         }
         
-        // System.out.println(toucher);
-        // canon.repaint();
+        // Affichage des balles
         g.setColor(Color.BLACK);
         for (Ball ball:balls) {   
             if (ball.isPresent()) {
@@ -262,6 +265,7 @@ public class Court extends JPanel implements MouseInputListener {
             }
         }
 
+        // Affichage des combos
         if (!editMode) {
             frameCount++;
             if (ComboEncours != 0) {
@@ -284,7 +288,7 @@ public class Court extends JPanel implements MouseInputListener {
             }
         }
 
-        //remove ball hit the ground
+        // remove ball hit the ground
         boolean remove = false;
         for (int i=0;i<balls.size();i++) {
             if (balls.get(i).getHitGround()) { 
@@ -293,7 +297,7 @@ public class Court extends JPanel implements MouseInputListener {
                 remove = true;
             }
         }
-        
+
         if (remove) {
             for (Pegs peg: pegs) {
                 if (peg.getHit() && !toucherPegs.contains(peg)) {
@@ -309,7 +313,7 @@ public class Court extends JPanel implements MouseInputListener {
             toucherPegs.remove(peganim);
         }
 
-        //g.drawRect((int)sceau.X, (int)sceau.Y, (int)sceau.longeur, (int)sceau.hauteur);
+        // Affichage du sceau
         g.drawImage(sceau.getImage(), (int) sceau.X, (int)sceau.Y, this);
 
 
@@ -318,10 +322,10 @@ public class Court extends JPanel implements MouseInputListener {
             g.drawLine(rect.x0, rect.y0, rect.caculX1(), rect.caculY1());
         }
 
+        // Affichage des pegs
         Graphics2D g2d = (Graphics2D) g;   
         for (Pegs peg: pegs) {
-            if (peg.getHit()) 
-            g2d.drawImage(ImageImport.getImage(peg.getImageStringTouche()), peg.getX() - peg.getRadius(), peg.getY() - peg.getRadius(), peg.getDiametre(), peg.getDiametre(), this);
+            if (peg.getHit()) g2d.drawImage(ImageImport.getImage(peg.getImageStringTouche()), peg.getX() - peg.getRadius(), peg.getY() - peg.getRadius(), peg.getDiametre(), peg.getDiametre(), this);
             else g2d.drawImage(ImageImport.getImage(peg.getImageString()), peg.getX() - peg.getRadius(), peg.getY() - peg.getRadius(), peg.getDiametre(), peg.getDiametre(), this);
             //image pegs toucher
         }
@@ -345,6 +349,28 @@ public class Court extends JPanel implements MouseInputListener {
             g2d.setComposite(ac);
             g2d.drawImage(ImageImport.getImage(pV.getImageString()), pV.getX() - pV.getRadius(), pV.getY() - pV.getRadius(), pV.getDiametre(), pV.getDiametre(), this);
         }
+
+        // Affichage cercle autour des pegs sélectionnées pour l'editeur de niveaux
+        if (editMode && enPause && eN.enModif) {
+            // g2d.setColor(Color.ORANGE); // Rouge par défault
+            for (Pegs peg : eN.pegsSelectionnes) {
+                if (editMode && eN.pegsSelectionnes.contains(peg)) g2d.drawOval(peg.getX() - peg.getRadius(), peg.getY() - peg.getRadius(), peg.getDiametre(), peg.getDiametre());
+            }
+        }
+
+        // Affichage rectangle de selection pour l'editeur de niveaux
+        if (editMode && enPause && eN.enModif && pressPoint != null) {
+            float alpha = (float) 0.2; //draw at 20% opacity
+            AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,alpha);
+            g2d.setComposite(ac);
+            g2d.setColor(new Color(67,174,210,255));
+            int largeur = (int) (mouseX - pressPoint.getX());
+            int hauteur = (int) (mouseY - pressPoint.getY());
+            if (largeur < 0 && hauteur < 0) g2d.fillRect(mouseX, mouseY, -largeur, -hauteur);
+            else if (largeur > 0 && hauteur < 0) g2d.fillRect((int) pressPoint.getX(), mouseY, largeur, -hauteur);
+            else if (largeur < 0 && hauteur > 0) g2d.fillRect(mouseX, (int) pressPoint.getY(), -largeur, hauteur);
+            else g2d.fillRect((int) pressPoint.getX(), (int) pressPoint.getY(), largeur, hauteur);
+        }
     }
 
     public void mouseClicked(MouseEvent e) {
@@ -366,24 +392,30 @@ public class Court extends JPanel implements MouseInputListener {
                 if (!editMode) background.repaint();
             }
         }
+        // Sélectionner un peg
         else if (editMode && eN.enModif) {
             boolean sourisSurPeg = false;
             for (Pegs p : niveau.getPegs()) {
                 if (p.contains(e.getX(), e.getY())) {
-                    eN.pegSelectionne = p;
+                    eN.pegsSelectionnes.clear();
+                    eN.pegsSelectionnes.add(p);
                     eN.sliderPegSelectionne.setValue(p.getRadius());
                     eN.sliderPegSelectionne.repaint();
                     eN.boutonsModifActifs(true);
                     sourisSurPeg = true;
+                    repaint();
                     break;
                 }
-                if (!sourisSurPeg) {
-                    eN.pegSelectionne = null;
-                    eN.boutonsModifActifs(false);
-                }
+            }
+            // Déselectionner les pegs sélectionnés
+            if (!sourisSurPeg) {
+                eN.pegsSelectionnes.clear();
+                eN.boutonsModifActifs(false);
+                pressPoint = new Point(mouseX, mouseY);
             }
         }
-        else {
+        // Placer un peg
+        else if (editMode) {
             try {
                 niveau.getPegs().add((Pegs) eN.caseActive.modeleActuel.clone());
                 pegs.add((Pegs) eN.caseActive.modeleActuel.clone());
@@ -407,13 +439,22 @@ public class Court extends JPanel implements MouseInputListener {
         mouseY = e.getY();
         // Déplacement du canon en fonction de la position de la souris
         if (!enPause) canon.DeplacementCanon(e);
-        else if (editMode && eN.enModif) {
-            if (eN.pegSelectionne != null) {
-                eN.pegSelectionne.setX(mouseX);
-                eN.pegSelectionne.setY(mouseY);
-                setPegs(clonePegs(niveau.getPegs()));
-                repaint();
+        // Déplacement du peg selectionné
+        else if (editMode && eN.enModif && pressPoint == null && eN.pegsSelectionnes.size() == 1) { // pressPoint null --> souris sur peg
+            eN.pegsSelectionnes.get(0).setX(mouseX);
+            eN.pegsSelectionnes.get(0).setY(mouseY);
+            setPegs(clonePegs(niveau.getPegs()));
+            repaint();
+        } else if (editMode && eN.enModif && pressPoint != null) {
+            for (Pegs peg : eN.niveauCree.getPegs()) {
+                if (!eN.pegsSelectionnes.contains(peg)) {
+                    if (peg.getX() > Math.min(pressPoint.getX(), mouseX) && peg.getX() < Math.max(pressPoint.getX(), mouseX)
+                    && peg.getY() > Math.min(pressPoint.getY(), mouseY) && peg.getY() < Math.max(pressPoint.getY(), mouseY)) {
+                        eN.pegsSelectionnes.add(peg);
+                    }
+                }
             }
+            repaint(); // Aggrandissement du rectangle de sélection
         }
     }
 
@@ -430,6 +471,13 @@ public class Court extends JPanel implements MouseInputListener {
         }
     }
 
+    public void mouseReleased(MouseEvent e) {
+        if (editMode && eN.enModif && pressPoint != null) {
+            pressPoint = null;
+            if (!eN.pegsSelectionnes.isEmpty()) eN.boutonsModifActifs(true);
+            repaint();
+        }
+    }
+
     public void mouseEntered(MouseEvent e) {}
-    public void mouseReleased(MouseEvent e) {}
 }

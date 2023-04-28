@@ -9,7 +9,7 @@ import javax.swing.SwingUtilities;
 
 import Vue.Menu.*;
 
-public class Controleur extends JFrame{
+public class Controleur extends JFrame {
 
     public MenuParametres menuParametres;
     public GameView gameview;
