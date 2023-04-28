@@ -64,6 +64,15 @@ public class MenuParametres extends JPanel {
         btnRetour.setLocation(40,40);
         btnRetour.addActionListener(e -> controleur.launchMenu());
         add(btnRetour);
+
+                // JMenuBar alignement
+                String[] values = new String[] {"Aucun", "Haut-Bas", "Bas-Haut", "Vertical", "Horizontal"};
+                JComboBox<String> comboBoxAlignement = new JComboBox<String>(values);
+                // comboBoxAlignement.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                // comboBoxAlignement.setSelectedItem(0);
+                comboBoxAlignement.setBounds(middleW-100,middleH-25+70, 200, 50);
+                add(comboBoxAlignement);
+                comboBoxAlignement.setVisible(true);
     }
 
     @Override

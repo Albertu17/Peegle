@@ -16,6 +16,10 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
@@ -146,6 +150,12 @@ public class EditeurNiveaux extends JPanel {
             court.repaint();
         });
         panelBoutons.add(croix);
+
+        // JComboBox alignement
+        String[] values = {"Aucun", "Haut-Bas", "Bas-Haut", "Vertical", "Horizontal"};
+        JComboBox<String> comboBoxAlignement = new JComboBox<String>(values);
+        comboBoxAlignement.setBounds(width - courtWidth + 6*largeurBouton, 0, 3*largeurBouton, largeurBouton);
+        panelBoutons.add(comboBoxAlignement);
 
         // Bouton pause
         JButton pause = new JButton("||");
