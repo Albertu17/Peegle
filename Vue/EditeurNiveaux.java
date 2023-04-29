@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ItemEvent;
@@ -17,15 +19,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.event.MouseInputListener;
-
+import javax.swing.plaf.ComboBoxUI;
+import javax.swing.plaf.basic.BasicComboBoxUI;
 import Modele.Ball;
 import Modele.Niveau;
 import Modele.Pegs;
@@ -54,6 +55,7 @@ public class EditeurNiveaux extends JPanel {
     BoutonCouleur vert;
     JButton croix;
     JButton modif;
+    JComboBox<String> comboBoxAlignement;
     int largeurBouton;
 
     EditeurNiveaux(Controleur controleur) {
@@ -152,9 +154,15 @@ public class EditeurNiveaux extends JPanel {
         panelBoutons.add(croix);
 
         // JComboBox alignement
-        String[] values = {"Aucun", "Haut-Bas", "Bas-Haut", "Vertical", "Horizontal"};
-        JComboBox<String> comboBoxAlignement = new JComboBox<String>(values);
+        String[] values = {"Alignement: Aucun", "Alignement: Haut-Bas", "Alignement: Bas-Haut", "Alignement: Vertical", "Alignement: Horizontal"};
+        comboBoxAlignement = new JComboBox<String>(values);
         comboBoxAlignement.setBounds(width - courtWidth + 6*largeurBouton, 0, 3*largeurBouton, largeurBouton);
+        comboBoxAlignement.setUI(ColorArrowUI.createUI(comboBoxAlignement));
+        comboBoxAlignement.addActionListener (new ActionListener () {
+            public void actionPerformed(ActionEvent e) {
+                modif.doClick();
+            }
+        });
         panelBoutons.add(comboBoxAlignement);
 
         // Bouton pause
@@ -240,8 +248,11 @@ public class EditeurNiveaux extends JPanel {
         newLevel.setLocation(courtWidth, (height - courtHeight)/2);
         panelBoutons.add(newLevel);
         newLevel.addActionListener(e -> {
-            controleur.editeurNiveaux = null;
-            controleur.launchEditeurNiveaux();
+            niveauCree = new Niveau("enAttente");
+            court.setNiveau(niveauCree);
+            court.getPegs().clear();
+            court.getToucherPegs().clear();
+            court.repaint();
         });
 
         // JButton save
@@ -378,4 +389,18 @@ public class EditeurNiveaux extends JPanel {
             }
         }
     }
+}
+
+class ColorArrowUI extends BasicComboBoxUI {
+
+    public static ComboBoxUI createUI(JComponent c) {
+        return new ColorArrowUI();
+    }
+
+    // @Override protected JButton createArrowButton() {
+    //     return new BasicArrowButton(
+    //         BasicArrowButton.SOUTH,
+    //         Color.cyan, Color.magenta,
+    //         Color.yellow, Color.blue);
+    // }
 }

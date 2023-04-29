@@ -11,6 +11,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
+
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputListener;
 import javax.swing.Timer;
@@ -191,6 +193,10 @@ public class Court extends JPanel implements MouseInputListener {
         setEditMode(true);
     }
 
+    public void setNiveau(Niveau niveau) {
+        this.niveau = niveau;
+    }
+
     public ArrayList<Pegs> clonePegs (ArrayList<Pegs> originalPegs) {
         ArrayList<Pegs> clones = new ArrayList<>();
         for (Pegs p : originalPegs) {
@@ -360,6 +366,25 @@ public class Court extends JPanel implements MouseInputListener {
 
         // Affichage rectangle de selection pour l'editeur de niveaux
         if (editMode && enPause && eN.enModif && pressPoint != null) {
+            // Affichage ligne d'alignement
+            switch (eN.comboBoxAlignement.getSelectedIndex()) {
+                case 1:
+                    g2d.drawLine((int) pressPoint.getX(), (int) pressPoint.getY(), mouseX, mouseY);
+                    break;
+                case 2:
+                    g2d.drawLine((int) pressPoint.getX(), mouseY, mouseX, (int) pressPoint.getY());
+                    break;
+                case 3:
+                    int midleX = (int)(pressPoint.getX() + (mouseX - pressPoint.getX())/2);
+                    g2d.drawLine(midleX, (int) pressPoint.getY(), midleX, mouseY);
+                    break;
+                case 4:
+                    int midleY = (int)(pressPoint.getY() + (mouseY - pressPoint.getY())/2);
+                    g2d.drawLine((int) pressPoint.getX(), midleY, mouseX, midleY);
+                    break;
+                default:
+                    break;
+            }
             float alpha = (float) 0.2; //draw at 20% opacity
             AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,alpha);
             g2d.setComposite(ac);
@@ -473,6 +498,49 @@ public class Court extends JPanel implements MouseInputListener {
 
     public void mouseReleased(MouseEvent e) {
         if (editMode && eN.enModif && pressPoint != null) {
+            // Alignement des pegs sélectionnés
+            boolean deplacementPegs = true;
+            double coeff1, coeff2, shift1, shift2;
+            switch (eN.comboBoxAlignement.getSelectedIndex()) {
+                case 0: // Aucun alignement
+                    deplacementPegs = false;
+                    break;
+                case 1: // Alignement sur la diagonale haut-bas
+                    coeff1 = (pressPoint.getY() - mouseY) / (pressPoint.getX() - mouseX);
+                    coeff2 = - 1/coeff1;
+                    shift1 = - coeff1 * mouseX + mouseY;
+                    for (Pegs peg : eN.pegsSelectionnes) {
+                        shift2 = - peg.getX()*coeff2 + peg.getY();
+                        peg.setX((int) ((shift2 - shift1) / (coeff1 - coeff2)));
+                        peg.setY((int) (coeff1 * (shift2 - shift1) / (coeff1 - coeff2) + shift1));
+                    }
+                    break;
+                case 2: // Alignement sur la diagonale bas-haut
+                    coeff1 = (mouseY - pressPoint.getY()) / (pressPoint.getX() - mouseX);
+                    coeff2 = - 1/coeff1;
+                    shift1 = - coeff1 * mouseX + pressPoint.getY();
+                    for (Pegs peg : eN.pegsSelectionnes) {
+                        shift2 = - peg.getX()*coeff2 + peg.getY();
+                        peg.setX((int) ((shift2 - shift1) / (coeff1 - coeff2)));
+                        peg.setY((int) (coeff1 * (shift2 - shift1) / (coeff1 - coeff2) + shift1));
+                    }
+                    break;
+                case 3: // Alignement vertical
+                    for (Pegs peg : eN.pegsSelectionnes) {
+                        int midleX = (int)(pressPoint.getX() + (mouseX - pressPoint.getX())/2);
+                        peg.setX(midleX);
+                    }
+                    break;
+                case 4: // Alignement horizontal
+                    for (Pegs peg : eN.pegsSelectionnes) {
+                        int midleY = (int)(pressPoint.getY() + (mouseY - pressPoint.getY())/2);
+                        peg.setY(midleY);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            if (deplacementPegs) setPegs(clonePegs(eN.niveauCree.getPegs()));
             pressPoint = null;
             if (!eN.pegsSelectionnes.isEmpty()) eN.boutonsModifActifs(true);
             repaint();
