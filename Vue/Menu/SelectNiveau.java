@@ -1,5 +1,9 @@
 package Vue.Menu;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -129,6 +133,7 @@ public class SelectNiveau extends JPanel{
         next.setVisible((page+1)*6 < allNameNiveau.size());
 
         this.repaint();
+        this.revalidate();
     }
 
     private String pathIcone(){
@@ -170,21 +175,39 @@ public class SelectNiveau extends JPanel{
         }
     }
     class Recherche extends JTextField{
+        private String lastSearch ;
+        private String holder ;
 
         Recherche(int width, int height, boolean campagne){
             setBounds(width, height, 300, 45);
-            setText("Rechercher");
-            addMouseListener((MouseListener) new MouseAdapter() {
-                public void mouseClicked(MouseEvent evt) {   
-                    if (getText().equals("Rechercher")) setText("");
+            lastSearch = "" ;
+            holder = "Rechercher" ;
+            setText(holder);
+            addFocusListener(new FocusListener() {
+                @Override
+                public void focusGained(FocusEvent e) {
+                    if (Recherche.this.getText().equals(holder)) {
+                        Recherche.this.setForeground(Color.BLACK);
+                        Recherche.this.setText("");
+                    }
+                }
+                @Override
+                public void focusLost(FocusEvent e) {
+                    if (Recherche.this.getText().isEmpty()) {
+                        Recherche.this.setForeground(Color.GRAY);
+                        Recherche.this.setText(holder);
+                    }
                 }
             });
+            
             addActionListener(e -> {
                 String nom = getText() ;
-                allNameNiveau = Niveau.RechercheNameNiveau(campagne, nom);
-                page_act = 0 ;
-                afficherPage(page_act);
-
+                if ( ! nom.equals(lastSearch)){ //évite de faire plusiseurs fois la meme recherche
+                    allNameNiveau = Niveau.RechercheNameNiveau(campagne, nom);
+                    page_act = 0 ;
+                    afficherPage(page_act);
+                    lastSearch = nom ;
+                }
             });
         }
     }
@@ -217,7 +240,7 @@ public class SelectNiveau extends JPanel{
             button.addActionListener(e -> controleur.launchGameview((campagne? "Campagne/" : "Perso/") + nomNiveau));
             button.setVisible(true);
             button.setAlignmentX(Box.CENTER_ALIGNMENT);
-            add(button); 
+            add(button);
             setSize(largeurPres, hauteurPhoto+hauteurBouton+10);
 
             apercu = ImageImport.getImage(pathIcone()+nomNiveau+".png", largeurPres,hauteurPhoto);
