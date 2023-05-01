@@ -182,6 +182,7 @@ public class SelectNiveau extends JPanel{
             setBounds(width, height, 300, 45);
             lastSearch = "" ;
             holder = "Rechercher" ;
+            setForeground(Color.GRAY);
             setText(holder);
             addFocusListener(new FocusListener() {
                 @Override
