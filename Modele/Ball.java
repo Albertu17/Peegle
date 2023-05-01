@@ -115,7 +115,6 @@ public class Ball{
             atoucherpegs=true;
         }
         else if (p==null){
-            dernierPegToucher = null;
             atoucherpegs=false;
         }
         ballX = nextBallX;
@@ -137,24 +136,22 @@ public class Ball{
 
 
     public Pegs touchedPegs(){
-        Pegs p = null;
         for (Pegs peg: court.getPegs()){
-            if (peg.contains(nextBallX + ballRadius, nextBallY + ballRadius)){
-                System.out.println("-------------------------------");
-                System.out.println(nextBallX + ballRadius + "    " + nextBallY + ballRadius + "  |   " + peg.getX() +"    " + peg.getY());
-                System.out.println(peg + " " + dernierPegToucher);
-                if (dernierPegToucher==null) {
+            if (peg.contains(nextBallX + ballRadius, nextBallY + ballRadius)){                
+                if (dernierPegToucher != peg) {
                     dernierPegToucher = peg;
-                    p = peg;
+                    return peg;
                 }
-
-                else if (!dernierPegToucher.contains(nextBallX + ballRadius, nextBallY + ballRadius)) {
+                if (dernierPegToucher.contains(nextBallX + ballRadius, nextBallY + ballRadius)) {
                     dernierPegToucher = peg;
-                    p = peg;
+                    return null;
                 }
+    
             }
         }
-        return p;
+        
+        dernierPegToucher = null;
+        return null;
     }
 
     public boolean getHitGround(){
