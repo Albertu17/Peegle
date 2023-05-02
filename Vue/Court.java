@@ -437,8 +437,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
     public void mouseReleased(MouseEvent e) {}
 
     @Override
-    public void keyTyped(KeyEvent e) {
-    System.out.println("in here"); }
+    public void keyTyped(KeyEvent e) {}
 
     @Override
     public void keyPressed(KeyEvent e) {
