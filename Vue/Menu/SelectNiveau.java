@@ -1,9 +1,10 @@
 package Vue.Menu;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -23,7 +24,7 @@ import Modele.Niveau;
 import Vue.Controleur;
 import Vue.ImageImport;
 
-public class SelectNiveau extends JPanel{
+public class SelectNiveau extends JPanel implements KeyListener{
 
     private List<String> allNameNiveau ;
     private int page_act ;
@@ -74,6 +75,8 @@ public class SelectNiveau extends JPanel{
         selectPerso.setLocation(middleW-selectPerso.getWidth()/2,middleH-25-70);
         selectPerso.addActionListener(e -> setSelecteur(false) );
         add(selectPerso);
+        this.setFocusable(true);
+        this.addKeyListener(this);
     }
 
     private void setSelecteur(boolean campagne){
@@ -99,6 +102,7 @@ public class SelectNiveau extends JPanel{
             this.add(next) ;
             this.add(recherche);
         afficherPage(page_act);
+        this.requestFocusInWindow() ;
     }
 
     protected void paintComponent(Graphics g) {
@@ -173,6 +177,7 @@ public class SelectNiveau extends JPanel{
             });
             setIcon(imageBlanche);
         }
+        
     }
     class Recherche extends JTextField{
         private String lastSearch ;
@@ -209,6 +214,7 @@ public class SelectNiveau extends JPanel{
                     afficherPage(page_act);
                     lastSearch = nom ;
                 }
+                SelectNiveau.this.requestFocusInWindow() ;
             });
         }
     }
@@ -267,4 +273,27 @@ public class SelectNiveau extends JPanel{
             }
         });
     }
+
+    @Override
+    public void keyTyped(KeyEvent e) {}
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        switch (e.getKeyCode()){
+            case (KeyEvent.VK_RIGHT) :
+                if ((page_act+1)*6 < allNameNiveau.size()) afficherPage(++page_act);
+                break ;
+            case (KeyEvent.VK_LEFT) :
+                if (page_act > 0) afficherPage(--page_act);
+                break ;
+            case (KeyEvent.VK_ESCAPE) :
+                btnRetour.doClick();
+                break ;
+            default :
+                break ;
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {}
 }

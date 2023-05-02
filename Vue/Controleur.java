@@ -94,7 +94,6 @@ public class Controleur extends JFrame{
         add(selectNiveau);
         selectNiveau.setVisible(true);
         this.repaint();
-        setFocusClavier(selectNiveau);
     }
     
     public void backMenuFromGameView(){
