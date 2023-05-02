@@ -95,7 +95,20 @@ public class Canon extends JPanel{
         balleATirer.ballY = pivotDeRotation.y - Ball.ballRadius/2 + Math.sin(angleOrientation)*( this.getHeight()/2 ); 
     }
 
+    public void deplacementCanon(boolean gauche){
+        double deltaDeplacemnt  = 5 *(Math.PI/180) ;
+        if (gauche) angleOrientation -= deltaDeplacemnt ;
+        else angleOrientation += deltaDeplacemnt ;
 
+        // Correction pour eviter des positions incongrue   
+        if (angleOrientation >= (180-angleMaxBord)*(Math.PI/180) ) {
+            angleOrientation = (180-angleMaxBord)*(Math.PI/180);
+        }else if(angleOrientation < (angleMaxBord)*(Math.PI/180) ){
+            angleOrientation = (angleMaxBord)*(Math.PI/180) ; 
+        }
+        
+
+    }
 
     /**
      * @description Défini la vitesse de la balle pour amorcer le tir 

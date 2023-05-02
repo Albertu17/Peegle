@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.plaf.TextUI;
 
 import Vue.Menu.*;
 
@@ -52,6 +53,11 @@ public class Controleur extends JFrame{
         this.getContentPane().removeAll();
         this.setLayout(null);
     }
+    public void setFocusClavier(JPanel panel){
+        panel.setFocusable(true);
+        System.out.println(
+        panel.requestFocusInWindow() );
+    }
 
     public void launchMenu(){
         removeAll();
@@ -89,6 +95,7 @@ public class Controleur extends JFrame{
         add(selectNiveau);
         selectNiveau.setVisible(true);
         this.repaint();
+        setFocusClavier(selectNiveau);
     }
     
     public void backMenuFromGameView(){
@@ -105,6 +112,7 @@ public class Controleur extends JFrame{
         }
         gameview.setVisible(true);
         this.repaint();
+        setFocusClavier(gameview.court);
     }
 
     public void launchMenu(JPanel menu){

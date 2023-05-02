@@ -3,6 +3,8 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
@@ -16,7 +18,7 @@ import javax.swing.Timer;
 
 import Modele.*;
 
-public class Court extends JPanel implements MouseInputListener {
+public class Court extends JPanel implements MouseInputListener, KeyListener {
 
     private int width;
     private int height;
@@ -62,6 +64,7 @@ public class Court extends JPanel implements MouseInputListener {
         // Listeners
         this.addMouseListener(this);
         this.addMouseMotionListener(this);
+        this.addKeyListener(this);
 
         // ArrayLists
         balls = new ArrayList<>();
@@ -432,4 +435,39 @@ public class Court extends JPanel implements MouseInputListener {
 
     public void mouseEntered(MouseEvent e) {}
     public void mouseReleased(MouseEvent e) {}
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    System.out.println("in here"); }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        switch (e.getKeyCode()){
+            case (KeyEvent.VK_RIGHT) :
+               canon.deplacementCanon(false);
+               break ;
+            case (KeyEvent.VK_LEFT) :
+               canon.deplacementCanon(true);
+                break ;
+
+            case (KeyEvent.VK_ENTER) :
+                if (!enPause && !GameOver){
+                    if (NbDeBall>0) {
+                        balls.add(canon.tirer());
+                        nbDeBallChange=true;
+                        NbDeBall--;
+                        if (!editMode) background.repaint();
+                    }
+                }
+                break ;
+            case (KeyEvent.VK_ESCAPE) :
+                //TODO mettre le code pour le retour sur le menu
+                break ;
+            default :
+                break ;
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {}
 }
