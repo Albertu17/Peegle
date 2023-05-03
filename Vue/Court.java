@@ -232,6 +232,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         super.paint(g);
         // FIN DE PARTIE
         if (!editMode &&  pegs.size()==0) {
+            canon.setVisible(false);
             BufferedImage WinScreen;
             if (mouseX>535 && mouseX<985 && mouseY>695 && mouseY<765){
              WinScreen = ImageImport.getImage("WinScreen.png", width, height);

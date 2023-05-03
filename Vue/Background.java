@@ -7,6 +7,7 @@ import Modele.Ball;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
@@ -25,16 +26,15 @@ public class Background extends JPanel{
   // score 
     private int longeur,largeur;
     private int midBordureCourtX,midBordureCourtY;
-    private BufferedImage scoreSign;
-
+    private BufferedImage score ;
     private int width;
     private int heigth;
     private int scoreMax;
 
     // balle
-    private BufferedImage panneauBalle;
     private BufferedImage ball;
     private boolean GameOver = false;
+    private BufferedImage balleRestImage ;
 
 
 
@@ -66,10 +66,7 @@ public class Background extends JPanel{
         midBordureCourtY = bordureDroiteHauteur - court.getHeight() + 50;
         largeur = (width -30) - midBordureCourtX;
         longeur =  (bordureDroiteHauteur - 50) - midBordureCourtY;
-        scoreSign = ImageImport.getImage("scoreSign.png", largeur -30, 60);
         ball = ImageImport.getImage("ball.png", 50, 50);
-
-        panneauBalle = ImageImport.getImage("Menu/planche_blanche.png", largeur, 60);
 
         ball = court.getBall();
 
@@ -93,17 +90,12 @@ public class Background extends JPanel{
     if (newFont != null) {
     g.setFont(newFont.deriveFont(20f));
     }
-    g.setColor(Color.WHITE);
-      //Use ARCADE_N.TTF font
-     g.drawString("Score: "+court.getScore(), 10, 50);
-
-
-    
 
 
     // score 
     g.drawRect(midBordureCourtX , midBordureCourtY, largeur, longeur);
-    g.drawImage(scoreSign,midBordureCourtX +15 ,(midBordureCourtY - scoreSign.getHeight() -5),this);
+    score = getEditedImage("SCORE :", String.valueOf(court.getScore()), largeur, 60) ;
+    g.drawImage(score, midBordureCourtX, midBordureCourtY - score.getHeight() -5,  this);
     int scorebarre = court.getScore();
     if (scorebarre>scoreMax) scorebarre = scoreMax;
     int score = 0 ;
@@ -122,40 +114,78 @@ public class Background extends JPanel{
     g.fillRect(midBordureCourtX+1,point,largeur-1,(midBordureCourtY+longeur)-point);
 
     // balle 
-
-
-
     int ligne = 0;
     int pointDeDepartX = 40;
     int pointDeDepartY = court.getY() + court.getHeight() - 45;
     int XBall = pointDeDepartX - Ball.ballRadius;
 
-    // for (int i = 0; i<court.getNbDeBall();i++){
-    //   if (i==2) ligne++;
-    //   else if (i-3%5==0) ligne++;
-    //   g.drawImage(ball,pointDeDepartX,(pointDeDepartY- Ball.ballRadius*2),this);
-
-      
-    // }
     for (int i = 0; i<court.getNbDeBall();i++){
       if (i%5==0) ligne++;
+      if (pointDeDepartY - (ligne) * (Ball.ballRadius*2 + 10) < 110 ) { //affiche que le nombre necessaire à l'écran 
+        ligne-- ;
+        break ;
+      }
       g.drawImage(ball,XBall+ i%5 * (Ball.ballRadius*2 + 10),pointDeDepartY - ligne * (Ball.ballRadius*2 + 10),this);
     }
     g.setColor(Color.WHITE);
-    g.drawRect(XBall- 10, pointDeDepartY- ligne * (Ball.ballRadius*2 + 10) - 10, 5* (Ball.ballRadius*2 + 10) + 10, ligne * (Ball.ballRadius*2 + 10) );
-    g.drawImage(panneauBalle, XBall, pointDeDepartY - ligne * (Ball.ballRadius*2 + 10) - 80, this);
-    g .setFont(newFont.deriveFont(18f));
-    g.drawString("Balle ", XBall + 10, pointDeDepartY - ligne * (Ball.ballRadius*2 + 10) - 60);
-    g.drawString("x"+court.getNbDeBall(), XBall + 10, pointDeDepartY - ligne * (Ball.ballRadius*2 + 10) - 40);
+    g.drawRect(XBall- 10, pointDeDepartY- (ligne) * (Ball.ballRadius*2 + 10) - 10, 5* (Ball.ballRadius*2 + 10) + 10, ligne * (Ball.ballRadius*2 + 10) );
     
+    // annonceur nombre de balles restantes
+    balleRestImage = getEditedImage(court.getNbDeBall()<=1 ? "Balle :" : "Balles :", "X"+String.valueOf(court.getNbDeBall()), 5* (Ball.ballRadius*2 + 10) , 60) ;
+    g.drawImage(balleRestImage, XBall -5,  pointDeDepartY,  court); //TODO alignement de limage 
+   
     
+}
 
-    
 
 
-    
+public BufferedImage getEditedImage(String ligne1, String ligne2, int width, int height) {
+    BufferedImage buffImg = ImageImport.getImage("Menu/planche_blanche.png", width, height);
+    Graphics g = buffImg.getGraphics();
+    // premiere ligne 
+    Font rightFont = rightFont(ligne1, g, width, height/2);
+    FontMetrics metrics = g.getFontMetrics(rightFont);
+    g.setFont(rightFont);
+    g.setColor(Color.WHITE);
+    g.drawString(ligne1, width/2 - metrics.stringWidth(ligne1)/2, height/4  + metrics.getAscent()/2);
 
-    
+    // deuxieme ligne
+    rightFont = rightFont(ligne2, g, width, height/2);
+    metrics = g.getFontMetrics(rightFont);
+    g.setFont(rightFont);
+    g.setColor(Color.WHITE);
+    g.drawString(ligne2, width/2 - metrics.stringWidth(ligne2)/2, (3*height)/4);
+
+  return buffImg ;
+}
+
+// Retourne une font dont la taille est adaptée aux dimensions de l'image.
+public Font rightFont (String texte, Graphics g, int width, int height) {
+  Font rightF = ImageImport.cartoon.deriveFont(1000f); // Très grande taille de police par défault
+  FontMetrics metrics = g.getFontMetrics(rightF);
+  int fontSize = rightF.getSize();
+
+  // Rétrécit la taille de la font si la hauteur du texte sera trop grande.
+  int textHeight = metrics.getAscent();
+  int textHeightMax = height * 1/2;
+  if (textHeight > textHeightMax) {
+      double heightRatio = (double) textHeightMax / (double) textHeight;
+      rightF = rightF.deriveFont((float) Math.floor(fontSize * heightRatio));
+      fontSize = rightF.getSize();
+      metrics = g.getFontMetrics(rightF);
+  }
+
+  // Rétrécit la taille de la font si la largeur du texte sera trop grande.
+  int textWidth = metrics.stringWidth(texte);
+  int textWidthMax = width * 5/6;
+  if (textWidth > textWidthMax) {
+      double widthRatio = (double) textWidthMax / (double) textWidth;
+      rightF = rightF.deriveFont((float) Math.floor(fontSize * widthRatio));
+      fontSize = rightF.getSize();
+      metrics = g.getFontMetrics(rightF);
+  }
+
+  return rightF;
 }
 public void setOver(boolean gameOver) {
   GameOver = gameOver;

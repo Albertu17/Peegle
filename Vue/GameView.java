@@ -55,8 +55,9 @@ public class GameView extends JPanel {
         add(background);
 
         // JButton bouton retour
-        btnRetour = new BoutonMenu("back", 200, 50);
+        btnRetour = new BoutonMenu("Back", 200, 50);
         btnRetour.setLocation(40,40);
+        btnRetour.setVisible(true);
         btnRetour.addActionListener(e -> controleur.launchMenu());
         add(btnRetour);
     }
