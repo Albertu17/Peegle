@@ -216,6 +216,9 @@ public class SelectNiveau extends JPanel implements KeyListener{
                 }
                 SelectNiveau.this.requestFocusInWindow() ;
             });
+
+            // amélioration du style :
+            setHorizontalAlignment(JTextField.CENTER);
         }
     }
 
