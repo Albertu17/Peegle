@@ -50,6 +50,7 @@ public class Court extends JPanel implements MouseInputListener {
     private EditeurNiveaux eN;
     private boolean editMode;
     private Point pressPoint;
+    private Pegs pressPeg;
     
     public Court(int courtWith, int courtHeight, Niveau niveau) {
         // setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -64,6 +65,7 @@ public class Court extends JPanel implements MouseInputListener {
         eN = null;
         editMode = false;
         pressPoint = null;
+        pressPeg = null;
 
         // Listeners
         this.addMouseListener(this);
@@ -421,14 +423,17 @@ public class Court extends JPanel implements MouseInputListener {
         else if (editMode && eN.enModif) {
             boolean sourisSurPeg = false;
             for (Pegs p : niveau.getPegs()) {
-                if (p.contains(e.getX(), e.getY())) {
-                    eN.pegsSelectionnes.clear();
-                    eN.pegsSelectionnes.add(p);
-                    eN.sliderPegSelectionne.setValue(p.getRadius());
-                    eN.sliderPegSelectionne.repaint();
-                    eN.boutonsModifActifs(true);
+                if (p.contains(mouseX, mouseY)) {
+                    if (!eN.pegsSelectionnes.contains(p)) {
+                        eN.pegsSelectionnes.clear();
+                        eN.pegsSelectionnes.add(p);
+                        eN.sliderPegSelectionne.setValue(p.getRadius());
+                        eN.sliderPegSelectionne.repaint();
+                        eN.boutonsModifActifs(true);
+                        repaint();
+                    }
+                    pressPeg = p;
                     sourisSurPeg = true;
-                    repaint();
                     break;
                 }
             }
@@ -464,12 +469,17 @@ public class Court extends JPanel implements MouseInputListener {
         mouseY = e.getY();
         // Déplacement du canon en fonction de la position de la souris
         if (!enPause) canon.DeplacementCanon(e);
-        // Déplacement du peg selectionné
-        else if (editMode && eN.enModif && pressPoint == null && eN.pegsSelectionnes.size() == 1) { // pressPoint null --> souris sur peg
-            eN.pegsSelectionnes.get(0).setX(mouseX);
-            eN.pegsSelectionnes.get(0).setY(mouseY);
+        // Déplacement des pegs selectionnés
+        else if (editMode && eN.enModif && pressPoint == null) { // pressPoint null --> souris sur peg
+            int diffX = mouseX - pressPeg.getX();
+            int diffY = mouseY - pressPeg.getY();
+            for (Pegs peg : eN.pegsSelectionnes) {
+                peg.setX(peg.getX() + diffX);
+                peg.setY(peg.getY() + diffY);
+            }
             setPegs(clonePegs(niveau.getPegs()));
             repaint();
+        // Sélection des pegs contenus dans le rectangle
         } else if (editMode && eN.enModif && pressPoint != null) {
             for (Pegs peg : eN.niveauCree.getPegs()) {
                 if (!eN.pegsSelectionnes.contains(peg)) {
@@ -542,6 +552,7 @@ public class Court extends JPanel implements MouseInputListener {
             }
             if (deplacementPegs) setPegs(clonePegs(eN.niveauCree.getPegs()));
             pressPoint = null;
+            pressPeg = null;
             if (!eN.pegsSelectionnes.isEmpty()) eN.boutonsModifActifs(true);
             repaint();
         }
