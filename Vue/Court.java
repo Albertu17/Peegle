@@ -455,6 +455,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
                 break ;
 
             case (KeyEvent.VK_ENTER) :
+            case (KeyEvent.VK_SPACE) :
                 if (!enPause && !GameOver){
                     if (NbDeBall>0) {
                         balls.add(canon.tirer());
