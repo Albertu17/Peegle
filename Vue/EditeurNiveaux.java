@@ -14,16 +14,25 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JSeparator;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.MouseInputListener;
 import javax.swing.plaf.ComboBoxUI;
 import javax.swing.plaf.basic.BasicComboBoxUI;
@@ -55,13 +64,14 @@ public class EditeurNiveaux extends JPanel {
     BoutonCouleur vert;
     JButton croix;
     JButton modif;
-    JComboBox<String> comboBoxAlignement;
+    int valeurAlignement;
     int largeurBouton;
     CasePeg casePegBleu;
     CasePeg casePegRouge;
     CasePeg casePegViolet;
     CasePeg casePegVert;
     JTextField nomNiveau;
+    JCheckBox uniforme;
 
     EditeurNiveaux(Controleur controleur) {
         this.controleur = controleur;
@@ -86,25 +96,31 @@ public class EditeurNiveaux extends JPanel {
 
         largeurBouton = courtHeight * 1/16;
 
+        // JPanel panelCasesPeg
+        JPanel panelCasesPeg = new JPanel();
+        panelCasesPeg.setLayout(null);
+        panelCasesPeg.setBounds(courtWidth, 0, width - courtWidth, courtHeight);
+        add(panelCasesPeg);
+
         // case Peg bleu
         casePegBleu = new CasePeg(width-courtWidth, courtHeight * 1/4, 1);
-        casePegBleu.setBounds(courtWidth, 0, width - courtWidth, courtHeight * 1/4);
-        add(casePegBleu);
+        casePegBleu.setBounds(0, 0, width - courtWidth, courtHeight * 1/4);
+        panelCasesPeg.add(casePegBleu);
 
         // case Peg Rouge
         casePegRouge = new CasePeg(width-courtWidth, courtHeight * 1/4, 2);
-        casePegRouge.setBounds(courtWidth, courtHeight * 1/4, width - courtWidth, courtHeight * 1/4);
-        add(casePegRouge);
+        casePegRouge.setBounds(0, courtHeight * 1/4, width - courtWidth, courtHeight * 1/4);
+        panelCasesPeg.add(casePegRouge);
 
         // case Peg Violet
         casePegViolet = new CasePeg(width-courtWidth, courtHeight * 1/4, 3);
-        casePegViolet.setBounds(courtWidth, courtHeight * 1/2, width - courtWidth, courtHeight * 1/4);
-        add(casePegViolet);
+        casePegViolet.setBounds(0, courtHeight * 1/2, width - courtWidth, courtHeight * 1/4);
+        panelCasesPeg.add(casePegViolet);
 
         // case peg Vert
         casePegVert = new CasePeg(width-courtWidth, courtHeight * 1/4, 4);
-        casePegVert.setBounds(courtWidth, courtHeight * 3/4, width - courtWidth, courtHeight * 1/4);
-        add(casePegVert);
+        casePegVert.setBounds(0, courtHeight * 3/4, width - courtWidth, courtHeight * 1/4);
+        panelCasesPeg.add(casePegVert);
 
         // JPanel panelBoutons
         JPanel panelBoutons = new JPanel();
@@ -158,17 +174,44 @@ public class EditeurNiveaux extends JPanel {
         });
         panelBoutons.add(croix);
 
-        // JComboBox alignement
-        String[] values = {"Alignement: Aucun", "Alignement: Haut-Bas", "Alignement: Bas-Haut", "Alignement: Vertical", "Alignement: Horizontal"};
-        comboBoxAlignement = new JComboBox<String>(values);
-        comboBoxAlignement.setBounds(width - courtWidth + 6*largeurBouton, 0, 3*largeurBouton, largeurBouton);
-        comboBoxAlignement.setUI(ColorArrowUI.createUI(comboBoxAlignement));
-        comboBoxAlignement.addActionListener (new ActionListener () {
-            public void actionPerformed(ActionEvent e) {
-                modif.doClick();
-            }
-        });
-        panelBoutons.add(comboBoxAlignement);
+        // JMenuBar menuBar
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.setBounds(width - courtWidth + 6*largeurBouton, 0, 6*largeurBouton, largeurBouton);
+        panelBoutons.add(menuBar);
+
+        // JMenu alignement
+        ButtonGroup group = new ButtonGroup();
+        JMenu alignement = new JMenu("Alignement");
+        alignement.setBounds(0, 0, 3*largeurBouton, largeurBouton);
+        menuBar.add(alignement);
+        RadioButtonValue aucun = new RadioButtonValue("aucun", 0);
+        aucun.setSelected(true);
+        alignement.add(aucun);
+        group.add(aucun);
+        RadioButtonValue horizontal = new RadioButtonValue("horizontal", 1);
+        alignement.add(horizontal);
+        group.add(horizontal);
+        RadioButtonValue vertical = new RadioButtonValue("vertical", 2);
+        alignement.add(vertical);
+        group.add(vertical);
+        RadioButtonValue diagonal = new RadioButtonValue("diagonal", 3);
+        alignement.add(diagonal);
+        group.add(diagonal);
+        JMenu circulaire = new JMenu("circulaire");
+        alignement.add(circulaire);
+        RadioButtonValue centre = new RadioButtonValue("autour du centre", 4);
+        circulaire.add(centre);
+        group.add(centre);
+        RadioButtonValue inscrit = new RadioButtonValue("inscrit au rectangle",5);
+        circulaire.add(inscrit);
+        group.add(inscrit);
+        uniforme = new JCheckBox("uniforme");
+        alignement.add(uniforme);
+
+        // JMenu mouvement
+        JMenu mouvement = new JMenu("Fct de mouvement");
+        mouvement.setBounds(3*largeurBouton, 0, 3*largeurBouton, largeurBouton);
+        menuBar.add(mouvement);
 
         // Bouton pause
         JButton pause = new JButton("||");
@@ -230,7 +273,7 @@ public class EditeurNiveaux extends JPanel {
         panelBoutons.add(saveNom);
 
         // JCheckBox campagne
-        JCheckBox campagne = new JCheckBox("Campagne", true);
+        JCheckBox campagne = new JCheckBox("Campagne", false);
         campagne.setBounds((width - courtWidth) + 5, courtHeight * 1/16 + 20, courtHeight * 2/16, courtHeight * 1/16);
         campagne.addItemListener(new ItemListener() {    
             public void itemStateChanged(ItemEvent e) {           
@@ -313,7 +356,7 @@ public class EditeurNiveaux extends JPanel {
             this.hauteur = hauteur;
             this.couleur = couleur;
             peg = new Pegs(largeur/2, hauteur*3/4/2, 25, couleur);
-            modeleActuel = new Pegs(0, 0, peg.getRadius(), couleur);
+            modeleActuel = new Pegs(-100, -100, peg.getRadius(), couleur);
 
             setLayout(null);
             sliderRayonPeg = new JSlider(5, 60, 25);
@@ -404,18 +447,19 @@ public class EditeurNiveaux extends JPanel {
             }
         }
     }
-}
 
-class ColorArrowUI extends BasicComboBoxUI {
+    public class RadioButtonValue extends JRadioButtonMenuItem {
 
-    public static ComboBoxUI createUI(JComponent c) {
-        return new ColorArrowUI();
+        public RadioButtonValue(String text, int value) {
+            super(text);
+            addChangeListener(new ChangeListener() {
+                public void stateChanged(ChangeEvent e) {
+                    if (RadioButtonValue.this.isSelected()) {
+                        valeurAlignement = value;
+                        if (modif != null) modif.doClick();
+                    }
+                }
+            });
+        }
     }
-
-    // @Override protected JButton createArrowButton() {
-    //     return new BasicArrowButton(
-    //         BasicArrowButton.SOUTH,
-    //         Color.cyan, Color.magenta,
-    //         Color.yellow, Color.blue);
-    // }
 }

@@ -49,8 +49,14 @@ public class Court extends JPanel implements MouseInputListener {
     // Pour l'éditeur de niveaux
     private EditeurNiveaux eN;
     private boolean editMode;
+    private Point center;
     private Point pressPoint;
     private Pegs pressPeg;
+    private int midleXRect;
+    private int midleYRect;
+    private int widthRectangle;
+    private int heightRectangle;
+    private int lengthPressToCenter;
     
     public Court(int courtWith, int courtHeight, Niveau niveau) {
         // setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -64,6 +70,7 @@ public class Court extends JPanel implements MouseInputListener {
         enPause = false;
         eN = null;
         editMode = false;
+        center = new Point(courtWith/2, courtHeight/2);
         pressPoint = null;
         pressPeg = null;
 
@@ -233,6 +240,14 @@ public class Court extends JPanel implements MouseInputListener {
         timer.start();
     }
 
+    public void updateMetrics() {
+        midleXRect = (int)(pressPoint.getX() + (mouseX - pressPoint.getX())/2);
+        midleYRect = (int)(pressPoint.getY() + (mouseY - pressPoint.getY())/2);
+        widthRectangle = (int) (mouseX - pressPoint.getX());
+        heightRectangle = (int) (mouseY - pressPoint.getY());
+        lengthPressToCenter = (int) Math.sqrt(Math.pow(pressPoint.getX() - center.getX(), 2) + Math.pow(pressPoint.getY() - center.getY(), 2));
+    }
+
     public void paint(Graphics g) {
         
         super.paint(g);
@@ -369,20 +384,24 @@ public class Court extends JPanel implements MouseInputListener {
         // Affichage rectangle de selection pour l'editeur de niveaux
         if (editMode && enPause && eN.enModif && pressPoint != null) {
             // Affichage ligne d'alignement
-            switch (eN.comboBoxAlignement.getSelectedIndex()) {
-                case 1:
+            switch (eN.valeurAlignement) {
+                case 1: // Alignement horizontal
+                    g2d.drawLine((int) pressPoint.getX(), midleYRect, mouseX, midleYRect);
+                    break;
+                case 2: // Alignement vertical
+                    g2d.drawLine(midleXRect, (int) pressPoint.getY(), midleXRect, mouseY);
+                    break;
+                case 3: // Alignement diagonal
                     g2d.drawLine((int) pressPoint.getX(), (int) pressPoint.getY(), mouseX, mouseY);
                     break;
-                case 2:
-                    g2d.drawLine((int) pressPoint.getX(), mouseY, mouseX, (int) pressPoint.getY());
+                case 4: // Alignement circulaire autour du centre
+                    int radius = lengthPressToCenter;
+                    g2d.drawOval((int) (center.getX() - radius), (int) (center.getY() - radius), radius*2, radius*2);
                     break;
-                case 3:
-                    int midleX = (int)(pressPoint.getX() + (mouseX - pressPoint.getX())/2);
-                    g2d.drawLine(midleX, (int) pressPoint.getY(), midleX, mouseY);
-                    break;
-                case 4:
-                    int midleY = (int)(pressPoint.getY() + (mouseY - pressPoint.getY())/2);
-                    g2d.drawLine((int) pressPoint.getX(), midleY, mouseX, midleY);
+                case 5:
+                    int x = widthRectangle > 0 ? (int) pressPoint.getX() : (int) (pressPoint.getX() + widthRectangle);
+                    int y = heightRectangle > 0 ? (int) pressPoint.getY() : (int) (pressPoint.getY() + heightRectangle);
+                    g2d.drawOval(x, y, Math.abs(widthRectangle), Math.abs(heightRectangle));
                     break;
                 default:
                     break;
@@ -442,6 +461,7 @@ public class Court extends JPanel implements MouseInputListener {
                 eN.pegsSelectionnes.clear();
                 eN.boutonsModifActifs(false);
                 pressPoint = new Point(mouseX, mouseY);
+                updateMetrics();
             }
         }
         // Placer un peg
@@ -467,6 +487,7 @@ public class Court extends JPanel implements MouseInputListener {
     public void mouseDragged(MouseEvent e) {
         mouseX = e.getX();
         mouseY = e.getY();
+        if (editMode && pressPoint != null) updateMetrics();
         // Déplacement du canon en fonction de la position de la souris
         if (!enPause) canon.DeplacementCanon(e);
         // Déplacement des pegs selectionnés
@@ -496,6 +517,7 @@ public class Court extends JPanel implements MouseInputListener {
     public void mouseMoved(MouseEvent e) {
         mouseX = e.getX();
         mouseY = e.getY();
+        if (editMode && pressPoint != null) updateMetrics();
         // Déplacement du canon en fonction de la position de la souris
         if (!enPause) canon.DeplacementCanon(e);
         // Pour faire apparaître un preview du peg qu'on poserait à cet endroit
@@ -511,50 +533,77 @@ public class Court extends JPanel implements MouseInputListener {
             // Alignement des pegs sélectionnés
             boolean deplacementPegs = true;
             double coeff1, coeff2, shift1, shift2;
-            switch (eN.comboBoxAlignement.getSelectedIndex()) {
-                case 0: // Aucun alignement
-                    deplacementPegs = false;
-                    break;
-                case 1: // Alignement sur la diagonale haut-bas
-                    coeff1 = (pressPoint.getY() - mouseY) / (pressPoint.getX() - mouseX);
-                    coeff2 = - 1/coeff1;
-                    shift1 = - coeff1 * mouseX + mouseY;
-                    for (Pegs peg : eN.pegsSelectionnes) {
-                        shift2 = - peg.getX()*coeff2 + peg.getY();
-                        peg.setX((int) ((shift2 - shift1) / (coeff1 - coeff2)));
-                        peg.setY((int) (coeff1 * (shift2 - shift1) / (coeff1 - coeff2) + shift1));
-                    }
-                    break;
-                case 2: // Alignement sur la diagonale bas-haut
-                    coeff1 = (mouseY - pressPoint.getY()) / (pressPoint.getX() - mouseX);
-                    coeff2 = - 1/coeff1;
-                    shift1 = - coeff1 * mouseX + pressPoint.getY();
-                    for (Pegs peg : eN.pegsSelectionnes) {
-                        shift2 = - peg.getX()*coeff2 + peg.getY();
-                        peg.setX((int) ((shift2 - shift1) / (coeff1 - coeff2)));
-                        peg.setY((int) (coeff1 * (shift2 - shift1) / (coeff1 - coeff2) + shift1));
-                    }
-                    break;
-                case 3: // Alignement vertical
-                    for (Pegs peg : eN.pegsSelectionnes) {
-                        int midleX = (int)(pressPoint.getX() + (mouseX - pressPoint.getX())/2);
-                        peg.setX(midleX);
-                    }
-                    break;
-                case 4: // Alignement horizontal
-                    for (Pegs peg : eN.pegsSelectionnes) {
-                        int midleY = (int)(pressPoint.getY() + (mouseY - pressPoint.getY())/2);
-                        peg.setY(midleY);
-                    }
-                    break;
-                default:
-                    break;
+            if (eN.pegsSelectionnes.size() > 0) {
+                switch (eN.valeurAlignement) {
+                    case 0: // Aucun alignement
+                        deplacementPegs = false;
+                        break;
+                    case 1: // Alignement horizontal
+                        for (Pegs peg : eN.pegsSelectionnes) {
+                            int midleY = (int)(pressPoint.getY() + (mouseY - pressPoint.getY())/2);
+                            peg.setY(midleY);
+                        }
+                        if (eN.uniforme.isSelected()) uniformiserEnX(widthRectangle);
+                        break;
+                    case 2: // Alignement vertical
+                        for (Pegs peg : eN.pegsSelectionnes) {
+                            int midleX = (int)(pressPoint.getX() + (mouseX - pressPoint.getX())/2);
+                            peg.setX(midleX);
+                        }
+                        if (eN.uniforme.isSelected()) uniformiserEnY(heightRectangle);
+                        break;
+                    case 3: // Alignement diagonal
+                        if (eN.uniforme.isSelected()) {
+                            uniformiserEnX(widthRectangle);
+                            uniformiserEnY(heightRectangle);
+                        } else {
+                            coeff1 = (pressPoint.getY() - mouseY) / (pressPoint.getX() - mouseX);
+                            coeff2 = - 1/coeff1;
+                            shift1 = - coeff1 * mouseX + mouseY;
+                            for (Pegs peg : eN.pegsSelectionnes) {
+                                shift2 = - peg.getX()*coeff2 + peg.getY();
+                                peg.setX((int) ((shift2 - shift1) / (coeff1 - coeff2)));
+                                peg.setY((int) (coeff1 * (shift2 - shift1) / (coeff1 - coeff2) + shift1));
+                            }
+                        }
+                        break;
+                    case 4: // Alignement circulaire autour du centre
+                        uniformiserSurEllipse(center, lengthPressToCenter, lengthPressToCenter);
+                        break;
+                    case 5: // Alignement circulaire sur ellipse inscrite dans le rectangle
+                        uniformiserSurEllipse(new Point(midleXRect, midleYRect), Math.abs(widthRectangle)/2, Math.abs(heightRectangle)/2);
+                        break;
+                    default:
+                        break;
+                }
             }
             if (deplacementPegs) setPegs(clonePegs(eN.niveauCree.getPegs()));
             pressPoint = null;
             pressPeg = null;
             if (!eN.pegsSelectionnes.isEmpty()) eN.boutonsModifActifs(true);
             repaint();
+        }
+    }
+
+    public void uniformiserEnX(int length) {
+        int ecart = length / (eN.pegsSelectionnes.size()+1);
+        for (int i = 0; i < eN.pegsSelectionnes.size(); i++) {
+            eN.pegsSelectionnes.get(i).setX((int) (pressPoint.getX() + (i+1)*ecart));
+        }
+    }
+
+    public void uniformiserEnY(int length) {
+        int ecart = length / (eN.pegsSelectionnes.size()+1);
+        for (int i = 0; i < eN.pegsSelectionnes.size(); i++) {
+            eN.pegsSelectionnes.get(i).setY((int) (pressPoint.getY() + (i+1)*ecart));
+        }
+    }
+
+    public void uniformiserSurEllipse(Point center, int radiusX, int radiusY) {
+        double ecart = 2*Math.PI / eN.pegsSelectionnes.size();
+        for (int i = 0; i < eN.pegsSelectionnes.size(); i++) {
+            eN.pegsSelectionnes.get(i).setX((int) (center.getX() + Math.cos(ecart*i)*radiusX));
+            eN.pegsSelectionnes.get(i).setY((int) (center.getY() + Math.sin(ecart*i)*radiusY));
         }
     }
 
