@@ -54,8 +54,7 @@ public class Controleur extends JFrame{
     }
     public void setFocusClavier(JPanel panel){
         panel.setFocusable(true);
-        System.out.println(
-        panel.requestFocusInWindow() );
+        panel.requestFocusInWindow() ;
     }
 
     public void launchMenu(){

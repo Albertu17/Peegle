@@ -289,6 +289,9 @@ public class SelectNiveau extends JPanel implements KeyListener{
             case (KeyEvent.VK_ESCAPE) :
                 btnRetour.doClick();
                 break ;
+            case (KeyEvent.VK_BACK_SPACE) :
+                recherche.requestFocusInWindow() ; //remet le focus sur la zone de recherche
+                break ;
             default :
                 break ;
         }
