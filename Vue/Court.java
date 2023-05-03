@@ -47,8 +47,10 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
     // Pour l'éditeur de niveaux
     private EditeurNiveaux eN;
     private boolean editMode;
+    private Controleur controleur;
     
-    public Court(int courtWith, int courtHeight, Niveau niveau) {
+    public Court(int courtWith, int courtHeight, Niveau niveau, Controleur c) {
+        controleur = c;
         // setBorder(BorderFactory.createLineBorder(Color.BLACK));
         setOpaque(false);
         width = courtWith;
@@ -355,7 +357,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         if (!GameOver) {
             
         } else if (mouseX>535 && mouseX<985 && mouseY>695 && mouseY<765){
-            //Button next level! clicked
+            controleur.launchMenu();
         }
     }
 
@@ -460,7 +462,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
                 }
                 break ;
             case (KeyEvent.VK_ESCAPE) :
-                //TODO mettre le code pour le retour sur le menu
+                controleur.launchMenu();
                 break ;
             default :
                 break ;

@@ -42,7 +42,7 @@ public class GameView extends JPanel {
         else niveau = Niveau.importPegles(nomNiveau, courtWidth, courtHeight);
         
         // Court
-        court = new Court(courtWidth, courtHeight, niveau);
+        court = new Court(courtWidth, courtHeight, niveau, c);
         court.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         court.setBounds((width-courtWidth)/2, (heigth-courtHeight)/2, courtWidth, courtHeight);
         court.setVisible(true);

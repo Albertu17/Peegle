@@ -63,7 +63,7 @@ public class EditeurNiveaux extends JPanel {
         // Court
         courtWidth = width * 5/6;
         courtHeight = height * 5/6;
-        court = new Court(courtWidth, courtHeight, niveauCree);
+        court = new Court(courtWidth, courtHeight, niveauCree, controleur);
         court.activerModeEditeur(this);
         court.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         court.setBounds(0, 0, courtWidth, courtHeight);
@@ -173,8 +173,8 @@ public class EditeurNiveaux extends JPanel {
         });
 
         //JButton modif
-        modif = new JButton("modif");
-        modif.setBounds(courtWidth - 3*largeurBouton, 0, largeurBouton, largeurBouton);
+        modif = new JButton("EDIT");
+        modif.setBounds(courtWidth - 4*largeurBouton, 0, 2*largeurBouton, largeurBouton);
         modif.addActionListener(e -> {
             enModif = true;
             caseActive.unclicked();
