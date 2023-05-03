@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
+
 import Vue.ImageImport;
 
 public class Niveau {
@@ -23,6 +24,7 @@ public class Niveau {
 
     private ArrayList<Pegs> pegs;
     private int nbBillesInitiales;
+    private int scoreMax ;
     private int score1Etoile;
     private int score2Etoiles;
     private int score3Etoiles;
@@ -57,6 +59,34 @@ public class Niveau {
         pegs = new ArrayList<>() ;
     }
 
+    public int getScoreMax(){return scoreMax ;}
+    public void setScoreMax(int newMax){
+        if (newMax< scoreMax) return ;
+
+        List<String> docString = new ArrayList<String>() ;
+        try {
+            // modifie la premiere ligne
+            Scanner sc = new Scanner(new File(dosierSauvegarde + getDossier() +".pegs")) ;
+            String[] entete = sc.next().split(";") ;
+            entete[3] = String.valueOf(newMax) ;
+            String temp ="" ;
+            for(int i = 0 ; i < entete.length -1; i++){
+                temp += entete[i] +";" ;
+            }
+            temp += entete[entete.length-1] ;
+            docString.add(temp) ;
+            while(sc.hasNext()) docString.add(sc.next()) ;
+            sc.close();
+
+            // ecriture
+            PrintWriter file = new PrintWriter(dosierSauvegarde + getDossier() + nomExtension);
+            for (String line : docString)file.println(line);
+            file.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        scoreMax = newMax ;
+    }
 
     public static Niveau NiveauAleatoire(int widthCourt, int heightCourt, int radiusBall, int diametrePegs){
         Niveau nv = new Niveau("Aleatoire") ;
@@ -161,6 +191,7 @@ public class Niveau {
             String ligne  = String.valueOf(widthCourt) +";"
                                 + String.valueOf(heightCourt) +";"
                                 + String.valueOf(nbBillesInitiales) +";"
+                                + String.valueOf(scoreMax) +";"
                                 + String.valueOf(score1Etoile) +";"
                                 + String.valueOf(score2Etoiles) +";"
                                 + String.valueOf(score3Etoiles) +";"
@@ -200,10 +231,11 @@ public class Niveau {
 
             // remise des valeurs de Niveau :
             nv.nbBillesInitiales = Integer.valueOf(line[2]);
-            nv.score1Etoile = Integer.valueOf(line[3]);
-            nv.score2Etoiles = Integer.valueOf(line[4]);
-            nv.score3Etoiles = Integer.valueOf(line[5]);
-            nv.campagne = line[6].equals("1") ? true : false ;
+            nv.scoreMax = Integer.valueOf(line[3]);
+            nv.score1Etoile = Integer.valueOf(line[4]);
+            nv.score2Etoiles = Integer.valueOf(line[5]);
+            nv.score3Etoiles = Integer.valueOf(line[6]);
+            nv.campagne = line[7].equals("1") ? true : false ;
 
 
            // creation des pegs en fonction des infos que on a 

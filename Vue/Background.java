@@ -106,7 +106,8 @@ public class Background extends JPanel{
     g.drawImage(scoreSign,midBordureCourtX +15 ,(midBordureCourtY - scoreSign.getHeight() -5),this);
     int scorebarre = court.getScore();
     if (scorebarre>scoreMax) scorebarre = scoreMax;
-    int score = scorebarre * longeur / scoreMax;
+    int score = 0 ;
+    if (scoreMax != 0) score = scorebarre * longeur / scoreMax;
     int point = midBordureCourtY+longeur-score;
 
     if (score<=longeur*1/3){

@@ -38,7 +38,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
     private int mouseX = 0;
     private int mouseY = 0;
     private boolean GameOver = false;
-    private int ScoreMax = 0;
+    private int ScoreMax ;
     private int ComboEncours = 0;
     private int frameCount = 0;
     private int afficageCombo = 0;
@@ -55,6 +55,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         height = courtHeight;
         this.niveau = niveau;
         pegs = clonePegs(niveau.getPegs()); // Crée une copie en profondeur des pegs du niveau.
+        ScoreMax = niveau.getScoreMax() ;
 
         // Par défaut
         enPause = false;
@@ -163,7 +164,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
     } 
 
     public int getScoreMax(){
-        return  89; // a changer selon les niveaux98
+        return  niveau.getScoreMax() ;
     }
 
     public void setBackground(Background background) {
@@ -248,9 +249,10 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
             g.drawString("Score: "+toucher, 500, 210);
             g.drawString("Balles Restantes: "+NbDeBall, 500, 260);
             g.drawString("Balles Utilisees: "+(250-NbDeBall), 500, 310);
-            g.drawString("Max Score: "+ ScoreMax, 500, 360);
+            g.drawString("Max Score: "+ niveau.getScoreMax(), 500, 360);
             if (toucher>ScoreMax){
                 g.drawString("Nouveau Max Score !!!", 500, 610);
+                niveau.setScoreMax(toucher);
             }
             return;
         }
