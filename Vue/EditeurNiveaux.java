@@ -57,6 +57,11 @@ public class EditeurNiveaux extends JPanel {
     JButton modif;
     JComboBox<String> comboBoxAlignement;
     int largeurBouton;
+    CasePeg casePegBleu;
+    CasePeg casePegRouge;
+    CasePeg casePegViolet;
+    CasePeg casePegVert;
+    JTextField nomNiveau;
 
     EditeurNiveaux(Controleur controleur) {
         this.controleur = controleur;
@@ -82,22 +87,22 @@ public class EditeurNiveaux extends JPanel {
         largeurBouton = courtHeight * 1/16;
 
         // case Peg bleu
-        CasePeg casePegBleu = new CasePeg(width-courtWidth, courtHeight * 1/4, 1);
+        casePegBleu = new CasePeg(width-courtWidth, courtHeight * 1/4, 1);
         casePegBleu.setBounds(courtWidth, 0, width - courtWidth, courtHeight * 1/4);
         add(casePegBleu);
 
         // case Peg Rouge
-        CasePeg casePegRouge = new CasePeg(width-courtWidth, courtHeight * 1/4, 2);
+        casePegRouge = new CasePeg(width-courtWidth, courtHeight * 1/4, 2);
         casePegRouge.setBounds(courtWidth, courtHeight * 1/4, width - courtWidth, courtHeight * 1/4);
         add(casePegRouge);
 
         // case Peg Violet
-        CasePeg casePegViolet = new CasePeg(width-courtWidth, courtHeight * 1/4, 3);
+        casePegViolet = new CasePeg(width-courtWidth, courtHeight * 1/4, 3);
         casePegViolet.setBounds(courtWidth, courtHeight * 1/2, width - courtWidth, courtHeight * 1/4);
         add(casePegViolet);
 
         // case peg Vert
-        CasePeg casePegVert = new CasePeg(width-courtWidth, courtHeight * 1/4, 4);
+        casePegVert = new CasePeg(width-courtWidth, courtHeight * 1/4, 4);
         casePegVert.setBounds(courtWidth, courtHeight * 3/4, width - courtWidth, courtHeight * 1/4);
         add(casePegVert);
 
@@ -213,7 +218,7 @@ public class EditeurNiveaux extends JPanel {
 
         // JTextField nomNiveau
         String[] placeHolders = new String[]{" Nom du niveau", " Nom déjà utilisé"};
-        JTextField nomNiveau = new JTextField();
+        nomNiveau = new JTextField();
         nomNiveau.setText(placeHolders[0]);
         nomNiveau.setBounds(5, courtHeight * 1/16 + 20, (width - courtWidth) - courtHeight * 1/16, courtHeight * 1/16);
         nomNiveau.addFocusListener(new FocusPlaceholder(nomNiveau, placeHolders));
@@ -247,12 +252,8 @@ public class EditeurNiveaux extends JPanel {
         // newLevel.setBounds(courtWidth, (height - courtHeight)/2, (width - courtWidth)/2, (height - courtHeight)/2);
         newLevel.setLocation(courtWidth, (height - courtHeight)/2);
         panelBoutons.add(newLevel);
-        newLevel.addActionListener(e -> {
-            niveauCree = new Niveau("enAttente");
-            court.setNiveau(niveauCree);
-            court.getPegs().clear();
-            court.getToucherPegs().clear();
-            court.repaint();
+        newLevel.addActionListener(e -> {   
+            reset();
         });
 
         // JButton save
@@ -286,12 +287,26 @@ public class EditeurNiveaux extends JPanel {
         croix.setEnabled(activer);
     }
 
+    public void reset() {
+        niveauCree = new Niveau("enAttente");
+        court.setNiveau(niveauCree);
+        court.getPegs().clear();
+        court.getToucherPegs().clear();
+        court.repaint();
+        casePegBleu.sliderRayonPeg.setValue(25);
+        casePegRouge.sliderRayonPeg.setValue(25);
+        casePegViolet.sliderRayonPeg.setValue(25);
+        casePegVert.sliderRayonPeg.setValue(25);
+        nomNiveau.setText(" Nom du niveau");
+    }
+
 
     public class CasePeg extends JPanel implements MouseInputListener{
 
         int largeur, hauteur, couleur;
         Pegs peg; // Le peg représenté dans la case.
         Pegs modeleActuel; // Le peg utilisé en preview sur le court.
+        JSlider sliderRayonPeg;
 
         public CasePeg(int largeur, int hauteur, int couleur) {
             this.largeur = largeur;
@@ -301,7 +316,7 @@ public class EditeurNiveaux extends JPanel {
             modeleActuel = new Pegs(0, 0, peg.getRadius(), couleur);
 
             setLayout(null);
-            JSlider sliderRayonPeg = new JSlider(5, 60, 25);
+            sliderRayonPeg = new JSlider(5, 60, 25);
             sliderRayonPeg.setBounds(0, hauteur*3/4, largeur, hauteur*1/4);
             sliderRayonPeg.setBorder(BorderFactory.createLineBorder(Color.BLACK));
             sliderRayonPeg.addChangeListener(e -> {
