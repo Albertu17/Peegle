@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
-
 import Vue.ImageImport;
 
 public class Niveau {
@@ -24,12 +23,14 @@ public class Niveau {
 
     private ArrayList<Pegs> pegs;
     private int nbBillesInitiales;
-    private int scoreMax ;
     private int score1Etoile;
     private int score2Etoiles;
     private int score3Etoiles;
     private boolean campagne ;
     private String nom;
+    private int index;
+    private boolean checked;
+    private int ScoreMax;
 
     
     public ArrayList<Pegs> getPegs() {
@@ -53,22 +54,16 @@ public class Niveau {
         return (campagne ? "Campagne/" : "Perso/" )+getNom();
     }
 
-
-    public Niveau (String nom) {
-        this.nom = nom;
-        pegs = new ArrayList<>() ;
-    }
-
-    public int getScoreMax(){return scoreMax ;}
+    public int getScoreMax(){return ScoreMax ;}
     public void setScoreMax(int newMax){
-        if (newMax< scoreMax) return ;
+        if (newMax< ScoreMax) return ;
 
         List<String> docString = new ArrayList<String>() ;
         try {
             // modifie la premiere ligne
             Scanner sc = new Scanner(new File(dosierSauvegarde + getDossier() +".pegs")) ;
             String[] entete = sc.next().split(";") ;
-            entete[3] = String.valueOf(newMax) ;
+            entete[9] = String.valueOf(newMax) ;
             String temp ="" ;
             for(int i = 0 ; i < entete.length -1; i++){
                 temp += entete[i] +";" ;
@@ -77,7 +72,6 @@ public class Niveau {
             docString.add(temp) ;
             while(sc.hasNext()) docString.add(sc.next()) ;
             sc.close();
-
             // ecriture
             PrintWriter file = new PrintWriter(dosierSauvegarde + getDossier() + nomExtension);
             for (String line : docString)file.println(line);
@@ -85,8 +79,15 @@ public class Niveau {
         } catch (Exception e) {
             System.out.println(e);
         }
-        scoreMax = newMax ;
+        ScoreMax = newMax ;
     }
+
+
+    public Niveau (String nom) {
+        this.nom = nom;
+        pegs = new ArrayList<>() ;
+    }
+
 
     public static Niveau NiveauAleatoire(int widthCourt, int heightCourt, int radiusBall, int diametrePegs){
         Niveau nv = new Niveau("Aleatoire") ;
@@ -165,17 +166,23 @@ public class Niveau {
     }
 
 
-    public static List<String> getAllNameNiveau(boolean campagne){
+    public static List<String> getAllCheckNiveau(boolean campagne){
         String[] atraiter = new File(dosierSauvegarde+ (campagne? "Campagne" : "Perso")).list() ;
         List<String> ret = new ArrayList<>() ;
         for (int i = 0 ; i < atraiter.length ; i++){
-            ret.add(atraiter[i].substring(0, atraiter[i].length() -5) ); //enlever l'extension .pegs
+            try (Scanner save = new Scanner(new File(dosierSauvegarde + (campagne? "Campagne" : "Perso") +"/"+ atraiter[i]))) {
+            String[] line = save.nextLine().split(";") ;
+            int scoreetoile = Integer.parseInt(line[9]) >= Integer.parseInt(line[5]) ? 3 : (Integer.parseInt(line[9]) >= Integer.parseInt(line[4]) ? 2 : ( Integer.parseInt(line[9]) >= Integer.parseInt(line[3]) ? 1 : 0)) ;
+            ret.add(atraiter[i].substring(0, atraiter[i].length() -5) + line[8] + scoreetoile); //ajoute le check du niveau au nom
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
         return ret ;
     }
-    public static List<String> getAllNameNiveau(){
-        List<String> tout  = getAllNameNiveau(true) ;
-        tout.addAll(getAllNameNiveau(false) );
+    public static List<String> getAllCheckNiveau(){
+        List<String> tout  = getAllCheckNiveau(true) ;
+        tout.addAll(getAllCheckNiveau(false) );
         return tout ;
     }
 
@@ -191,11 +198,13 @@ public class Niveau {
             String ligne  = String.valueOf(widthCourt) +";"
                                 + String.valueOf(heightCourt) +";"
                                 + String.valueOf(nbBillesInitiales) +";"
-                                + String.valueOf(scoreMax) +";"
                                 + String.valueOf(score1Etoile) +";"
                                 + String.valueOf(score2Etoiles) +";"
                                 + String.valueOf(score3Etoiles) +";"
-                                + String.valueOf(campagne ? "1" : "0") ;
+                                + String.valueOf(campagne ? "1" : "0")
+                                + String.valueOf(index)
+                                + String.valueOf(checked ? "1" : "0")
+                                + String.valueOf(ScoreMax);
             file.println(ligne);
             
     
@@ -231,18 +240,20 @@ public class Niveau {
 
             // remise des valeurs de Niveau :
             nv.nbBillesInitiales = Integer.valueOf(line[2]);
-            nv.scoreMax = Integer.valueOf(line[3]);
-            nv.score1Etoile = Integer.valueOf(line[4]);
-            nv.score2Etoiles = Integer.valueOf(line[5]);
-            nv.score3Etoiles = Integer.valueOf(line[6]);
-            nv.campagne = line[7].equals("1") ? true : false ;
+            nv.score1Etoile = Integer.valueOf(line[3]);
+            nv.score2Etoiles = Integer.valueOf(line[4]);
+            nv.score3Etoiles = Integer.valueOf(line[5]);
+            nv.campagne = line[6].equals("1") ? true : false ;
+            nv.index = Integer.valueOf(line[7]);
+            nv.checked = line[8].equals("1") ? true : false ;
+            nv.ScoreMax = Integer.valueOf(line[9]);
+
 
 
            // creation des pegs en fonction des infos que on a 
           // update des nouveau coordonnées en fonction de la taille de l'écran actuel
            while(save.hasNextLine()){
                 line = save.nextLine().split(";") ;
-
                 int x =  (int) (reajustementH*Double.valueOf(line[0]) );
                 int y =  (int) (reajustementV*Double.valueOf(line[1]) );
                 int radius = (int)(Double.valueOf(line[2]) * Math.min(reajustementH, reajustementV))  ;
@@ -261,9 +272,9 @@ public class Niveau {
        // return un objet de type 
         return nv ;
     }
-    public static List<String> RechercheNameNiveau(boolean campagne2, String nom2) {
+    public static List<String> RechercheCheckNiveau(boolean campagne2, String nom2) {
         List<String> ret = new ArrayList<>() ;
-        for (String name : getAllNameNiveau(campagne2)){
+        for (String name : getAllCheckNiveau(campagne2)){
             
             if ((name.toLowerCase()).contains(nom2.toLowerCase())){
                 ret.add(name);

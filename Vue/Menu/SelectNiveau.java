@@ -16,8 +16,10 @@ import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import Modele.Niveau;
@@ -25,8 +27,10 @@ import Vue.Controleur;
 import Vue.ImageImport;
 
 public class SelectNiveau extends JPanel implements KeyListener{
+    
+    
 
-    private List<String> allNameNiveau ;
+    private List<String> allCheckNiveau;
     private int page_act ;
     private boolean campagne ;
     private Controleur controleur ;
@@ -84,7 +88,7 @@ public class SelectNiveau extends JPanel implements KeyListener{
         if (selectPerso != null) this.remove(selectPerso);
 
         this.campagne = campagne ;
-        allNameNiveau = Niveau.getAllNameNiveau(campagne) ;
+        allCheckNiveau = Niveau.getAllCheckNiveau(campagne) ;
 
         page_act = 0 ;
 
@@ -134,8 +138,7 @@ public class SelectNiveau extends JPanel implements KeyListener{
 
         // affichage des boutons retour et suivant :
         previous.setVisible(page > 0) ;
-        next.setVisible((page+1)*6 < allNameNiveau.size());
-
+        next.setVisible((page+1)*6 < allCheckNiveau.size());
         this.repaint();
         this.revalidate();
     }
@@ -145,11 +148,11 @@ public class SelectNiveau extends JPanel implements KeyListener{
     }
 
     private String[] getNamePage(int page){
-        int NbrElement = allNameNiveau.size() - page*6 ;
+        int NbrElement = allCheckNiveau.size() - page*6 ;
         if (NbrElement > 6) NbrElement  =6 ;
         String[] ret = new String[NbrElement] ;
         for (int i = 0 ; i < ret.length ;i++){
-            ret[i] = allNameNiveau.get(page*6 + i) ;
+            ret[i] = allCheckNiveau.get(page*6 + i);
         }
         return ret ;
     }
@@ -209,7 +212,7 @@ public class SelectNiveau extends JPanel implements KeyListener{
             addActionListener(e -> {
                 String nom = getText() ;
                 if ( ! nom.equals(lastSearch)){ //évite de faire plusiseurs fois la meme recherche
-                    allNameNiveau = Niveau.RechercheNameNiveau(campagne, nom);
+                    allCheckNiveau = Niveau.RechercheCheckNiveau(campagne, nom);
                     page_act = 0 ;
                     afficherPage(page_act);
                     lastSearch = nom ;
@@ -227,6 +230,8 @@ public class SelectNiveau extends JPanel implements KeyListener{
         private BufferedImage apercu ;
         private BufferedImage cadre ;
         private BoutonMenu button ;
+        private BufferedImage check;
+        private BufferedImage etoile;
         private double formatImage = 520/1080.0 ;
 
         PresNiveau(String nomNiveau, int largeurPres, int hauteur_pres) {
@@ -242,18 +247,21 @@ public class SelectNiveau extends JPanel implements KeyListener{
             (invisiblePhoto).addMouseListener((MouseListener) new MouseAdapter() {
                 public void mouseEntered(MouseEvent evt) {button.setCouleur(true);}
                 public void mouseExited(MouseEvent evt){button.setCouleur(false);}
-                public void mouseClicked(MouseEvent evt){controleur.launchGameview((campagne? "Campagne/" : "Perso/") + nomNiveau);}
+                public void mouseClicked(MouseEvent evt){controleur.launchGameview((campagne? "Campagne/" : "Perso/") + nomNiveau.substring(0, nomNiveau.length()-2));}
             });
             add(invisiblePhoto); //ajout d'un bloc pour l'image et l'affichage du layout
-
-            button = new BoutonMenu(nomNiveau, hauteurBouton*4, hauteurBouton);
+            button = new BoutonMenu(nomNiveau.substring(0, nomNiveau.length()-2), hauteurBouton*4, hauteurBouton);
+            if (nomNiveau.charAt(nomNiveau.length()-2) == '1'){
+                check = ImageImport.getImage("Menu/Check.png", 7);
+            }
+            etoile = ImageImport.getImage("Menu/etoiles" + nomNiveau.charAt(nomNiveau.length()-1) + "Score.png" , 20);
             button.addActionListener(e -> controleur.launchGameview((campagne? "Campagne/" : "Perso/") + nomNiveau));
             button.setVisible(true);
             button.setAlignmentX(Box.CENTER_ALIGNMENT);
             add(button);
             setSize(largeurPres, hauteurPhoto+hauteurBouton+10);
 
-            apercu = ImageImport.getImage(pathIcone()+nomNiveau+".png", largeurPres,hauteurPhoto);
+            apercu = ImageImport.getImage(pathIcone()+nomNiveau.substring(0, nomNiveau.length()-2)+".png", largeurPres,hauteurPhoto);
             cadre = ImageImport.getImage("Menu/CadreCampagne.png", largeurPres,hauteurPhoto);
         }
         
@@ -263,6 +271,8 @@ public class SelectNiveau extends JPanel implements KeyListener{
             // afficher background
             g.drawImage(apercu, 0, 0, apercu.getWidth(), apercu.getHeight(), this);
             g.drawImage(cadre, 0, 0, cadre.getWidth(), cadre.getHeight(), this);
+            if (check != null) g.drawImage(check, cadre.getWidth()/2 - check.getWidth() /2, cadre.getHeight()/2 - check.getHeight() /2 , check.getWidth(), check.getHeight(), this);
+            g.drawImage(etoile, cadre.getWidth()/2 - etoile.getWidth() /2, cadre.getHeight() /2 , etoile.getWidth(), etoile.getHeight(), this);
         }
     }
 
@@ -284,7 +294,7 @@ public class SelectNiveau extends JPanel implements KeyListener{
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()){
             case (KeyEvent.VK_RIGHT) :
-                if ((page_act+1)*6 < allNameNiveau.size()) afficherPage(++page_act);
+                if ((page_act+1)*6 < allCheckNiveau.size()) afficherPage(++page_act);
                 break ;
             case (KeyEvent.VK_LEFT) :
                 if (page_act > 0) afficherPage(--page_act);
