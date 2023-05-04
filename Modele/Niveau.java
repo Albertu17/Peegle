@@ -49,7 +49,7 @@ public class Niveau {
     public String getNom() {
         return nom;
     }
-    private String getDossier(){
+    public String getDossier(){
         return (campagne ? "Campagne/" : "Perso/" )+getNom();
     }
 
