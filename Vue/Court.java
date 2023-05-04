@@ -12,6 +12,7 @@ import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -261,7 +262,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
                 setForeground(Color.WHITE);
                 setOpaque(false);
                 setVisible(true);
-                setAlignmentX(Box.CENTER_ALIGNMENT);
+                // setAlignmentX(Box.CENTER_ALIGNMENT);
                 
                 // ajustement de la taille de la police
                 Font rightF = arcade.deriveFont(taille); // Très grande taille de police par défault
@@ -281,6 +282,8 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         }
 
         WinPanel(int width, int height) {
+            int xdebut = width - width/2 ;
+            int ydebut  = height/2 ; 
             // idépendant de la classe, pour la fin du jeu :
             GameOver = true;
             canon.setVisible(false);
@@ -290,34 +293,45 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
 
             // parametre du Panel :
             setOpaque(false);
-            setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+            setLayout(null);
             setVisible(true);
             setSize(width, height);
             
             WinScreen = ImageImport.getImage("WinScreen.png", width, height);
             WinScreenDisable = ImageImport.getImage("WinScreenDisabled.png", width, height);
             exited = false;
-            
-            JPanel info  = new JPanel() ;
-            add(info) ;
-            info.setOpaque(false);
-            info.setLayout(new BoxLayout(info, BoxLayout.PAGE_AXIS));
-            info.setVisible(true);
-            info.setSize(width, height);
-            System.out.println(WinScreen.createGraphics());
 
-            info.add(new Texte("Level " + niveau.getNom() + " Completed !", 18f));
-            info.add(Box.createVerticalGlue()) ;
-            info.add(new Texte("Score: " + toucher, 26f));
-            info.add(Box.createVerticalGlue()) ;
-            info.add(new Texte("Balles Restantes: " + NbDeBall, 26f));
-            info.add(Box.createVerticalGlue()) ;
-            info.add(new Texte("Balles Utilisees: " + (250 - NbDeBall), 26f));
-            info.add(Box.createVerticalGlue()) ;
-            info.add(new Texte("Max Score: " + niveau.getScoreMax(), 26f));
-            info.add(Box.createVerticalGlue()) ;
+            // JPanel debut = new JPanel();
+
+            // debut.setLayout(new BoxLayout(debut, BoxLayout.PAGE_AXIS));
+            // debut.setSize(width, (height*70)/876);
+            // // debut.setVisible(true);
+            // add(Box.createRigidArea(new Dimension(0, 10))) ;
+            Texte t = new Texte("Level " + niveau.getNom() + " Completed !", 18f) ;
+            add(t) ;
+            t.setLocation(xdebut +(width-t.getWidth())/2, ydebut);
+            
+            
+            JPanel centre  = new JPanel() ;
+            add(centre) ;
+            centre.setOpaque(false);
+            centre.setLayout(new BoxLayout(centre, BoxLayout.PAGE_AXIS));
+            centre.setVisible(true);
+            centre.setSize(width, (height*(648))/876);
+
+            
+            centre.add(Box.createVerticalGlue()) ;
+            centre.add(new Texte("Score: " + toucher, 26f));
+            centre.add(Box.createVerticalGlue()) ;
+            centre.add(new Texte("Balles Restantes: " + NbDeBall, 26f));
+            centre.add(Box.createVerticalGlue()) ;
+            centre.add(new Texte("Balles Utilisees: " + (250 - NbDeBall), 26f));
+            centre.add(Box.createVerticalGlue()) ;
+            centre.add(new Texte("Max Score: " + niveau.getScoreMax(), 26f));
+            // centre.add(Box.createVerticalGlue()) ;
             if (toucher > ScoreMax) {
-                info.add(new Texte("Nouveau Max Score !!!", 26f));
+                centre.add(Box.createVerticalGlue()) ;
+                centre.add(new Texte("Nouveau Max Score !!!", 26f));
                 niveau.setScoreMax(toucher);
             }
 
