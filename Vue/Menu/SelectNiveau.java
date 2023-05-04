@@ -76,7 +76,7 @@ public class SelectNiveau extends JPanel implements KeyListener{
         selectPerso.addActionListener(e -> setSelecteur(false) );
         add(selectPerso);
         this.setFocusable(true);
-        this.addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[]{selectCampagne, selectPerso}));
+        this.addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[]{selectCampagne, selectPerso}, ()-> controleur.launchMenu()));
         this.requestFocusInWindow() ;
     }
 

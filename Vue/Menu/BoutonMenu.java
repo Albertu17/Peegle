@@ -93,8 +93,14 @@ public class BoutonMenu extends JButton {
         private BoutonMenu[] allBouton ;
         private int selecteur ;
         private int nbrBoutton ;
+        private Action action ;
 
-        public BoutonClavier(BoutonMenu[] allBouton){ 
+        public interface Action {
+            void perf() ;
+        }
+
+        public BoutonClavier(BoutonMenu[] allBouton, Action actionToucheEchap){ 
+            this.action = actionToucheEchap ;
             this.allBouton = allBouton ;
             nbrBoutton = allBouton.length ;
             resetSelecteur();
@@ -124,7 +130,7 @@ public class BoutonMenu extends JButton {
         public void keyPressed(KeyEvent e) {
             switch (e.getKeyCode()) {
                 case (KeyEvent.VK_ESCAPE):
-                    
+                    action.perf() ;
                     break;
                 case (KeyEvent.VK_DOWN):
                     selecteur++;

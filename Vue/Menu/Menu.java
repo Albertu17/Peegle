@@ -72,7 +72,7 @@ public class Menu extends JPanel {
         btnQuit.addActionListener(e -> System.exit(0));
         add(btnQuit);
         setFocusable(true);
-        addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[]{btnPlay, btnCampagne, btnOptions, btnEditeur, btnQuit}));
+        addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[]{btnPlay, btnCampagne, btnOptions, btnEditeur, btnQuit}, () -> System.exit(0)));
     }
 
     @Override

@@ -153,7 +153,7 @@ public class GameView extends JPanel {
                 add(quit);
 
                 setFocusable(true);
-                addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[]{resume, restart, quit}) );
+                addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[]{resume, restart, quit}, ()->launchMenuPause(false)) );
             }
 
             @Override
