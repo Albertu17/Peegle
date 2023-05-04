@@ -33,6 +33,23 @@ public class Niveau {
     private int ScoreMax;
 
     
+    public static String getPlayLevel(){
+        String[] atraiter = new File(dosierSauvegarde+"Campagne").list() ;
+        List<String> ret = new ArrayList<>() ;
+        for (int i = 0 ; i < atraiter.length ; i++){
+            try (Scanner save = new Scanner(new File(dosierSauvegarde +"Campagne" +"/"+ atraiter[i]))) {
+            String[] line = save.nextLine().split(";") ;
+            if (line[8] == "0") {
+                return line[0] ;
+            }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return null ;
+    }
+
+    
     public ArrayList<Pegs> getPegs() {
         return pegs;
     }
@@ -82,8 +99,12 @@ public class Niveau {
 
     public void setScoreMax(int newMax){
         if (newMax< ScoreMax) return ;
-        setValueAtIndex(9, newMax);
+        setValueAtIndex(8, newMax);
         ScoreMax = newMax ;
+    }
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+        setValueAtIndex(7, checked ? 1 : 0);
     }
 
 
@@ -176,8 +197,8 @@ public class Niveau {
         for (int i = 0 ; i < atraiter.length ; i++){
             try (Scanner save = new Scanner(new File(dosierSauvegarde + (campagne? "Campagne" : "Perso") +"/"+ atraiter[i]))) {
             String[] line = save.nextLine().split(";") ;
-            int scoreetoile = Integer.parseInt(line[9]) >= Integer.parseInt(line[5]) ? 3 : (Integer.parseInt(line[9]) >= Integer.parseInt(line[4]) ? 2 : ( Integer.parseInt(line[9]) >= Integer.parseInt(line[3]) ? 1 : 0)) ;
-            ret.add(atraiter[i].substring(0, atraiter[i].length() -5) + line[8] + scoreetoile); //ajoute le check du niveau au nom
+            int scoreetoile = Integer.parseInt(line[8]) >= Integer.parseInt(line[5]) ? 3 : (Integer.parseInt(line[8]) >= Integer.parseInt(line[4]) ? 2 : ( Integer.parseInt(line[8]) >= Integer.parseInt(line[3]) ? 1 : 0)) ;
+            ret.add(atraiter[i].substring(0, atraiter[i].length() -5) + line[7] + scoreetoile); //ajoute le check du niveau au nom
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -220,7 +241,6 @@ public class Niveau {
                                 + String.valueOf(score2Etoiles) +";"
                                 + String.valueOf(score3Etoiles) +";"
                                 + String.valueOf(campagne ? "1" : "0")
-                                + String.valueOf(index)
                                 + String.valueOf(checked ? "1" : "0")
                                 + String.valueOf(ScoreMax);
             file.println(ligne);
