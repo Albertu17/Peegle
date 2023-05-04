@@ -262,28 +262,21 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
                 setOpaque(false);
                 setVisible(true);
                 setAlignmentX(Box.CENTER_ALIGNMENT);
+                
+                // ajustement de la taille de la police
                 Font rightF = arcade.deriveFont(taille); // Très grande taille de police par défault
                 FontMetrics metrics = WinScreen.createGraphics().getFontMetrics(rightF);
                 int fontSize = rightF.getSize();
-                int textWidth = metrics.stringWidth("Combo x100");
-                int textWidthMax = (width*5)/6;
+                int textWidth = metrics.stringWidth(txt);
+                int textWidthMax = (WinPanel.this.getWidth()*5)/6;
                 if (textWidth > textWidthMax) {
+                    System.out.println("in");
                     double widthRatio = (double) textWidthMax / (double) textWidth;
                     rightF = rightF.deriveFont((float) Math.floor(fontSize * widthRatio));
                     fontSize = rightF.getSize();
                     metrics = WinScreen.createGraphics().getFontMetrics(rightF);
                 }
                 setFont(rightF);
-
-                // Font rightF =  arcade.deriveFont(taille) ;
-                // int fontSize = rightF.getSize();
-                // int textWidth = (WinScreen.createGraphics()).getFontMetrics(rightF).stringWidth(txt);
-                // int textWidthMax = width * 5/6;
-                // if (textWidth > textWidthMax) {
-                //     double widthRatio = (double) textWidthMax / (double) textWidth;
-                //     rightF = rightF.deriveFont((float) Math.floor(fontSize * widthRatio));;
-                // }
-                // setFont(rightF);
             }
         }
 
