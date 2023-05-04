@@ -137,50 +137,22 @@ public class Ball{
 
 
     public Pegs touchedPegs(){
-        Pegs p = null;
-        double min = -1;
-        double distance;
         for (Pegs peg: court.getPegs()){
-            distance = peg.contains(nextBallX + ballRadius, nextBallY + ballRadius);
-            if (distance <= peg.getRadius() + Ball.ballRadius) {
-                if (min==-1 || distance<=min) {
-                    distance = min;
-                    p = peg;
+            if (peg.contains(nextBallX + ballRadius, nextBallY + ballRadius)){                
+                if (dernierPegToucher != peg) {
+                    dernierPegToucher = peg;
+                    return peg;
                 }
+                if (dernierPegToucher.contains(nextBallX + ballRadius, nextBallY + ballRadius)) {
+                    dernierPegToucher = peg;
+                    return null;
+                }
+    
             }
         }
-        if (p!=null) {
-            if (dernierPegToucher!=p){
-                dernierPegToucher = p;
-                return p;
-            }
-            else return null;
-
-        }
+        
         dernierPegToucher = null;
         return null;
-            // if (peg.contains(nextBallX + ballRadius, nextBallY + ballRadius)){
-                // System.out.println("-------------------------------");
-                // System.out.println(nextBallX + ballRadius + "    " + nextBallY + ballRadius + "  |   " + peg.getX() +"    " + peg.getY());
-                // System.out.println(peg + " " + dernierPegToucher);
-                // if (dernierPegToucher==null) {
-                //     dernierPegToucher = peg;
-                //     p = peg;
-                // }
-
-                // else if (!dernierPegToucher.contains(nextBallX + ballRadius, nextBallY + ballRadius)) {
-                //     dernierPegToucher = peg;
-                //     p = peg;
-                // }
-                // if (dernierPegToucher!=peg){
-                //     dernierPegToucher = peg;
-                //     return peg;
-                // }
-
-        //     }
-        // }
-        // dernierPegToucher = null;
-        // return null;
     }
 
     public boolean getHitGround(){
