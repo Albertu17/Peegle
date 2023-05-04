@@ -86,7 +86,6 @@ public class GameView extends JPanel {
             court.animate();
         } else {
             jeuEnpause.menuEnpause.requestFocusInWindow();
-            jeuEnpause.menuEnpause.selecteur = -1;
         }
     }
 
@@ -112,9 +111,6 @@ public class GameView extends JPanel {
             BoutonMenu restart;
             BoutonMenu quit;
 
-            private int selecteur;
-            private int nbrBoutton ;
-
             MenuEnpause() {
                 // mettre le jeux en pause
                 setLayout(null);
@@ -130,24 +126,24 @@ public class GameView extends JPanel {
 
                 int y = (this.getHeight() * 200) / 876;
 
-                resume = new BoutonMenu("Resume", (this.getWidth()) / 2, 50);
-                resume.setLocation(this.getWidth() / 2 - resume.getWidth() / 2, y);
+                resume = new BoutonMenu("Resume", (this.getWidth()) / 2, (50*courtHeight)/520);
+                resume.setLocation(this.getWidth() / 2 - resume.getWidth() / 2, y- resume.getHeight()/2);
                 resume.setVisible(true);
                 resume.addActionListener(e -> {
                     launchMenuPause(false);
                 });
                 add(resume);
 
-                restart = new BoutonMenu("Restart", (this.getWidth()) / 2, 50);
-                restart.setLocation(this.getWidth() / 2 - restart.getWidth() / 2, y * 2);
+                restart = new BoutonMenu("Restart", (this.getWidth()) / 2, (50*courtHeight)/520);
+                restart.setLocation(this.getWidth() / 2 - restart.getWidth() / 2, y * 2 - resume.getHeight()/2);
                 restart.setVisible(true);
                 restart.addActionListener(e -> {
                     controleur.launchGameview(niveau.getDossier());
                 });
                 add(restart);
 
-                quit = new BoutonMenu("Quit", (this.getWidth()) / 2, 50);
-                quit.setLocation(this.getWidth() / 2 - quit.getWidth() / 2, y * 3);
+                quit = new BoutonMenu("Quit", (this.getWidth()) / 2, (50*courtHeight)/520);
+                quit.setLocation(this.getWidth() / 2 - quit.getWidth() / 2, y * 3 - resume.getHeight()/2);
                 quit.setVisible(true);
                 quit.addActionListener(e -> controleur.launchMenu());
                 add(quit);

@@ -75,6 +75,7 @@ public class Controleur extends JFrame{
         }
         add(menuParametres);
         menuParametres.setVisible(true);
+        menuParametres.requestFocusInWindow() ;
         this.repaint();
     }
 
@@ -85,6 +86,7 @@ public class Controleur extends JFrame{
         }
         add(editeurNiveaux);
         editeurNiveaux.setVisible(true);
+        editeurNiveaux.requestFocusInWindow(); 
         this.repaint();
     }
 
