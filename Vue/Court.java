@@ -614,7 +614,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
                 }
                 break;
             case (KeyEvent.VK_ESCAPE):
-                controleur.launchMenu();
+                controleur.gameview.launchMenuPause(); 
                 break;
             default:
                 break;
