@@ -32,6 +32,7 @@ public class Ball{
     private static BufferedImage image = ImageImport.getImage("ball.png", (int) ballRadius*2, (int) ballRadius*2);
 
     private Court court;
+    private Pegs pegderniertoucher;
 
     double x,y;
 
@@ -123,7 +124,7 @@ public class Ball{
         Pegs p = touchedPegs();
 
         
-        if (p!=null && !atoucherpegs){
+        if (p!=null && p != pegderniertoucher){
             if (!p.getHit()){combo++;}
             p.setTouche(true);
             double ux = (nextBallX+ ballRadius) - (p.getX());
@@ -135,10 +136,10 @@ public class Ball{
             ballSpeedX = coeffRebond * ballSpeedX;
             ballSpeedY = coeffRebond * ballSpeedY;
             
-            atoucherpegs=true;
+            pegderniertoucher = p;
         }
         else if (p==null){
-            atoucherpegs=false;
+            pegderniertoucher = null;
         }
         ballX = nextBallX;
         ballY = nextBallY;
