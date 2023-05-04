@@ -18,11 +18,11 @@ public class Menu extends JPanel {
 
     private Controleur controleur ;
 
-    JButton btnPlay;
-    JButton btnCampagne;
-    JButton btnOptions;
-    JButton btnEditeur;
-    JButton btnQuit;
+    BoutonMenu btnPlay;
+    BoutonMenu btnCampagne;
+    BoutonMenu btnOptions;
+    BoutonMenu btnEditeur;
+    BoutonMenu btnQuit;
 
     private BufferedImage background;
     private BufferedImage title;
@@ -71,6 +71,8 @@ public class Menu extends JPanel {
         btnQuit.setLocation(middleW-100,middleH-25+140);
         btnQuit.addActionListener(e -> System.exit(0));
         add(btnQuit);
+        setFocusable(true);
+        addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[]{btnPlay, btnCampagne, btnOptions, btnEditeur, btnQuit}));
     }
 
     @Override

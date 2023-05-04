@@ -64,6 +64,7 @@ public class Controleur extends JFrame{
         }
         add(menu);
         menu.setVisible(true);
+        menu.requestFocusInWindow() ;
         this.repaint();
     }
 

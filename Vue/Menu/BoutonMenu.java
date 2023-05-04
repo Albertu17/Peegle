@@ -93,7 +93,8 @@ public class BoutonMenu extends JButton {
         private BoutonMenu[] allBouton ;
         private int selecteur ;
         private int nbrBoutton ;
-        BoutonClavier(BoutonMenu[] allBouton){ 
+
+        public BoutonClavier(BoutonMenu[] allBouton){ 
             this.allBouton = allBouton ;
             nbrBoutton = allBouton.length ;
             resetSelecteur();
@@ -104,13 +105,13 @@ public class BoutonMenu extends JButton {
         }
 
         private BoutonMenu getButton(int i) {
-            selecteur = (selecteur + 3) % 3 ;
+            selecteur = (selecteur + nbrBoutton) % nbrBoutton;
             return allBouton[i] ;
         }
         private void resetSelecteur(){selecteur =-1 ;}
 
         private void iluminateButton() {
-            selecteur = (selecteur + 3) % 3 ;
+            selecteur = (selecteur + nbrBoutton) % nbrBoutton;
             for (int i = 0; i < nbrBoutton; i++) {
                 if (i == selecteur)
                     getButton(i).setCouleur(true);

@@ -106,7 +106,7 @@ public class GameView extends JPanel {
 
         }
 
-        class MenuEnpause extends JPanel implements KeyListener {
+        class MenuEnpause extends JPanel {
             BufferedImage arrierePlan;
             BoutonMenu resume;
             BoutonMenu restart;
@@ -152,10 +152,8 @@ public class GameView extends JPanel {
                 quit.addActionListener(e -> controleur.launchMenu());
                 add(quit);
 
-                resetSelecteur();
-                nbrBoutton = 3 ;
                 setFocusable(true);
-                addKeyListener(this);
+                addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[]{resume, restart, quit}) );
             }
 
             @Override
@@ -172,53 +170,8 @@ public class GameView extends JPanel {
                         (this.getHeight() * 45) / 876 + offsetY);
             }
 
-            public void keyTyped(KeyEvent e) {
-            }
-
-            private BoutonMenu getButton(int i) {
-                selecteur = (selecteur + 3) % 3 ;
-                BoutonMenu[] tab = new BoutonMenu[]{resume, restart, quit} ;
-                return tab[i] ;
-            }
-            private void resetSelecteur(){selecteur =-1 ;}
-
-            private void iluminateButton() {
-                selecteur = (selecteur + 3) % 3 ;
-                for (int i = 0; i < nbrBoutton; i++) {
-                    if (i == selecteur)
-                        getButton(i).setCouleur(true);
-                    else
-                        getButton(i).setCouleur(false);
-                }
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                switch (e.getKeyCode()) {
-                    case (KeyEvent.VK_ESCAPE):
-                        controleur.gameview.launchMenuPause(false);
-                        break;
-                    case (KeyEvent.VK_DOWN):
-                        selecteur++;
-                        iluminateButton();
-                        break;
-                    case (KeyEvent.VK_UP):
-                        selecteur--;
-                        iluminateButton();
-                        break;
-                    case (KeyEvent.VK_ENTER):
-                        getButton(selecteur).doClick();
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
         }
+
     }
 
     public int getWidth() {
