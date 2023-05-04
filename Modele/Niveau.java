@@ -55,15 +55,13 @@ public class Niveau {
     }
 
     public int getScoreMax(){return ScoreMax ;}
-    public void setScoreMax(int newMax){
-        if (newMax< ScoreMax) return ;
-
+    public void setValueAtIndex(int index, int valeur){
         List<String> docString = new ArrayList<String>() ;
         try {
             // modifie la premiere ligne
             Scanner sc = new Scanner(new File(dosierSauvegarde + getDossier() +".pegs")) ;
             String[] entete = sc.next().split(";") ;
-            entete[9] = String.valueOf(newMax) ;
+            entete[index] = String.valueOf(valeur) ;
             String temp ="" ;
             for(int i = 0 ; i < entete.length -1; i++){
                 temp += entete[i] +";" ;
@@ -72,6 +70,7 @@ public class Niveau {
             docString.add(temp) ;
             while(sc.hasNext()) docString.add(sc.next()) ;
             sc.close();
+
             // ecriture
             PrintWriter file = new PrintWriter(dosierSauvegarde + getDossier() + nomExtension);
             for (String line : docString)file.println(line);
@@ -79,6 +78,11 @@ public class Niveau {
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+
+    public void setScoreMax(int newMax){
+        if (newMax< ScoreMax) return ;
+        setValueAtIndex(9, newMax);
         ScoreMax = newMax ;
     }
 

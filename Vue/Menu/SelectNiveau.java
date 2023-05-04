@@ -259,7 +259,7 @@ public class SelectNiveau extends JPanel implements KeyListener{
             button.setVisible(true);
             button.setAlignmentX(Box.CENTER_ALIGNMENT);
             add(button);
-            setSize(largeurPres, hauteurPhoto+hauteurBouton+10);
+            setSize(largeurPres, hauteurPhoto+hauteurBouton+10 + etoile.getHeight());
 
             apercu = ImageImport.getImage(pathIcone()+nomNiveau.substring(0, nomNiveau.length()-2)+".png", largeurPres,hauteurPhoto);
             cadre = ImageImport.getImage("Menu/CadreCampagne.png", largeurPres,hauteurPhoto);
@@ -272,7 +272,7 @@ public class SelectNiveau extends JPanel implements KeyListener{
             g.drawImage(apercu, 0, 0, apercu.getWidth(), apercu.getHeight(), this);
             g.drawImage(cadre, 0, 0, cadre.getWidth(), cadre.getHeight(), this);
             if (check != null) g.drawImage(check, cadre.getWidth()/2 - check.getWidth() /2, cadre.getHeight()/2 - check.getHeight() /2 , check.getWidth(), check.getHeight(), this);
-            g.drawImage(etoile, cadre.getWidth()/2 - etoile.getWidth() /2, cadre.getHeight() /2 , etoile.getWidth(), etoile.getHeight(), this);
+            g.drawImage(etoile, cadre.getWidth()/2 - etoile.getWidth() /2, cadre.getHeight() , etoile.getWidth(), etoile.getHeight(), this);
         }
     }
 
