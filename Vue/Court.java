@@ -1,11 +1,13 @@
 package Vue;
 
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Graphics2D;
@@ -233,7 +235,9 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
                     }
                     sceau.move(((last - now) * 1.0e-9));
                     if (!editMode && pegs.size() == 0) {
-                        add(new WinPanel(WIDTH, HEIGHT));
+                        WinPanel pan = new WinPanel(width/2, height) ;
+                        pan.setLocation(width/2 - pan.getWidth()/2, height/2- pan.getHeight()/2);
+                        add(pan) ;
                         enPause = true ;
                     }
 
@@ -288,6 +292,18 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
                 add(new Texte("Nouveau Max Score !!!", 26f));
                 niveau.setScoreMax(toucher);
             }
+
+            addMouseListener((MouseListener) new MouseAdapter() {
+                public void mouseEntered(MouseEvent evt) {
+                    exited = true;
+                    repaint() ;
+                }
+                public void mouseExited(MouseEvent evt) {
+                    exited = false;
+                    repaint() ;
+                }
+                public void mousePressed(MouseEvent evt) {controleur.launchMenu();}
+            });
         }
 
         @Override
