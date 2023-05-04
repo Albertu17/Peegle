@@ -16,7 +16,7 @@ public class GameView extends JPanel {
     Niveau niveau;
 
     // Court
-    Court court;
+    public Court court;
     private int courtWidth;
     private int courtHeight;
 

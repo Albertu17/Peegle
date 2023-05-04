@@ -44,19 +44,25 @@ public class MenuParametres extends JPanel {
         // BoutonMenu skin1
         btnSkin1 = new BoutonMenu("skin1", 200, 50);
         btnSkin1.setLocation(middleW-100,middleH-25-140);
-        btnSkin1.addActionListener(e -> System.exit(0)); // TODO à changer
+        btnSkin1.addActionListener(e -> {
+            c.gameview.court.setSkin1();
+        }); 
         add(btnSkin1);
 
         // BoutonMenu skin2
         btnSkin2 = new BoutonMenu("skin2", 200, 50);
         btnSkin2.setLocation(middleW-100,middleH-25-70);
-        btnSkin2.addActionListener(e -> System.exit(0)); // TODO à changer
+        btnSkin2.addActionListener(e -> {
+            c.gameview.court.setSkin2();
+        }); 
         add(btnSkin2);
 
         // BoutonMenu skin3
         btnSkin3 = new BoutonMenu("skin3", 200, 50);
         btnSkin3.setLocation(middleW-100,middleH-25);
-        btnSkin3.addActionListener(e -> System.exit(0)); // TODO à changer
+        btnSkin3.addActionListener(e -> {
+            c.gameview.court.setSkin3();
+        }); 
         add(btnSkin3);
 
         // BoutonMenu back

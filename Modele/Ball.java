@@ -297,12 +297,17 @@ public class Ball{
         combo = i;
     }
     public void putSkin1(){
-        image = ImageImport.getImage("ball.png", 20, 20);
+        Ball.image = ImageImport.getImage("ball.png", 20, 20);
     }
 
     public void putSkin2(){
-        image = ImageImport.getImage("soccerBall.png", 20, 20);
+        Ball.image = ImageImport.getImage("soccerBall.png", 20, 20);
     }
+    
+    public void putSkin3(){
+        Ball.image = ImageImport.getImage("basketBall.png", 20, 20);
+    }
+
 
 
 }

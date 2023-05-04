@@ -174,9 +174,21 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         return (int) Ball.ballRadius;
     }
 
+    public void setSkin1(){
+        for(Ball ball:balls){
+            ball.putSkin1();
+        }
+    }
+
     public void setSkin2(){
         for(Ball ball:balls){
             ball.putSkin2();
+        }
+    }
+
+    public void setSkin3(){
+        for(Ball ball:balls){
+            ball.putSkin3();
         }
     }
 
