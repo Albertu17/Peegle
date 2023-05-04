@@ -185,6 +185,20 @@ public class Niveau {
         tout.addAll(getAllCheckNiveau(false) );
         return tout ;
     }
+    public static List<String> getAllNameNiveau(boolean campagne){
+        String[] atraiter = new File(dosierSauvegarde+ (campagne? "Campagne" : "Perso")).list() ;
+        List<String> ret = new ArrayList<>() ;
+        for (int i = 0 ; i < atraiter.length ; i++){
+            ret.add(atraiter[i].substring(0, atraiter[i].length() -5));
+        }
+        return ret ;
+    }
+    public static List<String> getAllNameNiveau(){
+        List<String> tout  = getAllNameNiveau(true) ;
+        tout.addAll(getAllNameNiveau(false) );
+        return tout ;
+    }
+    
 
     // enregistrement d'un niveau    
 
