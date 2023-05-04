@@ -10,6 +10,7 @@ import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import javax.swing.JPanel;
@@ -35,6 +36,8 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
     private boolean nbDeBallChange=true;
     private int MaxCombo = 0;
     private Font arcade = ImageImport.arcade;
+    private Font rightF;
+    
     private int mouseX = 0;
     private int mouseY = 0;
     private boolean GameOver = false;
@@ -89,6 +92,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         
         // Sceau
         sceau = new Sceau(this);
+
 
         animate();
     }
@@ -230,6 +234,20 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
     public void paint(Graphics g) {
         
         super.paint(g);
+        // init 
+        if (rightF == null) {
+            rightF = arcade.deriveFont(1000f); // Très grande taille de police par défault
+            FontMetrics metrics = g.getFontMetrics(rightF);
+            int fontSize = rightF.getSize();
+            int textWidth = metrics.stringWidth("Combo x100");
+            int textWidthMax = width-150;
+            if (textWidth > textWidthMax) {
+                double widthRatio = (double) textWidthMax / (double) textWidth;
+                rightF = rightF.deriveFont((float) Math.floor(fontSize * widthRatio));
+                fontSize = rightF.getSize();
+                metrics = g.getFontMetrics(rightF);
+            }
+        }
         // FIN DE PARTIE
         if (!editMode &&  pegs.size()==0) {
             canon.setVisible(false);
@@ -273,7 +291,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         if (!editMode) {
             frameCount++;
             if (ComboEncours != 0) {
-                g.setFont(arcade.deriveFont(144f));
+                g.setFont(rightF);
                 if (ComboEncours>MaxCombo) MaxCombo = ComboEncours;
                 if (afficageCombo>5) g.setColor(Color.RED);
                 else if (afficageCombo>3) g.setColor(Color.ORANGE);
