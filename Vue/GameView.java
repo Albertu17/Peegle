@@ -2,7 +2,10 @@ package Vue;
 
 import Vue.Menu.BoutonMenu;
 import java.awt.Color;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.*;
@@ -81,8 +84,9 @@ public class GameView extends JPanel {
         if (!visible) {
             court.requestFocusInWindow();
             court.animate();
-        }else{
-            this.requestFocusInWindow() ;
+        } else {
+            jeuEnpause.menuEnpause.requestFocusInWindow();
+            jeuEnpause.menuEnpause.selecteur = -1;
         }
     }
 
@@ -97,17 +101,19 @@ public class GameView extends JPanel {
             setOpaque(true);
             setVisible(false);
             setLocation(0, 0);
-            System.out.println(getSize());
-            System.out.println(getLocation());
             GameView.this.add(this);
-            setBackground(new Color(0, 0, 0, 150) );
+            setBackground(new Color(0, 0, 0, 150));
+
         }
 
-        class MenuEnpause extends JPanel {
+        class MenuEnpause extends JPanel implements KeyListener {
             BufferedImage arrierePlan;
-            JButton resume;
-            JButton restart;
-            JButton quit;
+            BoutonMenu resume;
+            BoutonMenu restart;
+            BoutonMenu quit;
+
+            private int selecteur;
+            private int nbrBoutton ;
 
             MenuEnpause() {
                 // mettre le jeux en pause
@@ -122,10 +128,10 @@ public class GameView extends JPanel {
 
                 // ajout des boutons
 
-                int y =(this.getHeight() * 200) / 876 ;
+                int y = (this.getHeight() * 200) / 876;
 
                 resume = new BoutonMenu("Resume", (this.getWidth()) / 2, 50);
-                resume.setLocation(this.getWidth()/2- resume.getWidth()/2, y);
+                resume.setLocation(this.getWidth() / 2 - resume.getWidth() / 2, y);
                 resume.setVisible(true);
                 resume.addActionListener(e -> {
                     launchMenuPause(false);
@@ -133,7 +139,7 @@ public class GameView extends JPanel {
                 add(resume);
 
                 restart = new BoutonMenu("Restart", (this.getWidth()) / 2, 50);
-                restart.setLocation(this.getWidth()/2 - restart.getWidth()/2, y*2);
+                restart.setLocation(this.getWidth() / 2 - restart.getWidth() / 2, y * 2);
                 restart.setVisible(true);
                 restart.addActionListener(e -> {
                     controleur.launchGameview(niveau.getDossier());
@@ -141,19 +147,76 @@ public class GameView extends JPanel {
                 add(restart);
 
                 quit = new BoutonMenu("Quit", (this.getWidth()) / 2, 50);
-                quit.setLocation(this.getWidth()/2 - quit.getWidth()/2, y*3);
+                quit.setLocation(this.getWidth() / 2 - quit.getWidth() / 2, y * 3);
                 quit.setVisible(true);
                 quit.addActionListener(e -> controleur.launchMenu());
                 add(quit);
+
+                resetSelecteur();
+                nbrBoutton = 3 ;
+                setFocusable(true);
+                addKeyListener(this);
             }
 
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 g.drawImage(arrierePlan, 0, 0, this);
-                g.setFont(ImageImport.rightSize("Level " + niveau.getNom() + " Completed !", (this.getWidth() * 635) / 781));
+                g.setFont(ImageImport.rightSize("Level " + niveau.getNom() + " !",
+                        (this.getWidth() * 635) / 781));
                 g.setColor(Color.WHITE);
-                g.drawString("Level " + niveau.getNom() + " !", (this.getWidth() * 90) / 781, (this.getHeight() * 50) / 876);
+                FontMetrics fm = g.getFontMetrics(g.getFont());
+                int offsetX = ((this.getWidth() * 635) / 781) - fm.stringWidth("Level " + niveau.getNom() + " !");
+                int offsetY = fm.getAscent() / 2;
+                g.drawString("Level " + niveau.getNom() + " !", (this.getWidth() * 90) / 781 + offsetX,
+                        (this.getHeight() * 45) / 876 + offsetY);
+            }
+
+            public void keyTyped(KeyEvent e) {
+            }
+
+            private BoutonMenu getButton(int i) {
+                selecteur = (selecteur + 3) % 3 ;
+                BoutonMenu[] tab = new BoutonMenu[]{resume, restart, quit} ;
+                return tab[i] ;
+            }
+            private void resetSelecteur(){selecteur =-1 ;}
+
+            private void iluminateButton() {
+                selecteur = (selecteur + 3) % 3 ;
+                for (int i = 0; i < nbrBoutton; i++) {
+                    if (i == selecteur)
+                        getButton(i).setCouleur(true);
+                    else
+                        getButton(i).setCouleur(false);
+                }
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                switch (e.getKeyCode()) {
+                    case (KeyEvent.VK_ESCAPE):
+                        controleur.gameview.launchMenuPause(false);
+                        break;
+                    case (KeyEvent.VK_DOWN):
+                        selecteur++;
+                        iluminateButton();
+                        break;
+                    case (KeyEvent.VK_UP):
+                        selecteur--;
+                        iluminateButton();
+                        break;
+                    case (KeyEvent.VK_ENTER):
+                        getButton(selecteur).doClick();
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
             }
         }
     }
@@ -177,4 +240,5 @@ public class GameView extends JPanel {
     public void setSkin2() {
         court.setSkin2();
     }
+
 }

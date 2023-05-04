@@ -304,12 +304,14 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
             else
                 g.drawImage(WinScreenDisable, 0, 0, this);
 
-            g.setFont(ImageImport.rightSize("Level " + niveau.getNom() + " Completed !", (width * 635) / 781));
+            g.setFont(ImageImport.rightSize("Level " + niveau.getNom() + " Completed !", (width * 573) / 781));
             g.setColor(Color.WHITE);
-            g.drawString("Level " + niveau.getNom() + " Completed !", (width * 90) / 781, (height * 50) / 876);
+            FontMetrics fm = g.getFontMetrics(g.getFont()) ;
+            int offsetX = ((width * 573) / 781) - fm.stringWidth("Level " + niveau.getNom() + " Completed !") ;
+            int offsetY = fm.getAscent()/2 ;
+            g.drawString("Level " + niveau.getNom() + " Completed !", (width * 104) / 781 +offsetX, (height * 45) / 876 + offsetY);
 
-            // if()
-            int x = (height * 45) / 876 ;
+            int x = (width * 50) / 876 ;
             int y =(height * 175) / 876 ;
             g.setFont(ImageImport.rightSize("Balles Utilisees: 1000", (width * (876-90)) / 876));
             g.drawString("Score: " + toucher, x, y);  
