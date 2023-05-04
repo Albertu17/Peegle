@@ -2,6 +2,7 @@ package Vue;
 import java.awt.Graphics2D;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.FontMetrics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -72,6 +73,24 @@ public class ImageImport {
         }
         
     }
+
+    public static Font rightSize(String txt, int tailleMax) {
+        Font rightF = arcade.deriveFont(1000f); // Très grande taille de police par défault
+        FontMetrics metrics = (getImage("ResumeScreen.png", 100, 100)).createGraphics().getFontMetrics(rightF);
+        int fontSize = rightF.getSize();
+        int textWidth = metrics.stringWidth(txt);
+        // int textWidthMax = (WinPanel.this.getWidth()*5)/6;
+        if (textWidth > tailleMax) {
+            System.out.println("in");
+            double widthRatio = (double) tailleMax / (double) textWidth;
+            rightF = rightF.deriveFont((float) Math.floor(fontSize * widthRatio));
+            fontSize = rightF.getSize();
+            metrics = (getImage("ResumeScreen.png", 100, 100)).createGraphics().getFontMetrics(rightF);
+        }
+        return rightF;
+    }
+
+
 
     /**
      * @description Relance l'import de toute les images du dossier image (ainsi que ses sous dossier)

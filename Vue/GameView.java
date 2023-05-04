@@ -1,14 +1,12 @@
 package Vue;
 
 import Vue.Menu.BoutonMenu;
-import Vue.Menu.Menu;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import javax.swing.*;
 
-import Modele.Ball;
 import Modele.Niveau;
 
 public class GameView extends JPanel {
@@ -60,12 +58,12 @@ public class GameView extends JPanel {
         court.setVisible(true);
         add(court);
 
-        // JButton bouton retour
-        btnRetour = new BoutonMenu("Back", 5 * (Ball.ballRadius * 2 + 10), 50);
-        btnRetour.setLocation(35 - Ball.ballRadius, 20);
-        btnRetour.setVisible(true);
-        btnRetour.addActionListener(e -> controleur.launchMenu());
-        add(btnRetour);
+        // // JButton bouton retour
+        // btnRetour = new BoutonMenu("Back", 5 * (Ball.ballRadius * 2 + 10), 50);
+        // btnRetour.setLocation(35 - Ball.ballRadius, 20);
+        // btnRetour.setVisible(true);
+        // btnRetour.addActionListener(e -> controleur.launchMenu());
+        // add(btnRetour);
 
         // Background
         Background background = new Background("test.jpg", court, heigth, width);
@@ -83,6 +81,8 @@ public class GameView extends JPanel {
         if (!visible) {
             court.requestFocusInWindow();
             court.animate();
+        }else{
+            this.requestFocusInWindow() ;
         }
     }
 
@@ -94,21 +94,13 @@ public class GameView extends JPanel {
             menuEnpause = new MenuEnpause();
             setSize(width, heigth);
             add(menuEnpause);
-            setOpaque(false);
+            setOpaque(true);
             setVisible(false);
             setLocation(0, 0);
             System.out.println(getSize());
             System.out.println(getLocation());
-            // setBounds(0, 0, courtWidth, courtHeight);
             GameView.this.add(this);
-            repaint();
-        }
-
-        @Override
-        public void paintComponents(Graphics g) {
-            super.paintComponents(g);
-            g.setColor(new Color(255, 255, 255));
-            g.drawRect(0, 0, width, heigth);
+            setBackground(new Color(0, 0, 0, 150) );
         }
 
         class MenuEnpause extends JPanel {
@@ -130,8 +122,10 @@ public class GameView extends JPanel {
 
                 // ajout des boutons
 
+                int y =(this.getHeight() * 200) / 876 ;
+
                 resume = new BoutonMenu("Resume", (this.getWidth()) / 2, 50);
-                resume.setLocation(this.getWidth()/2- resume.getWidth()/2, 20);
+                resume.setLocation(this.getWidth()/2- resume.getWidth()/2, y);
                 resume.setVisible(true);
                 resume.addActionListener(e -> {
                     launchMenuPause(false);
@@ -139,7 +133,7 @@ public class GameView extends JPanel {
                 add(resume);
 
                 restart = new BoutonMenu("Restart", (this.getWidth()) / 2, 50);
-                restart.setLocation(this.getWidth()/2 - restart.getWidth()/2, 20);
+                restart.setLocation(this.getWidth()/2 - restart.getWidth()/2, y*2);
                 restart.setVisible(true);
                 restart.addActionListener(e -> {
                     controleur.launchGameview(niveau.getDossier());
@@ -147,17 +141,19 @@ public class GameView extends JPanel {
                 add(restart);
 
                 quit = new BoutonMenu("Quit", (this.getWidth()) / 2, 50);
-                quit.setLocation(this.getWidth()/2 - quit.getWidth()/2, 20);
+                quit.setLocation(this.getWidth()/2 - quit.getWidth()/2, y*3);
                 quit.setVisible(true);
                 quit.addActionListener(e -> controleur.launchMenu());
                 add(quit);
-
             }
 
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 g.drawImage(arrierePlan, 0, 0, this);
+                g.setFont(ImageImport.rightSize("Level " + niveau.getNom() + " Completed !", (this.getWidth() * 635) / 781));
+                g.setColor(Color.WHITE);
+                g.drawString("Level " + niveau.getNom() + " !", (this.getWidth() * 90) / 781, (this.getHeight() * 50) / 876);
             }
         }
     }

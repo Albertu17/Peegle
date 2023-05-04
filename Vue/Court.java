@@ -259,23 +259,6 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         int height;
 
         
-
-        public Font rightSize(String txt, int tailleMax) {
-            Font rightF = arcade.deriveFont(1000f); // Très grande taille de police par défault
-            FontMetrics metrics = WinScreen.createGraphics().getFontMetrics(rightF);
-            int fontSize = rightF.getSize();
-            int textWidth = metrics.stringWidth(txt);
-            // int textWidthMax = (WinPanel.this.getWidth()*5)/6;
-            if (textWidth > tailleMax) {
-                System.out.println("in");
-                double widthRatio = (double) tailleMax / (double) textWidth;
-                rightF = rightF.deriveFont((float) Math.floor(fontSize * widthRatio));
-                fontSize = rightF.getSize();
-                metrics = WinScreen.createGraphics().getFontMetrics(rightF);
-            }
-            return rightF;
-        }
-
         WinPanel(int width, int height) {
             this.width = width;
             this.height = height;
@@ -321,14 +304,14 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
             else
                 g.drawImage(WinScreenDisable, 0, 0, this);
 
-            g.setFont(rightSize("Level " + niveau.getNom() + " Completed !", (width * 635) / 781));
+            g.setFont(ImageImport.rightSize("Level " + niveau.getNom() + " Completed !", (width * 635) / 781));
             g.setColor(Color.WHITE);
             g.drawString("Level " + niveau.getNom() + " Completed !", (width * 90) / 781, (height * 50) / 876);
 
             // if()
             int x = (height * 45) / 876 ;
             int y =(height * 175) / 876 ;
-            g.setFont(rightSize("Balles Utilisees: 1000", (width * (876-90)) / 876));
+            g.setFont(ImageImport.rightSize("Balles Utilisees: 1000", (width * (876-90)) / 876));
             g.drawString("Score: " + toucher, x, y);  
             y += (height * 75) / 876  ;          
             g.drawString("Balles Restantes: " + NbDeBall, x, y);
@@ -360,38 +343,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         super.paint(g);
         if (!editMode && pegs.size() == 0)
             return;
-        // FIN DE PARTIE
-        // if (!editMode && pegs.size()==0) {
-        // canon.setVisible(false);
-        // BufferedImage WinScreen;
-        // if (mouseX>535 && mouseX<985 && mouseY>695 && mouseY<765){
-        // WinScreen = ImageImport.getImage("WinScreen.png", width, height);
-        // }
-        // else {
-        // WinScreen = ImageImport.getImage("WinScreenDisabled.png", width, height);
-        // }
-        // GameOver = true;
-        // setBorder(null);
-        // g.drawImage(WinScreen, 0, 0, this);
-        // background.setOver(true);
-        // background.repaint();
-        // g.setFont(arcade.deriveFont(18f));
-        // g.setColor(Color.WHITE);
-        // g.drawString("Level "+ niveau.getNom() + " Completed !", 550, 125);
-        // g.setFont(arcade.deriveFont(26f));
-        // g.drawString("Score: "+toucher, 500, 210);
-        // g.drawString("Balles Restantes: "+NbDeBall, 500, 260);
-        // g.drawString("Balles Utilisees: "+(250-NbDeBall), 500, 310);
-        // g.drawString("Max Score: "+ niveau.getScoreMax(), 500, 360);
-        // if (toucher>ScoreMax){
-        // g.drawString("Nouveau Max Score !!!", 500, 610);
-        // niveau.setScoreMax(toucher);
-        // }
-        // return;
-        // }
-
-        // System.out.println(toucher);
-        // canon.repaint();
+        
         g.setColor(Color.BLACK);
         for (Ball ball : balls) {
             if (ball.isPresent()) {
