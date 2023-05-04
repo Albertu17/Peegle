@@ -94,12 +94,14 @@ public class Pegs implements Cloneable {
 
 
     // x et y sont au milieu de la balles
-    public boolean contains(double i, double j) {
-        if (Math.sqrt(Math.pow(i - x, 2) + Math.pow(j - y, 2)) <= radius + Ball.ballRadius) {
-            return true;
-        }
-        return false;
+    public double contains(double i, double j) {
+        // if (Math.sqrt(Math.pow(i - x, 2) + Math.pow(j - y, 2)) <= radius + Ball.ballRadius) {
+        //     return true;
+        // }
+        // return false;
+        return Math.sqrt(Math.pow(i - x, 2) + Math.pow(j - y, 2));
     }
+    
 
     // Retourne true si le point dont les coordonnées sont passées en argument est au sein du peg.
     // public boolean contains(int i, int j) {
