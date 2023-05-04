@@ -13,6 +13,7 @@ import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -259,9 +260,30 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
                 super(txt);
                 setForeground(Color.WHITE);
                 setOpaque(false);
-                setFont(arcade.deriveFont(taille));
                 setVisible(true);
                 setAlignmentX(Box.CENTER_ALIGNMENT);
+                Font rightF = arcade.deriveFont(taille); // Très grande taille de police par défault
+                FontMetrics metrics = WinScreen.createGraphics().getFontMetrics(rightF);
+                int fontSize = rightF.getSize();
+                int textWidth = metrics.stringWidth("Combo x100");
+                int textWidthMax = (width*5)/6;
+                if (textWidth > textWidthMax) {
+                    double widthRatio = (double) textWidthMax / (double) textWidth;
+                    rightF = rightF.deriveFont((float) Math.floor(fontSize * widthRatio));
+                    fontSize = rightF.getSize();
+                    metrics = WinScreen.createGraphics().getFontMetrics(rightF);
+                }
+                setFont(rightF);
+
+                // Font rightF =  arcade.deriveFont(taille) ;
+                // int fontSize = rightF.getSize();
+                // int textWidth = (WinScreen.createGraphics()).getFontMetrics(rightF).stringWidth(txt);
+                // int textWidthMax = width * 5/6;
+                // if (textWidth > textWidthMax) {
+                //     double widthRatio = (double) textWidthMax / (double) textWidth;
+                //     rightF = rightF.deriveFont((float) Math.floor(fontSize * widthRatio));;
+                // }
+                // setFont(rightF);
             }
         }
 
@@ -278,23 +300,31 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
             setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
             setVisible(true);
             setSize(width, height);
-
+            
             WinScreen = ImageImport.getImage("WinScreen.png", width, height);
             WinScreenDisable = ImageImport.getImage("WinScreenDisabled.png", width, height);
             exited = false;
+            
+            JPanel info  = new JPanel() ;
+            add(info) ;
+            info.setOpaque(false);
+            info.setLayout(new BoxLayout(info, BoxLayout.PAGE_AXIS));
+            info.setVisible(true);
+            info.setSize(width, height);
+            System.out.println(WinScreen.createGraphics());
 
-            add(new Texte("Level " + niveau.getNom() + " Completed !", 18f));
-            add(Box.createVerticalGlue()) ;
-            add(new Texte("Score: " + toucher, 26f));
-            add(Box.createVerticalGlue()) ;
-            add(new Texte("Balles Restantes: " + NbDeBall, 26f));
-            add(Box.createVerticalGlue()) ;
-            add(new Texte("Balles Utilisees: " + (250 - NbDeBall), 26f));
-            add(Box.createVerticalGlue()) ;
-            add(new Texte("Max Score: " + niveau.getScoreMax(), 26f));
-            add(Box.createVerticalGlue()) ;
+            info.add(new Texte("Level " + niveau.getNom() + " Completed !", 18f));
+            info.add(Box.createVerticalGlue()) ;
+            info.add(new Texte("Score: " + toucher, 26f));
+            info.add(Box.createVerticalGlue()) ;
+            info.add(new Texte("Balles Restantes: " + NbDeBall, 26f));
+            info.add(Box.createVerticalGlue()) ;
+            info.add(new Texte("Balles Utilisees: " + (250 - NbDeBall), 26f));
+            info.add(Box.createVerticalGlue()) ;
+            info.add(new Texte("Max Score: " + niveau.getScoreMax(), 26f));
+            info.add(Box.createVerticalGlue()) ;
             if (toucher > ScoreMax) {
-                add(new Texte("Nouveau Max Score !!!", 26f));
+                info.add(new Texte("Nouveau Max Score !!!", 26f));
                 niveau.setScoreMax(toucher);
             }
 

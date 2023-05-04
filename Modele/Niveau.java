@@ -60,15 +60,13 @@ public class Niveau {
     }
 
     public int getScoreMax(){return scoreMax ;}
-    public void setScoreMax(int newMax){
-        if (newMax< scoreMax) return ;
-
+    public void setValueAtIndex(int index, int valeur){
         List<String> docString = new ArrayList<String>() ;
         try {
             // modifie la premiere ligne
             Scanner sc = new Scanner(new File(dosierSauvegarde + getDossier() +".pegs")) ;
             String[] entete = sc.next().split(";") ;
-            entete[3] = String.valueOf(newMax) ;
+            entete[index] = String.valueOf(valeur) ;
             String temp ="" ;
             for(int i = 0 ; i < entete.length -1; i++){
                 temp += entete[i] +";" ;
@@ -85,6 +83,11 @@ public class Niveau {
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+
+    public void setScoreMax(int newMax){
+        if (newMax< scoreMax) return ;
+        setValueAtIndex(3, newMax);
         scoreMax = newMax ;
     }
 
@@ -112,7 +115,12 @@ public class Niveau {
             }
         }
 
-        // TODO determiner le scoreEtoiles et nombres de balles initials
+        nv.score1Etoile = 5* nv.pegs.size() ;
+        nv.score2Etoiles = 10* nv.pegs.size() ;
+        nv.score2Etoiles = 10* nv.pegs.size() ;
+        nv.nbBillesInitiales = 3* nv.pegs.size() ;
+        nv.scoreMax  = 1 ; //TODO à faire 
+
 
         return nv ;
     }
