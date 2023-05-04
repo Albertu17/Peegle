@@ -132,7 +132,7 @@ public class Background extends JPanel{
     
     // annonceur nombre de balles restantes
     balleRestImage = getEditedImage(court.getNbDeBall()<=1 ? "Balle :" : "Balles :", "X"+String.valueOf(court.getNbDeBall()), 5* (Ball.ballRadius*2 + 10) , 60) ;
-    g.drawImage(balleRestImage, XBall -5,  pointDeDepartY,  court); //TODO alignement de limage 
+    g.drawImage(balleRestImage, XBall -5,  pointDeDepartY,  court); 
    
     
 }
@@ -153,7 +153,7 @@ public BufferedImage getEditedImage(String ligne1, String ligne2, int width, int
     rightFont = rightFont(ligne2, g, width, height/2);
     metrics = g.getFontMetrics(rightFont);
     g.setFont(rightFont);
-    g.setColor(Color.WHITE);
+    g.setColor(Color.YELLOW);
     g.drawString(ligne2, width/2 - metrics.stringWidth(ligne2)/2, (3*height)/4);
 
   return buffImg ;
