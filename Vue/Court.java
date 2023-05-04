@@ -266,7 +266,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         }
 
         WinPanel(int width, int height) {
-            // idépendant de la classe :
+            // idépendant de la classe, pour la fin du jeu :
             GameOver = true;
             canon.setVisible(false);
             Court.this.setBorder(null);
@@ -284,10 +284,15 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
             exited = false;
 
             add(new Texte("Level " + niveau.getNom() + " Completed !", 18f));
+            add(Box.createVerticalGlue()) ;
             add(new Texte("Score: " + toucher, 26f));
+            add(Box.createVerticalGlue()) ;
             add(new Texte("Balles Restantes: " + NbDeBall, 26f));
+            add(Box.createVerticalGlue()) ;
             add(new Texte("Balles Utilisees: " + (250 - NbDeBall), 26f));
+            add(Box.createVerticalGlue()) ;
             add(new Texte("Max Score: " + niveau.getScoreMax(), 26f));
+            add(Box.createVerticalGlue()) ;
             if (toucher > ScoreMax) {
                 add(new Texte("Nouveau Max Score !!!", 26f));
                 niveau.setScoreMax(toucher);
@@ -302,7 +307,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
                     exited = false;
                     repaint() ;
                 }
-                public void mousePressed(MouseEvent evt) {controleur.launchMenu();}
+                public void mousePressed(MouseEvent evt) {controleur.launchMenu();} //TODO que faire quand le niveau est fini 
             });
         }
 
