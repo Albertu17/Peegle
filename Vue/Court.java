@@ -237,10 +237,10 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
                     }
                     sceau.move(((last - now) * 1.0e-9));
                     if (!editMode && pegs.size() == 0) {
-                        WinPanel pan = new WinPanel(width/2, height) ;
-                        pan.setLocation(width/2 - pan.getWidth()/2, height/2- pan.getHeight()/2);
-                        add(pan) ;
-                        enPause = true ;
+                        WinPanel pan = new WinPanel(width / 2, height);
+                        pan.setLocation(width / 2 - pan.getWidth() / 2, height / 2 - pan.getHeight() / 2);
+                        add(pan);
+                        enPause = true;
                     }
 
                     repaint();
@@ -255,35 +255,30 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         BufferedImage WinScreen;
         BufferedImage WinScreenDisable;
         boolean exited;
+        int width;
+        int height;
 
-        class Texte extends JLabel {
-            Texte(String txt, float taille) {
-                super(txt);
-                setForeground(Color.WHITE);
-                setOpaque(false);
-                setVisible(true);
-                // setAlignmentX(Box.CENTER_ALIGNMENT);
-                
-                // ajustement de la taille de la police
-                Font rightF = arcade.deriveFont(taille); // Très grande taille de police par défault
-                FontMetrics metrics = WinScreen.createGraphics().getFontMetrics(rightF);
-                int fontSize = rightF.getSize();
-                int textWidth = metrics.stringWidth(txt);
-                int textWidthMax = (WinPanel.this.getWidth()*5)/6;
-                if (textWidth > textWidthMax) {
-                    System.out.println("in");
-                    double widthRatio = (double) textWidthMax / (double) textWidth;
-                    rightF = rightF.deriveFont((float) Math.floor(fontSize * widthRatio));
-                    fontSize = rightF.getSize();
-                    metrics = WinScreen.createGraphics().getFontMetrics(rightF);
-                }
-                setFont(rightF);
+        
+
+        public Font rightSize(String txt, int tailleMax) {
+            Font rightF = arcade.deriveFont(1000f); // Très grande taille de police par défault
+            FontMetrics metrics = WinScreen.createGraphics().getFontMetrics(rightF);
+            int fontSize = rightF.getSize();
+            int textWidth = metrics.stringWidth(txt);
+            // int textWidthMax = (WinPanel.this.getWidth()*5)/6;
+            if (textWidth > tailleMax) {
+                System.out.println("in");
+                double widthRatio = (double) tailleMax / (double) textWidth;
+                rightF = rightF.deriveFont((float) Math.floor(fontSize * widthRatio));
+                fontSize = rightF.getSize();
+                metrics = WinScreen.createGraphics().getFontMetrics(rightF);
             }
+            return rightF;
         }
 
         WinPanel(int width, int height) {
-            int xdebut = width - width/2 ;
-            int ydebut  = height/2 ; 
+            this.width = width;
+            this.height = height;
             // idépendant de la classe, pour la fin du jeu :
             GameOver = true;
             canon.setVisible(false);
@@ -296,55 +291,25 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
             setLayout(null);
             setVisible(true);
             setSize(width, height);
-            
+
             WinScreen = ImageImport.getImage("WinScreen.png", width, height);
             WinScreenDisable = ImageImport.getImage("WinScreenDisabled.png", width, height);
             exited = false;
 
-            // JPanel debut = new JPanel();
-
-            // debut.setLayout(new BoxLayout(debut, BoxLayout.PAGE_AXIS));
-            // debut.setSize(width, (height*70)/876);
-            // // debut.setVisible(true);
-            // add(Box.createRigidArea(new Dimension(0, 10))) ;
-            Texte t = new Texte("Level " + niveau.getNom() + " Completed !", 18f) ;
-            add(t) ;
-            t.setLocation(xdebut +(width-t.getWidth())/2, ydebut);
-            
-            
-            JPanel centre  = new JPanel() ;
-            add(centre) ;
-            centre.setOpaque(false);
-            centre.setLayout(new BoxLayout(centre, BoxLayout.PAGE_AXIS));
-            centre.setVisible(true);
-            centre.setSize(width, (height*(648))/876);
-
-            
-            centre.add(Box.createVerticalGlue()) ;
-            centre.add(new Texte("Score: " + toucher, 26f));
-            centre.add(Box.createVerticalGlue()) ;
-            centre.add(new Texte("Balles Restantes: " + NbDeBall, 26f));
-            centre.add(Box.createVerticalGlue()) ;
-            centre.add(new Texte("Balles Utilisees: " + (250 - NbDeBall), 26f));
-            centre.add(Box.createVerticalGlue()) ;
-            centre.add(new Texte("Max Score: " + niveau.getScoreMax(), 26f));
-            // centre.add(Box.createVerticalGlue()) ;
-            if (toucher > ScoreMax) {
-                centre.add(Box.createVerticalGlue()) ;
-                centre.add(new Texte("Nouveau Max Score !!!", 26f));
-                niveau.setScoreMax(toucher);
-            }
-
             addMouseListener((MouseListener) new MouseAdapter() {
                 public void mouseEntered(MouseEvent evt) {
                     exited = true;
-                    repaint() ;
+                    repaint();
                 }
+
                 public void mouseExited(MouseEvent evt) {
                     exited = false;
-                    repaint() ;
+                    repaint();
                 }
-                public void mousePressed(MouseEvent evt) {controleur.launchMenu();} //TODO que faire quand le niveau est fini 
+
+                public void mousePressed(MouseEvent evt) {
+                    controleur.launchMenu();
+                } // TODO que faire quand le niveau est fini
             });
         }
 
@@ -355,14 +320,36 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
                 g.drawImage(WinScreen, 0, 0, this);
             else
                 g.drawImage(WinScreenDisable, 0, 0, this);
+
+            g.setFont(rightSize("Level " + niveau.getNom() + " Completed !", (width * 635) / 781));
+            g.setColor(Color.WHITE);
+            g.drawString("Level " + niveau.getNom() + " Completed !", (width * 90) / 781, (height * 50) / 876);
+
+            // if()
+            int x = (height * 45) / 876 ;
+            int y =(height * 175) / 876 ;
+            g.setFont(rightSize("Balles Utilisees: 1000", (width * (876-90)) / 876));
+            g.drawString("Score: " + toucher, x, y);  
+            y += (height * 75) / 876  ;          
+            g.drawString("Balles Restantes: " + NbDeBall, x, y);
+            y += (height * 75) / 876  ;          
+            g.drawString("Balles Utilisees: " + (250 - NbDeBall), x, y);
+            y += (height * 75) / 876  ;          
+            g.drawString("Max Score: " + niveau.getScoreMax(), x, y);
+            if (toucher > ScoreMax) {
+                y = (height *600) / 876  ;          
+                g.drawString("Nouveau Max Score !!!", x, y);
+                niveau.setScoreMax(toucher);
+            }
+
         }
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable(){
+        SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                Controleur c = new Controleur() ;
+                Controleur c = new Controleur();
                 c.launchGameview("Campagne/Test2");
             }
         });
@@ -371,7 +358,8 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
     public void paint(Graphics g) {
 
         super.paint(g);
-        if (!editMode && pegs.size()==0) return ; 
+        if (!editMode && pegs.size() == 0)
+            return;
         // FIN DE PARTIE
         // if (!editMode && pegs.size()==0) {
         // canon.setVisible(false);

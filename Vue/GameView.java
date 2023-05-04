@@ -5,6 +5,7 @@ import Vue.Menu.Menu;
 import java.awt.Color;
 import javax.swing.*;
 
+import Modele.Ball;
 import Modele.Niveau;
 
 public class GameView extends JPanel {
@@ -47,6 +48,12 @@ public class GameView extends JPanel {
         court.setBounds((width-courtWidth)/2, (heigth-courtHeight)/2, courtWidth, courtHeight);
         court.setVisible(true);
         add(court);
+        // JButton bouton retour
+        btnRetour = new BoutonMenu("Back", 5* (Ball.ballRadius*2 + 10), 50);
+        btnRetour.setLocation(35-Ball.ballRadius,20);
+        btnRetour.setVisible(true);
+        btnRetour.addActionListener(e -> controleur.launchMenu());
+        add(btnRetour);
 
         // Background
         Background background = new Background("test.jpg", court,heigth,width);
@@ -54,12 +61,6 @@ public class GameView extends JPanel {
         background.setOpaque(false);
         add(background);
 
-        // JButton bouton retour
-        btnRetour = new BoutonMenu("Back", 200, 50);
-        btnRetour.setLocation(40,40);
-        btnRetour.setVisible(true);
-        btnRetour.addActionListener(e -> controleur.launchMenu());
-        add(btnRetour);
     }
 
     public int getWidth(){
