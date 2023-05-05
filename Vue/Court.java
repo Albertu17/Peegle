@@ -22,7 +22,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
 
     private int width;
     private int height;
-    private Canon canon;
+    public Canon canon;
     private Sceau sceau;
     private Niveau niveau ;
     private int toucher;
@@ -170,8 +170,19 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         this.background = background;
     }
 
+    public Canon getCanon() {
+        return canon;
+    }
+
     public int getBallRadius(){
         return (int) Ball.ballRadius;
+    }
+
+    public void upVitesse(){
+        canon.setVitesseTir(canon.getVitesseTir()*1.1);
+    }
+    public void downVitesse(){
+        canon.setVitesseTir(canon.getVitesseTir()*0.9);
     }
 
     public void setSkin1(){

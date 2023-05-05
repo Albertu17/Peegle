@@ -6,6 +6,14 @@ import java.awt.image.BufferedImage;
 import Vue.Court;
 import Vue.ImageImport;
 import Vue.Sceau;
+import java.io.*;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 public class Ball{
 
     public final static int ballRadius = 10; // m
@@ -122,8 +130,16 @@ public class Ball{
         } else {}
         Pegs p = touchedPegs();
 
+
+
         
         if (p!=null && !atoucherpegs){
+            try {
+                playSound();
+            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             if (!p.getHit()){combo++;}
             p.setTouche(true);
             double ux = (nextBallX+ ballRadius) - (p.getX());
@@ -154,6 +170,18 @@ public class Ball{
             hitground=true;
         }
         return nextBallY < 0 || nextBallY > court.getHeight() - ballRadius*2 - 15;
+    }
+
+    private static void playSound() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        File audioFile = new File("C:/Users/Lukas/Desktop/PeggleBis/Modele/hitsound.wav");
+ 
+        AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+        AudioFormat format = audioStream.getFormat();
+ 
+        DataLine.Info info = new DataLine.Info(Clip.class, format); 
+        Clip audioClip = (Clip) AudioSystem.getLine(info);
+        audioClip.open(audioStream);
+        audioClip.start();
     }
     
 

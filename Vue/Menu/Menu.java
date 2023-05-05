@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.swing.*;
 
 import Vue.Controleur;
+import Vue.GameView;
 import Vue.ImageImport;
 
 public class Menu extends JPanel {
@@ -57,13 +58,18 @@ public class Menu extends JPanel {
         // BoutonMenu options
         btnOptions = new BoutonMenu("options", 200, 50);
         btnOptions.setLocation(middleW-100,middleH-25); 
-        btnOptions.addActionListener(e -> controleur.launchParametres());
+        btnOptions.addActionListener(e -> {
+            if(controleur.gameview == null){
+                controleur.gameview = new GameView(controleur, "Perso/Triangle");
+            }
+            controleur.launchParametres();});
         add(btnOptions);
 
         // BoutonMenu editor
         btnEditeur = new BoutonMenu("editor", 200, 50);
         btnEditeur.setLocation(middleW-100,middleH-25+70); 
-        btnEditeur.addActionListener(e -> controleur.launchEditeurNiveaux());
+        btnEditeur.addActionListener(e -> {
+            controleur.launchEditeurNiveaux();});
         add(btnEditeur);
 
         // BoutonMenu quit

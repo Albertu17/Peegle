@@ -30,7 +30,7 @@ public class Canon extends JPanel{
     private double gravity = 100 ; 
     private int maxDistanceLigneTir ;
     private Point pivotDeRotation ;
-    private double vitesseTir = 450 ;
+    private static double vitesseTir = 450 ;
     private double tailleCanon = 6/100.0; // en pourcentage de la taille de l'écran
     private int angleMaxBord = 5 ;
     
@@ -80,6 +80,11 @@ public class Canon extends JPanel{
     }
 
 
+    public void setVitesseTir(double vitesseTir) {
+        Canon.vitesseTir = vitesseTir;
+    }
+
+
     // TODO pas forcément utile ça dépend de l'implémentation futur
     public void setBalleATirer(Ball balleATirer) {
         this.balleATirer = balleATirer;
@@ -88,6 +93,10 @@ public class Canon extends JPanel{
         // Placement graphique :
         placementBallCanon();
         
+    }
+
+    public double getVitesseTir() {
+        return Canon.vitesseTir;
     }
     
     private void placementBallCanon(){

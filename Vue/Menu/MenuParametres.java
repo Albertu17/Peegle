@@ -1,6 +1,7 @@
 package Vue.Menu;
 
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
@@ -25,6 +26,11 @@ public class MenuParametres extends JPanel {
     JButton btnSkin2;
     JButton btnSkin3;
     JButton btnRetour;
+
+    JButton plus;
+    JButton minus;
+
+    JLabel vitesse;
 
     public MenuParametres(Controleur c){
 
@@ -70,6 +76,31 @@ public class MenuParametres extends JPanel {
         btnRetour.setLocation(40,40);
         btnRetour.addActionListener(e -> controleur.launchMenu());
         add(btnRetour);
+
+        plus = new BoutonMenu("Plus", 100, 50);
+        plus.setLocation(middleW-400,middleH-25-70);
+        plus.addActionListener(e->{ c.gameview.court.upVitesse();
+            double t = c.gameview.court.canon.getVitesseTir();
+            String s = String.valueOf(+t);
+            vitesse.setText(s);
+        });
+        add(plus);
+        minus = new BoutonMenu("Minus",100, 50);
+        minus.setLocation(middleW-600,middleH-25-70);
+        minus.addActionListener(e->{
+            c.gameview.court.downVitesse();
+            double t = c.gameview.court.canon.getVitesseTir();
+            String s = String.valueOf(+t);
+            vitesse.setText(s);
+        });
+        add(minus);
+        
+        double t = c.gameview.court.getCanon().getVitesseTir();
+        String s = String.valueOf(+t);
+        vitesse = new JLabel(s);
+        vitesse.setFont(new Font("Verdana",Font.PLAIN,30));
+        vitesse.setBounds(middleW-500, middleH,200,50);
+        add(vitesse);
     }
 
     @Override
