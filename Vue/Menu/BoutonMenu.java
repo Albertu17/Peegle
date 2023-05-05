@@ -133,14 +133,17 @@ public class BoutonMenu extends JButton {
                     action.perf() ;
                     break;
                 case (KeyEvent.VK_DOWN):
+                    if (selecteur == -1) selecteur = -2 ; //si reset
                     selecteur++;
                     iluminateButton();
                     break;
                 case (KeyEvent.VK_UP):
+                    if (selecteur == -1) selecteur = 1 ; //si reset
                     selecteur--;
                     iluminateButton();
                     break;
                 case (KeyEvent.VK_ENTER):
+                case (KeyEvent.VK_CONTROL):
                     if (selecteur != -1) getButton(selecteur).doClick();
                     break;
 

@@ -404,16 +404,6 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                Controleur c = new Controleur();
-                c.launchGameview("Campagne/Test2");
-            }
-        });
-    }
-
     public void paint(Graphics g) {
 
         super.paint(g);
@@ -657,6 +647,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
                 }
                 break;
             case (KeyEvent.VK_ESCAPE):
+            case (KeyEvent.VK_CONTROL):
                 controleur.gameview.launchMenuPause(true); 
                 break;
             default:
