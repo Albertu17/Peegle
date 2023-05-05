@@ -141,7 +141,7 @@ public class BoutonMenu extends JButton {
                     iluminateButton();
                     break;
                 case (KeyEvent.VK_ENTER):
-                    getButton(selecteur).doClick();
+                    if (selecteur != -1) getButton(selecteur).doClick();
                     break;
 
                 default:

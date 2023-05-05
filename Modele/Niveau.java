@@ -178,7 +178,8 @@ public class Niveau {
         // ajout dans ImportImage si actif
         if (ImageImport.isAtif()){
             ImageImport.addImage("IconeNiveau/"+nv.getDossier()+".png");
-        } 
+        }
+
 
     }
     
