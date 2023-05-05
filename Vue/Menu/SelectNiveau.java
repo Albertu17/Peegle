@@ -80,7 +80,8 @@ public class SelectNiveau extends JPanel implements KeyListener{
         selectPerso.addActionListener(e -> setSelecteur(false) );
         add(selectPerso);
         this.setFocusable(true);
-        this.addKeyListener(this);
+        this.addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[]{selectCampagne, selectPerso}, ()-> controleur.launchMenu()));
+        this.requestFocusInWindow() ;
     }
 
     private void setSelecteur(boolean campagne){
@@ -106,6 +107,7 @@ public class SelectNiveau extends JPanel implements KeyListener{
             this.add(next) ;
             this.add(recherche);
         afficherPage(page_act);
+        this.addKeyListener(this);
         this.requestFocusInWindow() ;
     }
 

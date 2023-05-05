@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -85,5 +87,70 @@ public class BoutonMenu extends JButton {
         }
 
         return rightF;
+    }
+
+    public static class BoutonClavier implements KeyListener{
+        private BoutonMenu[] allBouton ;
+        private int selecteur ;
+        private int nbrBoutton ;
+        private Action action ;
+
+        public interface Action {
+            void perf() ;
+        }
+
+        public BoutonClavier(BoutonMenu[] allBouton, Action actionToucheEchap){ 
+            this.action = actionToucheEchap ;
+            this.allBouton = allBouton ;
+            nbrBoutton = allBouton.length ;
+            resetSelecteur();
+        }
+
+
+        public void keyTyped(KeyEvent e) {
+        }
+
+        private BoutonMenu getButton(int i) {
+            selecteur = (selecteur + nbrBoutton) % nbrBoutton;
+            return allBouton[i] ;
+        }
+        private void resetSelecteur(){selecteur =-1 ;}
+
+        private void iluminateButton() {
+            selecteur = (selecteur + nbrBoutton) % nbrBoutton;
+            for (int i = 0; i < nbrBoutton; i++) {
+                if (i == selecteur)
+                    getButton(i).setCouleur(true);
+                else
+                    getButton(i).setCouleur(false);
+            }
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            switch (e.getKeyCode()) {
+                case (KeyEvent.VK_ESCAPE):
+                    action.perf() ;
+                    break;
+                case (KeyEvent.VK_DOWN):
+                    selecteur++;
+                    iluminateButton();
+                    break;
+                case (KeyEvent.VK_UP):
+                    selecteur--;
+                    iluminateButton();
+                    break;
+                case (KeyEvent.VK_ENTER):
+                    getButton(selecteur).doClick();
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+        }
     }
 }

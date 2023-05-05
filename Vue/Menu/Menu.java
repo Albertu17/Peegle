@@ -18,11 +18,11 @@ public class Menu extends JPanel {
 
     private Controleur controleur ;
 
-    JButton btnPlay;
-    JButton btnCampagne;
-    JButton btnOptions;
-    JButton btnEditeur;
-    JButton btnQuit;
+    BoutonMenu btnPlay;
+    BoutonMenu btnCampagne;
+    BoutonMenu btnOptions;
+    BoutonMenu btnEditeur;
+    BoutonMenu btnQuit;
 
     private BufferedImage background;
     private BufferedImage title;
@@ -71,6 +71,8 @@ public class Menu extends JPanel {
         btnQuit.setLocation(middleW-100,middleH-25+140);
         btnQuit.addActionListener(e -> System.exit(0));
         add(btnQuit);
+        setFocusable(true);
+        addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[]{btnPlay, btnCampagne, btnOptions, btnEditeur, btnQuit}, () -> System.exit(0)));
     }
 
     @Override
@@ -78,13 +80,5 @@ public class Menu extends JPanel {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, this);
         g.drawImage(title, middleW-title.getWidth()/2-10, 40, this);
-    }
-    
-    // TODO pas utilisée car ImageImport.getImage() peut le faire
-    BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) throws IOException {
-        Image resultingImage = originalImage.getScaledInstance(targetWidth, targetHeight, Image.SCALE_DEFAULT);
-        BufferedImage outputImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
-        outputImage.getGraphics().drawImage(resultingImage, 0, 0, null);
-        return outputImage;
     }
  }

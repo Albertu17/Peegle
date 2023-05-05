@@ -67,12 +67,20 @@ public class Niveau {
     public String getNom() {
         return nom;
     }
-    private String getDossier(){
+    public String getDossier(){
         return (campagne ? "Campagne/" : "Perso/" )+getNom();
     }
 
-    public int getScoreMax(){return ScoreMax ;}
-    public void setValueAtIndex(int index, int valeur){
+
+    public Niveau (String nom) {
+        this.nom = nom;
+        pegs = new ArrayList<>() ;
+    }
+
+    public int getScoreMax(){return scoreMax ;}
+    public void setScoreMax(int newMax){
+        if (newMax< scoreMax) return ;
+
         List<String> docString = new ArrayList<String>() ;
         try {
             // modifie la premiere ligne
@@ -138,7 +146,12 @@ public class Niveau {
             }
         }
 
-        // TODO determiner le scoreEtoiles et nombres de balles initials
+        nv.score1Etoile = 5* nv.pegs.size() ;
+        nv.score2Etoiles = 10* nv.pegs.size() ;
+        nv.score2Etoiles = 10* nv.pegs.size() ;
+        nv.nbBillesInitiales = 3* nv.pegs.size() ;
+        nv.scoreMax  = 1 ; //TODO score max à programmer
+
 
         return nv ;
     }

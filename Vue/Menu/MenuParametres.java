@@ -21,9 +21,9 @@ public class MenuParametres extends JPanel {
 
     private BufferedImage background;
 
-    JButton btnSkin1;
-    JButton btnSkin2;
-    JButton btnSkin3;
+    BoutonMenu btnSkin1;
+    BoutonMenu btnSkin2;
+    BoutonMenu btnSkin3;
     JButton btnRetour;
 
     public MenuParametres(Controleur c){
@@ -64,6 +64,10 @@ public class MenuParametres extends JPanel {
         btnRetour.setLocation(40,40);
         btnRetour.addActionListener(e -> controleur.launchMenu());
         add(btnRetour);
+        
+        setFocusable(true);
+        requestFocusInWindow();
+        addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[]{btnSkin1, btnSkin2, btnSkin3}, ()->controleur.launchMenu()));
     }
 
     @Override

@@ -246,6 +246,9 @@ public class EditeurNiveaux extends JPanel {
 
         // Réglages par défaut
         casePegBleu.mousePressed(null);
+        setFocusable(true);
+        this.addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[]{}, ()-> controleur.launchMenu()));
+
     }
 
     public void boutonsModifActifs(boolean activer) {
