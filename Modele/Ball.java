@@ -40,6 +40,9 @@ public class Ball{
     private static BufferedImage image = ImageImport.getImage("ball.png", (int) ballRadius*2, (int) ballRadius*2);
 
     private Court court;
+    public Clip audioClip;
+
+    public boolean inLevel = true;
 
     double x,y;
 
@@ -133,7 +136,7 @@ public class Ball{
 
 
         
-        if (p!=null && !atoucherpegs){
+        if (p!=null && !atoucherpegs && inLevel){
             try {
                 playSound();
             } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
@@ -160,6 +163,13 @@ public class Ball{
         ballY = nextBallY;
     }
 
+    public void inLevelTrue(){
+        inLevel = true;
+    }
+    public void inLevelFalse(){
+        inLevel = false;
+    }
+
 
     public boolean touchedWallX(double nextBallX){
         return nextBallX < 0 || nextBallX> court.getWidth() - ballRadius;
@@ -172,17 +182,19 @@ public class Ball{
         return nextBallY < 0 || nextBallY > court.getHeight() - ballRadius*2 - 15;
     }
 
-    private static void playSound() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+    private void playSound() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
         File audioFile = new File("C:/Users/Lukas/Desktop/PeggleBis/Modele/hitsound.wav");
  
         AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
         AudioFormat format = audioStream.getFormat();
  
         DataLine.Info info = new DataLine.Info(Clip.class, format); 
-        Clip audioClip = (Clip) AudioSystem.getLine(info);
+        audioClip = (Clip) AudioSystem.getLine(info);
         audioClip.open(audioStream);
         audioClip.start();
     }
+
+
     
 
 

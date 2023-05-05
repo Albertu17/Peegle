@@ -5,6 +5,7 @@ import Vue.Menu.Menu;
 import java.awt.Color;
 import javax.swing.*;
 
+import Modele.Ball;
 import Modele.Niveau;
 
 public class GameView extends JPanel {
@@ -57,7 +58,12 @@ public class GameView extends JPanel {
         // JButton bouton retour
         btnRetour = new BoutonMenu("back", 200, 50);
         btnRetour.setLocation(40,40);
-        btnRetour.addActionListener(e -> controleur.launchMenu());
+        btnRetour.addActionListener(e -> {
+            for(Ball ball : court.getBalls()){
+                ball.inLevelFalse();
+            }
+            controleur.launchMenu();
+            });
         add(btnRetour);
     }
 

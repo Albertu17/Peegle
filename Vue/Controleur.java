@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import Modele.Ball;
 import Vue.Menu.*;
 
 public class Controleur extends JFrame{
@@ -105,6 +106,9 @@ public class Controleur extends JFrame{
     public void launchGameview(String nomNiveau){
         this.removeAll();
         gameview = new GameView(this, nomNiveau);
+        for(Ball ball : gameview.court.getBalls()){
+            ball.inLevelTrue();
+        }
         if (gameview != null){
             add(gameview) ;
         }
