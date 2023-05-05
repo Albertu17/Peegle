@@ -78,6 +78,15 @@ public class Canon extends JPanel{
     public int[] getYLigneViser() {
         return YLigneViser;
     }
+    
+    public void setBalleATirer(Ball balleATirer) {
+        this.balleATirer = balleATirer;
+        gravity = balleATirer.getG();
+        
+        // Placement graphique :
+        placementBallCanon();
+        
+    }
 
     
     private void placementBallCanon(){

@@ -77,16 +77,25 @@ public class Niveau {
         pegs = new ArrayList<>() ;
     }
 
-    public int getScoreMax(){return scoreMax ;}
-    public void setScoreMax(int newMax){
-        if (newMax< scoreMax) return ;
+    public int getScoreMax(){return ScoreMax ;}
 
+    public void setScoreMax(int newMax){
+        if (newMax< ScoreMax) return ;
+        setValueAtIndex(9, newMax);
+        ScoreMax = newMax ;
+    }
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+        setValueAtIndex(7, checked ? 1 : 0);
+    }
+
+    public void setValueAtIndex(int index , int value){
         List<String> docString = new ArrayList<String>() ;
         try {
             // modifie la premiere ligne
             Scanner sc = new Scanner(new File(dosierSauvegarde + getDossier() +".pegs")) ;
             String[] entete = sc.next().split(";") ;
-            entete[index] = String.valueOf(valeur) ;
+            entete[index] = String.valueOf(value) ;
             String temp ="" ;
             for(int i = 0 ; i < entete.length -1; i++){
                 temp += entete[i] +";" ;
@@ -103,22 +112,6 @@ public class Niveau {
         } catch (Exception e) {
             System.out.println(e);
         }
-    }
-
-    public void setScoreMax(int newMax){
-        if (newMax< ScoreMax) return ;
-        setValueAtIndex(8, newMax);
-        ScoreMax = newMax ;
-    }
-    public void setChecked(boolean checked) {
-        this.checked = checked;
-        setValueAtIndex(7, checked ? 1 : 0);
-    }
-
-
-    public Niveau (String nom) {
-        this.nom = nom;
-        pegs = new ArrayList<>() ;
     }
 
 
@@ -150,7 +143,7 @@ public class Niveau {
         nv.score2Etoiles = 10* nv.pegs.size() ;
         nv.score2Etoiles = 10* nv.pegs.size() ;
         nv.nbBillesInitiales = 3* nv.pegs.size() ;
-        nv.scoreMax  = 1 ; //TODO score max à programmer
+        nv.ScoreMax  = 1 ; //TODO score max à programmer
 
 
         return nv ;
