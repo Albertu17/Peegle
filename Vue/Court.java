@@ -10,6 +10,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
+import java.awt.Button;
 import java.awt.Graphics2D;
 import java.awt.Color;
 import java.awt.Font;
@@ -24,6 +25,7 @@ import javax.swing.event.MouseInputListener;
 import javax.swing.Timer;
 
 import Modele.*;
+import Vue.Menu.BoutonMenu;
 
 public class Court extends JPanel implements MouseInputListener, KeyListener {
 
@@ -239,13 +241,86 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
                         add(pan);
                         enPause = true;
                     }
-
+                    if (!editMode && getNbDeBall() == 0 && balls.size() == 0 ) {
+                        LosePanel pan = new LosePanel(width / 2, height);
+                        pan.setLocation(width / 2 - pan.getWidth() / 2, height / 2 - pan.getHeight() / 2);
+                        add(pan);
+                        pan.requestFocusInWindow() ;
+                        enPause = true;
+                    }
                     repaint();
                     now = last;
                 }
             }
         });
         timer.start();
+    }
+
+    public class LosePanel extends JPanel{
+        BufferedImage LoseScreen;
+        BoutonMenu restart ;
+        BoutonMenu retour ;
+        int width;
+        int height;
+
+        
+        LosePanel(int width, int height) {
+            this.width = width;
+            this.height = height;
+            // idépendant de la classe, pour la fin du jeu :
+            GameOver = true;
+            canon.setVisible(false);
+            Court.this.setBorder(null);
+            background.setOver(true);
+            background.repaint();
+
+            // parametre du Panel :
+            setOpaque(false);
+            setLayout(null);
+            setVisible(true);
+            setSize(width, height);
+
+            LoseScreen = ImageImport.getImage("ResumeScreen.png", width, height);
+
+            restart = new BoutonMenu("Restart", width, height) ;
+            retour = new BoutonMenu("Retour", width, height); 
+
+            int ydepart = (this.getHeight() * 350) / 876;
+            int yoffset = (this.getHeight() * 200) / 876;
+
+            restart = new BoutonMenu("Restart", (this.getWidth()) / 2, (50*Court.this.getWidth())/520);
+            restart.setLocation(this.getWidth() / 2 - restart.getWidth() / 2, ydepart- restart.getHeight()/2);
+            restart.setVisible(true);
+            restart.addActionListener(e -> {
+                controleur.launchGameview(niveau.getDossier());
+            });
+            add(restart);
+
+            retour = new BoutonMenu("Quit", (this.getWidth()) / 2, (50*Court.this.getWidth())/520);
+            retour.setLocation(this.getWidth() / 2 - retour.getWidth() / 2, ydepart +yoffset - retour.getHeight()/2);
+            retour.setVisible(true);
+            retour.addActionListener(e -> controleur.launchMenu());
+            add(retour);
+
+            setFocusable(true) ;
+            addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[]{restart, retour}, ()-> controleur.launchMenu())) ;
+            
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.drawImage(LoseScreen, 0, 0, this);
+
+            g.setFont(ImageImport.rightSize("Level " + niveau.getNom() + " failed !", (width * 573) / 781));
+            g.setColor(Color.WHITE);
+            FontMetrics fm = g.getFontMetrics(g.getFont()) ;
+            int offsetX = ((width * 573) / 781) - fm.stringWidth("Level " + niveau.getNom() + " failed !") ;
+            int offsetY = fm.getAscent()/2 ;
+            g.drawString("Level " + niveau.getNom() + " failed !", (width * 104) / 781 +offsetX, (height * 45) / 876 + offsetY);
+        }
+
+
     }
 
     public class WinPanel extends JPanel {
@@ -359,6 +434,8 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
 
 
         if (!editMode && pegs.size() == 0) //partie fini 
+            return;
+        if (!editMode && getNbDeBall() == 0 && balls.size() == 0) //partie perdu 
             return;
         
         g.setColor(Color.BLACK);
