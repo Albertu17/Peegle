@@ -81,12 +81,4 @@ public class Menu extends JPanel {
         g.drawImage(background, 0, 0, this);
         g.drawImage(title, middleW-title.getWidth()/2-10, 40, this);
     }
-    
-    // TODO pas utilisée car ImageImport.getImage() peut le faire
-    BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) throws IOException {
-        Image resultingImage = originalImage.getScaledInstance(targetWidth, targetHeight, Image.SCALE_DEFAULT);
-        BufferedImage outputImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
-        outputImage.getGraphics().drawImage(resultingImage, 0, 0, null);
-        return outputImage;
-    }
  }

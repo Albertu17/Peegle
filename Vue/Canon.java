@@ -79,16 +79,6 @@ public class Canon extends JPanel{
         return YLigneViser;
     }
 
-
-    // TODO pas forcément utile ça dépend de l'implémentation futur
-    public void setBalleATirer(Ball balleATirer) {
-        this.balleATirer = balleATirer;
-        gravity = balleATirer.getG();
-        
-        // Placement graphique :
-        placementBallCanon();
-        
-    }
     
     private void placementBallCanon(){
         balleATirer.ballX = pivotDeRotation.x - Ball.ballRadius/2 - Math.cos(angleOrientation)*( this.getHeight()/2 );

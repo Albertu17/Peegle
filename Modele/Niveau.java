@@ -119,7 +119,7 @@ public class Niveau {
         nv.score2Etoiles = 10* nv.pegs.size() ;
         nv.score2Etoiles = 10* nv.pegs.size() ;
         nv.nbBillesInitiales = 3* nv.pegs.size() ;
-        nv.scoreMax  = 1 ; //TODO à faire 
+        nv.scoreMax  = 1 ; //TODO score max à programmer
 
 
         return nv ;
