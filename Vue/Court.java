@@ -289,7 +289,8 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
                 }
 
                 public void mousePressed(MouseEvent evt) {
-                    controleur.launchMenu();
+                    niveau.setChecked(true);
+                    controleur.setNiveauSuivant();
                 } // TODO que faire quand le niveau est fini
             });
         }

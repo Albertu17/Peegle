@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import Modele.Niveau;
 import Vue.Menu.*;
 
 public class Controleur extends JFrame{
@@ -133,5 +134,15 @@ public class Controleur extends JFrame{
                 c.launchMenu();
             }
         });
+    }
+
+    public void setNiveauSuivant() {
+        String nomNiveau = Niveau.getNiveauSuivant();
+        if (nomNiveau != null){
+            launchGameview("Campagne/" + nomNiveau);
+        }
+        else{
+            launchMenu();
+        }
     }
 }

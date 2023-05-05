@@ -247,8 +247,8 @@ public class Niveau {
                                 + String.valueOf(score1Etoile) +";"
                                 + String.valueOf(score2Etoiles) +";"
                                 + String.valueOf(score3Etoiles) +";"
-                                + String.valueOf(campagne ? "1" : "0")
-                                + String.valueOf(checked ? "1" : "0")
+                                + String.valueOf(campagne ? "1" : "0") +";"
+                                + String.valueOf(checked ? "1" : "0") +";"
                                 + String.valueOf(ScoreMax);
             file.println(ligne);
             
@@ -289,9 +289,8 @@ public class Niveau {
             nv.score2Etoiles = Integer.valueOf(line[4]);
             nv.score3Etoiles = Integer.valueOf(line[5]);
             nv.campagne = line[6].equals("1") ? true : false ;
-            nv.index = Integer.valueOf(line[7]);
-            nv.checked = line[8].equals("1") ? true : false ;
-            nv.ScoreMax = Integer.valueOf(line[9]);
+            nv.checked = line[7].equals("1") ? true : false ;
+            nv.ScoreMax = Integer.valueOf(line[8]);
 
 
 
@@ -326,6 +325,18 @@ public class Niveau {
             }
         }
         return ret ;
+    }
+
+
+    public static String getNiveauSuivant() {
+        List<String> tout = getAllCheckNiveau( true) ;
+        for (int i = 0 ; i < tout.size() ; i++){
+            if (tout.get(i).charAt(tout.get(i).length() -2) == '0'){
+                System.out.println(tout.get(i).substring(0, tout.get(i).length() -2));
+                return tout.get(i).substring(0, tout.get(i).length() -2);
+            }
+        }
+        return null;
     }
 
 }
