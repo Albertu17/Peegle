@@ -22,6 +22,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputListener;
 
+import org.w3c.dom.Text;
+
 import javax.swing.Timer;
 
 import Modele.*;
@@ -62,7 +64,6 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
 
     public Court(int courtWith, int courtHeight, Niveau niveau, Controleur c) {
         controleur = c;
-        // setBorder(BorderFactory.createLineBorder(Color.BLACK));
         setOpaque(false);
         width = courtWith;
         height = courtHeight;
@@ -91,7 +92,6 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         setLayout(null);
         add(canon);
         canon.setVisible(true);
-        // the canon doesn't show up fix the problem
 
         canon.setBalleATirer(new Ball(0, 0, 0, 0, this));
 
@@ -100,7 +100,6 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
 
         // Sceau
         sceau = new Sceau(this);
-
 
         animate();
     }
@@ -235,6 +234,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
                             b.updateBall((last - now) * 1.0e-9, sceau);
                     }
                     sceau.move(((last - now) * 1.0e-9));
+                    
                     if (!editMode && pegs.size() == 0) {
                         WinPanel pan = new WinPanel(width / 2, height);
                         pan.setLocation(width / 2 - pan.getWidth() / 2, height / 2 - pan.getHeight() / 2);
@@ -256,15 +256,12 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         timer.start();
     }
 
-    public class LosePanel extends JPanel{
-        BufferedImage LoseScreen;
-        BoutonMenu restart ;
-        BoutonMenu retour ;
+    public class PanelFin extends JPanel{
         int width;
         int height;
 
         
-        LosePanel(int width, int height) {
+        PanelFin(int width, int height) {
             this.width = width;
             this.height = height;
             // idépendant de la classe, pour la fin du jeu :
@@ -279,6 +276,27 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
             setLayout(null);
             setVisible(true);
             setSize(width, height);
+        }
+
+        public void Textentete(String texteEntete,  Graphics g){
+            g.setFont(ImageImport.rightSize(texteEntete, (width * 573) / 781));
+            g.setColor(Color.WHITE);
+            FontMetrics fm = g.getFontMetrics(g.getFont()) ;
+            int offsetX = ((width * 573) / 781) - fm.stringWidth(texteEntete) ;
+            int offsetY = fm.getAscent()/2 ;
+            g.drawString(texteEntete, (width * 104) / 781 +offsetX, (height * 45) / 876 + offsetY);
+        }
+    }
+
+    public class LosePanel extends PanelFin{
+        BufferedImage LoseScreen;
+        BoutonMenu restart ;
+        BoutonMenu retour ;
+       
+
+        
+        LosePanel(int width, int height) {
+            super(width, height) ;
 
             LoseScreen = ImageImport.getImage("ResumeScreen.png", width, height);
 
@@ -312,41 +330,21 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
             super.paintComponent(g);
             g.drawImage(LoseScreen, 0, 0, this);
 
-            g.setFont(ImageImport.rightSize("Level " + niveau.getNom() + " failed !", (width * 573) / 781));
-            g.setColor(Color.WHITE);
-            FontMetrics fm = g.getFontMetrics(g.getFont()) ;
-            int offsetX = ((width * 573) / 781) - fm.stringWidth("Level " + niveau.getNom() + " failed !") ;
-            int offsetY = fm.getAscent()/2 ;
-            g.drawString("Level " + niveau.getNom() + " failed !", (width * 104) / 781 +offsetX, (height * 45) / 876 + offsetY);
+            Textentete("Level " + niveau.getNom() + " failed !", g);
         }
 
 
     }
 
-    public class WinPanel extends JPanel {
+    public class WinPanel extends PanelFin {
         BufferedImage WinScreen;
         BufferedImage WinScreenDisable;
         boolean exited;
-        int width;
-        int height;
 
         
         
         WinPanel(int width, int height) {
-            this.width = width;
-            this.height = height;
-            // idépendant de la classe, pour la fin du jeu :
-            GameOver = true;
-            canon.setVisible(false);
-            Court.this.setBorder(null);
-            background.setOver(true);
-            background.repaint();
-
-            // parametre du Panel :
-            setOpaque(false);
-            setLayout(null);
-            setVisible(true);
-            setSize(width, height);
+            super(width, height) ;
 
             WinScreen = ImageImport.getImage("WinScreen.png", width, height);
             WinScreenDisable = ImageImport.getImage("WinScreenDisabled.png", width, height);
@@ -366,7 +364,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
                 public void mousePressed(MouseEvent evt) {
                     niveau.setChecked(true);
                     controleur.setNiveauSuivant();
-                } // TODO que faire quand le niveau est fini
+                }
             });
         }
 
@@ -378,16 +376,13 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
             else
                 g.drawImage(WinScreenDisable, 0, 0, this);
 
-            g.setFont(ImageImport.rightSize("Level " + niveau.getNom() + " Completed !", (width * 573) / 781));
-            g.setColor(Color.WHITE);
-            FontMetrics fm = g.getFontMetrics(g.getFont()) ;
-            int offsetX = ((width * 573) / 781) - fm.stringWidth("Level " + niveau.getNom() + " Completed !") ;
-            int offsetY = fm.getAscent()/2 ;
-            g.drawString("Level " + niveau.getNom() + " Completed !", (width * 104) / 781 +offsetX, (height * 45) / 876 + offsetY);
+           
+            Textentete("Level " + niveau.getNom() + " Completed !", g);
 
             int x = (width * 50) / 876 ;
             int y =(height * 175) / 876 ;
             g.setFont(ImageImport.rightSize("Balles Utilisees: 1000", (width * (876-90)) / 876));
+            g.setColor(Color.WHITE);
             g.drawString("Score: " + toucher, x, y);  
             y += (height * 75) / 876  ;          
             g.drawString("Balles Restantes: " + NbDeBall, x, y);
@@ -400,6 +395,74 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
                 g.drawString("Nouveau Max Score !!!", x, y);
                 niveau.setScoreMax(toucher);
             }
+        }
+    }
+
+    public static void main(String[] args) {
+
+        SwingUtilities.invokeLater(new Runnable(){
+            @Override
+            public void run() {
+                Controleur c = new Controleur() ;
+                c.setNiveauSuivant();
+            }
+        });
+    }
+
+    public class FinDeCampagne extends PanelFin{
+        BufferedImage background ;
+        BoutonMenu quit ;
+        BoutonMenu resetCampagne ;
+
+        FinDeCampagne(int width, int height){
+            super(width, height) ;
+            background = ImageImport.getImage("ResumeScreen.png", width, height);
+            
+            // boutons
+            resetCampagne = new BoutonMenu("Reset", (this.getWidth()) / 2, (87*this.getHeight())/876);
+            resetCampagne.setLocation(this.getWidth() / 2 - resetCampagne.getWidth() / 2, (this.getHeight() * 350) / 876 );
+            resetCampagne.setVisible(true);
+            resetCampagne.addActionListener(e -> {
+                Niveau.resetAllCheckNiveau(niveau.isCampagne() );
+                controleur.setNiveauSuivant();
+            });
+            add(resetCampagne);
+            
+            quit = new BoutonMenu("Quit", (this.getWidth()) / 2, (87*this.getHeight())/876);
+            quit.setLocation(this.getWidth() / 2 - quit.getWidth() / 2, (this.getHeight() * 530) / 876);
+            quit.setVisible(true);
+            quit.addActionListener(e -> {
+                controleur.launchMenu() ;
+            });
+            add(quit);
+
+            setFocusable(true);
+            addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[]{resetCampagne, quit}, ()-> controleur.launchMenu())) ;
+
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.drawImage(background, 0, 0, this) ;
+
+            Textentete("Vous avez fini le jeu !" , g);
+
+
+            int x = (width * 50) / 876 ;
+            int y =(height * 175) / 876 ;
+            g.setFont(ImageImport.rightSize("* Ou bien recommencer la campagne ", (width * (876-90)) / 876));   
+            
+            g.drawString("Vous avez fini la campagne !", x, y);
+            y += (height * 75) / 876  ;          
+            g.drawString("Vous pouvez maintenant :", x, y);
+            
+            y += (height * 75) / 876  ;          
+            g.drawString("* Recommencer la campagne", x, y);
+            
+            
+            y =(height * 500) / 876 ;    
+            g.drawString("* Ou creer vos propres niveaux", x, y);
 
         }
     }
@@ -427,6 +490,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
             return;
         if (!editMode && getNbDeBall() == 0 && balls.size() == 0) //partie perdu 
             return;
+        
         
         g.setColor(Color.BLACK);
         for (Ball ball : balls) {

@@ -45,7 +45,7 @@ public class Menu extends JPanel {
         // BoutonMenu play
         btnPlay = new BoutonMenu("play", 200, 50);
         btnPlay.setLocation(middleW-100, middleH-25-140);
-        btnPlay.addActionListener(e -> controleur.launchGameview("Perso/Triangle")); //TODO remplacer par la campagne
+        btnPlay.addActionListener(e -> controleur.setNiveauSuivant());
         add(btnPlay);
 
         // BoutonMenu campagne
@@ -79,6 +79,6 @@ public class Menu extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, this);
-        g.drawImage(title, middleW-title.getWidth()/2-10, 40, this);
+        g.drawImage(title, middleW-title.getWidth()/2-10, ( middleH-25-140 -title.getHeight())/2, this);
     }
  }
