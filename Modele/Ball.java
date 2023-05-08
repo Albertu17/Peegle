@@ -162,7 +162,7 @@ public class Ball{
     }
 
     private void playSound() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        File audioFile = new File("C:/Users/Lukas/Desktop/PeggleBis/Modele/hitsound.wav");
+        File audioFile = new File("Modele/hitsound.wav");
  
         AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
         AudioFormat format = audioStream.getFormat();

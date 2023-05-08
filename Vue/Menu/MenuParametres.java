@@ -3,6 +3,9 @@ package Vue.Menu;
 
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
 
@@ -22,9 +25,9 @@ public class MenuParametres extends JPanel {
 
     private BufferedImage background;
 
-    BoutonMenu btnSkin1;
-    BoutonMenu btnSkin2;
-    BoutonMenu btnSkin3;
+    BoutonBall btnSkin1;
+    BoutonBall btnSkin2;
+    BoutonBall btnSkin3;
     JButton btnRetour;
 
     JButton plus;
@@ -48,7 +51,7 @@ public class MenuParametres extends JPanel {
 
 
         // BoutonMenu skin1
-        btnSkin1 = new BoutonMenu("skin1", 200, 50);
+        btnSkin1 = new BoutonBall("basketBall.png", 50) ;
         btnSkin1.setLocation(middleW-100,middleH-25-140);
         btnSkin1.addActionListener(e -> {
             c.gameview.court.setSkin1();
@@ -56,7 +59,7 @@ public class MenuParametres extends JPanel {
         add(btnSkin1);
 
         // BoutonMenu skin2
-        btnSkin2 = new BoutonMenu("skin2", 200, 50);
+        btnSkin2 = new BoutonBall("ball.png", 50) ;
         btnSkin2.setLocation(middleW-100,middleH-25-70);
         btnSkin2.addActionListener(e -> {
             c.gameview.court.setSkin2();
@@ -64,7 +67,7 @@ public class MenuParametres extends JPanel {
         add(btnSkin2);
 
         // BoutonMenu skin3
-        btnSkin3 = new BoutonMenu("skin3", 200, 50);
+        btnSkin3= new BoutonBall("soccerBall.png", 50) ;
         btnSkin3.setLocation(middleW-100,middleH-25);
         btnSkin3.addActionListener(e -> {
             c.gameview.court.setSkin3();
@@ -79,7 +82,7 @@ public class MenuParametres extends JPanel {
         
         setFocusable(true);
         requestFocusInWindow();
-        addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[]{btnSkin1, btnSkin2, btnSkin3}, ()->controleur.launchMenu()));
+        addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[]{}, ()->controleur.launchMenu()));
 
         plus = new BoutonMenu("Plus", 100, 50);
         plus.setLocation(middleW-400,middleH-25-70);
@@ -112,4 +115,41 @@ public class MenuParametres extends JPanel {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, this);
     }
+    public class BoutonBall extends JButton {
+    
+        int diametre ;
+        ImageIcon imageIconNormal;
+        ImageIcon imageIconOnHover;
+    
+        public BoutonBall(String texteImage, int diametre) {
+            this.diametre = diametre;
+
+            BufferedImage tempNormal =  ImageImport.getImage(texteImage, diametre, diametre) ;
+            
+            BufferedImage tempHover =  ImageImport.getImage("hoverBall.png", diametre, diametre) ;
+            
+            Graphics g  = tempHover.createGraphics() ;
+            g.drawImage(ImageImport.getImage(texteImage, diametre-6, diametre-6), 3, 3, this) ;
+            
+            imageIconNormal =  new ImageIcon(tempNormal) ;
+            imageIconOnHover =  new ImageIcon(tempHover) ;
+
+
+            setIcon(imageIconNormal);
+            addMouseListener((MouseListener) new MouseAdapter() {
+                public void mouseEntered(MouseEvent evt) {setIcon(imageIconOnHover);}
+                public void mouseExited(MouseEvent evt) {setIcon(imageIconNormal);}
+                public void mousePressed(MouseEvent evt) {setIcon(imageIconOnHover);}
+            });
+            // Parametrages du bouton
+            setBorderPainted(false); 
+            setContentAreaFilled(false); 
+            setFocusPainted(false); 
+            setOpaque(false);
+            setSize(diametre, diametre);
+        }
+    
 }
+
+}
+
