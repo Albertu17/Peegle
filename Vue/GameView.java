@@ -45,7 +45,7 @@ public class GameView extends JPanel {
         courtHeight = heigth - 200;
 
         // Affectation du niveau
-        if (nomNiveau == null)
+        if (nomNiveau == null || nomNiveau.equals(""))
             niveau = new Niveau(nomNiveau);
         else if (nomNiveau.toLowerCase().equals("aleatoire"))
             niveau = Niveau.NiveauAleatoire(width, heigth, 10, 20);

@@ -142,7 +142,8 @@ public class Controleur extends JFrame{
             launchGameview("Campagne/" + nomNiveau);
         }
         else{
-            launchMenu();
+            launchGameview("");
+            gameview.court.askReset();
         }
     }
 }

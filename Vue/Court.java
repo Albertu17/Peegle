@@ -412,6 +412,15 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         });
     }
 
+    public void askReset(){
+        pegs.clear();
+        FinDeCampagne pan = new FinDeCampagne(width / 2, height);
+        pan.setLocation(width / 2 - pan.getWidth() / 2, height / 2 - pan.getHeight() / 2);
+        add(pan);
+        pan.requestFocusInWindow() ;
+        enPause = true;
+    }
+
     public class FinDeCampagne extends PanelFin{
         BufferedImage background ;
         BoutonMenu quit ;
@@ -426,7 +435,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
             resetCampagne.setLocation(this.getWidth() / 2 - resetCampagne.getWidth() / 2, (this.getHeight() * 350) / 876 );
             resetCampagne.setVisible(true);
             resetCampagne.addActionListener(e -> {
-                Niveau.resetAllCheckNiveau(niveau.isCampagne() );
+                Niveau.resetAllCheckNiveau(true );
                 controleur.setNiveauSuivant();
             });
             add(resetCampagne);
