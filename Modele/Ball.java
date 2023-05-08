@@ -25,6 +25,7 @@ public class Ball{
 
     // private int height=500;
     // private int width=500;
+    private static boolean musicOn = true;
 
     private int yMarxgin = 3;
     public double p1,p2;
@@ -127,11 +128,14 @@ public class Ball{
         
         if (p!=null && p != pegderniertoucher){
         if (p!=null && !atoucherpegs && inLevel){
-            try {
-                playSound();
-            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+            if(musicOn){
+                try {
+                    playSound();
+                } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
             }
             if (!p.getHit()){combo++;}
             p.setTouche(true);
@@ -216,6 +220,13 @@ public class Ball{
 
     public void setCombo(int i) {
         combo = i;
+    }
+
+    public static void setMusicOn(){
+        Ball.musicOn = true;
+    }
+    public static void setMusicOff(){
+        Ball.musicOn = false;
     }
     
 

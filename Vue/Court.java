@@ -199,9 +199,15 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
 
     public void upVitesse(){
         canon.setVitesseTir(canon.getVitesseTir()*1.1);
+        if(canon.getVitesseTir()>=1000){
+            canon.setVitesseTir(1000);
+        }
     }
     public void downVitesse(){
         canon.setVitesseTir(canon.getVitesseTir()*0.9);
+        if(canon.getVitesseTir()<=50){
+            canon.setVitesseTir(50);
+        }
     }
 
     public void setSkin1(){

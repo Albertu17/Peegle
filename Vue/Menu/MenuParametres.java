@@ -32,6 +32,9 @@ public class MenuParametres extends JPanel {
     BoutonBall btnSkin2;
     BoutonBall btnSkin3;
     JButton btnRetour;
+    JButton skin;
+    JButton musicOn;
+    JButton musicOff;
 
     JButton plus;
     JButton minus;
@@ -56,26 +59,26 @@ public class MenuParametres extends JPanel {
 
         // BoutonMenu skin1
         tabBouton[0] = new BoutonBall(0, 50);
-        tabBouton[0].setLocation(middleW - 100, middleH - 25 - 140);
+        tabBouton[0].setLocation(middleW , middleH - 25 - 140);
 
         add(tabBouton[0]);
         
         // BoutonMenu skin2
         tabBouton[1] = new BoutonBall(1, 50);
-        tabBouton[1].setLocation(middleW - 100, middleH - 25 - 70);
+        tabBouton[1].setLocation(middleW , middleH - 25 - 70);
         
         add(tabBouton[1]);
         // add(tab);
         
         // BoutonMenu skin3
         tabBouton[2] = new BoutonBall(2, 50);
-        tabBouton[2].setLocation(middleW - 100, middleH - 25);
+        tabBouton[2].setLocation(middleW , middleH - 25);
         add(tabBouton[2]);
         tabBouton[3] = new BoutonBall(3, 50);
-        tabBouton[3].setLocation(middleW - 100, middleH +65);
+        tabBouton[3].setLocation(middleW , middleH +35);
         add(tabBouton[3]);
         tabBouton[4] = new BoutonBall(4, 50);
-        tabBouton[4].setLocation(middleW - 100, middleH +100);
+        tabBouton[4].setLocation(middleW , middleH +100);
         add(tabBouton[4]);
         // add(btnSkin3);
 
@@ -88,6 +91,24 @@ public class MenuParametres extends JPanel {
         setFocusable(true);
         requestFocusInWindow();
         addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[] {}, () -> controleur.launchMenu()));
+
+        skin = new BoutonMenu("Skins",100,50);
+        skin.setLocation(middleW-30, middleH-250);
+        add(skin);
+
+        musicOn = new BoutonMenu("Music ON", 100,50);
+        musicOn.setLocation(middleW + 300, middleH - 25 - 70);
+        musicOn.addActionListener(e->{
+            c.gameview.startMusic();
+        });
+        add(musicOn);
+
+        musicOff = new BoutonMenu("Music OFF", 100, 50);
+        musicOff.setLocation(middleW + 500, middleH - 25 - 70);
+        musicOff.addActionListener(e->{
+            c.gameview.stopMusic();
+        });
+        add(musicOff);
 
         plus = new BoutonMenu("Plus", 100, 50);
         plus.setLocation(middleW - 400, middleH - 25 - 70);

@@ -201,5 +201,13 @@ public class GameView extends JPanel {
         court.setSkin2();
     }
 
+    public void startMusic() {
+        Ball.setMusicOn();
+    }
+
+    public void stopMusic() {
+        Ball.setMusicOff();
+    }
+
 
 }
