@@ -1,8 +1,14 @@
 package Modele;
 
+import java.awt.Point;
+
 public class Pegs implements Cloneable {
     
-    private int x, y; // Coordonnées du centre du peg
+    private double x, y; // Coordonnées du centre du peg
+    private int speed = 100; // px/s
+    private int valeurFctMouvement;
+    private int largeurCourt;
+    private Point centreCourt;
     private int radius, diametre;
     private int couleur;
     private String imageString;
@@ -42,20 +48,36 @@ public class Pegs implements Cloneable {
         this.imageString = imageString;
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
-    public void setX(int x) {
+    public void setX(double x) {
         this.x = x;
     }
 
-    public void setY(int y) {
+    public void setY(double y) {
         this.y = y;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public void setValeurFctMouvement(int valeurFctMouvement) {
+        this.valeurFctMouvement = valeurFctMouvement;
+    }
+
+    public void setLargeurCourt(int largeurCourt) {
+        this.largeurCourt = largeurCourt;
+    }
+
+    public void setCentreCourt(Point centreCourt) {
+        this.centreCourt = centreCourt;
     }
 
     public int getDiametre() {
@@ -116,8 +138,43 @@ public class Pegs implements Cloneable {
         }
     }
 
-    @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
+    }
+
+    public void fonctionDeMouvement(double deltaT) {
+        switch (valeurFctMouvement) {
+            case 1:
+                traverseeGaucheDroite(deltaT, largeurCourt);
+                break;
+            case 2:
+                traverseeDroiteGauche(deltaT, largeurCourt);
+                break;
+            case 3:
+                rotationCentrale(deltaT, centreCourt);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void traverseeGaucheDroite(double deltaT, int largeurCourt) {
+        double nextX = x + deltaT * speed;
+        if (nextX - radius > largeurCourt) nextX = -radius;
+        setX(nextX);
+    }
+
+    public void traverseeDroiteGauche(double deltaT, int largeurCourt) {
+        double nextX = x - deltaT * speed;
+        if (nextX + radius < 0) nextX = largeurCourt + radius;
+        setX(nextX);
+    }
+
+    public void rotationCentrale(double deltaT, Point centre) {
+        double angle = Math.PI - Math.atan2(centre.y - y, centre.x - x);
+        if (angle < 0) angle += 2*Math.PI;
+        System.out.println(angle);
+        setX(centre.x + Math.cos(angle) * Math.abs(centre.x - (x+deltaT * speed)));
+        setY(centre.y + Math.sin(angle) * Math.abs(centre.y - (y+deltaT * speed)));
     }
 }

@@ -104,7 +104,7 @@ public class Niveau {
 
         
         for (Pegs peg:nv.getPegs()) {
-            g2d.drawImage(ImageImport.getImage(peg.getImageString()), peg.getX(), peg.getY(), peg.getDiametre(), peg.getDiametre(), null);
+            g2d.drawImage(ImageImport.getImage(peg.getImageString()), (int) peg.getX(), (int) peg.getY(), peg.getDiametre(), peg.getDiametre(), null);
         }
         try{
             ImageIO.write(tempImage, "png", new File("Vue/Image/IconeNiveau/" +(nv.campagne? "Campagne/" : "Perso/")+ nv.getNom() +".png"));
