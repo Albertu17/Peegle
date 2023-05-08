@@ -228,7 +228,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (enPause)
+                if (enPause || GameOver)
                     timer.stop(); // Arrêt de tout le timer.
                 else {
                     last = System.nanoTime();
@@ -498,10 +498,9 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         }
 
 
-        if (!editMode && pegs.size() == 0) //partie fini 
+        if (GameOver) //partie fini 
             return;
-        if (!editMode && getNbDeBall() == 0 && balls.size() == 0) //partie perdu 
-            return;
+       
         
         
         g.setColor(Color.BLACK);
