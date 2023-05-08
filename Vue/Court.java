@@ -461,7 +461,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
             Textentete("Vous avez fini le jeu !" , g);
 
 
-            int x = (width * 50) / 876 ;
+            int x = (width * 55) / 876 ;
             int y =(height * 175) / 876 ;
             g.setFont(ImageImport.rightSize("* Ou bien recommencer la campagne ", (width * (876-90)) / 876));   
             
