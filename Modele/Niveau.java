@@ -56,6 +56,7 @@ public class Niveau {
     public ArrayList<Pegs> getPegs() {
         return pegs;
     }
+    public int getNbrBall(){return nbBillesInitiales ;}
 
     public void setNom(String nom) {
         this.nom = nom;

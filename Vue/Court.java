@@ -42,7 +42,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
     private ArrayList<Pegs> toucherPegs;
     private Background background;
     private ArrayList<Rectangle> rectangles;
-    private int NbDeBall = 125;
+    private int NbDeBall;
     private boolean nbDeBallChange = true;
     private int MaxCombo = 0;
     private Font arcade = ImageImport.arcade;
@@ -70,6 +70,9 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         this.niveau = niveau;
         pegs = clonePegs(niveau.getPegs()); // Crée une copie en profondeur des pegs du niveau.
         ScoreMax = niveau.getScoreMax();
+
+        NbDeBall = niveau.getNbrBall() ;
+        if (NbDeBall == 0) NbDeBall = 125 ;
 
         // Par défaut
         enPause = false;
