@@ -81,7 +81,6 @@ public class ImageImport {
         int textWidth = metrics.stringWidth(txt);
         // int textWidthMax = (WinPanel.this.getWidth()*5)/6;
         if (textWidth > tailleMax) {
-            System.out.println("in");
             double widthRatio = (double) tailleMax / (double) textWidth;
             rightF = rightF.deriveFont((float) Math.floor(fontSize * widthRatio));
             fontSize = rightF.getSize();
