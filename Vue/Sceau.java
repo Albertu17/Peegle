@@ -43,7 +43,10 @@ public class Sceau{
 
     public boolean inside(Ball b){
         return X <= b.nextBallX && b.nextBallX + Ball.ballRadius*2 <= X + longeur &&
-        Y  + 20 <= b.nextBallY && b.nextBallY + 20 <= Y + hauteur;
+        Y  <= b.nextBallY && b.nextBallY <= Y + hauteur;
+        
+        // return X <= b.nextBallX && b.nextBallX + Ball.ballRadius*2 <= X + longeur &&
+        // Y  + 20 <= b.nextBallY && b.nextBallY + 20 <= Y + hauteur;
 
     }
 

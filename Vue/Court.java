@@ -392,7 +392,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
             y += (height * 75) / 876  ;          
             g.drawString("Balles Utilisees: " + (niveau.getNbrBall() - NbDeBall), x, y);
             y += (height * 75) / 876  ;          
-            g.drawString("Max Score: " + niveau.getScoreMax(), x, y);
+            g.drawString("Max   : " + niveau.getScoreMax(), x, y);
             if (toucher > ScoreMax) {
                 y = (height *600) / 876  ;          
                 g.drawString("Nouveau Max Score !!!", x, y);

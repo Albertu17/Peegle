@@ -129,7 +129,7 @@ public class Background extends JPanel{
     g.drawRect(XBall- 10, pointDeDepartY- (ligne) * (Ball.ballRadius*2 + 10) - 10, 5* (Ball.ballRadius*2 + 10) + 10, ligne * (Ball.ballRadius*2 + 10) );
     
     // annonceur nombre de balles restantes
-    balleRestImage = getEditedImage(court.getNbDeBall()<=1 ? "Balle :" : "Balles :", "X"+String.valueOf(court.getNbDeBall()), 5* (Ball.ballRadius*2 + 10) , 60) ;
+    balleRestImage = getEditedImage(court.getNbDeBall()<=1 ? "Balle :" : "Balles :", "X"+court.getNbDeBall(), 5* (Ball.ballRadius*2 + 10) , 60) ;
     g.drawImage(balleRestImage, XBall -5,  pointDeDepartY,  court); 
    
     
