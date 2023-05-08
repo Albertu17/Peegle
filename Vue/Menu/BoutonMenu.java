@@ -130,6 +130,7 @@ public class BoutonMenu extends JButton {
         public void keyPressed(KeyEvent e) {
             switch (e.getKeyCode()) {
                 case (KeyEvent.VK_ESCAPE):
+                case (KeyEvent.VK_CONTROL):
                     action.perf() ;
                     break;
                 case (KeyEvent.VK_DOWN):
@@ -143,7 +144,6 @@ public class BoutonMenu extends JButton {
                     iluminateButton();
                     break;
                 case (KeyEvent.VK_ENTER):
-                case (KeyEvent.VK_CONTROL):
                     if (selecteur != -1) getButton(selecteur).doClick();
                     break;
 
