@@ -6,6 +6,14 @@ import java.awt.image.BufferedImage;
 import Vue.Court;
 import Vue.ImageImport;
 import Vue.Sceau;
+import java.io.*;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 public class Ball{
 
     public final static int ballRadius = 10; // m
@@ -33,6 +41,9 @@ public class Ball{
 
     private Court court;
     private Pegs pegderniertoucher;
+    public Clip audioClip;
+
+    public boolean inLevel = true;
 
     double x,y;
 
@@ -100,8 +111,17 @@ public class Ball{
 
         Pegs p = touchedPegs();
 
+
+
         
         if (p!=null && p != pegderniertoucher){
+        if (p!=null && !atoucherpegs && inLevel){
+            try {
+                playSound();
+            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             if (!p.getHit()){combo++;}
             p.setTouche(true);
             double ux = (nextBallX+ ballRadius) - (p.getX());
@@ -115,11 +135,18 @@ public class Ball{
             
             pegderniertoucher = p;
         }
-        else if (p==null){
+        }else if (p==null){
             pegderniertoucher = null;
         }
         ballX = nextBallX;
         ballY = nextBallY;
+    }
+
+    public void inLevelTrue(){
+        inLevel = true;
+    }
+    public void inLevelFalse(){
+        inLevel = false;
     }
 
 
@@ -133,6 +160,20 @@ public class Ball{
         }
         return nextBallY < 0 || nextBallY > court.getHeight() - ballRadius*2 - 15;
     }
+
+    private void playSound() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
+        File audioFile = new File("C:/Users/Lukas/Desktop/PeggleBis/Modele/hitsound.wav");
+ 
+        AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+        AudioFormat format = audioStream.getFormat();
+ 
+        DataLine.Info info = new DataLine.Info(Clip.class, format); 
+        audioClip = (Clip) AudioSystem.getLine(info);
+        audioClip.open(audioStream);
+        audioClip.start();
+    }
+
+
     
 
 
@@ -166,12 +207,17 @@ public class Ball{
         combo = i;
     }
     public void putSkin1(){
-        image = ImageImport.getImage("ball.png", 20, 20);
+        Ball.image = ImageImport.getImage("ball.png", 20, 20);
     }
 
     public void putSkin2(){
-        image = ImageImport.getImage("soccerBall.png", 20, 20);
+        Ball.image = ImageImport.getImage("soccerBall.png", 20, 20);
     }
+    
+    public void putSkin3(){
+        Ball.image = ImageImport.getImage("basketBall.png", 20, 20);
+    }
+
 
 
 }

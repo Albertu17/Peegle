@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.*;
 
+import Modele.Ball;
 import Modele.Niveau;
 
 public class GameView extends JPanel {
@@ -21,7 +22,7 @@ public class GameView extends JPanel {
     Niveau niveau;
 
     // Court
-    Court court;
+    public Court court;
     private int courtWidth;
     private int courtHeight;
 
@@ -74,6 +75,16 @@ public class GameView extends JPanel {
         background.setOpaque(false);
         add(background);
 
+        // JButton bouton retour
+        btnRetour = new BoutonMenu("back", 200, 50);
+        btnRetour.setLocation(40,40);
+        btnRetour.addActionListener(e -> {
+            for(Ball ball : court.getBalls()){
+                ball.inLevelFalse();
+            }
+            controleur.launchMenu();
+            });
+        add(btnRetour);
     }
 
     public void launchMenuPause(boolean visible) {
