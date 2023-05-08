@@ -122,7 +122,6 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
     public Niveau getNiveau() {
         return niveau;
     }
-
     public void seteN(EditeurNiveaux eN) {
         this.eN = eN;
     }
@@ -252,6 +251,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
                         enPause = true;
                     }
                     repaint();
+                    background.repaint();
                     now = last;
                 }
             }
@@ -502,6 +502,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
             return;
        
         
+        g.drawImage(sceau.getImageHAUT(), (int) sceau.Xb, (int) sceau.Yh, this);
         
         g.setColor(Color.BLACK);
         for (Ball ball : balls) {
@@ -564,7 +565,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
 
         // g.drawRect((int)sceau.X, (int)sceau.Y, (int)sceau.longeur,
         // (int)sceau.hauteur);
-        g.drawImage(sceau.getImage(), (int) sceau.X, (int) sceau.Y, this);
+        g.drawImage(sceau.getImageBAS(), (int) sceau.Xb, (int) sceau.Yb, this);
 
         g.setColor(Color.RED);
         for (Rectangle rect : rectangles) {
