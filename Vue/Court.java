@@ -122,7 +122,6 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
     public Niveau getNiveau() {
         return niveau;
     }
-
     public void seteN(EditeurNiveaux eN) {
         this.eN = eN;
     }
@@ -252,6 +251,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
                         enPause = true;
                     }
                     repaint();
+                    background.repaint();
                     now = last;
                 }
             }
