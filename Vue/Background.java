@@ -64,7 +64,7 @@ public class Background extends JPanel{
         midBordureCourtY = bordureDroiteHauteur - court.getHeight() + 50;
         largeur = (width -30) - midBordureCourtX;
         longeur =  (bordureDroiteHauteur - 50) - midBordureCourtY;
-        ball = ImageImport.getImage("ball.png", 50, 50);
+        ball = ImageImport.getImage("Ball/ball.png", 50, 50);
 
         ball = court.getBall();
 

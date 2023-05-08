@@ -37,8 +37,21 @@ public class Ball{
     private double g=300; // m/s
     private double coeffRebond = 0.8;
     private int combo = 0;
-    private static BufferedImage image = ImageImport.getImage("ball.png", (int) ballRadius*2, (int) ballRadius*2);
 
+    private static int selecteurImage = 0 ;
+    public static int getSelecteurImage() {
+        return selecteurImage;
+    }
+
+    public static void setSelecteurImage(int selecteurImage) {
+        Ball.selecteurImage = selecteurImage;
+    }
+    private static BufferedImage image = ImageImport.getImage("Ball/ball.png", (int) ballRadius*2, (int) ballRadius*2);
+    public static void setImage(BufferedImage skin){
+        Ball.image = skin ;
+    }
+   
+ 
     private Court court;
     private Pegs pegderniertoucher;
     public Clip audioClip;
@@ -46,8 +59,6 @@ public class Ball{
     public boolean inLevel = true;
 
     double x,y;
-
-
 
 
     /* Important coordonée de la balle centre en X mais tout en haut pour Y */
@@ -206,17 +217,7 @@ public class Ball{
     public void setCombo(int i) {
         combo = i;
     }
-    public void putSkin1(){
-        Ball.image = ImageImport.getImage("ball.png", 20, 20);
-    }
-
-    public void putSkin2(){
-        Ball.image = ImageImport.getImage("soccerBall.png", 20, 20);
-    }
     
-    public void putSkin3(){
-        Ball.image = ImageImport.getImage("basketBall.png", 20, 20);
-    }
 
 
 
