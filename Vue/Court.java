@@ -12,18 +12,11 @@ import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Button;
 import java.awt.Graphics2D;
-import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -36,10 +29,6 @@ import javax.swing.Timer;
 
 import Modele.*;
 import Vue.Menu.BoutonMenu;
-
-import javax.swing.JPanel;
-import javax.swing.Timer;
-import javax.swing.event.MouseInputListener;
 
 import Modele.Ball;
 import Modele.Niveau;
@@ -655,11 +644,11 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         Graphics2D g2d = (Graphics2D) g;
         for (Pegs peg : pegs) {
             if (peg.getHit())
-                g2d.drawImage(ImageImport.getImage(peg.getImageStringTouche()), peg.getX() - peg.getRadius(),
-                        peg.getY() - peg.getRadius(), peg.getDiametre(), peg.getDiametre(), this);
+                g2d.drawImage(ImageImport.getImage(peg.getImageStringTouche()), (int)(peg.getX() - peg.getRadius()),
+                (int)(peg.getY() - peg.getRadius()), peg.getDiametre(), peg.getDiametre(), this);
             else
-                g2d.drawImage(ImageImport.getImage(peg.getImageString()), peg.getX() - peg.getRadius(),
-                        peg.getY() - peg.getRadius(), peg.getDiametre(), peg.getDiametre(), this);
+                g2d.drawImage(ImageImport.getImage(peg.getImageString()), (int)(peg.getX() - peg.getRadius()),
+                (int)(peg.getY() - peg.getRadius()), peg.getDiametre(), peg.getDiametre(), this);
             // image pegs toucher
         }
 
