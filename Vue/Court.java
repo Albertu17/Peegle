@@ -610,16 +610,14 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
             g.drawLine(rect.x0, rect.y0, rect.caculX1(), rect.caculY1());
         }
 
-        Graphics2D g2d = (Graphics2D) g;
-        for (Pegs peg : pegs) {
-            if (peg.getHit())
-                g2d.drawImage(ImageImport.getImage(peg.getImageStringTouche()), peg.getX() - peg.getRadius(),
-                        peg.getY() - peg.getRadius(), peg.getDiametre(), peg.getDiametre(), this);
-            else
-                g2d.drawImage(ImageImport.getImage(peg.getImageString()), peg.getX() - peg.getRadius(),
-                        peg.getY() - peg.getRadius(), peg.getDiametre(), peg.getDiametre(), this);
-            // image pegs toucher
+        // Affichage des pegs
+        Graphics2D g2d = (Graphics2D) g;   
+        for (Pegs peg: pegs) {
+            if (peg.getHit()) g2d.drawImage(ImageImport.getImage(peg.getImageStringTouche()), (int) peg.getX() - peg.getRadius(), (int) peg.getY() - peg.getRadius(), peg.getDiametre(), peg.getDiametre(), this);
+            else g2d.drawImage(ImageImport.getImage(peg.getImageString()), (int) peg.getX() - peg.getRadius(), (int) peg.getY() - peg.getRadius(), peg.getDiametre(), peg.getDiametre(), this);
+            //image pegs toucher
         }
+        
 
         // traçage ligne de viser
         if (!enPause) {

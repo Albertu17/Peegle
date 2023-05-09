@@ -178,7 +178,7 @@ public class Niveau {
         g2d.fill(new RoundRectangle2D.Float(0, 0, width, height, 60, 60));
 
         for (Pegs peg : nv.getPegs()) {
-            g2d.drawImage(ImageImport.getImage(peg.getImageString()), peg.getX(), peg.getY(), peg.getDiametre(),
+            g2d.drawImage(ImageImport.getImage(peg.getImageString()), (int) peg.getX(), (int) peg.getY(), peg.getDiametre(),
                     peg.getDiametre(), null);
         }
 
