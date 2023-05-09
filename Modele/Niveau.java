@@ -90,7 +90,7 @@ public class Niveau {
     public void setScoreMax(int newMax) {
         if (newMax < ScoreMax)
             return;
-        setValueAtIndex(9, newMax);
+        setValueAtIndex(8, newMax);
         ScoreMax = newMax;
     }
 
@@ -178,8 +178,8 @@ public class Niveau {
         g2d.fill(new RoundRectangle2D.Float(0, 0, width, height, 60, 60));
 
         for (Pegs peg : nv.getPegs()) {
-            g2d.drawImage(ImageImport.getImage(peg.getImageString()), (int) peg.getX(), (int) peg.getY(), peg.getDiametre(),
-                    peg.getDiametre(), null);
+            g2d.drawImage(ImageImport.getImage(peg.getImageString()), (int) peg.getX() - peg.getRadius(), (int) peg.getY() - peg.getRadius(), 
+                peg.getDiametre(), peg.getDiametre(), null);
         }
 
         try {
