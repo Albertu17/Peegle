@@ -45,6 +45,7 @@ public class SelectNiveau extends JPanel implements KeyListener{
     // choix du type de partie
     private BoutonMenu selectCampagne ;
     private BoutonMenu selectPerso ;
+    private BoutonMenu aleatoire ;
 
     public SelectNiveau(Controleur c) {
         
@@ -66,25 +67,32 @@ public class SelectNiveau extends JPanel implements KeyListener{
 
         // demande de quoi afficher 
         int middleW = controleur.getWidth()/2 ; 
-        int middleH = controleur.getHeight()/2 + 50;
+        int offsetY = 100+ 25 ;
+        int debutY = controleur.getHeight()/2 -50 - offsetY ;
 
         selectCampagne = new BoutonMenu("Campagne", 400, 100);
-        selectCampagne.setLocation(middleW-selectCampagne.getWidth()/2, middleH-25-200);
+        selectCampagne.setLocation(middleW-selectCampagne.getWidth()/2, debutY);
         selectCampagne.addActionListener(e -> setSelecteur(true) );
         add(selectCampagne);
         
         selectPerso = new BoutonMenu("Perso", 400, 100);
-        selectPerso.setLocation(middleW-selectPerso.getWidth()/2,middleH-25-70);
+        selectPerso.setLocation(middleW-selectPerso.getWidth()/2, debutY+offsetY);
         selectPerso.addActionListener(e -> setSelecteur(false) );
         add(selectPerso);
+        aleatoire = new BoutonMenu("Aleatoire", 400, 100);
+        aleatoire.setLocation(middleW-aleatoire.getWidth()/2, debutY+2*offsetY);
+        aleatoire.addActionListener(e -> controleur.launchGameview("aleatoire") );
+        add(aleatoire);
+
         this.setFocusable(true);
-        this.addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[]{selectCampagne, selectPerso}, ()-> controleur.launchMenu()));
+        this.addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[]{selectCampagne, selectPerso, aleatoire}, ()-> controleur.launchMenu()));
         this.requestFocusInWindow() ;
     }
 
     private void setSelecteur(boolean campagne){
         if (selectCampagne != null) this.remove(selectCampagne);
         if (selectPerso != null) this.remove(selectPerso);
+        if (aleatoire != null) this.remove(aleatoire);
 
         this.campagne = campagne ;
         allCheckNiveau = Niveau.getAllCheckNiveau(campagne) ;

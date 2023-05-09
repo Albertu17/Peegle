@@ -88,6 +88,7 @@ public class Niveau {
     }
 
     public void setScoreMax(int newMax) {
+        if(nom == "Aleatoire") return ;
         if (newMax < ScoreMax)
             return;
         setValueAtIndex(8, newMax);
@@ -95,6 +96,7 @@ public class Niveau {
     }
 
     public void setChecked(boolean checked) {
+        if(nom == "Aleatoire") return ;
         this.checked = checked;
         setValueAtIndex(7, checked ? 1 : 0);
     }
@@ -130,22 +132,25 @@ public class Niveau {
         this.score1Etoile = 5 * this.pegs.size();
         this.score2Etoiles = 10 * this.pegs.size();
         this.score2Etoiles = 10 * this.pegs.size();
-        this.nbBillesInitiales = 3 * this.pegs.size();
+        this.nbBillesInitiales = (int)(1.5 * this.pegs.size()) ;
         this.ScoreMax = 1; // TODO score max à programmer
     }
 
     public static Niveau NiveauAleatoire(int widthCourt, int heightCourt, int radiusBall, int diametrePegs) {
         Niveau nv = new Niveau("Aleatoire");
+        nv.campagne = false ;
         int nbrPegs = randInt(60, 200); // aproximatif
         int espaceMinEntre2Pegs = (int) 2.5 * radiusBall;
         int x, y;
 
-        int debutHeight = heightCourt / 4; // evite d'avoir des balels trop hautes
+        int debutHeight = heightCourt / 4; // evite d'avoir des balles trop hautes
+        int finHeight = heightCourt - 50 ; 
+        // int finHeight = (heightCourt* ) / 720 ; 
 
         // segemente l'aire de jeux en carré le plus petit possible tel que les
         // contraintes soit respecté
-        int nbrSegW = (int) (widthCourt / (espaceMinEntre2Pegs + diametrePegs));
-        int nbrSegH = (int) ((heightCourt - debutHeight) / (espaceMinEntre2Pegs + diametrePegs));
+        int nbrSegW = (int) (widthCourt / (espaceMinEntre2Pegs + diametrePegs)) ;
+        int nbrSegH = (int) ((finHeight - debutHeight) / (espaceMinEntre2Pegs + diametrePegs));
 
         int nbrSegParPegs = (int) (((nbrSegH - 1) * (nbrSegW - 1)) / nbrPegs); // Nombre de segmentation pour chaque
                                                                                // pegs, permet de savoir la probabilité
@@ -155,13 +160,13 @@ public class Niveau {
             for (int h = 0; h < nbrSegH - 1; h++) {
                 if (randInt(1, nbrSegParPegs) == 1) { // placer un élément au hasard
                     x = (int) ((w + 0.5) * (widthCourt / (double) nbrSegW));
-                    y = (int) ((h + 0.5) * ((heightCourt - debutHeight) / (double) nbrSegH) + debutHeight);
+                    y = (int) ((h + 0.5) * ((finHeight - debutHeight) / (double) nbrSegH) + debutHeight);
                     nv.pegs.add(new Pegs(x, y, diametrePegs, randInt(1, 4)));
                 }
             }
         }
 
-       nv.setBasic();
+        nv.setBasic();
 
         return nv;
     }
@@ -291,6 +296,7 @@ public class Niveau {
     // enregistrement d'un niveau
 
     public void save(int widthCourt, int heightCourt) {
+        if(nom == "Aleatoire") return ;
         // save les lignes de l'array list dans un fichier csv
         PrintWriter file;
         try {
