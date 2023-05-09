@@ -1,22 +1,25 @@
 package Vue;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
-import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
-import javax.swing.event.MouseInputListener;
 import javax.swing.Timer;
+import javax.swing.event.MouseInputListener;
 
-import Modele.*;
+import Modele.Ball;
+import Modele.Niveau;
+import Modele.Pegs;
+import Modele.Rectangle;
 
 public class Court extends JPanel implements MouseInputListener {
 
@@ -56,6 +59,7 @@ public class Court extends JPanel implements MouseInputListener {
     private int widthRectangle;
     private int heightRectangle;
     private int lengthPressToCenter;
+    private int lengthPressToCenterRect;
     
     public Court(int courtWith, int courtHeight, Niveau niveau) {
         // setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -248,6 +252,7 @@ public class Court extends JPanel implements MouseInputListener {
         widthRectangle = (int) (mouseX - pressPoint.getX());
         heightRectangle = (int) (mouseY - pressPoint.getY());
         lengthPressToCenter = (int) Math.sqrt(Math.pow(pressPoint.getX() - center.getX(), 2) + Math.pow(pressPoint.getY() - center.getY(), 2));
+        lengthPressToCenterRect = (int) Math.sqrt(Math.pow(Math.abs(pressPoint.getX() - midleXRect), 2) + Math.pow(Math.abs(pressPoint.getY() - midleYRect), 2));
     }
 
     public void paint(Graphics g) {
@@ -383,10 +388,10 @@ public class Court extends JPanel implements MouseInputListener {
             }
         }
 
-        // Affichage rectangle de selection pour l'editeur de niveaux
+        // Affichage rectangle de selection et éléments en son sein
         if (editMode && enPause && eN.enModif && pressPoint != null) {
             // Affichage ligne d'alignement
-            switch (eN.valeurAlignement) {
+            switch (eN.valeurAlignement[0]) {
                 case 1: // Alignement horizontal
                     g2d.drawLine((int) pressPoint.getX(), midleYRect, mouseX, midleYRect);
                     break;
@@ -400,7 +405,11 @@ public class Court extends JPanel implements MouseInputListener {
                     int radius = lengthPressToCenter;
                     g2d.drawOval((int) (center.getX() - radius), (int) (center.getY() - radius), radius*2, radius*2);
                     break;
-                case 5:
+                case 5: // Alignement autour du centre du rectangle
+                    int radiusToRect =  lengthPressToCenterRect;
+                    g2d.drawOval((int) (midleXRect - radiusToRect), (int) (midleYRect - radiusToRect), radiusToRect*2, radiusToRect*2);
+                    break;
+                case 6: // Alignement sur l'ellipse inscrite dans le rectangle
                     int x = widthRectangle > 0 ? (int) pressPoint.getX() : (int) (pressPoint.getX() + widthRectangle);
                     int y = heightRectangle > 0 ? (int) pressPoint.getY() : (int) (pressPoint.getY() + heightRectangle);
                     g2d.drawOval(x, y, Math.abs(widthRectangle), Math.abs(heightRectangle));
@@ -408,6 +417,27 @@ public class Court extends JPanel implements MouseInputListener {
                 default:
                     break;
             }
+            // Affichage éléments en lien avec les fonctions de mouvement
+            int l = 5; // longueur croix
+            switch (eN.valeurMouvementGlobal[0]) {
+                case 1:
+                    switch (eN.valeurMouvementC[0]) {
+                        case 1, 2:
+                            g.drawLine((int) midleXRect-l, (int) midleYRect, (int) midleXRect+l, (int) midleYRect);
+                            g.drawLine((int) midleXRect, (int) midleYRect-l, (int) midleXRect, (int) midleYRect+l);
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case 2, 3: // Rotation centrale
+                    g.drawLine((int) center.getX()-l, (int) center.getY(), (int) center.getX()+l, (int) center.getY());
+                    g.drawLine((int) center.getX(), (int) center.getY()-l, (int) center.getX(), (int) center.getY()+l);
+                    break;
+                default:
+                    break;
+            }
+            // Affichage rectangle de selection
             float alpha = (float) 0.2; //draw at 20% opacity
             AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,alpha);
             g2d.setComposite(ac);
@@ -545,7 +575,7 @@ public class Court extends JPanel implements MouseInputListener {
         boolean deplacementPegs = true;
         double coeff1, coeff2, shift1, shift2;
         if (eN.pegsSelectionnes.size() > 0) {
-            switch (eN.valeurAlignement) {
+            switch (eN.valeurAlignement[0]) {
                 case 0: // Aucun alignement
                     deplacementPegs = false;
                     break;
@@ -581,7 +611,10 @@ public class Court extends JPanel implements MouseInputListener {
                 case 4: // Alignement circulaire autour du centre
                     uniformiserSurEllipse(center, lengthPressToCenter, lengthPressToCenter);
                     break;
-                case 5: // Alignement circulaire sur ellipse inscrite dans le rectangle
+                case 5: // Alignement circulaire autour du centre du rectangle
+                    uniformiserSurEllipse(new Point(midleXRect, midleYRect), lengthPressToCenterRect, lengthPressToCenterRect);
+                    break;
+                case 6: // Alignement circulaire sur ellipse inscrite dans le rectangle
                     uniformiserSurEllipse(new Point(midleXRect, midleYRect), Math.abs(widthRectangle)/2, Math.abs(heightRectangle)/2);
                     break;
                 default:
@@ -616,24 +649,16 @@ public class Court extends JPanel implements MouseInputListener {
     public void appliquerMouvement() {
         boolean ajoutMouvementPegs = true;
         for (Pegs peg: eN.pegsSelectionnes) {
-            switch (eN.valeurMouvement) {
-                case 0:
-                    ajoutMouvementPegs = false;
-                    break;
-                case 1:
-                    peg.setValeurFctMouvement(1);
-                    peg.setLargeurCourt(width);
-                    break;
-                case 2:
-                    peg.setValeurFctMouvement(2);
-                    peg.setLargeurCourt(width);
-                    break;
-                case 3:
-                    peg.setValeurFctMouvement(3);
-                    peg.setCentreCourt(center);
-                    break;
-                default:
-                    break;
+            peg.setValeursFctMouvement(new int[] {eN.valeurMouvementGlobal[0], eN.valeurMouvementH[0], eN.valeurMouvementC[0]});
+            if (eN.valeurMouvementGlobal[0] != 0) {
+                peg.setCourtCenter(center);
+                peg.setRadiusToCourtCenter();
+                peg.setCourtWidth(width);
+                peg.setCourtHeight(height);
+                peg.setRectCenter(new Point(midleXRect, midleYRect));
+                peg.setRectWidth(widthRectangle);
+                peg.setRectHeight(heightRectangle);
+                peg.updateRadiusToRectCenter();
             }
             peg.setSpeed(eN.valeurVitesse);
         }

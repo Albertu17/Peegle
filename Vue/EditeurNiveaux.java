@@ -20,16 +20,13 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JSeparator;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.event.MouseInputListener;
 import Modele.Ball;
@@ -59,8 +56,10 @@ public class EditeurNiveaux extends JPanel {
     BoutonCouleur vert;
     JButton croix;
     JButton modif;
-    int valeurAlignement;
-    int valeurMouvement;
+    int[] valeurAlignement;
+    int[] valeurMouvementGlobal;
+    int[] valeurMouvementH;
+    int[] valeurMouvementC;
     int valeurVitesse;
     int largeurBouton;
     CasePeg casePegBleu;
@@ -70,6 +69,9 @@ public class EditeurNiveaux extends JPanel {
     JTextField nomNiveau;
     JCheckBox uniforme;
     JMenuBar menuBar;
+    RadioButtonValue aucunAlignement;
+    RadioButtonValue aucuneFonction;
+    JSlider speedPegs;
 
     EditeurNiveaux(Controleur controleur) {
         this.controleur = controleur;
@@ -102,7 +104,7 @@ public class EditeurNiveaux extends JPanel {
 
         // JMenu Editeur
         JMenu menuEditeur = new JMenu("Editeur");
-        menuEditeur.setBounds(0, 0, 100, heightMenuBar);
+        menuEditeur.setBounds(0, 0, 75, heightMenuBar);
         menuBar.add(menuEditeur);
 
         // JButton back
@@ -123,7 +125,7 @@ public class EditeurNiveaux extends JPanel {
 
         // JMenu Niveau
         JMenu menuNiveau = new JMenu("Niveau");
-        menuNiveau.setBounds(100, 0, 100, heightMenuBar);
+        menuNiveau.setBounds(75, 0, 75, heightMenuBar);
         menuBar.add(menuNiveau);
 
         // JCheckBox campagne
@@ -176,82 +178,126 @@ public class EditeurNiveaux extends JPanel {
 
         // JMenu alignement
         JMenu alignement = new JMenu("Alignement");
+        valeurAlignement = new int[1];
         ButtonGroup groupAlignement = new ButtonGroup();
-        alignement.setBounds(200, 0, 100, heightMenuBar);
+        alignement.setBounds(150, 0, 100, heightMenuBar);
         menuBar.add(alignement);
 
         // RadioButtonValue aucun
-        RadioButtonValue aucunAlignement = new RadioButtonValue("aucun", 0, true);
+        aucunAlignement = new RadioButtonValue("Aucun", new int[]{0}, new int[][] {valeurAlignement}, null);
         aucunAlignement.setSelected(true);
         alignement.add(aucunAlignement);
         groupAlignement.add(aucunAlignement);
 
         // RadioButtonValue horizontal
-        RadioButtonValue horizontal = new RadioButtonValue("horizontal", 1, true);
+        RadioButtonValue horizontal = new RadioButtonValue("Horizontal", new int[]{1}, new int[][] {valeurAlignement}, new ButtonGroup[]{groupAlignement});
         alignement.add(horizontal);
         groupAlignement.add(horizontal);
 
         // RadioButtonValue vertical
-        RadioButtonValue vertical = new RadioButtonValue("vertical", 2, true);
+        RadioButtonValue vertical = new RadioButtonValue("Vertical", new int[]{2}, new int[][] {valeurAlignement}, new ButtonGroup[]{groupAlignement});
         alignement.add(vertical);
         groupAlignement.add(vertical);
 
         // RadioButtonValue diagonal
-        RadioButtonValue diagonal = new RadioButtonValue("diagonal", 3, true);
+        RadioButtonValue diagonal = new RadioButtonValue("Diagonal", new int[]{3}, new int[][] {valeurAlignement}, new ButtonGroup[]{groupAlignement});
         alignement.add(diagonal);
         groupAlignement.add(diagonal);
-        JMenu circulaire = new JMenu("circulaire");
+        JMenu circulaire = new JMenu("Circulaire");
         alignement.add(circulaire);
 
         // RadioButtonValue centre
-        RadioButtonValue centre = new RadioButtonValue("autour du centre", 4, true);
+        RadioButtonValue centre = new RadioButtonValue("Autour du centre du court", new int[]{4}, new int[][] {valeurAlignement}, new ButtonGroup[]{groupAlignement});
         circulaire.add(centre);
         groupAlignement.add(centre);
 
+        // RadioButtonValue centre
+        RadioButtonValue centreRect = new RadioButtonValue("Autour du centre du rectangle", new int[]{5}, new int[][] {valeurAlignement}, new ButtonGroup[]{groupAlignement});
+        circulaire.add(centreRect);
+        groupAlignement.add(centreRect);
+
         // RadioButtonValue inscrit
-        RadioButtonValue inscrit = new RadioButtonValue("inscrit au rectangle",5, true);
+        RadioButtonValue inscrit = new RadioButtonValue("Inscrit au rectangle", new int[]{6}, new int[][] {valeurAlignement}, new ButtonGroup[]{groupAlignement});
         circulaire.add(inscrit);
         groupAlignement.add(inscrit);
 
         // JCheckBox uniforme
-        uniforme = new JCheckBox("uniforme");
+        uniforme = new JCheckBox("Uniforme");
         alignement.add(uniforme);
 
         // JMenu mouvement
         JMenu menuMouvement = new JMenu("Fct de mouvement");
-        ButtonGroup groupMouvement = new ButtonGroup();
-        menuMouvement.setBounds(300, 0, 150, heightMenuBar);
+        menuMouvement.setBounds(250, 0, 150, heightMenuBar);
         menuBar.add(menuMouvement);
+        ButtonGroup groupMouvementH = new ButtonGroup();
+        ButtonGroup groupMouvementC = new ButtonGroup();
+        // Valeurs de mouvement globale, horizontale et circulaire
+        valeurMouvementGlobal = new int[1]; // 0 pour aucune, 1 pour non-global, 2 et 3 pour rotation centrale
+        valeurMouvementH = new int[1];
+        valeurMouvementC = new int[1];
 
-        // RadioButtonValue aucunMouvement
-        RadioButtonValue aucunMouvement = new RadioButtonValue("Aucun", 0, false);
-        aucunMouvement.setSelected(true);
-        groupMouvement.add(aucunMouvement);
-        menuMouvement.add(aucunMouvement);
+        // RadioButtonValue aucuneFonction
+        aucuneFonction = new RadioButtonValue("Aucune", new int[]{0}, new int[][] {valeurMouvementGlobal}, null);
+        aucuneFonction.setSelected(true);
+        groupMouvementH.add(aucuneFonction);
+        groupMouvementC.add(aucuneFonction);
+        menuMouvement.add(aucuneFonction);
+
+        // JMenu traverseeH
+        JMenu traverseeH = new JMenu("Traversée horizontale");
+        menuMouvement.add(traverseeH);
 
         // RadioButtonValue traverséeGD
-        RadioButtonValue traverseeGD = new RadioButtonValue("Traversée gauche-droite", 1, false);
-        groupMouvement.add(traverseeGD);
-        menuMouvement.add(traverseeGD);
+        RadioButtonValue traverseeGD = new RadioButtonValue("De gauche à droite", new int[]{1, 1}, new int[][] {valeurMouvementGlobal, valeurMouvementH}, new ButtonGroup[]{groupMouvementH});
+        groupMouvementH.add(traverseeGD);
+        traverseeH.add(traverseeGD);
 
         // RadioButtonValue traverséeGD
-        RadioButtonValue traverseeDG = new RadioButtonValue("Traversée droite-gauche", 2, false);
-        groupMouvement.add(traverseeDG);
-        menuMouvement.add(traverseeDG);
+        RadioButtonValue traverseeDG = new RadioButtonValue("De droite à gauche", new int[]{1, 2}, new int[][] {valeurMouvementGlobal, valeurMouvementH}, new ButtonGroup[]{groupMouvementH});
+        groupMouvementH.add(traverseeDG);
+        traverseeH.add(traverseeDG);
 
+        // JMenu fctCirculaire
+        JMenu rotation = new JMenu("Rotation");
+        menuMouvement.add(rotation);
+        
         // RadioButtonValue rotationCentrale
-        RadioButtonValue rotationCentrale = new RadioButtonValue("Rotation autour du centre", 3, false);
-        groupMouvement.add(rotationCentrale);
-        menuMouvement.add(rotationCentrale);
-        menuMouvement.addSeparator();
+        RadioButtonValue rotationCentrale = new RadioButtonValue("Autour du centre du court", new int[]{2}, new int[][] {valeurMouvementGlobal}, new ButtonGroup[]{groupMouvementH, groupMouvementC});
+        aucuneFonction.setSelected(true);
+        groupMouvementH.add(rotationCentrale);
+        groupMouvementC.add(rotationCentrale);
+        rotation.add(rotationCentrale);
+
+        // RadioButtonValue rotationCentraleRect
+        RadioButtonValue rotationCentraleRect = new RadioButtonValue("Autour du centre du rectangle", new int[]{1, 1}, new int[][] {valeurMouvementGlobal, valeurMouvementC}, new ButtonGroup[]{groupMouvementC});
+        aucuneFonction.setSelected(true);
+        groupMouvementC.add(rotationCentraleRect);
+        rotation.add(rotationCentraleRect);
+
+        // RadioButtonValue rotationInscrite
+        RadioButtonValue rotationInscrite = new RadioButtonValue("Suivant le cerlce inscrit au rectangle", new int[]{1, 3}, new int[][] {valeurMouvementGlobal, valeurMouvementC}, new ButtonGroup[]{groupMouvementC});
+        rotationInscrite.addActionListener(e -> inscrit.doClick());
+        groupMouvementC.add(rotationInscrite);
+        rotation.add(rotationInscrite);
+
+        // JCheckbox sensAntiHoraire
+        JCheckBox sensAntiHoraire = new JCheckBox("Sens anti-horaire");
+        sensAntiHoraire.addItemListener(new ItemListener() {    
+            public void itemStateChanged(ItemEvent e) {           
+                if (e.getStateChange()==1) valeurMouvementC[0]++;
+                else valeurMouvementC[0]--;
+            }
+            });   
+        rotation.add(sensAntiHoraire);
 
         // JLabel labelSpeedPegs
+        menuMouvement.addSeparator();
         JLabel labelSpeedPegs = new JLabel("Vitesse des pegs :");
         menuMouvement.add(labelSpeedPegs);
 
         // JSlider speedPegs
         valeurVitesse = 100;
-        JSlider speedPegs = new JSlider(50, 300, 100);
+        speedPegs = new JSlider(50, 300, 100);
         speedPegs.addChangeListener(e -> valeurVitesse = speedPegs.getValue());
         menuMouvement.add(speedPegs);
 
@@ -283,6 +329,7 @@ public class EditeurNiveaux extends JPanel {
 
         // JPanel panelBoutons
         JPanel panelBoutons = new JPanel();
+        int gap = (height - courtHeight - heightMenuBar)/4;
         panelBoutons.setBounds(0, courtHeight + heightMenuBar, width, height - courtHeight - heightMenuBar);
         panelBoutons.setLayout(null);
         add(panelBoutons);
@@ -290,7 +337,7 @@ public class EditeurNiveaux extends JPanel {
         // slider peg selectionné
         sliderPegSelectionne = new JSlider(5, 60, 25);
         sliderPegSelectionne.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        sliderPegSelectionne.setBounds(0, 0, width - courtWidth, largeurBouton);
+        sliderPegSelectionne.setBounds(0, gap, width - courtWidth, largeurBouton);
         sliderPegSelectionne.addChangeListener(e -> {
             for (Pegs peg: pegsSelectionnes) {
                 peg.setRadius(sliderPegSelectionne.getValue());
@@ -302,27 +349,27 @@ public class EditeurNiveaux extends JPanel {
 
         // BoutonCouleur bleu
         bleu = new BoutonCouleur(1);
-        bleu.setLocation(width - courtWidth, 0);
+        bleu.setLocation(width - courtWidth, gap);
         panelBoutons.add(bleu);
 
         // BoutonCouleur rouge
         rouge = new BoutonCouleur(2);
-        rouge.setLocation(width - courtWidth + largeurBouton, 0);
+        rouge.setLocation(width - courtWidth + largeurBouton, gap);
         panelBoutons.add(rouge);
 
         // BoutonCouleur violet
         violet = new BoutonCouleur(3);
-        violet.setLocation(width - courtWidth + 2*largeurBouton, 0);
+        violet.setLocation(width - courtWidth + 2*largeurBouton, gap);
         panelBoutons.add(violet);
 
         // BoutonCouleur vert
         vert = new BoutonCouleur(4);
-        vert.setLocation(width - courtWidth + 3*largeurBouton, 0);
+        vert.setLocation(width - courtWidth + 3*largeurBouton, gap);
         panelBoutons.add(vert);
 
         // JButton croix
         croix = new JButton("supp");
-        croix.setBounds(width - courtWidth + 4*largeurBouton, 0, largeurBouton, largeurBouton);
+        croix.setBounds(width - courtWidth + 4*largeurBouton, gap, largeurBouton, largeurBouton);
         croix.addActionListener(e -> {
             for (Pegs peg : pegsSelectionnes) {
                 niveauCree.getPegs().remove(peg);
@@ -331,17 +378,18 @@ public class EditeurNiveaux extends JPanel {
             court.setPegs(court.clonePegs(niveauCree.getPegs()));
             court.repaint();
         });
+        // TODO ajout icon "croixRouge"
         panelBoutons.add(croix);
 
         // Bouton pause
         JButton pause = new JButton("||");
-        pause.setBounds(courtWidth - 2*largeurBouton, 0, largeurBouton, largeurBouton);
+        pause.setBounds(courtWidth - 2*largeurBouton, gap, largeurBouton, largeurBouton);
         panelBoutons.add(pause);
         pause.setEnabled(false);
 
         // Bouton resume
         JButton resume = new JButton("▶");
-        resume.setBounds(courtWidth - largeurBouton, 0, largeurBouton, largeurBouton);
+        resume.setBounds(courtWidth - largeurBouton, gap, largeurBouton, largeurBouton);
         resume.addActionListener(e -> {
             court.setEnPause(false);
             court.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -369,7 +417,7 @@ public class EditeurNiveaux extends JPanel {
 
         //JButton modif
         modif = new JButton("modif");
-        modif.setBounds(courtWidth - 3*largeurBouton, 0, largeurBouton, largeurBouton);
+        modif.setBounds(courtWidth - 3*largeurBouton, gap, largeurBouton, largeurBouton);
         modif.addActionListener(e -> {
             pause.doClick();
             enModif = true;
@@ -377,7 +425,7 @@ public class EditeurNiveaux extends JPanel {
             court.setCursor(new Cursor(Cursor.HAND_CURSOR));
         });
         // TODO ajout icon
-        // Icon icon = new ImageIcon(ImageImport.getImage("curseurMain.jpg"));
+        // Icon icon = new ImageIcon(ImageImport.getImage("curseurMain.jpg", largeurBouton, largeurBouton));
         // modif.setIcon(icon);
         panelBoutons.add(modif);
 
@@ -405,6 +453,9 @@ public class EditeurNiveaux extends JPanel {
         casePegViolet.sliderRayonPeg.setValue(25);
         casePegVert.sliderRayonPeg.setValue(25);
         nomNiveau.setText(" Nom du niveau");
+        aucunAlignement.doClick();
+        aucuneFonction.doClick();
+        speedPegs.setValue(100);
     }
 
 
@@ -486,15 +537,27 @@ public class EditeurNiveaux extends JPanel {
 
     // Classe conçue pour les radioButton des menus alignement et mouvement.
     public class RadioButtonValue extends JRadioButtonMenuItem {
+        int clickCount;
 
-        public RadioButtonValue(String text, int value, boolean alignement) {
+        // Constructeur prenant un tableau de valeurs et un tableau de tableaux contenant des variables auxquells affecter les valeurs.
+        public RadioButtonValue(String text, int[] values, int[][] dest, ButtonGroup[] groups) {
             super(text);
+            clickCount = 0;
             addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    if (RadioButtonValue.this.isSelected()) {
-                        if (alignement) valeurAlignement = value;
-                        else valeurMouvement = value;
+                    clickCount++;
+                    if (clickCount % 2 == 1) { // --> RadioButton selectionné
+                        for (int i = 0; i < values.length; i++) {
+                            dest[i][0] = values[i];
+                        }
                         if (modif != null) modif.doClick();
+                    } else {
+                        dest[dest.length - 1][0] = 0;
+                        if (groups != null) {
+                            for (ButtonGroup bG : groups) {
+                                bG.clearSelection();
+                            }
+                        }
                     }
                 }
             });

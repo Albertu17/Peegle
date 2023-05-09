@@ -5,15 +5,23 @@ import java.awt.Point;
 public class Pegs implements Cloneable {
     
     private double x, y; // Coordonnées du centre du peg
-    private int speed = 100; // px/s
-    private int valeurFctMouvement;
-    private int largeurCourt;
-    private Point centreCourt;
     private int radius, diametre;
     private int couleur;
     private String imageString;
     private boolean touche = false;
     public boolean atoucherpegs = false;
+
+    // Pour les fonctions de mouvement
+    private int speed = 100; // px/s
+    private int[] valeursFctMouvement;
+    private Point courtCenter;
+    private double radiusToCourtCenter;
+    private int courtWidth;
+    private int courtHeight;
+    private Point rectCenter;
+    private double radiusToRectCenter;
+    private double rectWidth;
+    private double rectHeight;
 
     // int 1 à 4 couleur image 
     public Pegs(int x, int y, int radius, int couleur) {
@@ -23,6 +31,7 @@ public class Pegs implements Cloneable {
         diametre = radius*2;
         this.couleur = couleur;
         imageString = intColorToString(couleur);
+        valeursFctMouvement = new int[3];
     }
 
     public static String intColorToString(int couleur) {
@@ -68,16 +77,40 @@ public class Pegs implements Cloneable {
         this.speed = speed;
     }
 
-    public void setValeurFctMouvement(int valeurFctMouvement) {
-        this.valeurFctMouvement = valeurFctMouvement;
+    public void setValeursFctMouvement(int[] valeursFctMouvement) {
+        this.valeursFctMouvement = valeursFctMouvement;
     }
 
-    public void setLargeurCourt(int largeurCourt) {
-        this.largeurCourt = largeurCourt;
+    public void setCourtCenter(Point courtCenter) {
+        this.courtCenter = courtCenter;
     }
 
-    public void setCentreCourt(Point centreCourt) {
-        this.centreCourt = centreCourt;
+    public void setRadiusToCourtCenter() {
+        radiusToCourtCenter = Math.sqrt(Math.pow(Math.abs(courtCenter.x - x), 2) + Math.pow(Math.abs(courtCenter.y - y), 2));
+    }
+
+    public void updateRadiusToRectCenter() {
+        radiusToRectCenter = Math.sqrt(Math.pow(Math.abs(rectCenter.x - x), 2) + Math.pow(Math.abs(rectCenter.y - y), 2));
+    }
+
+    public void setCourtWidth(int courtWidth) {
+        this.courtWidth = courtWidth;
+    }
+
+    public void setCourtHeight(int courtHeight) {
+        this.courtHeight = courtHeight;
+    }
+
+    public void setRectCenter(Point rectCenter) {
+        this.rectCenter = rectCenter;
+    }
+
+    public void setRectWidth(double rectWidth) {
+        this.rectWidth = rectWidth;
+    }
+
+    public void setRectHeight(double rectHeight) {
+        this.rectHeight = rectHeight;
     }
 
     public int getDiametre() {
@@ -143,15 +176,40 @@ public class Pegs implements Cloneable {
     }
 
     public void fonctionDeMouvement(double deltaT) {
-        switch (valeurFctMouvement) {
-            case 1:
-                traverseeGaucheDroite(deltaT, largeurCourt);
+        switch (valeursFctMouvement[0]) { // Mouvement global
+            case 1: // Mouvement non-global
+                switch (valeursFctMouvement[1]) { // Traversées
+                    case 1:
+                        traverseeGaucheDroite(deltaT, courtWidth);
+                        break;
+                    case 2:
+                        traverseeDroiteGauche(deltaT, courtWidth);
+                        break;
+                    default:
+                        break;
+                }
+                switch (valeursFctMouvement[2]) { // Rotations locales
+                    case 1: // Rotation autour du centre du rectangle, sens horaire
+                        rotationAutourPoint(deltaT, rectCenter, radiusToRectCenter, radiusToRectCenter, true);
+                        break;
+                    case 2: // Rotation autour du centre du rectangle, sens anti-horaire
+                        rotationAutourPoint(deltaT, rectCenter, radiusToRectCenter, radiusToRectCenter, false);
+                        break;
+                    case 3: // Rotation suivant l'ellipse inscrire au rectangle, sens horaire
+                        rotationAutourPoint(deltaT, rectCenter, rectWidth/2, rectHeight/2, true);
+                        break;
+                    case 4: // Rotation suivant l'ellipse inscrire au rectangle, sens anti-horaire
+                        rotationAutourPoint(deltaT, rectCenter, rectWidth/2, rectHeight/2, false);
+                        break;              
+                    default:
+                        break;
+                }
                 break;
-            case 2:
-                traverseeDroiteGauche(deltaT, largeurCourt);
+            case 2: // Rotation centrale horaire
+                rotationAutourPoint(deltaT, courtCenter, radiusToCourtCenter, radiusToCourtCenter, true);
                 break;
-            case 3:
-                rotationCentrale(deltaT, centreCourt);
+            case 3: // Rotation centrale anti-horaire
+                rotationAutourPoint(deltaT, courtCenter, radiusToCourtCenter, radiusToCourtCenter, false);
                 break;
             default:
                 break;
@@ -162,19 +220,29 @@ public class Pegs implements Cloneable {
         double nextX = x + deltaT * speed;
         if (nextX - radius > largeurCourt) nextX = -radius;
         setX(nextX);
+        setRectCenter(new Point((int) (rectCenter.getX() + deltaT * speed), (int) rectCenter.getY()));
+        updateRadiusToRectCenter();
     }
 
     public void traverseeDroiteGauche(double deltaT, int largeurCourt) {
         double nextX = x - deltaT * speed;
         if (nextX + radius < 0) nextX = largeurCourt + radius;
         setX(nextX);
+        setRectCenter(new Point((int) (rectCenter.getX() - deltaT * speed), (int) rectCenter.getY()));
+        updateRadiusToRectCenter();
     }
 
-    public void rotationCentrale(double deltaT, Point centre) {
-        double angle = Math.PI - Math.atan2(centre.y - y, centre.x - x);
-        if (angle < 0) angle += 2*Math.PI;
-        System.out.println(angle);
-        setX(centre.x + Math.cos(angle) * Math.abs(centre.x - (x+deltaT * speed)));
-        setY(centre.y + Math.sin(angle) * Math.abs(centre.y - (y+deltaT * speed)));
+    public void rotationAutourPoint(double deltaT, Point centre, double radiusX, double radiusY, boolean horaire) {
+        int signe = horaire ? 1 : -1;
+        double angle = Math.PI;
+        if (x < centre.x) {
+            if (y < centre.y) angle -= Math.atan2(centre.y - (y - signe*deltaT*speed), centre.x - (x + signe*deltaT*speed));
+            else angle -= Math.atan2(centre.y - (y - signe*deltaT*speed), centre.x - (x - signe*deltaT*speed));
+        } else {
+            if (y < centre.y) angle -= Math.atan2(centre.y - (y + signe*deltaT*speed), centre.x - (x + signe*deltaT*speed));
+            else angle -= Math.atan2(centre.y - (y + signe*deltaT*speed), centre.x - (x - signe*deltaT*speed));
+        }
+        setX(centre.x + Math.cos(angle) * radiusX);
+        setY(centre.y - Math.sin(angle) * radiusY); // - car sur un JPanel l'axe y est renversé.
     }
 }
