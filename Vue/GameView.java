@@ -190,9 +190,9 @@ public class GameView extends JPanel {
         return courtHeight;
     }
 
-    public void setSkin2() {
-        court.setSkin2();
-    }
+    // public void setSkin2() {
+    //     court.setSkin2();
+    // }
 
     public void startMusic() {
         Ball.setMusicOn();
