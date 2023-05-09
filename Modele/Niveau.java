@@ -126,6 +126,14 @@ public class Niveau {
         }
     }
 
+    public void setBasic(){
+        this.score1Etoile = 5 * this.pegs.size();
+        this.score2Etoiles = 10 * this.pegs.size();
+        this.score2Etoiles = 10 * this.pegs.size();
+        this.nbBillesInitiales = 3 * this.pegs.size();
+        this.ScoreMax = 1; // TODO score max à programmer
+    }
+
     public static Niveau NiveauAleatoire(int widthCourt, int heightCourt, int radiusBall, int diametrePegs) {
         Niveau nv = new Niveau("Aleatoire");
         int nbrPegs = randInt(60, 200); // aproximatif
@@ -153,11 +161,7 @@ public class Niveau {
             }
         }
 
-        nv.score1Etoile = 5 * nv.pegs.size();
-        nv.score2Etoiles = 10 * nv.pegs.size();
-        nv.score2Etoiles = 10 * nv.pegs.size();
-        nv.nbBillesInitiales = 3 * nv.pegs.size();
-        nv.ScoreMax = 1; // TODO score max à programmer
+       nv.setBasic();
 
         return nv;
     }
