@@ -210,24 +210,6 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         }
     }
 
-    public void setSkin1(){
-        for(Ball ball:balls){
-            ball.putSkin1();
-        }
-    }
-
-    public void setSkin2(){
-        for(Ball ball:balls){
-            ball.putSkin2();
-        }
-    }
-
-    public void setSkin3(){
-        for(Ball ball:balls){
-            ball.putSkin3();
-        }
-    }
-
     public void setEditMode(boolean editMode) {
         this.editMode = editMode;
     }
@@ -397,7 +379,8 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
 
                 public void mousePressed(MouseEvent evt) {
                     niveau.setChecked(true);
-                    controleur.setNiveauSuivant();
+                    if (niveau.isCampagne()) controleur.setNiveauSuivant();
+                    else controleur.launchMenu() ;
                 }
             });
         }

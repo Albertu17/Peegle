@@ -62,12 +62,12 @@ public class GameView extends JPanel {
         court.setVisible(true);
         add(court);
 
-        // // JButton bouton retour
-        // btnRetour = new BoutonMenu("Back", 5 * (Ball.ballRadius * 2 + 10), 50);
-        // btnRetour.setLocation(35 - Ball.ballRadius, 20);
-        // btnRetour.setVisible(true);
-        // btnRetour.addActionListener(e -> controleur.launchMenu());
-        // add(btnRetour);
+        // JButton bouton retour
+        btnRetour = new BoutonMenu("Pause", 5 * (Ball.ballRadius * 2 + 10), 50);
+        btnRetour.setLocation(35 - Ball.ballRadius, 20);
+        btnRetour.setVisible(true);
+        btnRetour.addActionListener(e -> launchMenuPause(true));
+        add(btnRetour);
 
         // Background
         Background background = new Background("test.jpg", court, heigth, width);
@@ -75,22 +75,15 @@ public class GameView extends JPanel {
         background.setOpaque(false);
         add(background);
 
-        // JButton bouton retour
-        btnRetour = new BoutonMenu("back", 200, 50);
-        btnRetour.setLocation(40,40);
-        btnRetour.addActionListener(e -> {
-            for(Ball ball : court.getBalls()){
-                ball.inLevelFalse();
-            }
-            controleur.launchMenu();
-            });
-        add(btnRetour);
+        
     }
 
     public void launchMenuPause(boolean visible) {
         jeuEnpause.setVisible(visible);
         jeuEnpause.menuEnpause.setVisible(visible);
         court.setEnPause(visible);
+        btnRetour.setVisible(!visible);
+        btnRetour.setEnabled(!visible);
         jeuEnpause.repaint();
         if (!visible) {
             court.requestFocusInWindow();
