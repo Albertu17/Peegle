@@ -177,7 +177,7 @@ public class Ball{
     }
 
     private void playSound() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        File audioFile = new File("Modele/hitsound.wav");
+        File audioFile = new File("Vue/Song/hitsound.wav");
  
         AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
         AudioFormat format = audioStream.getFormat();

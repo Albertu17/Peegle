@@ -35,19 +35,19 @@ public class Pegs implements Cloneable {
     }
 
     public static String intColorToString(int couleur) {
-        String s = "";
+        String s = "Pegs/";
         switch (couleur) {
             case 1:
-                s = "blueball.png";
+                s += "blueball.png";
                 break;
             case 2:
-                s = "redball.png";
+                s += "redball.png";
                 break;
             case 3:
-                s = "violetball.png";
+                s += "violetball.png";
                 break;
             case 4:
-                s = "vertball.png";
+                s += "vertball.png";
                 break;
         }
         return s;
@@ -165,9 +165,9 @@ public class Pegs implements Cloneable {
 
     public String getImageStringTouche() {
         if (couleur != 2){
-            return "redball.png";
+            return "Pegs/redball.png";
         } else {
-            return "violetball.png";
+            return "Pegs/violetball.png";
         }
     }
 
