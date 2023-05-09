@@ -11,7 +11,7 @@ import Modele.Niveau;
 import Modele.Ball;
 import Vue.Menu.*;
 
-public class Controleur extends JFrame{
+public class Controleur extends JFrame {
 
     public MenuParametres menuParametres;
     public GameView gameview;
@@ -39,6 +39,7 @@ public class Controleur extends JFrame{
         setUndecorated(true);
         setResizable(false); // empêche l'utilisateur de resize la fenêtre.
         setVisible(true);
+        setLayout(null);
     }
 
     // override pour prendre l'attribut width de cette classe et pas celui de la frame (plus stable).

@@ -143,6 +143,14 @@ public class MenuParametres extends JPanel {
         for (int i = 0; i < allNameImage.length; i++) {
             tabBouton[i].repaint();
         }
+                // JMenuBar alignement
+                String[] values = new String[] {"Aucun", "Haut-Bas", "Bas-Haut", "Vertical", "Horizontal"};
+                JComboBox<String> comboBoxAlignement = new JComboBox<String>(values);
+                // comboBoxAlignement.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                // comboBoxAlignement.setSelectedItem(0);
+                comboBoxAlignement.setBounds(middleW-100,middleH-25+70, 200, 50);
+                add(comboBoxAlignement);
+                comboBoxAlignement.setVisible(true);
     }
 
     @Override
