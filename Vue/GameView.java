@@ -4,8 +4,6 @@ import Vue.Menu.BoutonMenu;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.*;

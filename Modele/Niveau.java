@@ -181,6 +181,7 @@ public class Niveau {
             g2d.drawImage(ImageImport.getImage(peg.getImageString()), peg.getX(), peg.getY(), peg.getDiametre(),
                     peg.getDiametre(), null);
         }
+
         try {
             ImageIO.write(tempImage, "png",
                     new File("Vue/Image/IconeNiveau/" + (nv.campagne ? "Campagne/" : "Perso/") + nv.getNom() + ".png"));

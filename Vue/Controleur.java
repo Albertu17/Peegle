@@ -6,12 +6,9 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-<<<<<<< HEAD
 
 import Modele.Niveau;
 import Modele.Ball;
-=======
->>>>>>> 13Bis
 import Vue.Menu.*;
 
 public class Controleur extends JFrame {
