@@ -130,17 +130,6 @@ public class Controleur extends JFrame {
         this.repaint();
     }
 
-    public static void main(String[] args) {
-
-        SwingUtilities.invokeLater(new Runnable(){
-            @Override
-            public void run() {
-                Controleur c = new Controleur() ;
-                c.launchMenu();
-            }
-        });
-    }
-
     public void setNiveauSuivant() {
         String nomNiveau = Niveau.getNiveauSuivant();
         if (nomNiveau != null){
@@ -150,5 +139,16 @@ public class Controleur extends JFrame {
             launchGameview("");
             gameview.court.askReset();
         }
+    }
+
+    public static void main(String[] args) {
+
+        SwingUtilities.invokeLater(new Runnable(){
+            @Override
+            public void run() {
+                Controleur c = new Controleur() ;
+                c.launchMenu();
+            }
+        });
     }
 }
