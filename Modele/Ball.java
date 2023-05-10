@@ -230,11 +230,8 @@ public class Ball{
         combo = i;
     }
 
-    public static void setMusicOn(){
-        Ball.musicOn = true;
-    }
-    public static void setMusicOff(){
-        Ball.musicOn = false;
+    public static void setSound( boolean b){
+        musicOn = b;
     }
 
     public int getComboScore() {
