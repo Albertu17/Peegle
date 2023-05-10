@@ -796,13 +796,13 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
 
             LoseScreen = ImageImport.getImage("ResumeScreen.png", width, height);
 
-            restart = new BoutonMenu("Restart", width, height) ;
-            retour = new BoutonMenu("Retour", width, height); 
+            restart = new BoutonMenu("Recommencer", width, height) ;
+            retour = new BoutonMenu("Quitter", width, height); 
 
             int ydepart = (this.getHeight() * 350) / 876;
             int yoffset = (this.getHeight() * 200) / 876;
 
-            restart = new BoutonMenu("Restart", (this.getWidth()) / 2, (50*Court.this.getWidth())/520);
+            restart = new BoutonMenu("Recommencer", (this.getWidth()) / 2, (50*Court.this.getWidth())/520);
             restart.setLocation(this.getWidth() / 2 - restart.getWidth() / 2, ydepart- restart.getHeight()/2);
             restart.setVisible(true);
             restart.addActionListener(e -> {
@@ -810,7 +810,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
             });
             add(restart);
 
-            retour = new BoutonMenu("Quit", (this.getWidth()) / 2, (50*Court.this.getWidth())/520);
+            retour = new BoutonMenu("    Quit    ", (this.getWidth()) / 2, (50*Court.this.getWidth())/520);
             retour.setLocation(this.getWidth() / 2 - retour.getWidth() / 2, ydepart +yoffset - retour.getHeight()/2);
             retour.setVisible(true);
             retour.addActionListener(e -> controleur.launchMenu());
@@ -826,7 +826,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
             super.paintComponent(g);
             g.drawImage(LoseScreen, 0, 0, this);
 
-            Textentete("Level " + niveau.getNom() + " failed !", g);
+            Textentete("Niveau " + niveau.getNom() + " perdu !", g);
         }
 
 
@@ -874,7 +874,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
                 g.drawImage(WinScreenDisable, 0, 0, this);
 
            
-            Textentete("Level " + niveau.getNom() + " Completed !", g);
+            Textentete("Niveau " + niveau.getNom() + " fini !", g);
 
             int x = (width * 50) / 876 ;
             int y =(height * 175) / 876 ;
@@ -886,7 +886,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
             y += (height * 75) / 876  ;          
             g.drawString("Balles Utilisees: " + (niveau.getNbrBall() - NbDeBall), x, y);
             y += (height * 75) / 876  ;          
-            g.drawString("Max   : " + niveau.getScoreMax(), x, y);
+            g.drawString("Score Max : " + niveau.getScoreMax(), x, y);
             if (toucher > ScoreMax) {
                 y = (height *600) / 876  ;          
                 g.drawString("Nouveau Max Score !!!", x, y);
@@ -905,7 +905,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
             background = ImageImport.getImage("ResumeScreen.png", width, height);
             
             // boutons
-            resetCampagne = new BoutonMenu("Reset", (this.getWidth()) / 2, (87*this.getHeight())/876);
+            resetCampagne = new BoutonMenu("Recommencer", (this.getWidth()) / 2, (87*this.getHeight())/876);
             resetCampagne.setLocation(this.getWidth() / 2 - resetCampagne.getWidth() / 2, (this.getHeight() * 350) / 876 );
             resetCampagne.setVisible(true);
             resetCampagne.addActionListener(e -> {
@@ -914,7 +914,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
             });
             add(resetCampagne);
             
-            quit = new BoutonMenu("Quit", (this.getWidth()) / 2, (87*this.getHeight())/876);
+            quit = new BoutonMenu("Quitter", (this.getWidth()) / 2, (87*this.getHeight())/876);
             quit.setLocation(this.getWidth() / 2 - quit.getWidth() / 2, (this.getHeight() * 530) / 876);
             quit.setVisible(true);
             quit.addActionListener(e -> {

@@ -61,7 +61,7 @@ public class GameView extends JPanel {
         add(court);
 
         // JButton bouton retour
-        btnRetour = new BoutonMenu("Pause", 5 * (Ball.ballRadius * 2 + 10), 50);
+        btnRetour = new BoutonMenu("Pause", 4 * (Ball.ballRadius * 2 + 10), 50);
         btnRetour.setLocation(35 - Ball.ballRadius, 20);
         btnRetour.setVisible(true);
         btnRetour.addActionListener(e -> launchMenuPause(true));
@@ -128,7 +128,7 @@ public class GameView extends JPanel {
 
                 int y = (this.getHeight() * 200) / 876;
 
-                resume = new BoutonMenu("Resume", (this.getWidth()) / 2, (50*courtHeight)/520);
+                resume = new BoutonMenu("Reprendre", (this.getWidth()) / 2, (50*courtHeight)/520);
                 resume.setLocation(this.getWidth() / 2 - resume.getWidth() / 2, y- resume.getHeight()/2);
                 resume.setVisible(true);
                 resume.addActionListener(e -> {
@@ -136,7 +136,7 @@ public class GameView extends JPanel {
                 });
                 add(resume);
 
-                restart = new BoutonMenu("Restart", (this.getWidth()) / 2, (50*courtHeight)/520);
+                restart = new BoutonMenu("Recommencer", (this.getWidth()) / 2, (50*courtHeight)/520);
                 restart.setLocation(this.getWidth() / 2 - restart.getWidth() / 2, y * 2 - resume.getHeight()/2);
                 restart.setVisible(true);
                 restart.addActionListener(e -> {
@@ -144,7 +144,7 @@ public class GameView extends JPanel {
                 });
                 add(restart);
 
-                quit = new BoutonMenu("Quit", (this.getWidth()) / 2, (50*courtHeight)/520);
+                quit = new BoutonMenu("Quitter", (this.getWidth()) / 2, (50*courtHeight)/520);
                 quit.setLocation(this.getWidth() / 2 - quit.getWidth() / 2, y * 3 - resume.getHeight()/2);
                 quit.setVisible(true);
                 quit.addActionListener(e -> controleur.launchMenu());
@@ -164,7 +164,7 @@ public class GameView extends JPanel {
                 FontMetrics fm = g.getFontMetrics(g.getFont());
                 int offsetX = ((this.getWidth() * 635) / 781) - fm.stringWidth("Level " + niveau.getNom() + " !");
                 int offsetY = fm.getAscent() / 2;
-                g.drawString("Level " + niveau.getNom() + " !", (this.getWidth() * 90) / 781 + offsetX,
+                g.drawString("Niveau " + niveau.getNom() + " !", (this.getWidth() * 90) / 781 + offsetX,
                         (this.getHeight() * 45) / 876 + offsetY);
             }
 
@@ -187,10 +187,6 @@ public class GameView extends JPanel {
     public int getCourtHeight() {
         return courtHeight;
     }
-
-    // public void setSkin2() {
-    //     court.setSkin2();
-    // }
 
     public void startMusic() {
         Ball.setMusicOn();

@@ -1,7 +1,18 @@
 A faire :
-    -refaire la sauvegarde pour intégrer les trucs d'albert
     -faire les niveau de la campagne
     -les etoiles dans la sauvegarde 
     - readme
     - rapport
     - refaire bruit qui rend fou
+    - refaire bruit qui rend fou
+    - Mettre des icones sur les boutons
+        supp
+        modif
+        balles
+
+
+
+
+Fait :
+    - ajouter fonction movuement sauvgerade
+    -refaire la sauvegarde pour intégrer les trucs d'albert

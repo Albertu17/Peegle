@@ -41,8 +41,8 @@ public class Menu extends JPanel {
         middleW = width/2;
         middleH = height/2 + 50;
 
-        // BoutonMenu play
-        btnPlay = new BoutonMenu("play", 200, 50);
+        // BoutonMenu Joeur
+        btnPlay = new BoutonMenu("jouer", 200, 50);
         btnPlay.setLocation(middleW-100, middleH-25-140);
         btnPlay.addActionListener(e -> controleur.setNiveauSuivant());
         add(btnPlay);
@@ -64,14 +64,14 @@ public class Menu extends JPanel {
         add(btnOptions);
 
         // BoutonMenu editor
-        btnEditeur = new BoutonMenu("editor", 200, 50);
+        btnEditeur = new BoutonMenu("editeur", 200, 50);
         btnEditeur.setLocation(middleW-100,middleH-25+70); 
         btnEditeur.addActionListener(e -> {
             controleur.launchEditeurNiveaux();});
         add(btnEditeur);
 
         // BoutonMenu quit
-        btnQuit = new BoutonMenu("quit", 200, 50);
+        btnQuit = new BoutonMenu("quitter", 200, 50);
         btnQuit.setLocation(middleW-100,middleH-25+140);
         btnQuit.addActionListener(e -> System.exit(0));
         add(btnQuit);

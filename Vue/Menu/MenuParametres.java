@@ -83,7 +83,7 @@ public class MenuParametres extends JPanel {
         // add(btnSkin3);
 
         // BoutonMenu back
-        btnRetour = new BoutonMenu("back", 200, 50);
+        btnRetour = new BoutonMenu("Retour", 200, 50);
         btnRetour.setLocation(40, 40);
         btnRetour.addActionListener(e -> controleur.launchMenu());
         add(btnRetour);
@@ -119,7 +119,7 @@ public class MenuParametres extends JPanel {
             vitesse.setText(s);
         });
         add(plus);
-        minus = new BoutonMenu("Minus", 100, 50);
+        minus = new BoutonMenu("Moins", 100, 50);
         minus.setLocation(middleW - 600, middleH - 25 - 70);
         minus.addActionListener(e -> {
             c.gameview.court.downVitesse();

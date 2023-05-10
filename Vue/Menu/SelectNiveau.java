@@ -60,7 +60,7 @@ public class SelectNiveau extends JPanel implements KeyListener{
         background = ImageImport.getImage("Menu/menuBackground.jpg", this.getWidth(), this.getHeight());
 
         // JButton boutonRetour
-        btnRetour = new BoutonMenu("back", 200, 50);
+        btnRetour = new BoutonMenu("Retour", 200, 50);
         btnRetour.setLocation(40,40);
         btnRetour.addActionListener(e -> controleur.launchMenu());
         add(btnRetour);
