@@ -37,8 +37,6 @@ import Vue.Menu.BoutonMenu;
 
 public class EditeurNiveaux extends JPanel {
 
-    // Controleur
-    private Controleur controleur;
     int width;
     int height;
 
@@ -77,7 +75,6 @@ public class EditeurNiveaux extends JPanel {
     JSlider sliderNbBallesInitial;
 
     EditeurNiveaux(Controleur controleur) {
-        this.controleur = controleur;
         width = controleur.getWidth();
         height = controleur.getHeight();
         setLayout(null);
