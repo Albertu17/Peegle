@@ -796,9 +796,6 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
 
             LoseScreen = ImageImport.getImage("ResumeScreen.png", width, height);
 
-            restart = new BoutonMenu("Recommencer", width, height) ;
-            retour = new BoutonMenu("Quitter", width, height); 
-
             int ydepart = (this.getHeight() * 350) / 876;
             int yoffset = (this.getHeight() * 200) / 876;
 
