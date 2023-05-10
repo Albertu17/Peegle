@@ -75,7 +75,7 @@ public class MenuParametres extends JPanel {
     public BufferedImage getEditedImage(String txt, int width, int height) {
         BufferedImage buffImg = ImageImport.getImage("Menu/planche_blanche.png", width, height);
         Graphics g = buffImg.getGraphics();
-        Font rightFont = ImageImport.rightSize(txt, width);
+        Font rightFont = ImageImport.rightSizeCarton(txt, width);
         FontMetrics metrics = g.getFontMetrics(rightFont);
         g.setFont(rightFont);
         g.setColor(Color.WHITE);
@@ -102,7 +102,7 @@ public class MenuParametres extends JPanel {
             setSize(width, height);
             setOpaque(false);
 
-            image = getEditedImage("Skins", (width*2)/3, 50) ;
+            image = getEditedImage("    Skins   ", (width*2)/3, 50) ;
 
             tabBouton = new BoutonBall[5];
 

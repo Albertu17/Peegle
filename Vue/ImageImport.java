@@ -78,8 +78,22 @@ public class ImageImport {
         
     }
 
-    public static Font rightSize(String txt, int tailleMax) {
+    public static Font rightSizeArcade(String txt, int tailleMax) {
         Font rightF = arcade.deriveFont(1000f); // Très grande taille de police par défault
+        FontMetrics metrics = (getImage("Gameview/ResumeScreen.png", 100, 100)).createGraphics().getFontMetrics(rightF);
+        int fontSize = rightF.getSize();
+        int textWidth = metrics.stringWidth(txt);
+        // int textWidthMax = (WinPanel.this.getWidth()*5)/6;
+        if (textWidth > tailleMax) {
+            double widthRatio = (double) tailleMax / (double) textWidth;
+            rightF = rightF.deriveFont((float) Math.floor(fontSize * widthRatio));
+            fontSize = rightF.getSize();
+            metrics = (getImage("Gameview/ResumeScreen.png", 100, 100)).createGraphics().getFontMetrics(rightF);
+        }
+        return rightF;
+    }
+    public static Font rightSizeCarton(String txt, int tailleMax) {
+        Font rightF = cartoon.deriveFont(1000f); // Très grande taille de police par défault
         FontMetrics metrics = (getImage("Gameview/ResumeScreen.png", 100, 100)).createGraphics().getFontMetrics(rightF);
         int fontSize = rightF.getSize();
         int textWidth = metrics.stringWidth(txt);

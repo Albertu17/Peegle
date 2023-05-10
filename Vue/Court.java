@@ -764,7 +764,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         }
 
         public void Textentete(String texteEntete,  Graphics g){
-            g.setFont(ImageImport.rightSize(texteEntete, (width * 573) / 781));
+            g.setFont(ImageImport.rightSizeArcade(texteEntete, (width * 573) / 781));
             g.setColor(Color.WHITE);
             FontMetrics fm = g.getFontMetrics(g.getFont()) ;
             int offsetX = ((width * 573) / 781) - fm.stringWidth(texteEntete) ;
@@ -864,7 +864,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
 
             int x = (width * 50) / 876 ;
             int y =(height * 175) / 876 ;
-            g.setFont(ImageImport.rightSize("Balles Utilisees: 1000", (width * (876-90)) / 876));
+            g.setFont(ImageImport.rightSizeArcade("Balles Utilisees: 1000", (width * (876-90)) / 876));
             g.setColor(Color.WHITE);
             g.drawString("Score: " + toucher, x, y);  
             y += (height * 75) / 876  ;          
@@ -923,7 +923,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
 
             int x = (width * 55) / 876 ;
             int y =(height * 175) / 876 ;
-            g.setFont(ImageImport.rightSize("* Ou bien recommencer la campagne ", (width * (876-90)) / 876));   
+            g.setFont(ImageImport.rightSizeArcade("* Ou bien recommencer la campagne ", (width * (876-90)) / 876));   
             
             g.drawString("Vous avez fini la campagne !", x, y);
             y += (height * 75) / 876  ;          

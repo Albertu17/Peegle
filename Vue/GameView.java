@@ -154,7 +154,7 @@ public class GameView extends JPanel {
                 addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[]{resume, restart, quit}, ()->launchMenuPause(false)) );
             }
             public void Textentete(String texteEntete,  Graphics g){
-                g.setFont(ImageImport.rightSize(texteEntete, (this.getWidth() * 573) / 781));
+                g.setFont(ImageImport.rightSizeArcade(texteEntete, (this.getWidth() * 573) / 781));
                 g.setColor(Color.WHITE);
                 FontMetrics fm = g.getFontMetrics(g.getFont()) ;
                 int offsetX = ((this.getWidth() * 573) / 781) - fm.stringWidth(texteEntete) ;
