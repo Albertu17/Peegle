@@ -1,8 +1,11 @@
 A faire :
-    -refaire la sauvegarde pour intégrer les trucs d'albert
     -faire les niveau de la campagne
     -les etoiles dans la sauvegarde 
     - readme
     - rapport
-    - ajouter fonction movuement sauvgerade
     - refaire bruit qui rend fou
+
+
+Fait :
+    - ajouter fonction movuement sauvgerade
+    -refaire la sauvegarde pour intégrer les trucs d'albert
