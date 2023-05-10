@@ -68,7 +68,7 @@ public class GameView extends JPanel {
         add(btnRetour);
 
         // Background
-        Background background = new Background("test.jpg", court, heigth, width);
+        Background background = new Background("Gameview/background.jpg", court, heigth, width);
         background.setBounds(0, 0, width, heigth);
         background.setOpaque(false);
         add(background);
@@ -122,7 +122,7 @@ public class GameView extends JPanel {
                 setVisible(true);
 
                 // definir image de fond :
-                arrierePlan = ImageImport.getImage("ResumeScreen.png", courtWidth / 2, courtHeight);
+                arrierePlan = ImageImport.getImage("Gameview/ResumeScreen.png", courtWidth / 2, courtHeight);
 
                 // ajout des boutons
 
@@ -153,19 +153,20 @@ public class GameView extends JPanel {
                 setFocusable(true);
                 addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[]{resume, restart, quit}, ()->launchMenuPause(false)) );
             }
+            public void Textentete(String texteEntete,  Graphics g){
+                g.setFont(ImageImport.rightSize(texteEntete, (this.getWidth() * 573) / 781));
+                g.setColor(Color.WHITE);
+                FontMetrics fm = g.getFontMetrics(g.getFont()) ;
+                int offsetX = ((this.getWidth() * 573) / 781) - fm.stringWidth(texteEntete) ;
+                int offsetY = fm.getAscent()/2 ;
+                g.drawString(texteEntete, (this.getWidth() * 104) / 781 +offsetX, (this.getHeight() * 45) / 876 + offsetY);
+            }
 
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 g.drawImage(arrierePlan, 0, 0, this);
-                g.setFont(ImageImport.rightSize("Level " + niveau.getNom() + " !",
-                        (this.getWidth() * 635) / 781));
-                g.setColor(Color.WHITE);
-                FontMetrics fm = g.getFontMetrics(g.getFont());
-                int offsetX = ((this.getWidth() * 635) / 781) - fm.stringWidth("Level " + niveau.getNom() + " !");
-                int offsetY = fm.getAscent() / 2;
-                g.drawString("Niveau " + niveau.getNom() + " !", (this.getWidth() * 90) / 781 + offsetX,
-                        (this.getHeight() * 45) / 876 + offsetY);
+                Textentete("Niveau " + niveau.getNom() + " !", g);
             }
 
         }

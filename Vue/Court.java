@@ -794,7 +794,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         LosePanel(int width, int height) {
             super(width, height) ;
 
-            LoseScreen = ImageImport.getImage("ResumeScreen.png", width, height);
+            LoseScreen = ImageImport.getImage("Gameview/ResumeScreen.png", width, height);
 
             int ydepart = (this.getHeight() * 350) / 876;
             int yoffset = (this.getHeight() * 200) / 876;
@@ -839,8 +839,8 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         WinPanel(int width, int height) {
             super(width, height) ;
 
-            WinScreen = ImageImport.getImage("WinScreen.png", width, height);
-            WinScreenDisable = ImageImport.getImage("WinScreenDisabled.png", width, height);
+            WinScreen = ImageImport.getImage("Gameview/WinScreen.png", width, height);
+            WinScreenDisable = ImageImport.getImage("Gameview/WinScreenDisabled.png", width, height);
             exited = false;
 
             addMouseListener((MouseListener) new MouseAdapter() {
@@ -886,7 +886,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
             g.drawString("Score Max : " + niveau.getScoreMax(), x, y);
             if (toucher > ScoreMax) {
                 y = (height *600) / 876  ;          
-                g.drawString("Nouveau Max Score !!!", x, y);
+                g.drawString("Nouveau score max!!!", x, y);
                 niveau.setScoreMax(toucher);
             }
         }
@@ -899,7 +899,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
 
         FinDeCampagne(int width, int height){
             super(width, height) ;
-            background = ImageImport.getImage("ResumeScreen.png", width, height);
+            background = ImageImport.getImage("Gameview/ResumeScreen.png", width, height);
             
             // boutons
             resetCampagne = new BoutonMenu("Recommencer", (this.getWidth()) / 2, (87*this.getHeight())/876);

@@ -24,8 +24,8 @@ public class Sceau{
         Xh = court.getWidth()/2 - longeur/2;
         Yh = court.getHeight() - (hauteur);
 
-        imageBAS = ImageImport.getImage("bucketBAS.png", longeur, hauteur);
-        imageHAUT = ImageImport.getImage("bucketHAUT.png", longeur, hauteur);
+        imageBAS = ImageImport.getImage("Gameview/bucketBAS.png", longeur, hauteur);
+        imageHAUT = ImageImport.getImage("Gameview/bucketHAUT.png", longeur, hauteur);
 
         // tester si le sceau est bien dans le court
         

@@ -49,7 +49,7 @@ public class Canon extends JPanel{
         
         // Mise à l'echelle du canon :
         int tailleImage = (int) (largeurFrame* tailleCanon ) ;
-        image = ImageImport.getImage("cannonGrand.png", tailleImage, tailleImage) ;
+        image = ImageImport.getImage("Gameview/cannonGrand.png", tailleImage, tailleImage) ;
         
         
         
