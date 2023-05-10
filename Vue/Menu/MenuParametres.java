@@ -2,6 +2,7 @@ package Vue.Menu;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
@@ -57,55 +58,29 @@ public class MenuParametres extends JPanel {
         add(btnRetour);
 
 
-        skin = new Skin(WIDTH, HEIGHT)
+        skin = new Skin(width/5, height/2) ;
+        skin.setVisible(true);
+        skin.setLocation(100, 100);
+        add(skin) ;
 
-        skin = new BoutonMenu("Skins",100,50);
-        skin.setLocation(middleW-30, middleH-250);
-        add(skin);
-
-        musicOn = new BoutonMenu("Music ON", 100,50);
-        musicOn.setLocation(middleW + 300, middleH - 25 - 70);
-        musicOn.addActionListener(e->{
-            c.gameview.startMusic();
-        });
-        add(musicOn);
-
-        musicOff = new BoutonMenu("Music OFF", 100, 50);
-        musicOff.setLocation(middleW + 500, middleH - 25 - 70);
-        musicOff.addActionListener(e->{
-            c.gameview.stopMusic();
-        });
-        add(musicOff);
-
-        plus = new BoutonMenu("Plus", 100, 50);
-        plus.setLocation(middleW - 400, middleH - 25 - 70);
-        plus.addActionListener(e -> {
-            c.gameview.court.upVitesse();
-            int t = (int) c.gameview.court.getCanon().getVitesseTir();
-            String s = String.valueOf(+t);
-            vitesse.setText(s);
-        });
-        add(plus);
-        minus = new BoutonMenu("Moins", 100, 50);
-        minus.setLocation(middleW - 600, middleH - 25 - 70);
-        minus.addActionListener(e -> {
-            c.gameview.court.downVitesse();
-            int t = (int) c.gameview.court.getCanon().getVitesseTir();
-            String s = String.valueOf(+t);
-            vitesse.setText(s);
-        });
-        add(minus);
-
-        int t = (int) c.gameview.court.getCanon().getVitesseTir();
-        String s = String.valueOf(+t);
-        vitesse = new JLabel(s);
-        vitesse.setFont(new Font("Verdana", Font.PLAIN, 30));
-        vitesse.setBounds(middleW - 500, middleH, 200, 50);
-        add(vitesse);
+       
+       
 
         setFocusable(true);
         requestFocusInWindow();
         addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[] {}, () -> controleur.launchMenu()));
+    }
+
+
+    public BufferedImage getEditedImage(String txt, int width, int height) {
+        BufferedImage buffImg = ImageImport.getImage("Menu/planche_blanche.png", width, height);
+        Graphics g = buffImg.getGraphics();
+        Font rightFont = ImageImport.rightSize(txt, width);
+        FontMetrics metrics = g.getFontMetrics(rightFont);
+        g.setFont(rightFont);
+        g.setColor(Color.WHITE);
+        g.drawString(txt, width/2 - metrics.stringWidth(txt)/2, height/2  + metrics.getAscent()/2);
+        return buffImg ;
     }
 
     
@@ -120,10 +95,15 @@ public class MenuParametres extends JPanel {
         "Ball/soccerBall.png", "Ball/tennisBall.png" };
         private BoutonBall[] tabBouton;
 
+        private BufferedImage image ;
+
 
         Skin(int width, int height){
             setSize(width, height);
             setOpaque(false);
+
+            image = getEditedImage("Skins", (width*2)/3, 50) ;
+
             tabBouton = new BoutonBall[5];
 
             // BoutonMenu skin1
@@ -151,7 +131,15 @@ public class MenuParametres extends JPanel {
             add(tabBouton[4]);
 
             iluminateButton() ;
+            repaint();
         }
+        
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.drawImage(image,0, 0, image.getWidth(), image.getHeight(),  this) ;
+        }
+        
 
         private void iluminateButton() {
             for (int i = 0; i < allNameImage.length; i++) {

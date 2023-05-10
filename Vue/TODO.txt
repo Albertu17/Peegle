@@ -5,8 +5,6 @@ A faire :
     - rapport
 
 
-
-
 Fait :
     - refaire bruit qui rend fou
     - ajouter fonction movuement sauvgerade
