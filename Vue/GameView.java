@@ -40,8 +40,8 @@ public class GameView extends JPanel {
         setVisible(true);
         setBackground(Color.BLACK);
 
-        courtWidth = width - 400;
-        courtHeight = heigth - 200;
+        courtWidth = width*5/6;
+        courtHeight = heigth*5/6;
 
         // Affectation du niveau
         if (nomNiveau == null || nomNiveau.equals(""))
