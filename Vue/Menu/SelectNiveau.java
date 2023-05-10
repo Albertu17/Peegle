@@ -273,7 +273,6 @@ public class SelectNiveau extends JPanel implements KeyListener{
             cadre = ImageImport.getImage("Menu/CadreCampagne.png", largeurPres,hauteurPhoto);
         }
         
-        @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             // afficher background
@@ -284,21 +283,6 @@ public class SelectNiveau extends JPanel implements KeyListener{
         }
     }
 
-    public static void main(String[] args){
-
-        SwingUtilities.invokeLater(new Runnable(){
-            @Override
-            public void run() {
-                Controleur c  = new Controleur() ;
-                c.launchSelectNiveau();             
-            }
-        });
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {}
-
-    @Override
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()){
             case (KeyEvent.VK_RIGHT) :
@@ -318,6 +302,6 @@ public class SelectNiveau extends JPanel implements KeyListener{
         }
     }
 
-    @Override
+    public void keyTyped(KeyEvent e) {}
     public void keyReleased(KeyEvent e) {}
 }
