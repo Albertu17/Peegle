@@ -189,13 +189,5 @@ public class GameView extends JPanel {
         return courtHeight;
     }
 
-    public void startMusic() {
-        Ball.setMusicOn();
-    }
-
-    public void stopMusic() {
-        Ball.setMusicOff();
-    }
-
 
 }

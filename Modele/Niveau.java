@@ -407,7 +407,6 @@ public class Niveau {
                 int rectHeight = Integer.valueOf(line[10]);
                 ajouter.setRect(rectCenter, rectWidth, rectHeight, widthCourt, heightCourt);
                 ajouter.setValeursFctMouvement(valeursFctMouvement);
-                ajouter.setCourtWidth(widthCourt);
             }
             }
 
