@@ -1,5 +1,6 @@
 package Vue.Menu;
 
+import java.awt.Button;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -63,6 +64,31 @@ public class MenuParametres extends JPanel {
         int xCenterSkin = (width)/4; 
         skin.setLocation((xCenterSkin - skin.getWidth())/2, (height - skin.getHeight())/2);
         add(skin) ;
+        BoutonMenu buttonMusicOn = new BoutonMenu("Music On", 200, 50);
+        buttonMusicOn.setLocation(middleW, middleH );
+        BoutonMenu buttonMusicOff = new BoutonMenu("Music Off", 200, 50);
+        buttonMusicOff.setLocation(middleW, middleH);
+        if (controleur.getMusic()) {
+            buttonMusicOn.setVisible(true);
+            buttonMusicOff.setVisible(false);
+        } else {
+            buttonMusicOn.setVisible(false);
+            buttonMusicOff.setVisible(true);
+        }
+        buttonMusicOn.addActionListener(e -> {
+            controleur.setMusic(false);
+            controleur.stopMusic();
+            buttonMusicOn.setVisible(false);
+            buttonMusicOff.setVisible(true);
+        });
+        buttonMusicOff.addActionListener(e -> {
+            controleur.setMusic(true);
+            controleur.playMusic();
+            buttonMusicOn.setVisible(true);
+            buttonMusicOff.setVisible(false);
+        });
+        add(buttonMusicOff);
+        add(buttonMusicOn);
 
 
         setFocusable(true);
