@@ -195,10 +195,10 @@ public class Pegs implements Cloneable {
                     case 2: // Rotation autour du centre du rectangle, sens anti-horaire
                         rotationAutourPoint(deltaT, rectCenter, radiusToRectCenter, radiusToRectCenter, false);
                         break;
-                    case 3: // Rotation suivant l'ellipse inscrire au rectangle, sens horaire
+                    case 3: // Rotation suivant l'ellipse inscrite dans le rectangle, sens horaire
                         rotationAutourPoint(deltaT, rectCenter, rectWidth/2, rectHeight/2, true);
                         break;
-                    case 4: // Rotation suivant l'ellipse inscrire au rectangle, sens anti-horaire
+                    case 4: // Rotation suivant l'ellipse inscrite dans le rectangle, sens anti-horaire
                         rotationAutourPoint(deltaT, rectCenter, rectWidth/2, rectHeight/2, false);
                         break;              
                     default:
@@ -234,15 +234,39 @@ public class Pegs implements Cloneable {
 
     public void rotationAutourPoint(double deltaT, Point centre, double radiusX, double radiusY, boolean horaire) {
         int signe = horaire ? 1 : -1;
-        double angle = Math.PI;
+        double angle = Math.PI - Math.atan2(centre.y - y, centre.x - x);
+        if (angle < 0) angle += 2*Math.PI;
         if (x < centre.x) {
-            if (y < centre.y) angle -= Math.atan2(centre.y - (y - signe*deltaT*speed), centre.x - (x + signe*deltaT*speed));
-            else angle -= Math.atan2(centre.y - (y - signe*deltaT*speed), centre.x - (x - signe*deltaT*speed));
+            if (y < centre.y) {
+                setX(centre.x + Math.cos(angle) * radiusX + (int) signe*deltaT*speed);
+                setY(centre.y - Math.sin(angle) * radiusY - (int) signe*deltaT*speed); // - le produit car sur un JPanel l'axe y est renversé.
+            } else {
+                setX(centre.x + Math.cos(angle) * radiusX - (int) signe*deltaT*speed);
+                setY(centre.y - Math.sin(angle) * radiusY - (int) signe*deltaT*speed);
+            }
         } else {
-            if (y < centre.y) angle -= Math.atan2(centre.y - (y + signe*deltaT*speed), centre.x - (x + signe*deltaT*speed));
-            else angle -= Math.atan2(centre.y - (y + signe*deltaT*speed), centre.x - (x - signe*deltaT*speed));
+            if (y < centre.y) {
+                setX(centre.x + Math.cos(angle) * radiusX + (int) signe*deltaT*speed);
+                setY(centre.y - Math.sin(angle) * radiusY + (int) signe*deltaT*speed);
+            } else {
+                setX(centre.x + Math.cos(angle) * radiusX - (int) signe*deltaT*speed);
+                setY(centre.y - Math.sin(angle) * radiusY + (int) signe*deltaT*speed);
+            }
         }
-        setX(centre.x + Math.cos(angle) * radiusX);
-        setY(centre.y - Math.sin(angle) * radiusY); // - car sur un JPanel l'axe y est renversé.
     }
+
+    // public void rotationAutourPoint(double deltaT, Point centre, double radiusX, double radiusY, boolean horaire) {
+    //     int signe = horaire ? 1 : -1;
+    //     double angle = Math.PI;
+    //     if (x < centre.x) {
+    //         if (y < centre.y) angle -= Math.atan2(centre.y - (y - signe*deltaT*speed), centre.x - (x + signe*deltaT*speed));
+    //         else angle -= Math.atan2(centre.y - (y - signe*deltaT*speed), centre.x - (x - signe*deltaT*speed));
+    //     } else {
+    //         if (y < centre.y) angle -= Math.atan2(centre.y - (y + signe*deltaT*speed), centre.x - (x + signe*deltaT*speed));
+    //         else angle -= Math.atan2(centre.y - (y + signe*deltaT*speed), centre.x - (x - signe*deltaT*speed));
+    //     }
+    //     setX(centre.x + Math.cos(angle) * radiusX);
+    //     setY(centre.y - Math.sin(angle) * radiusY); // - car sur un JPanel l'axe y est renversé.
+    // }
+
 }

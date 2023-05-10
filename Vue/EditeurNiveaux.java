@@ -298,7 +298,7 @@ public class EditeurNiveaux extends JPanel {
 
         // JSlider speedPegs
         valeurVitesse = 100;
-        speedPegs = new JSlider(50, 300, 100);
+        speedPegs = new JSlider(50, 400, 100);
         speedPegs.addChangeListener(e -> valeurVitesse = speedPegs.getValue());
         menuMouvement.add(speedPegs);
 
@@ -554,7 +554,7 @@ public class EditeurNiveaux extends JPanel {
                         for (int i = 0; i < values.length; i++) {
                             dest[i][0] = values[i];
                         }
-                        if (modif != null) modif.doClick();
+                        if (modif != null && !enModif) modif.doClick();
                     } else {
                         dest[dest.length - 1][0] = 0;
                         if (groups != null) {

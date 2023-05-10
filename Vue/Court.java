@@ -10,7 +10,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
-import java.awt.Button;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -21,12 +20,8 @@ import java.util.ArrayList;
 
 
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.event.MouseInputListener;
-
-import org.w3c.dom.Text;
-
 
 import Modele.Ball;
 import Modele.Niveau;
@@ -290,164 +285,12 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
                     }
                     sceau.move(((last-now)*1.0e-9));
                     repaint();
-                    background.repaint();
+                    if (!editMode) background.repaint();
                     now = last;
                 }
             }
         });
         timer.start();
-    }
-
-    public void updateMetrics() {
-        midleXRect = (int)(pressPoint.getX() + (mouseX - pressPoint.getX())/2);
-        midleYRect = (int)(pressPoint.getY() + (mouseY - pressPoint.getY())/2);
-        widthRectangle = (int) (mouseX - pressPoint.getX());
-        heightRectangle = (int) (mouseY - pressPoint.getY());
-        lengthPressToCenter = (int) Math.sqrt(Math.pow(pressPoint.getX() - center.getX(), 2) + Math.pow(pressPoint.getY() - center.getY(), 2));
-        lengthPressToCenterRect = (int) Math.sqrt(Math.pow(Math.abs(pressPoint.getX() - midleXRect), 2) + Math.pow(Math.abs(pressPoint.getY() - midleYRect), 2));
-    }
-
-    public class PanelFin extends JPanel{
-        int width;
-        int height;
-
-        
-        PanelFin(int width, int height) {
-            this.width = width;
-            this.height = height;
-            // idépendant de la classe, pour la fin du jeu :
-            GameOver = true;
-            canon.setVisible(false);
-            Court.this.setBorder(null);
-            background.setOver(true);
-            background.repaint();
-
-            // parametre du Panel :
-            setOpaque(false);
-            setLayout(null);
-            setVisible(true);
-            setSize(width, height);
-        }
-
-        public void Textentete(String texteEntete,  Graphics g){
-            g.setFont(ImageImport.rightSize(texteEntete, (width * 573) / 781));
-            g.setColor(Color.WHITE);
-            FontMetrics fm = g.getFontMetrics(g.getFont()) ;
-            int offsetX = ((width * 573) / 781) - fm.stringWidth(texteEntete) ;
-            int offsetY = fm.getAscent()/2 ;
-            g.drawString(texteEntete, (width * 104) / 781 +offsetX, (height * 45) / 876 + offsetY);
-        }
-    }
-
-    public class LosePanel extends PanelFin{
-        BufferedImage LoseScreen;
-        BoutonMenu restart ;
-        BoutonMenu retour ;
-       
-
-        
-        LosePanel(int width, int height) {
-            super(width, height) ;
-
-            LoseScreen = ImageImport.getImage("ResumeScreen.png", width, height);
-
-            restart = new BoutonMenu("Restart", width, height) ;
-            retour = new BoutonMenu("Retour", width, height); 
-
-            int ydepart = (this.getHeight() * 350) / 876;
-            int yoffset = (this.getHeight() * 200) / 876;
-
-            restart = new BoutonMenu("Restart", (this.getWidth()) / 2, (50*Court.this.getWidth())/520);
-            restart.setLocation(this.getWidth() / 2 - restart.getWidth() / 2, ydepart- restart.getHeight()/2);
-            restart.setVisible(true);
-            restart.addActionListener(e -> {
-                controleur.launchGameview(niveau.getDossier());
-            });
-            add(restart);
-
-            retour = new BoutonMenu("Quit", (this.getWidth()) / 2, (50*Court.this.getWidth())/520);
-            retour.setLocation(this.getWidth() / 2 - retour.getWidth() / 2, ydepart +yoffset - retour.getHeight()/2);
-            retour.setVisible(true);
-            retour.addActionListener(e -> controleur.launchMenu());
-            add(retour);
-
-            setFocusable(true) ;
-            addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[]{restart, retour}, ()-> controleur.launchMenu())) ;
-            
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            g.drawImage(LoseScreen, 0, 0, this);
-
-            Textentete("Level " + niveau.getNom() + " failed !", g);
-        }
-
-
-    }
-
-    public class WinPanel extends PanelFin {
-        BufferedImage WinScreen;
-        BufferedImage WinScreenDisable;
-        boolean exited;
-
-        
-        
-        WinPanel(int width, int height) {
-            super(width, height) ;
-
-            WinScreen = ImageImport.getImage("WinScreen.png", width, height);
-            WinScreenDisable = ImageImport.getImage("WinScreenDisabled.png", width, height);
-            exited = false;
-
-            addMouseListener((MouseListener) new MouseAdapter() {
-                public void mouseEntered(MouseEvent evt) {
-                    exited = true;
-                    repaint();
-                }
-
-                public void mouseExited(MouseEvent evt) {
-                    exited = false;
-                    repaint();
-                }
-
-                public void mousePressed(MouseEvent evt) {
-                    niveau.setChecked(true);
-                    if (niveau.isCampagne()) controleur.setNiveauSuivant();
-                    else controleur.launchMenu() ;
-                }
-            });
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            if (exited)
-                g.drawImage(WinScreen, 0, 0, this);
-            else
-                g.drawImage(WinScreenDisable, 0, 0, this);
-
-           
-            Textentete("Level " + niveau.getNom() + " Completed !", g);
-
-            int x = (width * 50) / 876 ;
-            int y =(height * 175) / 876 ;
-            g.setFont(ImageImport.rightSize("Balles Utilisees: 1000", (width * (876-90)) / 876));
-            g.setColor(Color.WHITE);
-            g.drawString("Score: " + toucher, x, y);  
-            y += (height * 75) / 876  ;          
-            g.drawString("Balles Restantes: " + NbDeBall, x, y);
-            y += (height * 75) / 876  ;          
-            g.drawString("Balles Utilisees: " + (niveau.getNbrBall() - NbDeBall), x, y);
-            y += (height * 75) / 876  ;          
-            g.drawString("Max   : " + niveau.getScoreMax(), x, y);
-            if (toucher > ScoreMax) {
-                y = (height *600) / 876  ;          
-                g.drawString("Nouveau Max Score !!!", x, y);
-                niveau.setScoreMax(toucher);
-            }
-        }
     }
 
     public void askReset(){
@@ -459,62 +302,13 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         enPause = true;
     }
 
-    public class FinDeCampagne extends PanelFin{
-        BufferedImage background ;
-        BoutonMenu quit ;
-        BoutonMenu resetCampagne ;
-
-        FinDeCampagne(int width, int height){
-            super(width, height) ;
-            background = ImageImport.getImage("ResumeScreen.png", width, height);
-            
-            // boutons
-            resetCampagne = new BoutonMenu("Reset", (this.getWidth()) / 2, (87*this.getHeight())/876);
-            resetCampagne.setLocation(this.getWidth() / 2 - resetCampagne.getWidth() / 2, (this.getHeight() * 350) / 876 );
-            resetCampagne.setVisible(true);
-            resetCampagne.addActionListener(e -> {
-                Niveau.resetAllCheckNiveau(true );
-                controleur.setNiveauSuivant();
-            });
-            add(resetCampagne);
-            
-            quit = new BoutonMenu("Quit", (this.getWidth()) / 2, (87*this.getHeight())/876);
-            quit.setLocation(this.getWidth() / 2 - quit.getWidth() / 2, (this.getHeight() * 530) / 876);
-            quit.setVisible(true);
-            quit.addActionListener(e -> {
-                controleur.launchMenu() ;
-            });
-            add(quit);
-
-            setFocusable(true);
-            addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[]{resetCampagne, quit}, ()-> controleur.launchMenu())) ;
-
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            g.drawImage(background, 0, 0, this) ;
-
-            Textentete("Vous avez fini le jeu !" , g);
-
-
-            int x = (width * 55) / 876 ;
-            int y =(height * 175) / 876 ;
-            g.setFont(ImageImport.rightSize("* Ou bien recommencer la campagne ", (width * (876-90)) / 876));   
-            
-            g.drawString("Vous avez fini la campagne !", x, y);
-            y += (height * 75) / 876  ;          
-            g.drawString("Vous pouvez maintenant :", x, y);
-            
-            y += (height * 75) / 876  ;          
-            g.drawString("* Recommencer la campagne", x, y);
-            
-            
-            y =(height * 500) / 876 ;    
-            g.drawString("* Ou creer vos propres niveaux", x, y);
-
-        }
+    public void updateMetrics() {
+        midleXRect = (int)(pressPoint.getX() + (mouseX - pressPoint.getX())/2);
+        midleYRect = (int)(pressPoint.getY() + (mouseY - pressPoint.getY())/2);
+        widthRectangle = (int) (mouseX - pressPoint.getX());
+        heightRectangle = (int) (mouseY - pressPoint.getY());
+        lengthPressToCenter = (int) Math.sqrt(Math.pow(pressPoint.getX() - center.getX(), 2) + Math.pow(pressPoint.getY() - center.getY(), 2));
+        lengthPressToCenterRect = (int) Math.sqrt(Math.pow(Math.abs(pressPoint.getX() - midleXRect), 2) + Math.pow(Math.abs(pressPoint.getY() - midleYRect), 2));
     }
 
     public void paint(Graphics g) {
@@ -960,4 +754,205 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
     public void keyReleased(KeyEvent e) {}
     public void mouseEntered(MouseEvent e) {}
     public void keyTyped(KeyEvent e) {}
+
+    public class PanelFin extends JPanel{
+        int width;
+        int height;
+
+        
+        PanelFin(int width, int height) {
+            this.width = width;
+            this.height = height;
+            // idépendant de la classe, pour la fin du jeu :
+            GameOver = true;
+            canon.setVisible(false);
+            Court.this.setBorder(null);
+            background.setOver(true);
+            background.repaint();
+
+            // parametre du Panel :
+            setOpaque(false);
+            setLayout(null);
+            setVisible(true);
+            setSize(width, height);
+        }
+
+        public void Textentete(String texteEntete,  Graphics g){
+            g.setFont(ImageImport.rightSize(texteEntete, (width * 573) / 781));
+            g.setColor(Color.WHITE);
+            FontMetrics fm = g.getFontMetrics(g.getFont()) ;
+            int offsetX = ((width * 573) / 781) - fm.stringWidth(texteEntete) ;
+            int offsetY = fm.getAscent()/2 ;
+            g.drawString(texteEntete, (width * 104) / 781 +offsetX, (height * 45) / 876 + offsetY);
+        }
+    }
+
+    public class LosePanel extends PanelFin{
+        BufferedImage LoseScreen;
+        BoutonMenu restart ;
+        BoutonMenu retour ;
+       
+
+        
+        LosePanel(int width, int height) {
+            super(width, height) ;
+
+            LoseScreen = ImageImport.getImage("ResumeScreen.png", width, height);
+
+            restart = new BoutonMenu("Restart", width, height) ;
+            retour = new BoutonMenu("Retour", width, height); 
+
+            int ydepart = (this.getHeight() * 350) / 876;
+            int yoffset = (this.getHeight() * 200) / 876;
+
+            restart = new BoutonMenu("Restart", (this.getWidth()) / 2, (50*Court.this.getWidth())/520);
+            restart.setLocation(this.getWidth() / 2 - restart.getWidth() / 2, ydepart- restart.getHeight()/2);
+            restart.setVisible(true);
+            restart.addActionListener(e -> {
+                controleur.launchGameview(niveau.getDossier());
+            });
+            add(restart);
+
+            retour = new BoutonMenu("Quit", (this.getWidth()) / 2, (50*Court.this.getWidth())/520);
+            retour.setLocation(this.getWidth() / 2 - retour.getWidth() / 2, ydepart +yoffset - retour.getHeight()/2);
+            retour.setVisible(true);
+            retour.addActionListener(e -> controleur.launchMenu());
+            add(retour);
+
+            setFocusable(true) ;
+            addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[]{restart, retour}, ()-> controleur.launchMenu())) ;
+            
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.drawImage(LoseScreen, 0, 0, this);
+
+            Textentete("Level " + niveau.getNom() + " failed !", g);
+        }
+
+
+    }
+
+    public class WinPanel extends PanelFin {
+        BufferedImage WinScreen;
+        BufferedImage WinScreenDisable;
+        boolean exited;
+
+        
+        
+        WinPanel(int width, int height) {
+            super(width, height) ;
+
+            WinScreen = ImageImport.getImage("WinScreen.png", width, height);
+            WinScreenDisable = ImageImport.getImage("WinScreenDisabled.png", width, height);
+            exited = false;
+
+            addMouseListener((MouseListener) new MouseAdapter() {
+                public void mouseEntered(MouseEvent evt) {
+                    exited = true;
+                    repaint();
+                }
+
+                public void mouseExited(MouseEvent evt) {
+                    exited = false;
+                    repaint();
+                }
+
+                public void mousePressed(MouseEvent evt) {
+                    niveau.setChecked(true);
+                    if (niveau.isCampagne()) controleur.setNiveauSuivant();
+                    else controleur.launchMenu() ;
+                }
+            });
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (exited)
+                g.drawImage(WinScreen, 0, 0, this);
+            else
+                g.drawImage(WinScreenDisable, 0, 0, this);
+
+           
+            Textentete("Level " + niveau.getNom() + " Completed !", g);
+
+            int x = (width * 50) / 876 ;
+            int y =(height * 175) / 876 ;
+            g.setFont(ImageImport.rightSize("Balles Utilisees: 1000", (width * (876-90)) / 876));
+            g.setColor(Color.WHITE);
+            g.drawString("Score: " + toucher, x, y);  
+            y += (height * 75) / 876  ;          
+            g.drawString("Balles Restantes: " + NbDeBall, x, y);
+            y += (height * 75) / 876  ;          
+            g.drawString("Balles Utilisees: " + (niveau.getNbrBall() - NbDeBall), x, y);
+            y += (height * 75) / 876  ;          
+            g.drawString("Max   : " + niveau.getScoreMax(), x, y);
+            if (toucher > ScoreMax) {
+                y = (height *600) / 876  ;          
+                g.drawString("Nouveau Max Score !!!", x, y);
+                niveau.setScoreMax(toucher);
+            }
+        }
+    }
+
+    public class FinDeCampagne extends PanelFin{
+        BufferedImage background ;
+        BoutonMenu quit ;
+        BoutonMenu resetCampagne ;
+
+        FinDeCampagne(int width, int height){
+            super(width, height) ;
+            background = ImageImport.getImage("ResumeScreen.png", width, height);
+            
+            // boutons
+            resetCampagne = new BoutonMenu("Reset", (this.getWidth()) / 2, (87*this.getHeight())/876);
+            resetCampagne.setLocation(this.getWidth() / 2 - resetCampagne.getWidth() / 2, (this.getHeight() * 350) / 876 );
+            resetCampagne.setVisible(true);
+            resetCampagne.addActionListener(e -> {
+                Niveau.resetAllCheckNiveau(true );
+                controleur.setNiveauSuivant();
+            });
+            add(resetCampagne);
+            
+            quit = new BoutonMenu("Quit", (this.getWidth()) / 2, (87*this.getHeight())/876);
+            quit.setLocation(this.getWidth() / 2 - quit.getWidth() / 2, (this.getHeight() * 530) / 876);
+            quit.setVisible(true);
+            quit.addActionListener(e -> {
+                controleur.launchMenu() ;
+            });
+            add(quit);
+
+            setFocusable(true);
+            addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[]{resetCampagne, quit}, ()-> controleur.launchMenu())) ;
+
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.drawImage(background, 0, 0, this) ;
+
+            Textentete("Vous avez fini le jeu !" , g);
+
+
+            int x = (width * 55) / 876 ;
+            int y =(height * 175) / 876 ;
+            g.setFont(ImageImport.rightSize("* Ou bien recommencer la campagne ", (width * (876-90)) / 876));   
+            
+            g.drawString("Vous avez fini la campagne !", x, y);
+            y += (height * 75) / 876  ;          
+            g.drawString("Vous pouvez maintenant :", x, y);
+            
+            y += (height * 75) / 876  ;          
+            g.drawString("* Recommencer la campagne", x, y);
+            
+            
+            y =(height * 500) / 876 ;    
+            g.drawString("* Ou creer vos propres niveaux", x, y);
+
+        }
+    }
 }

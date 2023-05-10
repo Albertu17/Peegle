@@ -42,7 +42,6 @@ public class ImageImport {
             cartoon =  Font.createFont(Font.TRUETYPE_FONT, targetStream);
         } catch (FontFormatException e) {
             System.out.println("Font not found");
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e1) {
             System.out.println("Font not found");
