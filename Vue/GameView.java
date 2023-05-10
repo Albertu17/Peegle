@@ -61,7 +61,7 @@ public class GameView extends JPanel {
         add(court);
 
         // JButton bouton retour
-        btnRetour = new BoutonMenu("Pause", 5 * (Ball.ballRadius * 2 + 10), 50);
+        btnRetour = new BoutonMenu("Pause", 4 * (Ball.ballRadius * 2 + 10), 50);
         btnRetour.setLocation(35 - Ball.ballRadius, 20);
         btnRetour.setVisible(true);
         btnRetour.addActionListener(e -> launchMenuPause(true));
