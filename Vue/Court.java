@@ -810,7 +810,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
             });
             add(restart);
 
-            retour = new BoutonMenu("    Quit    ", (this.getWidth()) / 2, (50*Court.this.getWidth())/520);
+            retour = new BoutonMenu("   Quitter   ", (this.getWidth()) / 2, (50*Court.this.getWidth())/520);
             retour.setLocation(this.getWidth() / 2 - retour.getWidth() / 2, ydepart +yoffset - retour.getHeight()/2);
             retour.setVisible(true);
             retour.addActionListener(e -> controleur.launchMenu());

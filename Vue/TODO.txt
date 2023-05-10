@@ -3,10 +3,6 @@ A faire :
     -les etoiles dans la sauvegarde 
     - readme
     - rapport
-    - Mettre des icones sur les boutons
-        supp
-        modif
-        balles
 
 
 
@@ -15,3 +11,7 @@ Fait :
     - refaire bruit qui rend fou
     - ajouter fonction movuement sauvgerade
     - refaire la sauvegarde pour intégrer les trucs d'albert
+    - Mettre des icones sur les boutons
+        supp
+        modif
+        balles
