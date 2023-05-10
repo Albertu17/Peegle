@@ -68,7 +68,7 @@ public class GameView extends JPanel {
         add(btnRetour);
 
         // Background
-        Background background = new Background("Gameview/background.jpg", court, heigth, width);
+        Background background = new Background(court, heigth, width);
         background.setBounds(0, 0, width, heigth);
         background.setOpaque(false);
         add(background);
