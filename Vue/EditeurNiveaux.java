@@ -428,7 +428,7 @@ public class EditeurNiveaux extends JPanel {
         // Bouton pause
         JButton pause = new BoutonPanel("Menu/pause.png", largeurBouton, largeurBouton) ;
         pause.setBounds(courtWidth - 2*largeurBouton, gap, largeurBouton, largeurBouton);
-        panelBoutons.add(pause);
+        panelBoutons.add(pause);    
         pause.setEnabled(false);
 
         // Bouton resume

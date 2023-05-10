@@ -26,7 +26,6 @@ import javax.swing.event.MouseInputListener;
 import Modele.Ball;
 import Modele.Niveau;
 import Modele.Pegs;
-import Modele.Rectangle;
 import Vue.Menu.BoutonMenu;
 
 public class Court extends JPanel implements MouseInputListener, KeyListener {
@@ -41,7 +40,6 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
     private ArrayList<Pegs> pegs;
     private ArrayList<Pegs> toucherPegs;
     private Background background;
-    private ArrayList<Rectangle> rectangles;
     private int NbDeBall;
     private boolean nbDeBallChange = true;
     private int MaxCombo = 0;
@@ -99,7 +97,6 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
 
         // ArrayLists
         balls = new ArrayList<>();
-        rectangles = new ArrayList<>();
         // pegs = new ArrayList<>();
         toucherPegs = new ArrayList<>();
 
@@ -145,10 +142,6 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
 
     public int getHeight() {
         return height;
-    }
-
-    public ArrayList<Rectangle> getRectangles() {
-        return rectangles;
     }
 
     public ArrayList<Ball> getBalls() {
@@ -397,12 +390,6 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         // Affichage du sceau
         g.drawImage(sceau.getImageBAS(), (int) sceau.Xb, (int) sceau.Yb, this);
 
-
-        g.setColor(Color.RED);
-        for (Rectangle rect : rectangles) {
-            g.drawLine(rect.x0, rect.y0, rect.caculX1(), rect.caculY1());
-        }
-
         // Affichage des pegs
         Graphics2D g2d = (Graphics2D) g;   
         for (Pegs peg: pegs) {
@@ -412,6 +399,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         }
         
 
+        g.setColor(Color.RED);
         // traçage ligne de viser
         if (!enPause) {
             canon.calculCordonnéeLigneViser();
