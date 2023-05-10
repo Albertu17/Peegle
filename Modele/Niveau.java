@@ -405,7 +405,7 @@ public class Niveau {
                 Point rectCenter = new Point(Integer.valueOf(line[7]), Integer.valueOf(line[8]));
                 int rectWidth = Integer.valueOf(line[9]);
                 int rectHeight = Integer.valueOf(line[10]);
-                ajouter.setRect(rectCenter, rectWidth, rectHeight);
+                ajouter.setRect(rectCenter, rectWidth, rectHeight, widthCourt, heightCourt);
                 ajouter.setValeursFctMouvement(valeursFctMouvement);
                 ajouter.setCourtWidth(widthCourt);
             }
