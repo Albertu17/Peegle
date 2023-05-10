@@ -348,7 +348,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
                 else g.setColor(Color.YELLOW);
                 if (frameCount>=10) {
                     g.drawString("Combo x"+afficageCombo, (int)150, (int)400);
-                    toucher += afficageCombo;
+                    
                     background.repaint(); // Condition pour l'editeur de niveau
                     frameCount = 0;
                     if (afficageCombo < ComboEncours)
@@ -367,6 +367,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         for (int i = 0; i < balls.size(); i++) {
             if (balls.get(i).getHitGround()) {
                 ComboEncours = balls.get(i).getCombo();
+                toucher += balls.get(i).getComboScore();
                 balls.remove(i);
                 remove = true;
             }
