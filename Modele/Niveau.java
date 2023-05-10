@@ -270,7 +270,7 @@ public class Niveau {
     public void removeNotReachable(int width, int height){
         List<Pegs> remove = new ArrayList<>() ;
         for (Pegs p : pegs) {
-            if (p.getX() >width || p.getX()<0 || p.getY() >(7*height)/8 || p.getY()< height/4  ) remove.add(p) ;
+            if (p.getX() >width || p.getX()<0 || p.getY() > (9*height)/10 || p.getY()< height/4  ) remove.add(p) ;
         }
         pegs.removeAll(remove) ;
     }
