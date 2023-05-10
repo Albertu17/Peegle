@@ -1,5 +1,6 @@
 package Vue.Menu;
 
+import java.awt.Button;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -62,6 +63,31 @@ public class MenuParametres extends JPanel {
         skin.setVisible(true);
         skin.setLocation(100, 100);
         add(skin) ;
+        BoutonMenu buttonMusicOn = new BoutonMenu("Music On", 200, 50);
+        buttonMusicOn.setLocation(middleW, middleH );
+        BoutonMenu buttonMusicOff = new BoutonMenu("Music Off", 200, 50);
+        buttonMusicOff.setLocation(middleW, middleH);
+        if (controleur.getMusic()) {
+            buttonMusicOn.setVisible(true);
+            buttonMusicOff.setVisible(false);
+        } else {
+            buttonMusicOn.setVisible(false);
+            buttonMusicOff.setVisible(true);
+        }
+        buttonMusicOn.addActionListener(e -> {
+            controleur.setMusic(false);
+            controleur.stopMusic();
+            buttonMusicOn.setVisible(false);
+            buttonMusicOff.setVisible(true);
+        });
+        buttonMusicOff.addActionListener(e -> {
+            controleur.setMusic(true);
+            controleur.playMusic();
+            buttonMusicOn.setVisible(true);
+            buttonMusicOff.setVisible(false);
+        });
+        add(buttonMusicOff);
+        add(buttonMusicOn);
 
        
        
@@ -75,7 +101,7 @@ public class MenuParametres extends JPanel {
     public BufferedImage getEditedImage(String txt, int width, int height) {
         BufferedImage buffImg = ImageImport.getImage("Menu/planche_blanche.png", width, height);
         Graphics g = buffImg.getGraphics();
-        Font rightFont = ImageImport.rightSizeCarton(txt, width);
+        Font rightFont = ImageImport.rightSizeArcade(txt, width);
         FontMetrics metrics = g.getFontMetrics(rightFont);
         g.setFont(rightFont);
         g.setColor(Color.WHITE);
@@ -102,7 +128,7 @@ public class MenuParametres extends JPanel {
             setSize(width, height);
             setOpaque(false);
 
-            image = getEditedImage("    Skins   ", (width*2)/3, 50) ;
+            image = getEditedImage("Skins", (width*2)/3, 50) ;
 
             tabBouton = new BoutonBall[5];
 

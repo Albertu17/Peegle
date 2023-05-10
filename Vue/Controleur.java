@@ -187,4 +187,23 @@ public class Controleur extends JFrame {
             gameview.court.askReset();
         }
     }
+
+    public void stopMusic() {
+        musicmenuclip.stop();
+        musicgameclip.stop();
+    }
+
+    public void playMusic() {
+        if (isMusicOn == true){
+            musicmenuclip.loop(Clip.LOOP_CONTINUOUSLY);
+        }
+    }
+
+    public boolean getMusic() {
+        return isMusicOn;
+    }
+
+    public void setMusic(boolean b) {
+        isMusicOn = b;
+    }
 }
