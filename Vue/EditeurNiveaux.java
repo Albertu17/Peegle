@@ -27,7 +27,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSlider;
-import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.event.MouseInputListener;
@@ -74,7 +73,8 @@ public class EditeurNiveaux extends JPanel {
     JMenuBar menuBar;
     RadioButtonValue aucunAlignement;
     RadioButtonValue aucuneFonction;
-    JSlider speedPegs;
+    JSlider sliderSpeedPegs;
+    JSlider sliderNbBallesInitial;
 
     EditeurNiveaux(Controleur controleur) {
         this.controleur = controleur;
@@ -199,7 +199,7 @@ public class EditeurNiveaux extends JPanel {
         labelTableBallesInitiales.put(50, new JLabel("50"));
 
         // JSpinner spinnerNbBallesInitial
-        JSlider sliderNbBallesInitial = new JSlider(5, 50, 10);
+        sliderNbBallesInitial = new JSlider(5, 50, 10);
         sliderNbBallesInitial.setMinorTickSpacing(1);
         sliderNbBallesInitial.setMajorTickSpacing(5);
         sliderNbBallesInitial.setPaintTicks(true);
@@ -340,14 +340,14 @@ public class EditeurNiveaux extends JPanel {
 
         // JSlider speedPegs
         valeurVitesse = 100;
-        speedPegs = new JSlider(50, 350, 100);
-        speedPegs.setMinorTickSpacing(10);
-        speedPegs.setMajorTickSpacing(50);
-        speedPegs.setLabelTable(labelTableSpeed);
-        speedPegs.setPaintLabels(true);
-        speedPegs.setPaintTicks(true);
-        speedPegs.addChangeListener(e -> valeurVitesse = speedPegs.getValue());
-        menuMouvement.add(speedPegs);
+        sliderSpeedPegs = new JSlider(50, 350, 100);
+        sliderSpeedPegs.setMinorTickSpacing(10);
+        sliderSpeedPegs.setMajorTickSpacing(50);
+        sliderSpeedPegs.setLabelTable(labelTableSpeed);
+        sliderSpeedPegs.setPaintLabels(true);
+        sliderSpeedPegs.setPaintTicks(true);
+        sliderSpeedPegs.addChangeListener(e -> valeurVitesse = sliderSpeedPegs.getValue());
+        menuMouvement.add(sliderSpeedPegs);
 
         // JPanel panelCasesPeg
         JPanel panelCasesPeg = new JPanel();
@@ -503,7 +503,8 @@ public class EditeurNiveaux extends JPanel {
         nomNiveau.setText(" Nom du niveau");
         aucunAlignement.doClick();
         aucuneFonction.doClick();
-        speedPegs.setValue(100);
+        sliderSpeedPegs.setValue(100);
+        sliderNbBallesInitial.setValue(10);
     }
 
 
