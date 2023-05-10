@@ -109,17 +109,17 @@ public class EditeurNiveaux extends JPanel {
         menuBar.add(menuEditeur);
 
         // JButton back
-        JButton back = new JButton("Back");
+        JButton back = new JButton("Retour");
         menuEditeur.add(back);
         back.addActionListener(e -> {menuEditeur.getPopupMenu().setVisible(false); controleur.launchMenu();});
 
         // JButton newLevel
-        JButton newLevel = new JButton("New");
+        JButton newLevel = new JButton("Nouveau");
         newLevel.addActionListener(e -> reset());
         menuEditeur.add(newLevel);
 
         // JButton save
-        JButton save = new JButton("Save");
+        JButton save = new JButton("Sauvegarder");
         save.setEnabled(false);
         menuEditeur.add(save);
         save.addActionListener(e-> niveauCree.save(courtWidth, courtHeight));
