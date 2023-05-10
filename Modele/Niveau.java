@@ -331,7 +331,7 @@ public class Niveau {
             for (Pegs peg : pegs) {
                 ligne = String.valueOf(peg.getX()) + ";"
                         + String.valueOf(peg.getY()) + ";"
-                        + String.valueOf(peg.getDiametre()) + ";"
+                        + String.valueOf(peg.getRadius()) + ";"
                         + String.valueOf(peg.getCouleur());
                 if (peg.ifValeurEdit()){
                     int[] tab = peg.getValeursFctMouvement();
