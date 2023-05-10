@@ -47,7 +47,7 @@ public class Background extends JPanel{
     width=w;
     this.court = court;
     this.court.setBackground(this);
-    this.scoreMax = court.getScoreMax();
+    this.scoreMax = court.getScoreMaxBackground();
     Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
     if (ImageImport.getImage(fileName) != null){
         backgroundImage = ImageImport.getImage(fileName,size.width, size.height );

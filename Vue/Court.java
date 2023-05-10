@@ -937,4 +937,8 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
 
         }
     }
+
+    public int getScoreMaxBackground() {
+        return niveau.getPegs().size() * 4;
+    }
 }
