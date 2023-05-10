@@ -265,10 +265,12 @@ public class Pegs implements Cloneable {
         setY(centre.y - Math.sin(angleToCenterOfRotation) * radiusY); // - le produit car sur un JPanel l'axe y est renversé.
     }
 
-    public void setRect(Point rectCenter2, int rectWidth2, int rectHeight2) {
+    public void setRect(Point rectCenter2, int courtWidth, int courtHeight,  int rectWidth2, int rectHeight2) {
         rectCenter = rectCenter2;
         rectWidth = rectWidth2;
         rectHeight = rectHeight2;
+        courtCenter = new Point(courtWidth/2, courtHeight/2) ;
         updateRadiusToRectCenter();
+        setRadiusToCourtCenter() ;
     }
 }
