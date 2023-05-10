@@ -630,7 +630,7 @@ public class EditeurNiveaux extends JPanel {
                         }
                     } else {
                         dest[dest.length - 1][0] = 0;
-                        if (groups[groups.length-1] != null) groups[groups.length-1].clearSelection();
+                        if (groups != null && groups[groups.length-1] != null) groups[groups.length-1].clearSelection();
                     }
                 }
             });
