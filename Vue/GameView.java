@@ -47,7 +47,7 @@ public class GameView extends JPanel {
         if (nomNiveau == null || nomNiveau.equals(""))
             niveau = new Niveau(nomNiveau);
         else if (nomNiveau.toLowerCase().equals("aleatoire"))
-            niveau = Niveau.NiveauAleatoire(width, heigth, 10, 20);
+            niveau = Niveau.NiveauAleatoire(courtWidth, courtHeight, 20);
         else
             niveau = Niveau.importPegles(nomNiveau, courtWidth, courtHeight);
 

@@ -136,16 +136,15 @@ public class Niveau {
         this.ScoreMax = 1; // TODO score max à programmer
     }
 
-    public static Niveau NiveauAleatoire(int widthCourt, int heightCourt, int radiusBall, int diametrePegs) {
+    public static Niveau NiveauAleatoire(int widthCourt, int heightCourt, int diametrePegs) {
         Niveau nv = new Niveau("Aleatoire");
         nv.campagne = false ;
         int nbrPegs = randInt(60, 200); // aproximatif
-        int espaceMinEntre2Pegs = (int) 2.5 * radiusBall;
+        int espaceMinEntre2Pegs = (int) 2.5 * Ball.ballRadius;
         int x, y;
 
         int debutHeight = heightCourt / 4; // evite d'avoir des balles trop hautes
         int finHeight = heightCourt - 50 ; 
-        // int finHeight = (heightCourt* ) / 720 ; 
 
         // segemente l'aire de jeux en carré le plus petit possible tel que les
         // contraintes soit respecté
@@ -161,13 +160,13 @@ public class Niveau {
                 if (randInt(1, nbrSegParPegs) == 1) { // placer un élément au hasard
                     x = (int) ((w + 0.5) * (widthCourt / (double) nbrSegW));
                     y = (int) ((h + 0.5) * ((finHeight - debutHeight) / (double) nbrSegH) + debutHeight);
-                    nv.pegs.add(new Pegs(x, y, diametrePegs, randInt(1, 4)));
+                    nv.pegs.add(new Pegs(x, y, diametrePegs/2, randInt(1, 4)));
                 }
             }
         }
 
+        nv.removeNotReachable(widthCourt, heightCourt);
         nv.setBasic();
-
         return nv;
     }
 
@@ -252,6 +251,14 @@ public class Niveau {
         }
     }
 
+    public void removeNotReachable(int width, int height){
+        List<Pegs> remove = new ArrayList<>() ;
+        for (Pegs p : pegs) {
+            if (p.getX() >width || p.getX()<0 || p.getY() >(7*height)/8 || p.getY()< height/4  ) remove.add(p) ;
+        }
+        pegs.removeAll(remove) ;
+    }
+
 
     public static List<String> getAllCheckNiveau(boolean campagne) {
         String[] atraiter = new File(dosierSauvegarde + (campagne ? "Campagne" : "Perso")).list();
@@ -297,6 +304,7 @@ public class Niveau {
 
     public void save(int widthCourt, int heightCourt) {
         if(nom == "Aleatoire") return ;
+        this.removeNotReachable(widthCourt, heightCourt);
         // save les lignes de l'array list dans un fichier csv
         PrintWriter file;
         try {
@@ -373,7 +381,6 @@ public class Niveau {
             System.out.println("Le nom de fichier ne coorespond pas à un fichier existant");
             e.printStackTrace();
         }
-
         // return un objet de type
         return nv;
     }
