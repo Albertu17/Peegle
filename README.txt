@@ -14,4 +14,6 @@ Lien utile :
 
 Fonctionnalitées du jeu :
     *Option
+    *Niveau
+        Permet de voir tout les no
     *Editeur de niveau
