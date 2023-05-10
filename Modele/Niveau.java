@@ -28,12 +28,24 @@ public class Niveau {
     private int score1Etoiles;
     private int score2Etoiles;
     private int score3Etoiles;
+    
     private boolean campagne;
-
+    
     private String nom;
     private boolean checked;
     private int ScoreMax;
+    
+    public int getScore1Etoiles() {
+        return score1Etoiles;
+    }
 
+    public int getScore2Etoiles() {
+        return score2Etoiles;
+    }
+
+    public int getScore3Etoiles() {
+        return score3Etoiles;
+    }
     public boolean isCampagne() {
         return campagne;
     }

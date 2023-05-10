@@ -30,6 +30,7 @@ public class Background extends JPanel{
     private int width;
     private int heigth;
     private int scoreMax;
+    private int taille1Etoille ;
 
     // balle
     private BufferedImage ball;
@@ -72,6 +73,8 @@ public class Background extends JPanel{
     else{
         System.out.println("Image not found");
     }
+    
+    taille1Etoille = largeur/5 ;
   }
 
   public void paintComponent(Graphics g) {
@@ -111,6 +114,10 @@ public class Background extends JPanel{
     }
     g.fillRect(midBordureCourtX+1,point,largeur-1,(midBordureCourtY+longeur)-point);
 
+
+    //etoile de score 
+    ShowStars(g);
+
     // balle 
     int ligne = 0;
     int pointDeDepartX = 40;
@@ -135,6 +142,24 @@ public class Background extends JPanel{
     
 }
 
+private void ShowStars(Graphics g){
+  boolean colore = court.getScore() >= court.getNiveau().getScore1Etoiles() ;
+  g.drawImage(getImageEtoile(colore), midBordureCourtX + (largeur - 1*taille1Etoille)/2 , midBordureCourtY + (longeur*3)/4, this) ;
+  
+  colore = court.getScore() >= court.getNiveau().getScore2Etoiles() ;
+  g.drawImage(getImageEtoile(colore), midBordureCourtX + (largeur - 2*taille1Etoille)/2 , midBordureCourtY + (longeur*2)/4, this) ;
+  g.drawImage(getImageEtoile(colore), midBordureCourtX + (largeur - 2*taille1Etoille)/2 + taille1Etoille*1 , midBordureCourtY + (longeur*2)/4, this) ;
+  
+  colore = court.getScore() >= court.getNiveau().getScore3Etoiles() ;
+  g.drawImage(getImageEtoile(colore), midBordureCourtX + (largeur - 3*taille1Etoille)/2 , midBordureCourtY + (longeur*1)/4, this) ;
+  g.drawImage(getImageEtoile(colore), midBordureCourtX + (largeur - 3*taille1Etoille)/2 + taille1Etoille*1 , midBordureCourtY + (longeur*1)/4, this) ;
+  g.drawImage(getImageEtoile(colore), midBordureCourtX + (largeur - 3*taille1Etoille)/2 + taille1Etoille*2 , midBordureCourtY + (longeur*1)/4, this) ;
+}
+
+private BufferedImage getImageEtoile(boolean colore){
+  if (colore) return ImageImport.getImage("Gameview/etoilePleine.png", taille1Etoille, taille1Etoille) ;
+  else return ImageImport.getImage("Gameview/etoileVide.png", taille1Etoille, taille1Etoille) ;
+}
 
 
 public BufferedImage getEditedImage(String ligne1, String ligne2, int width, int height) {

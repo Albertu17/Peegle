@@ -26,6 +26,7 @@ public class Controleur extends JFrame {
     public SelectNiveau selectNiveau ;
     public int width;
     public int height;
+    public boolean isMusicOn = false;
     private File musicmenu = ImageImport.getMusicMenu();
     private File musicgame = ImageImport.getMusicGame();
     AudioInputStream audioStream;
@@ -38,7 +39,7 @@ public class Controleur extends JFrame {
     Clip musicmenuclip;
     Clip musicgameclip;
     {
-    {
+    
     try {
         audioStream = AudioSystem.getAudioInputStream(musicmenu);
         musicmenuclip = (Clip) AudioSystem.getLine(info);
@@ -51,7 +52,7 @@ public class Controleur extends JFrame {
     } catch (Exception e ) {
         e.printStackTrace();
     }
-    }
+    
     }
 
     public Controleur() {
@@ -94,9 +95,11 @@ public class Controleur extends JFrame {
     }
 
     public void launchMenu(){
+        if (isMusicOn == true){
         musicgameclip.stop();
         musicmenuclip.setFramePosition(0);
         musicmenuclip.loop(Clip.LOOP_CONTINUOUSLY);
+        }
         removeAll();
         if(menu == null){
             menu = new Menu(this);
@@ -144,9 +147,11 @@ public class Controleur extends JFrame {
     }
     
     public void launchGameview(String nomNiveau){
+        if (isMusicOn == true){
         musicmenuclip.stop();
         musicgameclip.setFramePosition(0);
         musicgameclip.loop(Clip.LOOP_CONTINUOUSLY);
+        }
         this.removeAll();
         gameview = new GameView(this, nomNiveau);
         for(Ball ball : gameview.court.getBalls()){

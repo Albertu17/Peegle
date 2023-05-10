@@ -37,8 +37,6 @@ import Vue.Menu.BoutonMenu;
 
 public class EditeurNiveaux extends JPanel {
 
-    // Controleur
-    private Controleur controleur;
     int width;
     int height;
 
@@ -77,7 +75,6 @@ public class EditeurNiveaux extends JPanel {
     JSlider sliderNbBallesInitial;
 
     EditeurNiveaux(Controleur controleur) {
-        this.controleur = controleur;
         width = controleur.getWidth();
         height = controleur.getHeight();
         setLayout(null);
@@ -437,7 +434,7 @@ public class EditeurNiveaux extends JPanel {
         // Bouton pause
         JButton pause = new BoutonPanel("Menu/pause.png", largeurBouton, largeurBouton) ;
         pause.setBounds(courtWidth - 2*largeurBouton, gap, largeurBouton, largeurBouton);
-        panelBoutons.add(pause);
+        panelBoutons.add(pause);    
         pause.setEnabled(false);
 
         // Bouton resume
