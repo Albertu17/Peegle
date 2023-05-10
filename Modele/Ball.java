@@ -38,6 +38,22 @@ public class Ball{
     private double g=300; // m/s
     private double coeffRebond = 0.8;
     private int combo = 0;
+    private File sound = ImageImport.getAudioFile();
+    AudioInputStream audioStream;
+    AudioFormat format;
+    DataLine.Info info = new DataLine.Info(Clip.class, format); 
+    Clip audioClip;
+    {
+    try {
+        audioStream = AudioSystem.getAudioInputStream(ImageImport.getAudioFile());
+        audioClip = (Clip) AudioSystem.getLine(info);
+        format = audioStream.getFormat();
+        audioClip.open(audioStream);
+    } catch (Exception e ) {
+        e.printStackTrace();
+    }
+    }
+
 
     private static int selecteurImage = 0 ;
     public static int getSelecteurImage() {
@@ -55,7 +71,7 @@ public class Ball{
  
     private Court court;
     private Pegs pegderniertoucher;
-    public Clip audioClip;
+
 
     public boolean inLevel = true;
 
@@ -177,18 +193,10 @@ public class Ball{
     }
 
     private void playSound() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
-        File audioFile = new File("Vue/Song/hitsound.wav");
- 
-        AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
-        AudioFormat format = audioStream.getFormat();
- 
-        DataLine.Info info = new DataLine.Info(Clip.class, format); 
-        audioClip = (Clip) AudioSystem.getLine(info);
-        audioClip.open(audioStream);
+        audioClip.stop();
+        audioClip.setFramePosition(0);
         audioClip.start();
     }
-
-
     
 
 

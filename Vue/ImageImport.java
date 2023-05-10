@@ -19,7 +19,10 @@ public class ImageImport {
     public static Font arcade;
     public static Font cartoon;
     public static FileInputStream targetStream ;
+    public static File audioFile = new File("Vue/Song/hitsound.wav");
+    
 
+    
     // TODO a supprimer apres dev
     public static void printAllkey(){
        for (String name : allimage.keySet()) {
@@ -192,6 +195,8 @@ public class ImageImport {
         
         return image ;
     }
-    
+    public static File getAudioFile() {
+        return audioFile;
+    }
 
 }

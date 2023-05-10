@@ -24,13 +24,13 @@ public class Niveau {
 
     private ArrayList<Pegs> pegs;
     private int nbBillesInitiales;
-    private int score1Etoile;
+
+    private int score1Etoiles;
     private int score2Etoiles;
     private int score3Etoiles;
     private boolean campagne;
 
     private String nom;
-    private int index;
     private boolean checked;
     private int ScoreMax;
 
@@ -40,7 +40,6 @@ public class Niveau {
 
     public static String getPlayLevel() {
         String[] atraiter = new File(dosierSauvegarde + "Campagne").list();
-        List<String> ret = new ArrayList<>();
         for (int i = 0; i < atraiter.length; i++) {
             try (Scanner save = new Scanner(new File(dosierSauvegarde + "Campagne" + "/" + atraiter[i]))) {
                 String[] line = save.nextLine().split(";");
@@ -65,6 +64,10 @@ public class Niveau {
 
     public void setPegs(ArrayList<Pegs> pegs) {
         this.pegs = pegs;
+    }
+    
+    public void setNbBillesInitiales(int nbBillesInitiales) {
+        this.nbBillesInitiales = nbBillesInitiales;
     }
 
     public void isCampagne(boolean campagne) {
@@ -130,11 +133,10 @@ public class Niveau {
     }
 
     public void setBasic(){
-        this.score1Etoile = 5 * this.pegs.size();
-        this.score2Etoiles = 10 * this.pegs.size();
-        this.score2Etoiles = 10 * this.pegs.size();
-        this.nbBillesInitiales = (int)(1.5 * this.pegs.size()) ;
-        this.ScoreMax = 1; // TODO score max à programmer
+        this.score1Etoiles = this.pegs.size();
+        this.score2Etoiles = 2 * this.pegs.size();
+        this.score3Etoiles = 3 * this.pegs.size();
+        this.ScoreMax = 1;
     }
 
     public static Niveau NiveauAleatoire(int widthCourt, int heightCourt, int diametrePegs) {
@@ -168,6 +170,7 @@ public class Niveau {
 
         nv.removeNotReachable(widthCourt, heightCourt);
         nv.setBasic();
+        nv.setNbBillesInitiales(10);
         return nv;
     }
 
@@ -310,12 +313,13 @@ public class Niveau {
         PrintWriter file;
         try {
             file = new PrintWriter(dosierSauvegarde + getDossier() + nomExtension);
+            setBasic();
 
             // premiere ligne d'info :
             String ligne = String.valueOf(widthCourt) + ";"
                     + String.valueOf(heightCourt) + ";"
                     + String.valueOf(nbBillesInitiales) + ";"
-                    + String.valueOf(score1Etoile) + ";"
+                    + String.valueOf(score1Etoiles) + ";"
                     + String.valueOf(score2Etoiles) + ";"
                     + String.valueOf(score3Etoiles) + ";"
                     + String.valueOf(campagne ? "1" : "0") + ";"
@@ -362,7 +366,7 @@ public class Niveau {
 
             // remise des valeurs de Niveau :
             nv.nbBillesInitiales = Integer.valueOf(line[2]);
-            nv.score1Etoile = Integer.valueOf(line[3]);
+            nv.score1Etoiles = Integer.valueOf(line[3]);
             nv.score2Etoiles = Integer.valueOf(line[4]);
             nv.score3Etoiles = Integer.valueOf(line[5]);
             nv.campagne = line[6].equals("1") ? true : false;
