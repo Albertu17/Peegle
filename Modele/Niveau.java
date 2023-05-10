@@ -332,6 +332,7 @@ public class Niveau {
                 if (peg.ifValeurEdit()){
                     int[] tab = peg.getValeursFctMouvement();
                     ligne += ";" + String.valueOf(tab[0]) + ";" + String.valueOf(tab[1]) + ";" + String.valueOf(tab[2]);
+                    ligne += ";" + String.valueOf(peg.getRectCenter().x) + ";" + String.valueOf(peg.getRectCenter().y) + ";" + String.valueOf(peg.getRectWidth()) + ";" + String.valueOf(peg.getRectHeight());
                 }
                 file.println(ligne);
 

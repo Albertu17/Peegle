@@ -18,9 +18,13 @@ public class Pegs implements Cloneable {
     private double radiusToCourtCenter;
     private int courtWidth;
     private Point rectCenter; // sauvegarde
+    
+
     private double radiusToRectCenter;
-    private double rectWidth; // sauvegarde
-    private double rectHeight; // sauvegarde
+    private int rectWidth; // sauvegarde
+    private int rectHeight; // sauvegarde
+    
+
     private double angleToCenterOfRotation;
 
     // int 1 à 4 couleur image 
@@ -28,7 +32,7 @@ public class Pegs implements Cloneable {
         this.x = x;
         this.y = y;
         this.radius = radius;
-        diametre = radius;
+        diametre = 2*radius;
         this.couleur = couleur;
         imageString = intColorToString(couleur);
         valeursFctMouvement = new int[3];
@@ -109,16 +113,26 @@ public class Pegs implements Cloneable {
         this.rectCenter = rectCenter;
     }
 
-    public void setRectWidth(double rectWidth) {
+    public void setRectWidth(int rectWidth) {
         this.rectWidth = rectWidth;
     }
 
-    public void setRectHeight(double rectHeight) {
+    public void setRectHeight(int rectHeight) {
         this.rectHeight = rectHeight;
     }
 
     public int getDiametre() {
         return diametre;
+    }
+    public Point getRectCenter() {
+        return rectCenter;
+    }
+    public int getRectWidth() {
+        return rectWidth;
+    }
+
+    public int getRectHeight() {
+        return rectHeight;
     }
 
     public void setDiametre(int diametre) {
