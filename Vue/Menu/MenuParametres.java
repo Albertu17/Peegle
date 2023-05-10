@@ -218,37 +218,16 @@ public class MenuParametres extends JPanel {
             int gapSkin = tailleSkin /5 ;
             tailleSkin = (tailleSkin*4) /5 ;
 
-            tabBouton = new BoutonBall[5];
+            tabBouton = new BoutonBall[allNameImage.length ];
 
             int y = image.getHeight() + gapSkin ; 
-            // BoutonMenu skin1
-            tabBouton[0] = new BoutonBall(0, tailleSkin);
-            tabBouton[0].setLocation((this.getWidth()- tailleSkin)/2, y);
-            add(tabBouton[0]);
+            for (int i = 0 ; i < allNameImage.length ; i++){
+                tabBouton[i] = new BoutonBall(i, tailleSkin);
+                tabBouton[i].setLocation((this.getWidth()- tailleSkin)/2, y);
+                add(tabBouton[i]);
+                y += gapSkin + tailleSkin ;
+            }
             
-            // BoutonMenu skin2
-            y += gapSkin + tailleSkin ;
-            tabBouton[1] = new BoutonBall(1, tailleSkin);
-            tabBouton[1].setLocation((this.getWidth()- tailleSkin)/2, y);
-            add(tabBouton[1]);
-            // add(tab);
-            
-            // BoutonMenu skin3
-            y += gapSkin + tailleSkin ;
-            tabBouton[2] = new BoutonBall(2, tailleSkin);
-            tabBouton[2].setLocation((this.getWidth()- tailleSkin)/2 , y);
-            add(tabBouton[2]);
-            
-            y += gapSkin + tailleSkin ;
-            tabBouton[3] = new BoutonBall(3, tailleSkin);
-            tabBouton[3].setLocation((this.getWidth()- tailleSkin)/2 , y);
-            add(tabBouton[3]);
-
-            y += gapSkin + tailleSkin ;
-            tabBouton[4] = new BoutonBall(4, tailleSkin);
-            tabBouton[4].setLocation((this.getWidth()- tailleSkin)/2 , y);
-            add(tabBouton[4]);
-
             iluminateButton() ;
             repaint();
         }
