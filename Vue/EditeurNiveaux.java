@@ -285,8 +285,13 @@ public class EditeurNiveaux extends JPanel {
         JCheckBox sensAntiHoraire = new JCheckBox("Sens anti-horaire");
         sensAntiHoraire.addItemListener(new ItemListener() {    
             public void itemStateChanged(ItemEvent e) {           
-                if (e.getStateChange()==1) valeurMouvementC[0]++;
-                else valeurMouvementC[0]--;
+                if (e.getStateChange()==1) {
+                    if (valeurMouvementC[0] != 0) valeurMouvementC[0]++;
+                    if (valeurMouvementGlobal[0] == 2) valeurMouvementGlobal[0]++;
+                } else {
+                    if (valeurMouvementC[0] != 0) valeurMouvementC[0]--;
+                    if (valeurMouvementGlobal[0] == 3) valeurMouvementGlobal[0]--;
+                }
             }
             });   
         rotation.add(sensAntiHoraire);
