@@ -4,6 +4,12 @@ A faire :
     - readme
     - rapport
     - refaire bruit qui rend fou
+    - Mettre des icones sur les boutons
+        supp
+        modif
+        balles
+
+
 
 
 Fait :
