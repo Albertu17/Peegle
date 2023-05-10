@@ -271,7 +271,8 @@ public class EditeurNiveaux extends JPanel {
         valeurMouvementC = new int[1];
 
         // RadioButtonValue aucuneFonction
-        aucuneFonction = new RadioButtonValue("Aucune", new int[]{0}, new int[][] {valeurMouvementGlobal}, new ButtonGroup[]{groupMouvementH, groupMouvementC});
+        aucuneFonction = new RadioButtonValue("Aucune",
+        new int[]{0}, new int[][] {valeurMouvementGlobal}, new ButtonGroup[]{groupMouvementH, groupMouvementC, null});
         aucuneFonction.setSelected(true);
         groupMouvementGlobal.add(aucuneFonction);
         menuMouvement.add(aucuneFonction);
@@ -281,12 +282,14 @@ public class EditeurNiveaux extends JPanel {
         menuMouvement.add(traverseeH);
 
         // RadioButtonValue traverséeGD
-        RadioButtonValue traverseeGD = new RadioButtonValue("De gauche à droite", new int[]{1, 1}, new int[][] {valeurMouvementGlobal, valeurMouvementH}, new ButtonGroup[]{groupMouvementGlobal});
+        RadioButtonValue traverseeGD = new RadioButtonValue("De gauche à droite",
+        new int[]{1, 1}, new int[][] {valeurMouvementGlobal, valeurMouvementH}, new ButtonGroup[]{groupMouvementGlobal, groupMouvementH});
         groupMouvementH.add(traverseeGD);
         traverseeH.add(traverseeGD);
 
         // RadioButtonValue traverséeGD
-        RadioButtonValue traverseeDG = new RadioButtonValue("De droite à gauche", new int[]{1, 2}, new int[][] {valeurMouvementGlobal, valeurMouvementH}, new ButtonGroup[]{groupMouvementGlobal});
+        RadioButtonValue traverseeDG = new RadioButtonValue("De droite à gauche",
+        new int[]{1, 2}, new int[][] {valeurMouvementGlobal, valeurMouvementH}, new ButtonGroup[]{groupMouvementGlobal, groupMouvementH});
         groupMouvementH.add(traverseeDG);
         traverseeH.add(traverseeDG);
 
@@ -295,18 +298,21 @@ public class EditeurNiveaux extends JPanel {
         menuMouvement.add(rotation);
         
         // RadioButtonValue rotationCentrale
-        RadioButtonValue rotationCentrale = new RadioButtonValue("Autour du centre du court", new int[]{2}, new int[][] {valeurMouvementGlobal}, new ButtonGroup[]{groupMouvementH, groupMouvementC});
+        RadioButtonValue rotationCentrale = new RadioButtonValue("Autour du centre du court",
+        new int[]{2}, new int[][] {valeurMouvementGlobal}, new ButtonGroup[]{groupMouvementH, groupMouvementC, groupMouvementGlobal});
         groupMouvementGlobal.add(rotationCentrale);
         rotation.add(rotationCentrale);
 
         // RadioButtonValue rotationCentraleRect
-        RadioButtonValue rotationCentraleRect = new RadioButtonValue("Autour du centre du rectangle", new int[]{1, 1}, new int[][] {valeurMouvementGlobal, valeurMouvementC}, new ButtonGroup[]{groupMouvementGlobal});
+        RadioButtonValue rotationCentraleRect = new RadioButtonValue("Autour du centre du rectangle",
+        new int[]{1, 1}, new int[][] {valeurMouvementGlobal, valeurMouvementC}, new ButtonGroup[]{groupMouvementGlobal, groupMouvementC});
         aucuneFonction.setSelected(true);
         groupMouvementC.add(rotationCentraleRect);
         rotation.add(rotationCentraleRect);
 
         // RadioButtonValue rotationInscrite
-        RadioButtonValue rotationInscrite = new RadioButtonValue("Suivant le cerlce inscrit au rectangle", new int[]{1, 3}, new int[][] {valeurMouvementGlobal, valeurMouvementC}, new ButtonGroup[]{groupMouvementGlobal});
+        RadioButtonValue rotationInscrite = new RadioButtonValue("Suivant le cerlce inscrit au rectangle",
+        new int[]{1, 3}, new int[][] {valeurMouvementGlobal, valeurMouvementC}, new ButtonGroup[]{groupMouvementGlobal, groupMouvementC});
         rotationInscrite.addActionListener(e -> inscrit.doClick());
         groupMouvementC.add(rotationInscrite);
         rotation.add(rotationInscrite);
@@ -604,7 +610,11 @@ public class EditeurNiveaux extends JPanel {
     public class RadioButtonValue extends JRadioButtonMenuItem {
         int clickCount;
 
-        // Constructeur prenant un tableau de valeurs et un tableau de tableaux contenant des variables auxquells affecter les valeurs.
+        // Constructeur prenant un tableau de valeurs et un tableau de tableaux contenant des variables
+        // auxquelles affecter les valeurs. Le tableau de groupes correspond aux groupes qu'il
+        // faut déselectionner lorsque le radioButton est selectionné, à l'exception du dernier groupe,
+        // qui est celui du radioButton et qui doit être déselectionné lorsque la radioButton
+        // est déselectionnée.
         public RadioButtonValue(String text, int[] values, int[][] dest, ButtonGroup[] groups) {
             super(text);
             clickCount = 0;
@@ -617,11 +627,14 @@ public class EditeurNiveaux extends JPanel {
                         }
                         if (modif != null && !enModif) modif.doClick();
                         if (groups != null) {
-                            for (ButtonGroup bG : groups) {
-                                bG.clearSelection();
+                            for (int i = 0; i < groups.length-1; i++) {
+                                if (groups[i] != null) groups[i].clearSelection();
                             }
                         }
-                    } else dest[dest.length - 1][0] = 0;
+                    } else {
+                        dest[dest.length - 1][0] = 0;
+                        if (groups[groups.length-1] != null) groups[groups.length-1].clearSelection();
+                    }
                 }
             });
         }
