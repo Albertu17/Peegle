@@ -236,6 +236,14 @@ public class Ball{
     public static void setMusicOff(){
         Ball.musicOn = false;
     }
+
+    public int getComboScore() {
+        int score = 1;
+        for (int i = 2; i <= combo; i++) {
+            score += i;
+        }
+        return score;
+    }
     
 
 
