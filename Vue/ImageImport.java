@@ -20,6 +20,8 @@ public class ImageImport {
     public static Font cartoon;
     public static FileInputStream targetStream ;
     public static File audioFile = new File("Vue/Song/hitsound.wav");
+    public static File musicMenu = new File("Vue/Song/musicmenu.wav");
+    public static File musicGame = new File("Vue/Song/musicjeu.wav");
     
 
     
@@ -78,7 +80,7 @@ public class ImageImport {
 
     public static Font rightSize(String txt, int tailleMax) {
         Font rightF = arcade.deriveFont(1000f); // Très grande taille de police par défault
-        FontMetrics metrics = (getImage("Gameview/ResumeScreen.png", 100, 100)).createGraphics().getFontMetrics(rightF);
+        FontMetrics metrics = (getImage("ResumeScreen.png", 100, 100)).createGraphics().getFontMetrics(rightF);
         int fontSize = rightF.getSize();
         int textWidth = metrics.stringWidth(txt);
         // int textWidthMax = (WinPanel.this.getWidth()*5)/6;
@@ -86,7 +88,7 @@ public class ImageImport {
             double widthRatio = (double) tailleMax / (double) textWidth;
             rightF = rightF.deriveFont((float) Math.floor(fontSize * widthRatio));
             fontSize = rightF.getSize();
-            metrics = (getImage("Gameview/ResumeScreen.png", 100, 100)).createGraphics().getFontMetrics(rightF);
+            metrics = (getImage("ResumeScreen.png", 100, 100)).createGraphics().getFontMetrics(rightF);
         }
         return rightF;
     }
@@ -197,6 +199,12 @@ public class ImageImport {
     }
     public static File getAudioFile() {
         return audioFile;
+    }
+    public static File getMusicMenu() {
+        return musicMenu;
+    }
+    public static File getMusicGame() {
+        return musicGame;
     }
 
 }

@@ -2,7 +2,13 @@ package Vue;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.io.File;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -20,6 +26,33 @@ public class Controleur extends JFrame {
     public SelectNiveau selectNiveau ;
     public int width;
     public int height;
+    private File musicmenu = ImageImport.getMusicMenu();
+    private File musicgame = ImageImport.getMusicGame();
+    AudioInputStream audioStream;
+    
+    AudioFormat format;
+    DataLine.Info info = new DataLine.Info(Clip.class, format);
+    AudioInputStream audioStream2;
+    AudioFormat format2;
+    DataLine.Info info2 = new DataLine.Info(Clip.class, format2);
+    Clip musicmenuclip;
+    Clip musicgameclip;
+    {
+    {
+    try {
+        audioStream = AudioSystem.getAudioInputStream(musicmenu);
+        musicmenuclip = (Clip) AudioSystem.getLine(info);
+        format = audioStream.getFormat();
+        musicmenuclip.open(audioStream);
+        audioStream2 = AudioSystem.getAudioInputStream(musicgame);
+        musicgameclip = (Clip) AudioSystem.getLine(info);
+        format2 = audioStream2.getFormat();
+        musicgameclip.open(audioStream2);
+    } catch (Exception e ) {
+        e.printStackTrace();
+    }
+    }
+    }
 
     public Controleur() {
 
@@ -61,6 +94,9 @@ public class Controleur extends JFrame {
     }
 
     public void launchMenu(){
+        musicgameclip.stop();
+        musicmenuclip.setFramePosition(0);
+        musicmenuclip.loop(Clip.LOOP_CONTINUOUSLY);
         removeAll();
         if(menu == null){
             menu = new Menu(this);
@@ -108,6 +144,9 @@ public class Controleur extends JFrame {
     }
     
     public void launchGameview(String nomNiveau){
+        musicmenuclip.stop();
+        musicgameclip.setFramePosition(0);
+        musicgameclip.loop(Clip.LOOP_CONTINUOUSLY);
         this.removeAll();
         gameview = new GameView(this, nomNiveau);
         for(Ball ball : gameview.court.getBalls()){
@@ -121,13 +160,16 @@ public class Controleur extends JFrame {
         setFocusClavier(gameview.court);
     }
 
-    public void launchMenu(JPanel menu){
-        this.removeAll();
-        if (menu != null){
-            add(menu) ;
-        }
-        menu.setVisible(true);
-        this.repaint();
+
+    public static void main(String[] args) {
+
+        SwingUtilities.invokeLater(new Runnable(){
+            @Override
+            public void run() {
+                Controleur c = new Controleur() ;
+                c.launchMenu();
+            }
+        });
     }
 
     public void setNiveauSuivant() {
@@ -139,16 +181,5 @@ public class Controleur extends JFrame {
             launchGameview("");
             gameview.court.askReset();
         }
-    }
-
-    public static void main(String[] args) {
-
-        SwingUtilities.invokeLater(new Runnable(){
-            @Override
-            public void run() {
-                Controleur c = new Controleur() ;
-                c.launchMenu();
-            }
-        });
     }
 }
