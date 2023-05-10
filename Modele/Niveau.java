@@ -320,7 +320,7 @@ public class Niveau {
 
     public void save(int widthCourt, int heightCourt) {
         if(nom == "Aleatoire") return ;
-        this.removeNotReachable(widthCourt, heightCourt);
+        // this.removeNotReachable(widthCourt, heightCourt);
         // save les lignes de l'array list dans un fichier csv
         PrintWriter file;
         try {
