@@ -13,6 +13,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -184,10 +185,26 @@ public class EditeurNiveaux extends JPanel {
         JLabel labelNbBallesInitial = new JLabel("Nombre de balles initial :");
         menuNiveau.add(labelNbBallesInitial);
 
+        Hashtable<Integer, JLabel> labelTableBallesInitiales = new Hashtable<Integer, JLabel>();
+        labelTableBallesInitiales.put(0, new JLabel("0"));
+        labelTableBallesInitiales.put(5, new JLabel("5"));
+        labelTableBallesInitiales.put(10, new JLabel("10"));
+        labelTableBallesInitiales.put(15, new JLabel("15"));
+        labelTableBallesInitiales.put(20, new JLabel("20"));
+        labelTableBallesInitiales.put(25, new JLabel("25"));
+        labelTableBallesInitiales.put(30, new JLabel("30"));
+        labelTableBallesInitiales.put(35, new JLabel("35"));
+        labelTableBallesInitiales.put(40, new JLabel("40"));
+        labelTableBallesInitiales.put(45, new JLabel("45"));
+        labelTableBallesInitiales.put(50, new JLabel("50"));
+
         // JSpinner spinnerNbBallesInitial
         JSlider sliderNbBallesInitial = new JSlider(5, 50, 10);
         sliderNbBallesInitial.setMinorTickSpacing(1);
         sliderNbBallesInitial.setMajorTickSpacing(5);
+        sliderNbBallesInitial.setPaintTicks(true);
+        sliderNbBallesInitial.setLabelTable(labelTableBallesInitiales);
+        sliderNbBallesInitial.setPaintLabels(true);
         sliderNbBallesInitial.addChangeListener(e -> niveauCree.setNbBillesInitiales(sliderNbBallesInitial.getValue()));
         menuNiveau.add(sliderNbBallesInitial);
 
@@ -310,14 +327,24 @@ public class EditeurNiveaux extends JPanel {
 
         // JLabel labelSpeedPegs
         menuMouvement.addSeparator();
-        JLabel labelSpeedPegs = new JLabel("Vitesse des pegs :");
+        JLabel labelSpeedPegs = new JLabel("Vitesse des pegs (px/s):");
         menuMouvement.add(labelSpeedPegs);
+
+        // HashTabel labelTableSpeed
+        Hashtable<Integer, JLabel> labelTableSpeed = new Hashtable<Integer, JLabel>();
+        labelTableSpeed.put(50, new JLabel("50"));
+        labelTableSpeed.put(150, new JLabel("150"));
+        labelTableSpeed.put(250, new JLabel("250"));
+        labelTableSpeed.put(350, new JLabel("350"));
 
         // JSlider speedPegs
         valeurVitesse = 100;
-        speedPegs = new JSlider(50, 400, 100);
+        speedPegs = new JSlider(50, 350, 100);
         speedPegs.setMinorTickSpacing(10);
         speedPegs.setMajorTickSpacing(50);
+        speedPegs.setLabelTable(labelTableSpeed);
+        speedPegs.setPaintLabels(true);
+        speedPegs.setPaintTicks(true);
         speedPegs.addChangeListener(e -> valeurVitesse = speedPegs.getValue());
         menuMouvement.add(speedPegs);
 
