@@ -17,7 +17,7 @@ import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 
 public class Background extends JPanel {
-  private static String pathBackGround = "Gameview/arbre.png";
+  private static String pathBackGround = "Gameview/arbre.jpg";
   
   private BufferedImage backgroundImage;
   
@@ -37,7 +37,7 @@ public class Background extends JPanel {
   private BufferedImage ball;
   private boolean GameOver = false;
   private BufferedImage balleRestImage;
-  
+
   public static void setPathBackGround(String pathBackGround) {
     Background.pathBackGround = pathBackGround;
   }
