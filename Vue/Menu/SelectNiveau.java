@@ -263,7 +263,7 @@ public class SelectNiveau extends JPanel implements KeyListener{
                 check = ImageImport.getImage("Menu/Check.png", 7);
             }
             etoile = ImageImport.getImage("Menu/etoiles" + nomNiveau.charAt(nomNiveau.length()-1) + "Score.png" , 20);
-            button.addActionListener(e -> controleur.launchGameview((campagne? "Campagne/" : "Perso/") + nomNiveau));
+            button.addActionListener(e -> controleur.launchGameview((campagne? "Campagne/" : "Perso/") + nomNiveau.substring(0, nomNiveau.length()-2)));
             button.setVisible(true);
             button.setAlignmentX(Box.CENTER_ALIGNMENT);
             add(button);
