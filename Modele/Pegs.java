@@ -16,7 +16,7 @@ public class Pegs implements Cloneable {
     private int[] valeursFctMouvement;
     private Point courtCenter;
     private double radiusToCourtCenter;
-    private int courtWidth;
+    private int courtWidth; 
     private Point rectCenter; // sauvegarde
     
 
