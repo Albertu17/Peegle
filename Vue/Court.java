@@ -707,7 +707,6 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
                 peg.setCourtCenter(center);
                 peg.setRadiusToCourtCenter();
                 peg.setCourtWidth(width);
-                peg.setCourtHeight(height);
                 peg.setRectCenter(new Point(midleXRect, midleYRect));
                 peg.setRectWidth(widthRectangle);
                 peg.setRectHeight(heightRectangle);
