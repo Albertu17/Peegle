@@ -3,6 +3,7 @@ package Modele;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -328,6 +329,10 @@ public class Niveau {
                         + String.valueOf(peg.getY()) + ";"
                         + String.valueOf(peg.getDiametre()) + ";"
                         + String.valueOf(peg.getCouleur());
+                if (peg.ifValeurEdit()){
+                    int[] tab = peg.getValeursFctMouvement();
+                    ligne += ";" + String.valueOf(tab[0]) + ";" + String.valueOf(tab[1]) + ";" + String.valueOf(tab[2]);
+                }
                 file.println(ligne);
 
             }
@@ -371,9 +376,21 @@ public class Niveau {
                 int y = (int) (reajustementV * Double.valueOf(line[1]));
                 int radius = (int) (Double.valueOf(line[2]) * Math.min(reajustementH, reajustementV));
                 int couleur = Integer.valueOf(line[3]);
+                
 
-                nv.pegs.add(new Pegs(x, y, radius, couleur));
-
+                Pegs ajouter = new Pegs(x, y, radius, couleur);
+                nv.pegs.add(ajouter);
+                if (line.length > 4) { // si il y a des valeurs de fonction de mouvement (pour les pegs mobiles)
+                int[] valeursFctMouvement = new int[3];
+                for (int i = 0; i < 3; i++) {
+                    valeursFctMouvement[i] = Integer.valueOf(line[4 + i]);
+                }
+                Point rectCenter = new Point(Integer.valueOf(line[7]), Integer.valueOf(line[8]));
+                int rectWidth = Integer.valueOf(line[9]);
+                int rectHeight = Integer.valueOf(line[10]);
+                
+                ajouter.setValeursFctMouvement(valeursFctMouvement);
+            }
             }
 
             save.close();

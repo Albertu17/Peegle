@@ -4,3 +4,5 @@ A faire :
     -les etoiles dans la sauvegarde 
     - readme
     - rapport
+    - ajouter fonction movuement sauvgerade
+    - refaire bruit qui rend fou

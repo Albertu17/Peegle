@@ -17,10 +17,10 @@ public class Pegs implements Cloneable {
     private Point courtCenter;
     private double radiusToCourtCenter;
     private int courtWidth;
-    private Point rectCenter;
+    private Point rectCenter; // sauvegarde
     private double radiusToRectCenter;
-    private double rectWidth;
-    private double rectHeight;
+    private double rectWidth; // sauvegarde
+    private double rectHeight; // sauvegarde
     private double angleToCenterOfRotation;
 
     // int 1 à 4 couleur image 
@@ -28,11 +28,15 @@ public class Pegs implements Cloneable {
         this.x = x;
         this.y = y;
         this.radius = radius;
-        diametre = radius*2;
+        diametre = radius;
         this.couleur = couleur;
         imageString = intColorToString(couleur);
         valeursFctMouvement = new int[3];
         angleToCenterOfRotation = -1; // Valeur pour signifier que la variable n'a pas été définie.
+    }
+
+    boolean ifValeurEdit(){
+        return valeursFctMouvement[0] != 0 || valeursFctMouvement[1] != 0 || valeursFctMouvement[2] != 0;
     }
 
     public static String intColorToString(int couleur) {
@@ -80,6 +84,9 @@ public class Pegs implements Cloneable {
 
     public void setValeursFctMouvement(int[] valeursFctMouvement) {
         this.valeursFctMouvement = valeursFctMouvement;
+    }
+    public int[] getValeursFctMouvement() {
+        return valeursFctMouvement;
     }
 
     public void setCourtCenter(Point courtCenter) {
