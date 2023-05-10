@@ -587,15 +587,16 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         // Sélection des pegs contenus dans le rectangle
         } else if (editMode && eN.enModif && pressPoint != null) {
             for (Pegs peg : eN.niveauCree.getPegs()) {
-                if (!eN.pegsSelectionnes.contains(peg)) {
-                    if (peg.getX() > Math.min(pressPoint.getX(), mouseX) && peg.getX() < Math.max(pressPoint.getX(), mouseX)
-                    && peg.getY() > Math.min(pressPoint.getY(), mouseY) && peg.getY() < Math.max(pressPoint.getY(), mouseY)) {
-                        eN.pegsSelectionnes.add(peg);
-                    }
-                }
+                if (!eN.pegsSelectionnes.contains(peg) && estDansRectangle(peg)) eN.pegsSelectionnes.add(peg);
+                if (eN.pegsSelectionnes.contains(peg) && !estDansRectangle(peg)) eN.pegsSelectionnes.remove(peg);
             }
             repaint(); // Aggrandissement du rectangle de sélection
         }
+    }
+
+    public boolean estDansRectangle(Pegs peg) {
+        return peg.getX() > Math.min(pressPoint.getX(), mouseX) && peg.getX() < Math.max(pressPoint.getX(), mouseX)
+        && peg.getY() > Math.min(pressPoint.getY(), mouseY) && peg.getY() < Math.max(pressPoint.getY(), mouseY);
     }
 
     public void mouseMoved(MouseEvent e) {

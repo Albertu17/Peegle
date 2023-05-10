@@ -17,7 +17,6 @@ public class Pegs implements Cloneable {
     private Point courtCenter;
     private double radiusToCourtCenter;
     private int courtWidth;
-    private int courtHeight;
     private Point rectCenter;
     private double radiusToRectCenter;
     private double rectWidth;
@@ -97,10 +96,6 @@ public class Pegs implements Cloneable {
 
     public void setCourtWidth(int courtWidth) {
         this.courtWidth = courtWidth;
-    }
-
-    public void setCourtHeight(int courtHeight) {
-        this.courtHeight = courtHeight;
     }
 
     public void setRectCenter(Point rectCenter) {
