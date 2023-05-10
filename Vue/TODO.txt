@@ -4,7 +4,6 @@ A faire :
     - readme
     - rapport
     - refaire bruit qui rend fou
-    - refaire bruit qui rend fou
     - Mettre des icones sur les boutons
         supp
         modif
@@ -15,4 +14,4 @@ A faire :
 
 Fait :
     - ajouter fonction movuement sauvgerade
-    -refaire la sauvegarde pour intégrer les trucs d'albert
+    - refaire la sauvegarde pour intégrer les trucs d'albert

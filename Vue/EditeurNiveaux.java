@@ -389,6 +389,11 @@ public class EditeurNiveaux extends JPanel {
 
         // JButton croix
         croix = new JButton("supp");
+        croix.setIcon(new ImageIcon(ImageImport.getImage("Menu/croixRouge.png", largeurBouton, largeurBouton)));
+        croix.setBorderPainted(false); 
+        croix.setContentAreaFilled(false); 
+        croix.setFocusPainted(false); 
+        croix.setOpaque(false);
         croix.setBounds(width - courtWidth + 4*largeurBouton, gap, largeurBouton, largeurBouton);
         croix.addActionListener(e -> {
             for (Pegs peg : pegsSelectionnes) {
@@ -398,7 +403,6 @@ public class EditeurNiveaux extends JPanel {
             court.setPegs(court.clonePegs(niveauCree.getPegs()));
             court.repaint();
         });
-        // TODO ajout icon "croixRouge"
         panelBoutons.add(croix);
 
         // Bouton pause
@@ -437,6 +441,11 @@ public class EditeurNiveaux extends JPanel {
 
         //JButton modif
         modif = new JButton("modif");
+        modif.setIcon(new ImageIcon(ImageImport.getImage("Menu/curseurMain.png", largeurBouton, largeurBouton)));
+        modif.setBorderPainted(false); 
+        modif.setContentAreaFilled(false); 
+        modif.setFocusPainted(false); 
+        modif.setOpaque(false);
         modif.setBounds(courtWidth - 3*largeurBouton, gap, largeurBouton, largeurBouton);
         modif.addActionListener(e -> {
             pause.doClick();
@@ -444,15 +453,13 @@ public class EditeurNiveaux extends JPanel {
             caseActive.unclicked();
             court.setCursor(new Cursor(Cursor.HAND_CURSOR));
         });
-        // TODO ajout icon
-        // Icon icon = new ImageIcon(ImageImport.getImage("curseurMain.jpg", largeurBouton, largeurBouton));
-        // modif.setIcon(icon);
         panelBoutons.add(modif);
 
         // Réglages par défaut
         casePegBleu.mousePressed(null);
         setFocusable(true);
         this.addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[]{}, ()-> controleur.launchMenu()));
+        requestFocusInWindow() ;
 
     }
 
@@ -552,8 +559,12 @@ public class EditeurNiveaux extends JPanel {
                 court.setPegs(court.clonePegs(niveauCree.getPegs()));
                 court.repaint();
             });
-            Icon icon = new ImageIcon(ImageImport.getImage(Pegs.intColorToString(couleur)));
-            setIcon(icon);
+            Icon icon = new ImageIcon(ImageImport.getImage(Pegs.intColorToString(couleur), largeurBouton, largeurBouton));
+            setBorderPainted(false); 
+            setContentAreaFilled(false); 
+            setFocusPainted(false); 
+            setOpaque(false);
+            setIcon(icon);  
             setSize(largeurBouton, largeurBouton);
         }
     }
