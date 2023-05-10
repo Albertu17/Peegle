@@ -415,12 +415,7 @@ public class EditeurNiveaux extends JPanel {
         panelBoutons.add(vert);
 
         // JButton croix
-        croix = new JButton();
-        croix.setIcon(new ImageIcon(ImageImport.getImage("Menu/croixRouge.png", largeurBouton, largeurBouton)));
-        croix.setBorderPainted(false); 
-        croix.setContentAreaFilled(false); 
-        croix.setFocusPainted(false); 
-        croix.setOpaque(false);
+        croix = new BoutonPanel("Menu/croixRouge.png", largeurBouton, largeurBouton) ;
         croix.setBounds(width - courtWidth + 4*largeurBouton, gap, largeurBouton, largeurBouton);
         croix.addActionListener(e -> {
             for (Pegs peg : pegsSelectionnes) {
@@ -433,13 +428,13 @@ public class EditeurNiveaux extends JPanel {
         panelBoutons.add(croix);
 
         // Bouton pause
-        JButton pause = new JButton("||");
+        JButton pause = new BoutonPanel("Menu/pause.png", largeurBouton, largeurBouton) ;
         pause.setBounds(courtWidth - 2*largeurBouton, gap, largeurBouton, largeurBouton);
         panelBoutons.add(pause);
         pause.setEnabled(false);
 
         // Bouton resume
-        JButton resume = new JButton("▶");
+        JButton resume = new BoutonPanel("Menu/resume.png", largeurBouton, largeurBouton) ;
         resume.setBounds(courtWidth - largeurBouton, gap, largeurBouton, largeurBouton);
         resume.addActionListener(e -> {
             court.setEnPause(false);
@@ -467,12 +462,7 @@ public class EditeurNiveaux extends JPanel {
         });
 
         //JButton modif
-        modif = new JButton();
-        modif.setIcon(new ImageIcon(ImageImport.getImage("Menu/curseurMain.png", largeurBouton, largeurBouton)));
-        modif.setBorderPainted(false); 
-        modif.setContentAreaFilled(false); 
-        modif.setFocusPainted(false); 
-        modif.setOpaque(false);
+        modif = new BoutonPanel("Menu/curseurMain.png", largeurBouton, largeurBouton) ;
         modif.setBounds(courtWidth - 3*largeurBouton, gap, largeurBouton, largeurBouton);
         modif.addActionListener(e -> {
             pause.doClick();
@@ -570,6 +560,18 @@ public class EditeurNiveaux extends JPanel {
         public void mouseExited(MouseEvent e) {}
         public void mouseDragged(MouseEvent e) {}
         public void mouseMoved(MouseEvent e) {}
+    }
+
+    public class BoutonPanel extends JButton{
+
+        public BoutonPanel(String pathIcon, int width, int height){
+            this.setIcon(new ImageIcon(ImageImport.getImage(pathIcon, width, height)));
+            this.setBorderPainted(false); 
+            this.setContentAreaFilled(false); 
+            this.setFocusPainted(false); 
+            this.setOpaque(false);
+            this.setSize(width, height) ;
+        }
     }
 
     public class BoutonCouleur extends JButton {
