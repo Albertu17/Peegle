@@ -230,6 +230,7 @@ public class EditeurNiveaux extends JPanel {
         JMenu menuMouvement = new JMenu("Fct de mouvement");
         menuMouvement.setBounds(250, 0, 150, heightMenuBar);
         menuBar.add(menuMouvement);
+        ButtonGroup groupMouvementGlobal = new ButtonGroup();
         ButtonGroup groupMouvementH = new ButtonGroup();
         ButtonGroup groupMouvementC = new ButtonGroup();
         // Valeurs de mouvement globale, horizontale et circulaire
@@ -238,10 +239,9 @@ public class EditeurNiveaux extends JPanel {
         valeurMouvementC = new int[1];
 
         // RadioButtonValue aucuneFonction
-        aucuneFonction = new RadioButtonValue("Aucune", new int[]{0}, new int[][] {valeurMouvementGlobal}, null);
+        aucuneFonction = new RadioButtonValue("Aucune", new int[]{0}, new int[][] {valeurMouvementGlobal}, new ButtonGroup[]{groupMouvementH, groupMouvementC});
         aucuneFonction.setSelected(true);
-        groupMouvementH.add(aucuneFonction);
-        groupMouvementC.add(aucuneFonction);
+        groupMouvementGlobal.add(aucuneFonction);
         menuMouvement.add(aucuneFonction);
 
         // JMenu traverseeH
@@ -249,12 +249,12 @@ public class EditeurNiveaux extends JPanel {
         menuMouvement.add(traverseeH);
 
         // RadioButtonValue traverséeGD
-        RadioButtonValue traverseeGD = new RadioButtonValue("De gauche à droite", new int[]{1, 1}, new int[][] {valeurMouvementGlobal, valeurMouvementH}, new ButtonGroup[]{groupMouvementH});
+        RadioButtonValue traverseeGD = new RadioButtonValue("De gauche à droite", new int[]{1, 1}, new int[][] {valeurMouvementGlobal, valeurMouvementH}, new ButtonGroup[]{groupMouvementGlobal});
         groupMouvementH.add(traverseeGD);
         traverseeH.add(traverseeGD);
 
         // RadioButtonValue traverséeGD
-        RadioButtonValue traverseeDG = new RadioButtonValue("De droite à gauche", new int[]{1, 2}, new int[][] {valeurMouvementGlobal, valeurMouvementH}, new ButtonGroup[]{groupMouvementH});
+        RadioButtonValue traverseeDG = new RadioButtonValue("De droite à gauche", new int[]{1, 2}, new int[][] {valeurMouvementGlobal, valeurMouvementH}, new ButtonGroup[]{groupMouvementGlobal});
         groupMouvementH.add(traverseeDG);
         traverseeH.add(traverseeDG);
 
@@ -264,19 +264,17 @@ public class EditeurNiveaux extends JPanel {
         
         // RadioButtonValue rotationCentrale
         RadioButtonValue rotationCentrale = new RadioButtonValue("Autour du centre du court", new int[]{2}, new int[][] {valeurMouvementGlobal}, new ButtonGroup[]{groupMouvementH, groupMouvementC});
-        aucuneFonction.setSelected(true);
-        groupMouvementH.add(rotationCentrale);
-        groupMouvementC.add(rotationCentrale);
+        groupMouvementGlobal.add(rotationCentrale);
         rotation.add(rotationCentrale);
 
         // RadioButtonValue rotationCentraleRect
-        RadioButtonValue rotationCentraleRect = new RadioButtonValue("Autour du centre du rectangle", new int[]{1, 1}, new int[][] {valeurMouvementGlobal, valeurMouvementC}, new ButtonGroup[]{groupMouvementC});
+        RadioButtonValue rotationCentraleRect = new RadioButtonValue("Autour du centre du rectangle", new int[]{1, 1}, new int[][] {valeurMouvementGlobal, valeurMouvementC}, new ButtonGroup[]{groupMouvementGlobal});
         aucuneFonction.setSelected(true);
         groupMouvementC.add(rotationCentraleRect);
         rotation.add(rotationCentraleRect);
 
         // RadioButtonValue rotationInscrite
-        RadioButtonValue rotationInscrite = new RadioButtonValue("Suivant le cerlce inscrit au rectangle", new int[]{1, 3}, new int[][] {valeurMouvementGlobal, valeurMouvementC}, new ButtonGroup[]{groupMouvementC});
+        RadioButtonValue rotationInscrite = new RadioButtonValue("Suivant le cerlce inscrit au rectangle", new int[]{1, 3}, new int[][] {valeurMouvementGlobal, valeurMouvementC}, new ButtonGroup[]{groupMouvementGlobal});
         rotationInscrite.addActionListener(e -> inscrit.doClick());
         groupMouvementC.add(rotationInscrite);
         rotation.add(rotationInscrite);
@@ -560,14 +558,12 @@ public class EditeurNiveaux extends JPanel {
                             dest[i][0] = values[i];
                         }
                         if (modif != null && !enModif) modif.doClick();
-                    } else {
-                        dest[dest.length - 1][0] = 0;
                         if (groups != null) {
                             for (ButtonGroup bG : groups) {
                                 bG.clearSelection();
                             }
                         }
-                    }
+                    } else dest[dest.length - 1][0] = 0;
                 }
             });
         }

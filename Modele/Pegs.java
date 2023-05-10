@@ -207,10 +207,10 @@ public class Pegs implements Cloneable {
                         break;
                 }
                 break;
-            case 2: // Rotation centrale horaire
+            case 2: // Rotation centrale, sens horaire
                 rotationAutourPoint(deltaT, courtCenter, radiusToCourtCenter, radiusToCourtCenter, true);
                 break;
-            case 3: // Rotation centrale anti-horaire
+            case 3: // Rotation centrale, sens anti-horaire
                 rotationAutourPoint(deltaT, courtCenter, radiusToCourtCenter, radiusToCourtCenter, false);
                 break;
             default:

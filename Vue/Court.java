@@ -50,7 +50,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
     
     private int mouseX = 0;
     private int mouseY = 0;
-    private boolean GameOver = false;
+    private boolean gameOver = false;
     private int ScoreMax;
     private int ComboEncours = 0;
     private int frameCount = 0;
@@ -257,7 +257,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (enPause || GameOver)
+                if (enPause || gameOver)
                     timer.stop(); // Arrêt de tout le timer.
                 else {
                     last = System.nanoTime();
@@ -329,11 +329,10 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
             }
         }
 
-
-        if (GameOver) //partie fini 
-            return;
-       
+        // partie finie
+        if (gameOver) return;
         
+        // Affichage du sceau
         g.drawImage(sceau.getImageHAUT(), (int) sceau.Xb, (int) sceau.Yh, this);
         
         // Affichage des balles
@@ -507,16 +506,14 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
 
     public void mouseClicked(MouseEvent e) {
         // lancer une balle
-        if (!GameOver) {
-
-        } else if (mouseX > 535 && mouseX < 985 && mouseY > 695 && mouseY < 765) {
+        if (gameOver && mouseX > 535 && mouseX < 985 && mouseY > 695 && mouseY < 765) {
             controleur.launchMenu();
         }
     }
 
     public void mousePressed(MouseEvent e) {
         // lancer une balle
-        if (!enPause && !GameOver) {
+        if (!enPause && !gameOver) {
             if (NbDeBall > 0) {
                 balls.add(canon.tirer());
                 nbDeBallChange = true;
@@ -732,7 +729,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
 
             case (KeyEvent.VK_ENTER):
             case (KeyEvent.VK_SPACE):
-                if (!enPause && !GameOver) {
+                if (!enPause && !gameOver) {
                     if (NbDeBall > 0) {
                         balls.add(canon.tirer());
                         nbDeBallChange = true;
@@ -763,8 +760,8 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         PanelFin(int width, int height) {
             this.width = width;
             this.height = height;
-            // idépendant de la classe, pour la fin du jeu :
-            GameOver = true;
+            // indépendant de la classe, pour la fin du jeu :
+            gameOver = true;
             canon.setVisible(false);
             Court.this.setBorder(null);
             background.setOver(true);
