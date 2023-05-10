@@ -61,7 +61,8 @@ public class MenuParametres extends JPanel {
 
         skin = new Skin(width/5, height/2) ;
         skin.setVisible(true);
-        skin.setLocation(100, 100);
+        int xCenterSkin = (width)/4; 
+        skin.setLocation((xCenterSkin - skin.getWidth())/2, (height - skin.getHeight())/2);
         add(skin) ;
         BoutonMenu buttonMusicOn = new BoutonMenu("Music On", 200, 50);
         buttonMusicOn.setLocation(middleW, middleH );
@@ -89,8 +90,6 @@ public class MenuParametres extends JPanel {
         add(buttonMusicOff);
         add(buttonMusicOn);
 
-       
-       
 
         setFocusable(true);
         requestFocusInWindow();
@@ -101,7 +100,7 @@ public class MenuParametres extends JPanel {
     public BufferedImage getEditedImage(String txt, int width, int height) {
         BufferedImage buffImg = ImageImport.getImage("Menu/planche_blanche.png", width, height);
         Graphics g = buffImg.getGraphics();
-        Font rightFont = ImageImport.rightSizeArcade(txt, width);
+        Font rightFont = ImageImport.rightSizeCarton(txt, width);
         FontMetrics metrics = g.getFontMetrics(rightFont);
         g.setFont(rightFont);
         g.setColor(Color.WHITE);
@@ -128,32 +127,41 @@ public class MenuParametres extends JPanel {
             setSize(width, height);
             setOpaque(false);
 
-            image = getEditedImage("Skins", (width*2)/3, 50) ;
+            image = getEditedImage("    Skins    ", (width*2)/3, 50) ;
+
+            int tailleSkin = (height-image.getHeight()) /allNameImage.length ; 
+            int gapSkin = tailleSkin /5 ;
+            tailleSkin = (tailleSkin*4) /5 ;
 
             tabBouton = new BoutonBall[5];
 
+            int y = image.getHeight() + gapSkin ; 
             // BoutonMenu skin1
-            tabBouton[0] = new BoutonBall(0, 50);
-            tabBouton[0].setLocation(middleW , middleH - 25 - 140);
-
+            tabBouton[0] = new BoutonBall(0, tailleSkin);
+            tabBouton[0].setLocation((this.getWidth()- tailleSkin)/2, y);
             add(tabBouton[0]);
             
             // BoutonMenu skin2
-            tabBouton[1] = new BoutonBall(1, 50);
-            tabBouton[1].setLocation(middleW , middleH - 25 - 70);
-            
+            y += gapSkin + tailleSkin ;
+            tabBouton[1] = new BoutonBall(1, tailleSkin);
+            tabBouton[1].setLocation((this.getWidth()- tailleSkin)/2, y);
             add(tabBouton[1]);
             // add(tab);
             
             // BoutonMenu skin3
-            tabBouton[2] = new BoutonBall(2, 50);
-            tabBouton[2].setLocation(middleW , middleH - 25);
+            y += gapSkin + tailleSkin ;
+            tabBouton[2] = new BoutonBall(2, tailleSkin);
+            tabBouton[2].setLocation((this.getWidth()- tailleSkin)/2 , y);
             add(tabBouton[2]);
-            tabBouton[3] = new BoutonBall(3, 50);
-            tabBouton[3].setLocation(middleW , middleH +35);
+            
+            y += gapSkin + tailleSkin ;
+            tabBouton[3] = new BoutonBall(3, tailleSkin);
+            tabBouton[3].setLocation((this.getWidth()- tailleSkin)/2 , y);
             add(tabBouton[3]);
-            tabBouton[4] = new BoutonBall(4, 50);
-            tabBouton[4].setLocation(middleW , middleH +100);
+
+            y += gapSkin + tailleSkin ;
+            tabBouton[4] = new BoutonBall(4, tailleSkin);
+            tabBouton[4].setLocation((this.getWidth()- tailleSkin)/2 , y);
             add(tabBouton[4]);
 
             iluminateButton() ;
@@ -163,7 +171,7 @@ public class MenuParametres extends JPanel {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            g.drawImage(image,0, 0, image.getWidth(), image.getHeight(),  this) ;
+            g.drawImage(image,(this.getWidth() - image.getWidth())/2, 0, image.getWidth(), image.getHeight(),  this) ;
         }
         
 
@@ -217,6 +225,7 @@ public class MenuParametres extends JPanel {
                 setFocusPainted(false);
                 setOpaque(false);
                 setSize(diametre, diametre);
+                setVisible(true);
             }
             @Override
             protected void paintComponent(Graphics g) {
