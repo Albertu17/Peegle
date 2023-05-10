@@ -48,7 +48,7 @@ public class Menu extends JPanel {
         add(btnPlay);
 
         // BoutonMenu campagne
-        btnCampagne = new BoutonMenu("niveau", 200, 50);
+        btnCampagne = new BoutonMenu("niveaux", 200, 50);
         btnCampagne.setLocation(middleW-100,middleH-25-70);
         btnCampagne.addActionListener(e -> controleur.launchSelectNiveau());
         add(btnCampagne);
