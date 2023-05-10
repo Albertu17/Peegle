@@ -205,6 +205,7 @@ public class EditeurNiveaux extends JPanel {
         sliderNbBallesInitial.setPaintTicks(true);
         sliderNbBallesInitial.setLabelTable(labelTableBallesInitiales);
         sliderNbBallesInitial.setPaintLabels(true);
+        niveauCree.setNbBillesInitiales(10);
         sliderNbBallesInitial.addChangeListener(e -> niveauCree.setNbBillesInitiales(sliderNbBallesInitial.getValue()));
         menuNiveau.add(sliderNbBallesInitial);
 
