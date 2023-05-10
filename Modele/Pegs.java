@@ -221,8 +221,8 @@ public class Pegs implements Cloneable {
     public void traverseeGaucheDroite(double deltaT, int largeurSegment) {
         double nextX = x + deltaT * speed;
         if (nextX - radius > largeurSegment) {
-            nextX = -radius;
-            rectCenter.setLocation((int) (rectCenter.getX() - largeurSegment), (int) rectCenter.getY());
+            nextX = x - largeurSegment - 2*radius;
+            rectCenter.setLocation((int) (rectCenter.getX() - largeurSegment - 2*radius), (int) rectCenter.getY());
         }
         setX(nextX);
         rectCenter.setLocation((int) (rectCenter.getX() + deltaT * speed), (int) rectCenter.getY());
@@ -232,8 +232,8 @@ public class Pegs implements Cloneable {
     public void traverseeDroiteGauche(double deltaT, int largeurSegment) {
         double nextX = x - deltaT * speed;
         if (nextX + radius < 0) {
-            nextX = largeurSegment + radius;
-            rectCenter.setLocation((int) (rectCenter.getX() + largeurSegment), (int) rectCenter.getY());
+            nextX = x + largeurSegment + 2*radius;
+            rectCenter.setLocation((int) (rectCenter.getX() + largeurSegment + 2*radius), (int) rectCenter.getY());
         }
         setX(nextX);
         rectCenter.setLocation((int) (rectCenter.getX() - deltaT * speed), (int) rectCenter.getY());
