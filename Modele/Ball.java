@@ -14,9 +14,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-
-
-public class Ball {
+public class Ball{
 
     public final static int ballRadius = 10; // m
 
@@ -25,49 +23,39 @@ public class Ball {
 
     public double nextBallX,nextBallY;
 
+    // private int height=500;
+    // private int width=500;
+    private static boolean musicOn = true;
+
+    private int yMarxgin = 3;
     public double p1,p2;
 
-    private boolean isPresent = true;
+    private boolean ispresent = true;
+    private boolean atoucher = false;
     private boolean atoucherpegs = false;
-    private boolean hitGround = false;
+    private boolean hitground = false;
 
     private double g=300; // m/s
     private double coeffRebond = 0.8;
     private int combo = 0;
-    private static boolean musicOn = true;
     private File sound = ImageImport.getAudioFile();
     AudioInputStream audioStream;
     AudioFormat format;
     DataLine.Info info = new DataLine.Info(Clip.class, format); 
     Clip audioClip;
     {
-        try {
-            audioStream = AudioSystem.getAudioInputStream(ImageImport.getAudioFile());
-            audioClip = (Clip) AudioSystem.getLine(info);
-            format = audioStream.getFormat();
-            audioClip.open(audioStream);
-        } catch (Exception e ) {
-            e.printStackTrace();
-        }
+    try {
+        audioStream = AudioSystem.getAudioInputStream(ImageImport.getAudioFile());
+        audioClip = (Clip) AudioSystem.getLine(info);
+        format = audioStream.getFormat();
+        audioClip.open(audioStream);
+    } catch (Exception e ) {
+        e.printStackTrace();
     }
+    }
+
 
     private static int selecteurImage = 0 ;
-    private static BufferedImage image = ImageImport.getImage("Ball/ball.png", (int) ballRadius*2, (int) ballRadius*2);
- 
-    private Court court;
-    private Pegs pegderniertoucher;
-
-    public boolean inLevel = true;
-    double x,y;  /* Important coordonée de la balle centre en X mais tout en haut pour Y */
-
-    public Ball(int x,int y,int vx0,int vy0,Court c){
-        ballX=x;
-        ballY=y;
-        ballSpeedX=vx0;
-        ballSpeedY=vy0;
-        court=c;
-    }
-
     public static int getSelecteurImage() {
         return selecteurImage;
     }
@@ -75,10 +63,22 @@ public class Ball {
     public static void setSelecteurImage(int selecteurImage) {
         Ball.selecteurImage = selecteurImage;
     }
-
+    private static BufferedImage image = ImageImport.getImage("Ball/ball.png", (int) ballRadius*2, (int) ballRadius*2);
     public static void setImage(BufferedImage skin){
         Ball.image = skin ;
     }
+   
+ 
+    private Court court;
+    private Pegs pegderniertoucher;
+
+
+    public boolean inLevel = true;
+
+    double x,y;
+
+
+    /* Important coordonée de la balle centre en X mais tout en haut pour Y */
 
     public Court getCourt() {
         return court;
@@ -88,16 +88,23 @@ public class Ball {
         return image;
     }
 
+    public Ball(int x,int y,int vx0,int vy0,Court c){
+        ballX=x;
+        ballY=y;
+        ballSpeedX=vx0;
+        ballSpeedY=vy0;
+        court=c;
+    }
     public double getG() {
         return g;
     }
 
     public void setPresent(boolean b){
-        isPresent = b;
+        ispresent = b;
     }
 
     public boolean isPresent(){
-        return isPresent;
+        return ispresent;
     }
 
     public void updateBall(double deltaT,Sceau sceau) {
@@ -125,35 +132,43 @@ public class Ball {
         if (sceau.inside(this)){
             System.out.println("inside");
             sceau.getCourt().augmenteNbDeBall();
-            hitGround=true;
-            isPresent=false;
+            hitground=true;
+            ispresent=false;
         }
         
+
         Pegs p = touchedPegs();
 
+
+
+        
         if (p!=null && p != pegderniertoucher){
-            if (p!=null && !atoucherpegs && inLevel){
-                if(musicOn){
-                    try {
-                        playSound();
-                    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-                        e.printStackTrace();
-                    }
+        if (p!=null && !atoucherpegs && inLevel){
+            if(musicOn){
+                try {
+                    playSound();
+                } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
                 }
-                if (!p.getHit()){combo++;}
-                p.setTouche(true);
-                double ux = (nextBallX+ ballRadius) - (p.getX());
-                double uy = (nextBallY+ballRadius) - (p.getY());
-                double vx = ballSpeedX;
-                double vy = ballSpeedY;
-                ballSpeedX = vx - 2*ux*(ux*vx + uy*vy)/(ux*ux + uy*uy);
-                ballSpeedY = vy - 2*uy*(ux*vx + uy*vy)/(ux*ux + uy*uy);
-                ballSpeedX = coeffRebond * ballSpeedX;
-                ballSpeedY = coeffRebond * ballSpeedY;
-                
-                pegderniertoucher = p;
+
             }
-        } else if (p==null) pegderniertoucher = null;
+            if (!p.getHit()){combo++;}
+            p.setTouche(true);
+            double ux = (nextBallX+ ballRadius) - (p.getX());
+            double uy = (nextBallY+ballRadius) - (p.getY());
+            double vx = ballSpeedX;
+            double vy = ballSpeedY;
+            ballSpeedX = vx - 2*ux*(ux*vx + uy*vy)/(ux*ux + uy*uy);
+            ballSpeedY = vy - 2*uy*(ux*vx + uy*vy)/(ux*ux + uy*uy);
+            ballSpeedX = coeffRebond * ballSpeedX;
+            ballSpeedY = coeffRebond * ballSpeedY;
+            
+            pegderniertoucher = p;
+        }
+        }else if (p==null){
+            pegderniertoucher = null;
+        }
         ballX = nextBallX;
         ballY = nextBallY;
     }
@@ -165,13 +180,14 @@ public class Ball {
         inLevel = false;
     }
 
+
     public boolean touchedWallX(double nextBallX){
         return nextBallX < 0 || nextBallX> court.getWidth() - ballRadius;
     }
 
     public boolean touchedWallY(double nextBallY){
         if (nextBallY > court.getHeight() - ballRadius*2 - 15){
-            hitGround=true;
+            hitground=true;
         }
         return nextBallY < 0 || nextBallY > court.getHeight() - ballRadius*2 - 15;
     }
@@ -182,6 +198,8 @@ public class Ball {
         audioClip.start();
     }
     
+
+
     public Pegs touchedPegs(){
         Pegs p=null;
         for (Pegs peg: court.getPegs()){
@@ -197,7 +215,7 @@ public class Ball {
     }
 
     public boolean getHitGround(){
-        return hitGround;
+        return hitground;
     }
 
     public Image getImage() {
@@ -218,4 +236,8 @@ public class Ball {
     public static void setMusicOff(){
         Ball.musicOn = false;
     }
+    
+
+
+
 }
