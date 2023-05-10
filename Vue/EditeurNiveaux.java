@@ -415,7 +415,7 @@ public class EditeurNiveaux extends JPanel {
         panelBoutons.add(vert);
 
         // JButton croix
-        croix = new JButton("supp");
+        croix = new JButton();
         croix.setIcon(new ImageIcon(ImageImport.getImage("Menu/croixRouge.png", largeurBouton, largeurBouton)));
         croix.setBorderPainted(false); 
         croix.setContentAreaFilled(false); 
@@ -467,7 +467,7 @@ public class EditeurNiveaux extends JPanel {
         });
 
         //JButton modif
-        modif = new JButton("modif");
+        modif = new JButton();
         modif.setIcon(new ImageIcon(ImageImport.getImage("Menu/curseurMain.png", largeurBouton, largeurBouton)));
         modif.setBorderPainted(false); 
         modif.setContentAreaFilled(false); 
