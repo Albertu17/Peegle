@@ -26,6 +26,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSlider;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.event.MouseInputListener;
@@ -139,6 +140,7 @@ public class EditeurNiveaux extends JPanel {
             }    
             });   
         menuNiveau.add(campagne);
+        menuNiveau.addSeparator();
 
         // JTextField nomNiveau
         String[] placeHolders = new String[]{" Nom du niveau", " Nom déjà utilisé"};
@@ -176,6 +178,18 @@ public class EditeurNiveaux extends JPanel {
             }
             else nomNiveau.setText(placeHolders[1]);
         });
+        menuNiveau.addSeparator();
+
+        // JLabel nbBallesInitial
+        JLabel labelNbBallesInitial = new JLabel("Nombre de balles initial :");
+        menuNiveau.add(labelNbBallesInitial);
+
+        // JSpinner spinnerNbBallesInitial
+        JSlider sliderNbBallesInitial = new JSlider(5, 50, 10);
+        sliderNbBallesInitial.setMinorTickSpacing(1);
+        sliderNbBallesInitial.setMajorTickSpacing(5);
+        sliderNbBallesInitial.addChangeListener(e -> niveauCree.setNbBillesInitiales(sliderNbBallesInitial.getValue()));
+        menuNiveau.add(sliderNbBallesInitial);
 
         // JMenu alignement
         JMenu alignement = new JMenu("Alignement");
@@ -302,6 +316,8 @@ public class EditeurNiveaux extends JPanel {
         // JSlider speedPegs
         valeurVitesse = 100;
         speedPegs = new JSlider(50, 400, 100);
+        speedPegs.setMinorTickSpacing(10);
+        speedPegs.setMajorTickSpacing(50);
         speedPegs.addChangeListener(e -> valeurVitesse = speedPegs.getValue());
         menuMouvement.add(speedPegs);
 
