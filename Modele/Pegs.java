@@ -237,7 +237,8 @@ public class Pegs implements Cloneable {
     public void rotationAutourPoint(double deltaT, Point centre, double radiusX, double radiusY, boolean horaire) {
         int signe = horaire ? 1 : -1;
         if (angleToCenterOfRotation == -1) angleToCenterOfRotation = Math.PI - Math.atan2(centre.y - y, centre.x - x);
-        else angleToCenterOfRotation -= signe*deltaT*speed/(2*Math.PI); // TODO étudier par quoi diviser
+         // On divise l'ajout en px par le périmètre de l'ellipse.
+        else angleToCenterOfRotation -= signe*deltaT*speed/(Math.sqrt((Math.pow(radiusX, 2) + Math.pow(radiusY, 2))/2));
         setX(centre.x + Math.cos(angleToCenterOfRotation) * radiusX);
         setY(centre.y - Math.sin(angleToCenterOfRotation) * radiusY); // - le produit car sur un JPanel l'axe y est renversé.
     }
