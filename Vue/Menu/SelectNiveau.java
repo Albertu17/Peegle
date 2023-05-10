@@ -18,8 +18,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-
 import Modele.Niveau;
 import Vue.Controleur;
 import Vue.ImageImport;
