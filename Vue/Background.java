@@ -18,11 +18,12 @@ import java.awt.image.Kernel;
 
 public class Background extends JPanel {
   private static String pathBackGround = "Gameview/arbre.png";
+  
   private BufferedImage backgroundImage;
-
+  
   private Font newFont = ImageImport.arcade;
   private Court court;
-
+  
   // score
   private int longeur, largeur;
   private int midBordureCourtX, midBordureCourtY;
@@ -36,6 +37,10 @@ public class Background extends JPanel {
   private BufferedImage ball;
   private boolean GameOver = false;
   private BufferedImage balleRestImage;
+  
+  public static void setPathBackGround(String pathBackGround) {
+    Background.pathBackGround = pathBackGround;
+  }
 
   // Some code to initialize the background image.
   // Here, we use the constructor to load the image. This
