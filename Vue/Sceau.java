@@ -26,8 +26,6 @@ public class Sceau{
 
         imageBAS = ImageImport.getImage("Gameview/bucketBAS.png", longeur, hauteur);
         imageHAUT = ImageImport.getImage("Gameview/bucketHAUT.png", longeur, hauteur);
-
-        // tester si le sceau est bien dans le court
         
     }
     public BufferedImage getImageHAUT(){
@@ -42,12 +40,10 @@ public class Sceau{
     public void move(double deltaT){
         double nextXb = Xb + deltaT * speedX;
 
-        // speedX = speedX
         if (touchedWallX(nextXb)){
             speedX = -speedX;
             nextXb = Xb + deltaT * speedX;
         };
-        //System.out.println(inside(b));
         Xb = nextXb;
         Xh=nextXb;
     }
