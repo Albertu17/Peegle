@@ -171,17 +171,25 @@ public class MenuParametres extends JPanel {
         BoutonMenu backgroundBounton = new BoutonMenu("Arriere Plan", 200, 50);
         backgroundBounton.setLocation(width/3 - (backgroundBounton.getWidth()/2), middleH - (int)(48*pourcentageH));
         add(backgroundBounton);
-
-        BoutonMenu BallIllimite = new BoutonMenu("Balles ilimitées", 200, 50);
-        BallIllimite.removeMouseListener(BallIllimite.getMouseListeners()[0]);
         
-        BallIllimite.setLocation(width/3 - (BallIllimite.getWidth()/2), middleH - (int)((98+48)*pourcentageH));
-        add(BallIllimite);
-        BallIllimite.addActionListener(e -> {
-            Court.setBallIllimite(! Court.isBallIllimite() );
-            BallIllimite.setCouleur(Court.isBallIllimite());
+       
+        BoutonMenu BallIllimite = new BoutonMenu("Ball Illimite", 200, 50);
+        BallIllimite.setLocation(width/3 - (BallIllimite.getWidth()/2), middleH - (int)(146*pourcentageH));
+        BallIllimite.removeMouseListener(BallIllimite.getMouseListener());
+        BallIllimite.addMouseListener((MouseListener) new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (Court.isBallIllimite()){
+                    BallIllimite.setCouleur(false);
+                    Court.setBallIllimite(false);
+                } else {
+                    BallIllimite.setCouleur(true);
+                    Court.setBallIllimite(true);
+                }
+            }
+            
         });
-
+        add(BallIllimite);
 
         dispBackground = new DispBackground(((width - backgroundBounton.getX())*2)/3, height/2) ;
         dispBackground.setVisible(false);
