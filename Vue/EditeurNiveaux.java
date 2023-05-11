@@ -221,34 +221,34 @@ public class EditeurNiveaux extends JPanel {
         groupAlignement.add(aucunAlignement);
 
         // RadioButtonValue horizontal
-        RadioButtonValue horizontal = new RadioButtonValue("Horizontal", new int[]{1}, new int[][] {valeurAlignement}, new ButtonGroup[]{groupAlignement});
+        RadioButtonValue horizontal = new RadioButtonValue("Horizontal", new int[]{1}, new int[][] {valeurAlignement}, null);
         alignement.add(horizontal);
         groupAlignement.add(horizontal);
 
         // RadioButtonValue vertical
-        RadioButtonValue vertical = new RadioButtonValue("Vertical", new int[]{2}, new int[][] {valeurAlignement}, new ButtonGroup[]{groupAlignement});
+        RadioButtonValue vertical = new RadioButtonValue("Vertical", new int[]{2}, new int[][] {valeurAlignement}, null);
         alignement.add(vertical);
         groupAlignement.add(vertical);
 
         // RadioButtonValue diagonal
-        RadioButtonValue diagonal = new RadioButtonValue("Diagonal", new int[]{3}, new int[][] {valeurAlignement}, new ButtonGroup[]{groupAlignement});
+        RadioButtonValue diagonal = new RadioButtonValue("Diagonal", new int[]{3}, new int[][] {valeurAlignement}, null);
         alignement.add(diagonal);
         groupAlignement.add(diagonal);
         JMenu circulaire = new JMenu("Circulaire");
         alignement.add(circulaire);
 
         // RadioButtonValue centre
-        RadioButtonValue centre = new RadioButtonValue("Autour du centre du court", new int[]{4}, new int[][] {valeurAlignement}, new ButtonGroup[]{groupAlignement});
+        RadioButtonValue centre = new RadioButtonValue("Autour du centre du court", new int[]{4}, new int[][] {valeurAlignement}, null);
         circulaire.add(centre);
         groupAlignement.add(centre);
 
         // RadioButtonValue centre
-        RadioButtonValue centreRect = new RadioButtonValue("Autour du centre du rectangle", new int[]{5}, new int[][] {valeurAlignement}, new ButtonGroup[]{groupAlignement});
+        RadioButtonValue centreRect = new RadioButtonValue("Autour du centre du rectangle", new int[]{5}, new int[][] {valeurAlignement}, null);
         circulaire.add(centreRect);
         groupAlignement.add(centreRect);
 
         // RadioButtonValue inscrit
-        RadioButtonValue inscrit = new RadioButtonValue("Inscrit au rectangle", new int[]{6}, new int[][] {valeurAlignement}, new ButtonGroup[]{groupAlignement});
+        RadioButtonValue inscrit = new RadioButtonValue("Inscrit au rectangle", new int[]{6}, new int[][] {valeurAlignement}, null);
         circulaire.add(inscrit);
         groupAlignement.add(inscrit);
 
@@ -270,7 +270,7 @@ public class EditeurNiveaux extends JPanel {
 
         // RadioButtonValue aucuneFonction
         aucuneFonction = new RadioButtonValue("Aucune",
-        new int[]{0}, new int[][] {valeurMouvementGlobal}, new ButtonGroup[]{groupMouvementH, groupMouvementC, null});
+        new int[]{0, 0, 0}, new int[][] {valeurMouvementH, valeurMouvementC, valeurMouvementGlobal}, new ButtonGroup[]{groupMouvementH, groupMouvementC});
         aucuneFonction.setSelected(true);
         groupMouvementGlobal.add(aucuneFonction);
         menuMouvement.add(aucuneFonction);
@@ -281,13 +281,13 @@ public class EditeurNiveaux extends JPanel {
 
         // RadioButtonValue traverséeGD
         RadioButtonValue traverseeGD = new RadioButtonValue("De gauche à droite",
-        new int[]{1, 1}, new int[][] {valeurMouvementGlobal, valeurMouvementH}, new ButtonGroup[]{groupMouvementGlobal, groupMouvementH});
+        new int[]{1, 1}, new int[][] {valeurMouvementGlobal, valeurMouvementH}, new ButtonGroup[]{groupMouvementGlobal});
         groupMouvementH.add(traverseeGD);
         traverseeH.add(traverseeGD);
 
         // RadioButtonValue traverséeGD
         RadioButtonValue traverseeDG = new RadioButtonValue("De droite à gauche",
-        new int[]{1, 2}, new int[][] {valeurMouvementGlobal, valeurMouvementH}, new ButtonGroup[]{groupMouvementGlobal, groupMouvementH});
+        new int[]{1, 2}, new int[][] {valeurMouvementGlobal, valeurMouvementH}, new ButtonGroup[]{groupMouvementGlobal});
         groupMouvementH.add(traverseeDG);
         traverseeH.add(traverseeDG);
 
@@ -297,20 +297,20 @@ public class EditeurNiveaux extends JPanel {
         
         // RadioButtonValue rotationCentrale
         RadioButtonValue rotationCentrale = new RadioButtonValue("Autour du centre du court",
-        new int[]{2}, new int[][] {valeurMouvementGlobal}, new ButtonGroup[]{groupMouvementH, groupMouvementC, groupMouvementGlobal});
+        new int[]{2}, new int[][] {valeurMouvementGlobal}, new ButtonGroup[]{groupMouvementH, groupMouvementC});
         groupMouvementGlobal.add(rotationCentrale);
         rotation.add(rotationCentrale);
 
         // RadioButtonValue rotationCentraleRect
         RadioButtonValue rotationCentraleRect = new RadioButtonValue("Autour du centre du rectangle",
-        new int[]{1, 1}, new int[][] {valeurMouvementGlobal, valeurMouvementC}, new ButtonGroup[]{groupMouvementGlobal, groupMouvementC});
+        new int[]{1, 1}, new int[][] {valeurMouvementGlobal, valeurMouvementC}, new ButtonGroup[]{groupMouvementGlobal});
         aucuneFonction.setSelected(true);
         groupMouvementC.add(rotationCentraleRect);
         rotation.add(rotationCentraleRect);
 
         // RadioButtonValue rotationInscrite
         RadioButtonValue rotationInscrite = new RadioButtonValue("Suivant le cerlce inscrit au rectangle",
-        new int[]{1, 3}, new int[][] {valeurMouvementGlobal, valeurMouvementC}, new ButtonGroup[]{groupMouvementGlobal, groupMouvementC});
+        new int[]{1, 3}, new int[][] {valeurMouvementGlobal, valeurMouvementC}, new ButtonGroup[]{groupMouvementGlobal});
         rotationInscrite.addActionListener(e -> inscrit.doClick());
         groupMouvementC.add(rotationInscrite);
         rotation.add(rotationInscrite);
@@ -617,25 +617,18 @@ public class EditeurNiveaux extends JPanel {
         // est déselectionnée.
         public RadioButtonValue(String text, int[] values, int[][] dest, ButtonGroup[] groups) {
             super(text);
-            clickCount = 0;
             addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    clickCount++;
-                    if (clickCount % 2 == 1) { // --> RadioButton selectionné
-                        for (int i = 0; i < values.length; i++) {
-                            dest[i][0] = values[i];
-                        }
-                        if (modif != null && !enModif) modif.doClick();
-                        if (groups != null) {
-                            for (int i = 0; i < groups.length-1; i++) {
-                                if (groups[i] != null) groups[i].clearSelection();
-                            }
-                        }
-                    } else {
-                        dest[dest.length - 1][0] = 0;
-                        if (groups != null && groups[groups.length-1] != null) groups[groups.length-1].clearSelection();
+                    for (int i = 0; i < values.length; i++) {
+                        dest[i][0] = values[i];
                     }
-                }
+                    if (modif != null && !enModif) modif.doClick();
+                    if (groups != null) {
+                        for (int i = 0; i < groups.length; i++) {
+                            if (groups[i] != null) groups[i].clearSelection();
+                        }
+                    }
+                };
             });
         }
     }
