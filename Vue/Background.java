@@ -17,7 +17,9 @@ import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 
 public class Background extends JPanel {
-  private static String pathBackGround = "Gameview/arbre.jpg";
+  private static String pathBackGround = "Gameview/licorne.jpg";
+  private static int selecteurBackground = 0 ; 
+  
   
   private BufferedImage backgroundImage;
   
@@ -32,12 +34,19 @@ public class Background extends JPanel {
   private int heigth;
   private int scoreMax;
   private int taille1Etoille;
-
+  
   // balle
   private BufferedImage ball;
   private boolean GameOver = false;
   private BufferedImage balleRestImage;
+  
+  public static int getSelecteurBackground() {
+    return selecteurBackground;
+  }
 
+  public static void setSelecteurBackground(int selecteurBackground) {
+    Background.selecteurBackground = selecteurBackground;
+  }
   public static void setPathBackGround(String pathBackGround) {
     Background.pathBackGround = pathBackGround;
   }
