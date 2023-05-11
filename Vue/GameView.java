@@ -23,6 +23,7 @@ public class GameView extends JPanel {
     public Court court;
     private int courtWidth;
     private int courtHeight;
+    private static int tailleligne = 4;
 
     JButton btnRetour;
 
@@ -34,6 +35,10 @@ public class GameView extends JPanel {
         this.controleur = c;
 
         width = controleur.getWidth();
+        while ((width /12) < tailleligne * (Ball.ballRadius * 2 + 10)+ 30 + Ball.ballRadius) {
+            tailleligne--;
+        if (tailleligne == 1) {break;}
+        }
         heigth = controleur.getHeight();
         setSize(width, heigth);
         setLayout(null);
@@ -42,6 +47,7 @@ public class GameView extends JPanel {
 
         courtWidth = width*5/6;
         courtHeight = heigth*5/6;
+
 
         // Affectation du niveau
         if (nomNiveau == null || nomNiveau.equals(""))
@@ -61,7 +67,7 @@ public class GameView extends JPanel {
         add(court);
 
         // JButton bouton retour
-        btnRetour = new BoutonMenu("Pause", 4 * (Ball.ballRadius * 2 + 10), 50);
+        btnRetour = new BoutonMenu("Pause", tailleligne * (Ball.ballRadius * 2 + 10), 50);
         btnRetour.setLocation(35 - Ball.ballRadius, 20);
         btnRetour.setVisible(true);
         btnRetour.addActionListener(e -> launchMenuPause(true));
@@ -187,6 +193,10 @@ public class GameView extends JPanel {
 
     public int getCourtHeight() {
         return courtHeight;
+    }
+
+    public static int getTailleligne() {
+        return tailleligne;
     }
 
 

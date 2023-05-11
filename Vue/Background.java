@@ -127,12 +127,8 @@ public class Background extends JPanel {
     int pointDeDepartX = 40;
     int pointDeDepartY = court.getY() + court.getHeight() - 45;
     int XBall = pointDeDepartX - Ball.ballRadius;
-    int tailleligne = 4;
-    while ((width /12) < tailleligne * (Ball.ballRadius * 2 + 10)+ XBall- 10) {
-      tailleligne--;
-      if (tailleligne == 1) {break;}
-    }
-
+    
+    int tailleligne = GameView.getTailleligne();
     for (int i = 0; i < court.getNbDeBall(); i++) {
       if (i % tailleligne == 0)
         ligne++;
