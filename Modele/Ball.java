@@ -1,12 +1,15 @@
 package Modele;
 
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 import Vue.Court;
 import Vue.ImageImport;
 import Vue.Sceau;
 import java.io.*;
+import java.util.ArrayList;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -27,13 +30,13 @@ public class Ball{
     // private int width=500;
     private static boolean musicOn = true;
 
-    private int yMarxgin = 3;
-    public double p1,p2;
+    public double p1,p2,p3,p4,p5;
 
     private boolean ispresent = true;
-    private boolean atoucher = false;
     private boolean atoucherpegs = false;
     private boolean hitground = false;
+    private boolean notBlocked = true;
+    private ArrayList<Point> previousPosition = new ArrayList<Point>();
 
     private double g=300; // m/s
     private double coeffRebond = 0.8;
@@ -135,9 +138,28 @@ public class Ball{
             hitground=true;
             ispresent=false;
         }
-        
+        // detect blocked ball
+        // en probabilité la chance que la balle soit au meme endroit 5 fois de suite est tres faible si elle n'est pas bloqué
+        previousPosition.add(new Point((int)ballX,(int)ballY));
+        if (previousPosition.size()>5){
+            previousPosition.remove(0);
+        }
+        if (previousPosition.size()==5){
+            p1 = previousPosition.get(0).getX();
+            p2 = previousPosition.get(1).getX();
+            p3 = previousPosition.get(2).getX();
+            p4 = previousPosition.get(3).getX();
+            p5 = previousPosition.get(4).getX();
+            if (p1==p2 && p2==p3 && p3==p4 && p4==p5){
+                notBlocked = false;
+            }
+        }
 
-        Pegs p = touchedPegs();
+
+        Pegs p = null;
+        if (notBlocked){
+        p = touchedPegs();
+        }
 
 
 
@@ -167,7 +189,7 @@ public class Ball{
             pegderniertoucher = p;
         }
         }else if (p==null){
-            pegderniertoucher = null;
+                pegderniertoucher = null;
         }
         ballX = nextBallX;
         ballY = nextBallY;
