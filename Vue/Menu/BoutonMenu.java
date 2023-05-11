@@ -23,7 +23,7 @@ public class BoutonMenu extends JButton {
     ImageIcon imageIconOnHover;
     MouseListener ml;
 
-    public BoutonMenu(String texteImage, int width, int height) {
+    public BoutonMenu(String texteImage, int width, int height, boolean d){
         this.width = width;
         this.height = height;
         imageIconNormal = getEditedImageIcon(texteImage, width, height, true);
@@ -44,6 +44,15 @@ public class BoutonMenu extends JButton {
     }
     
     public MouseListener getMouseListener() {return ml;}
+
+    public BoutonMenu(String texteImage, int width, int height) {
+        this(texteImage, width, height, true) ;
+        addMouseListener((MouseListener) new MouseAdapter() {
+            public void mouseEntered(MouseEvent evt) {setIcon(imageIconOnHover);}
+            public void mouseExited(MouseEvent evt) {setIcon(imageIconNormal);}
+            public void mousePressed(MouseEvent evt) {setIcon(imageIconNormal);}
+        });
+    }
 
     public void setCouleur(boolean jaune){
         if (jaune) setIcon(imageIconOnHover) ;
