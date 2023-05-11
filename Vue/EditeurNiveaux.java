@@ -612,9 +612,7 @@ public class EditeurNiveaux extends JPanel {
 
         // Constructeur prenant un tableau de valeurs et un tableau de tableaux contenant des variables
         // auxquelles affecter les valeurs. Le tableau de groupes correspond aux groupes qu'il
-        // faut déselectionner lorsque le radioButton est selectionné, à l'exception du dernier groupe,
-        // qui est celui du radioButton et qui doit être déselectionné lorsque la radioButton
-        // est déselectionnée.
+        // faut déselectionner lorsque le radioButton est selectionné.
         public RadioButtonValue(String text, int[] values, int[][] dest, ButtonGroup[] groups) {
             super(text);
             addActionListener(new ActionListener() {
