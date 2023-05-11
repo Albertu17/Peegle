@@ -27,7 +27,7 @@ public class Ball{
     public double nextBallX,nextBallY;
     private static boolean musicOn = true;
 
-    public Point p1,p2,p3,p4,p5;
+    public Point p1,p2,p3;
 
     private boolean ispresent = true;
     private boolean atoucherpegs = false;
