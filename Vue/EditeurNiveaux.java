@@ -68,6 +68,7 @@ public class EditeurNiveaux extends JPanel {
     CasePeg casePegVert;
     JTextField nomNiveau;
     JCheckBox uniforme;
+    JCheckBox campagne;
     JMenuBar menuBar;
     RadioButtonValue aucunAlignement;
     RadioButtonValue aucuneFonction;
@@ -129,7 +130,7 @@ public class EditeurNiveaux extends JPanel {
         menuBar.add(menuNiveau);
 
         // JCheckBox campagne
-        JCheckBox campagne = new JCheckBox("Campagne", false);
+        campagne = new JCheckBox("Campagne", false);
         campagne.setBounds((width - courtWidth) + 5, courtHeight * 1/16 + 20, courtHeight * 2/16, courtHeight * 1/16);
         campagne.addItemListener(new ItemListener() {    
             public void itemStateChanged(ItemEvent e) {           
@@ -504,6 +505,8 @@ public class EditeurNiveaux extends JPanel {
         casePegViolet.sliderRayonPeg.setValue(25);
         casePegVert.sliderRayonPeg.setValue(25);
         nomNiveau.setText(" Nom du niveau");
+        uniforme.setSelected(false);
+        campagne.setSelected(false);
         aucunAlignement.doClick();
         aucuneFonction.doClick();
         sliderSpeedPegs.setValue(100);
