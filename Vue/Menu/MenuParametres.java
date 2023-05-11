@@ -167,7 +167,7 @@ public class MenuParametres extends JPanel {
         add(buttonSoundOff);
         add(buttonSoundOn);
 
-        BoutonMenu backgroundBounton = new BoutonMenu("Background", 200, 50);
+        BoutonMenu backgroundBounton = new BoutonMenu("Arriere Plan", 200, 50);
         backgroundBounton.setLocation(width/3 - (backgroundBounton.getWidth()/2), middleH - (int)(48*pourcentageH));
         add(backgroundBounton);
 
