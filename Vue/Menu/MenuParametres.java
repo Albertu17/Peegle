@@ -9,7 +9,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
-
 import Modele.Ball;
 import Vue.Background;
 import Vue.Controleur;
@@ -238,7 +237,10 @@ public class MenuParametres extends JPanel {
             int gapH = (hauteurImg)/9 ;
             largeurImg -= gapL ;
             hauteurImg -= gapH ;
-            
+
+            cadre = ImageImport.getImage("Menu/CadreCampagne.png", largeurImg, hauteurImg);  
+            cadreSeleted = ImageImport.getImage("Menu/CadreCampagneHover.png", largeurImg, hauteurImg);  
+
             for (int i = 0 ; i < 4 ; i++){
                 ImgBackground imgBG = new ImgBackground(i, largeurImg, hauteurImg) ;
                 add(imgBG);
@@ -260,10 +262,6 @@ public class MenuParametres extends JPanel {
             ImgBackground(int selecteur, int width, int height){
                 this.selecteur = selecteur ;
                 bg = ImageImport.getImage(allPathImage[selecteur], width-offsetCadre, height-offsetCadre); 
-                if (cadre == null){
-                    cadre = ImageImport.getImage("Menu/CadreCampagne.png", width, height);  
-                    cadreSeleted = ImageImport.getImage("Menu/CadreCampagneHover.png", width, height);  
-                }
     
                 setLayout(null);
                 setSize(width, height) ;

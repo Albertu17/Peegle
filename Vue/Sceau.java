@@ -26,8 +26,6 @@ public class Sceau{
 
         imageBAS = ImageImport.getImage("Gameview/bucketBAS.png", longeur, hauteur);
         imageHAUT = ImageImport.getImage("Gameview/bucketHAUT.png", longeur, hauteur);
-
-        // tester si le sceau est bien dans le court
         
     }
     public BufferedImage getImageHAUT(){
