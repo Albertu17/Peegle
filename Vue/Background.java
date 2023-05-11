@@ -127,24 +127,29 @@ public class Background extends JPanel {
     int pointDeDepartX = 40;
     int pointDeDepartY = court.getY() + court.getHeight() - 45;
     int XBall = pointDeDepartX - Ball.ballRadius;
+    int tailleligne = 4;
+    while (width /12 < tailleligne * (Ball.ballRadius * 2 + 10)) {
+      tailleligne--;
+      if (tailleligne == 1) {break;}
+    }
 
     for (int i = 0; i < court.getNbDeBall(); i++) {
-      if (i % 4 == 0)
+      if (i % tailleligne == 0)
         ligne++;
       if (pointDeDepartY - (ligne) * (Ball.ballRadius * 2 + 10) < 110) { // affiche que le nombre necessaire à l'écran
         ligne--;
         break;
       }
-      g.drawImage(ball, XBall + i % 4 * (Ball.ballRadius * 2 + 10), pointDeDepartY - ligne * (Ball.ballRadius * 2 + 10),
+      g.drawImage(ball, XBall + i % tailleligne * (Ball.ballRadius * 2 + 10), pointDeDepartY - ligne * (Ball.ballRadius * 2 + 10),
           this);
     }
     g.setColor(Color.WHITE);
     g.drawRect(XBall - 10, pointDeDepartY - (ligne) * (Ball.ballRadius * 2 + 10) - 10,
-        4 * (Ball.ballRadius * 2 + 10) + 10, ligne * (Ball.ballRadius * 2 + 10));
+    tailleligne * (Ball.ballRadius * 2 + 10) + 10, ligne * (Ball.ballRadius * 2 + 10));
 
     // annonceur nombre de balles restantes
     balleRestImage = getEditedImage(court.getNbDeBall() <= 1 ? "Balle :" : "Balles :", "X" + court.getNbDeBall(),
-        4 * (Ball.ballRadius * 2 + 10), 60);
+    tailleligne * (Ball.ballRadius * 2 + 10), 60);
     g.drawImage(balleRestImage, XBall - 5, pointDeDepartY, court);
 
   }
