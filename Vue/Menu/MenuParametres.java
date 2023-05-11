@@ -147,26 +147,66 @@ public class MenuParametres extends JPanel {
         buttonSoundOn.setLocation(width/3 - (buttonSoundOn.getWidth()/2), middleH + (int)(50*pourcentageH));
         BoutonMenu buttonSoundOff = new BoutonMenu("Sound Off", 200, 50);
         buttonSoundOff.setLocation(width/3 - (buttonSoundOn.getWidth()/2), middleH + (int)(50*pourcentageH));
+        JButton SoundIconOn = new JButton();
+        SoundIconOn.setLocation(width/3 + (buttonMusicOn.getWidth()/2) + 10, middleH + (int)(50*pourcentageH));
+        SoundIconOn.setSize(50, 50);
+        SoundIconOn.setIcon(new ImageIcon(ImageImport.getImage("Menu/MusicOn.png", 50, 50)));
+        SoundIconOn.setBorderPainted(false);
+        SoundIconOn.setContentAreaFilled(false);
+        SoundIconOn.setFocusPainted(false);
+        SoundIconOn.setOpaque(false);
+        JButton SoundIconOff = new JButton();
+        SoundIconOff.setLocation(width/3 + (buttonMusicOn.getWidth()/2) + 10, middleH + (int)(50*pourcentageH));
+        SoundIconOff.setSize(50, 50);
+        SoundIconOff.setIcon(new ImageIcon(ImageImport.getImage("Menu/MusicOff.png", 50, 50)));
+        SoundIconOff.setBorderPainted(false);
+        SoundIconOff.setContentAreaFilled(false);
+        SoundIconOff.setFocusPainted(false);
+        SoundIconOff.setOpaque(false);
         if (controleur.getSound()) {
             buttonSoundOn.setVisible(true);
             buttonSoundOff.setVisible(false);
+            SoundIconOff.setVisible(false);
+            SoundIconOn.setVisible(true);
         } else {
             buttonSoundOn.setVisible(false);
             buttonSoundOff.setVisible(true);
+            SoundIconOff.setVisible(true);
+            SoundIconOn.setVisible(false);
         }
         buttonSoundOn.addActionListener(e -> {
             controleur.setSound(false);
             buttonSoundOn.setVisible(false);
             buttonSoundOff.setVisible(true);
+            SoundIconOff.setVisible(true);
+            SoundIconOn.setVisible(false);
         });
         buttonSoundOff.addActionListener(e -> {
             controleur.setSound(true);
             buttonSoundOn.setVisible(true);
             buttonSoundOff.setVisible(false);
+            SoundIconOff.setVisible(false);
+            SoundIconOn.setVisible(true);
+        });
+        SoundIconOn.addActionListener(e -> {
+            controleur.setSound(false);
+            buttonSoundOn.setVisible(false);
+            buttonSoundOff.setVisible(true);
+            SoundIconOff.setVisible(true);
+            SoundIconOn.setVisible(false);
+        });
+        SoundIconOff.addActionListener(e -> {
+            controleur.setSound(true);
+            buttonSoundOn.setVisible(true);
+            buttonSoundOff.setVisible(false);
+            SoundIconOff.setVisible(false);
+            SoundIconOn.setVisible(true);
         });
         
         add(buttonSoundOff);
         add(buttonSoundOn);
+        add(SoundIconOff);
+        add(SoundIconOn);
 
         BoutonMenu backgroundBounton = new BoutonMenu("Arriere Plan", 200, 50);
         backgroundBounton.setLocation(width/3 - (backgroundBounton.getWidth()/2), middleH - (int)(48*pourcentageH));
