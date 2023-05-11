@@ -12,6 +12,7 @@ import javax.swing.*;
 import Modele.Ball;
 import Vue.Background;
 import Vue.Controleur;
+import Vue.Court;
 import Vue.ImageImport;
 
 public class MenuParametres extends JPanel {
@@ -171,11 +172,23 @@ public class MenuParametres extends JPanel {
         backgroundBounton.setLocation(width/3 - (backgroundBounton.getWidth()/2), middleH - (int)(48*pourcentageH));
         add(backgroundBounton);
 
+        BoutonMenu BallIllimite = new BoutonMenu("Balles ilimitées", 200, 50);
+        BallIllimite.removeMouseListener(BallIllimite.getMouseListeners()[0]);
+        
+        BallIllimite.setLocation(width/3 - (BallIllimite.getWidth()/2), middleH - (int)((98+48)*pourcentageH));
+        add(BallIllimite);
+        BallIllimite.addActionListener(e -> {
+            Court.setBallIllimite(! Court.isBallIllimite() );
+            BallIllimite.setCouleur(Court.isBallIllimite());
+        });
+
 
         dispBackground = new DispBackground(((width - backgroundBounton.getX())*2)/3, height/2) ;
         dispBackground.setVisible(false);
         dispBackground.setLocation(backgroundBounton.getX() +backgroundBounton.getWidth() + ((width - backgroundBounton.getX()))/6, middleH - (dispBackground.getHeight())/2);
         add(dispBackground) ;
+        
+    
         
 
         backgroundBounton.addActionListener(e -> {

@@ -45,7 +45,16 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
     private int MaxCombo = 0;
     private Font arcade = ImageImport.arcade;
     private Font rightF;
+    private static boolean BallIllimite =false;
     
+    public static boolean isBallIllimite() {
+        return BallIllimite;
+    }
+
+    public static void setBallIllimite(boolean ballIllimite) {
+        BallIllimite = ballIllimite;
+    }
+
     private int mouseX = 0;
     private int mouseY = 0;
     private boolean gameOver = false;
@@ -272,6 +281,18 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         timer.start();
     }
     
+    private void tirer(){
+        if (NbDeBall > 0) {
+            balls.add(canon.tirer());
+            nbDeBallChange = true;
+            if ( ! BallIllimite){
+
+                NbDeBall--;
+            }
+            if (!editMode)
+                background.repaint();
+        }
+    }
 
     public void askReset(){
         pegs.clear();
@@ -485,13 +506,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
     public void mousePressed(MouseEvent e) {
         // lancer une balle
         if (!enPause && !gameOver) {
-            if (NbDeBall > 0) {
-                balls.add(canon.tirer());
-                nbDeBallChange = true;
-                NbDeBall--;
-                if (!editMode)
-                    background.repaint();
-            }
+           tirer();
         }
         // Sélectionner un peg
         else if (editMode && eN.enModif) {
@@ -703,13 +718,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
             case (KeyEvent.VK_ENTER):
             case (KeyEvent.VK_SPACE):
                 if (!enPause && !gameOver) {
-                    if (NbDeBall > 0) {
-                        balls.add(canon.tirer());
-                        nbDeBallChange = true;
-                        NbDeBall--;
-                        if (!editMode)
-                            background.repaint();
-                    }
+                    tirer();
                 }
                 break;
             case (KeyEvent.VK_ESCAPE):
