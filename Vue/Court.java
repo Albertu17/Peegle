@@ -570,6 +570,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
             for (Pegs peg : eN.pegsSelectionnes) {
                 peg.setX(peg.getX() + diffX);
                 peg.setY(peg.getY() + diffY);
+                if (peg.getRectCenter() != null)
                 peg.getRectCenter().setLocation(peg.getRectCenter().x + diffX, peg.getRectCenter().y + diffY);
             }
             setPegs(clonePegs(niveau.getPegs()));
