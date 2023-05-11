@@ -141,12 +141,6 @@ public class Controleur extends JFrame {
         this.repaint();
     }
     
-    public void backMenuFromGameView(){
-        gameview.setVisible(false);
-        launchParametres();
-        this.repaint();
-    }
-    
     public void launchGameview(String nomNiveau){
         if (isMusicOn == true){
         musicmenuclip.stop();
@@ -167,17 +161,7 @@ public class Controleur extends JFrame {
     }
 
 
-    public static void main(String[] args) {
-
-        SwingUtilities.invokeLater(new Runnable(){
-            @Override
-            public void run() {
-                Controleur c = new Controleur() ;
-                c.launchMenu();
-            }
-        });
-    }
-
+    
     public void setNiveauSuivant() {
         String nomNiveau = Niveau.getNiveauSuivant();
         if (nomNiveau != null){
@@ -188,22 +172,22 @@ public class Controleur extends JFrame {
             gameview.court.askReset();
         }
     }
-
+    
     public void stopMusic() {
         musicmenuclip.stop();
         musicgameclip.stop();
     }
-
+    
     public void playMusic() {
         if (isMusicOn == true){
             musicmenuclip.loop(Clip.LOOP_CONTINUOUSLY);
         }
     }
-
+    
     public boolean getMusic() {
         return isMusicOn;
     }
-
+    
     public void setMusic(boolean b) {
         isMusicOn = b;
     }
@@ -213,5 +197,16 @@ public class Controleur extends JFrame {
     }
     public boolean getSound (){
         return sound;
+    }
+    
+    public static void main(String[] args) {
+
+        SwingUtilities.invokeLater(new Runnable(){
+            @Override
+            public void run() {
+                Controleur c = new Controleur() ;
+                c.launchMenu();
+            }
+        });
     }
 }
