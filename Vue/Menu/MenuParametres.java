@@ -1,6 +1,5 @@
 package Vue.Menu;
 
-import java.awt.Button;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -10,7 +9,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
-import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import Modele.Ball;
 import Vue.Background;
@@ -25,7 +23,6 @@ public class MenuParametres extends JPanel {
     int height;
 
     private int middleH;
-    private int middleW;
 
     private BufferedImage background;
     private JButton btnRetour;
@@ -44,10 +41,8 @@ public class MenuParametres extends JPanel {
         this.controleur = c;
         width = controleur.getWidth();
         height = controleur.getHeight();
-        middleW = width / 2;
         middleH = height / 2 + 50;
         setSize(width, height);
-        double pourcentageW = getSize().width / 1920.0;
         double pourcentageH = getSize().height / 1080.0;
         setLayout(null);
         setVisible(true);

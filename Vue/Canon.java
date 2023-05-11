@@ -86,7 +86,6 @@ public class Canon extends JPanel{
     }
 
 
-    // TODO pas forcément utile ça dépend de l'implémentation futur
     public void setBalleATirer(Ball balleATirer) {
         this.balleATirer = balleATirer;
         gravity = balleATirer.getG();

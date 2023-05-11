@@ -36,7 +36,7 @@ public class Menu extends JPanel {
 
         // background
         background = ImageImport.getImage("Menu/menuBackground.jpg", width, height);
-        title = ImageImport.getImage("Menu/trucjojo.png");
+        title = ImageImport.getImage("Menu/PeggleTitle.png");
 
         middleW = width/2;
         middleH = height/2 + 50;

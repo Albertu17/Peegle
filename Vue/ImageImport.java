@@ -24,13 +24,6 @@ public class ImageImport {
     public static File musicGame = new File("Vue/Song/musicjeu.wav");
     
 
-    
-    // TODO a supprimer apres dev
-    public static void printAllkey(){
-       for (String name : allimage.keySet()) {
-            System.out.println(name);
-       }
-    }
     public static boolean isAtif(){return allimage!=null;}
     /**
      * @description Lance l'import de toute les images du dossier image (ainsi que ses sous dossier)
@@ -139,7 +132,6 @@ public class ImageImport {
                 scanFile(f, path + f.getName() + "/");
             }else{
                 allimage.put( path + f.getName(), ImageIO.read(f)) ;
-                // System.out.println( path + f.getName() +":"+ (allimage.get(path + f.getName()) == null ? "null" : "good") );
             }
         }
     }
@@ -198,7 +190,6 @@ public class ImageImport {
     public static BufferedImage getImage(String path, int width, int heigth){
 
         while(! importFini) {System.out.print("");};  //attend  que l'import des images par le thread soit fini
-        // laisser le print sinon ça ne fonctionne pas 
 
         BufferedImage image = allimage.get(path) ;
 

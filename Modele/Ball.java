@@ -41,7 +41,6 @@ public class Ball{
     private double g=300; // m/s
     private double coeffRebond = 0.8;
     private int combo = 0;
-    private File sound = ImageImport.getAudioFile();
     AudioInputStream audioStream;
     AudioFormat format;
     DataLine.Info info = new DataLine.Info(Clip.class, format); 
@@ -170,8 +169,6 @@ public class Ball{
                 try {
                     playSound();
                 } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
                 }
 
             }
