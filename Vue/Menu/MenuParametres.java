@@ -44,6 +44,8 @@ public class MenuParametres extends JPanel {
         middleW = width / 2;
         middleH = height / 2 + 50;
         setSize(width, height);
+        double pourcentageW = getSize().width / 1920.0;
+        double pourcentageH = getSize().height / 1080.0;
         setLayout(null);
         setVisible(true);
 
@@ -61,13 +63,13 @@ public class MenuParametres extends JPanel {
 
         skin = new Skin(width/5, height/2) ;
         skin.setVisible(true);
-        int xCenterSkin = (width)/4; 
-        skin.setLocation((xCenterSkin - skin.getWidth())/2, (height - skin.getHeight())/2);
+        int xCenterSkin = (width)/3; 
+        skin.setLocation(xCenterSkin - (skin.getWidth()/2), (height - skin.getHeight())/2);
         add(skin) ;
         BoutonMenu buttonMusicOn = new BoutonMenu("Music On", 200, 50);
-        buttonMusicOn.setLocation(middleW, middleH );
+        buttonMusicOn.setLocation(middleW - (buttonMusicOn.getWidth()/2), middleH + (int)(148*pourcentageH) );
         BoutonMenu buttonMusicOff = new BoutonMenu("Music Off", 200, 50);
-        buttonMusicOff.setLocation(middleW, middleH);
+        buttonMusicOff.setLocation(middleW- (buttonMusicOn.getWidth()/2), middleH + (int)(148*pourcentageH));
         if (controleur.getMusic()) {
             buttonMusicOn.setVisible(true);
             buttonMusicOff.setVisible(false);
@@ -75,20 +77,101 @@ public class MenuParametres extends JPanel {
             buttonMusicOn.setVisible(false);
             buttonMusicOff.setVisible(true);
         }
+        add(buttonMusicOff);
+        add(buttonMusicOn);
+        JButton musiconIconOn = new JButton();
+        musiconIconOn.setLocation(middleW + (buttonMusicOn.getWidth()/2) + 10, middleH + (int)(148*pourcentageH));
+        musiconIconOn.setSize(50, 50);
+        musiconIconOn.setIcon(new ImageIcon(ImageImport.getImage("Menu/MusicOn.png", 50, 50)));
+        musiconIconOn.setBorderPainted(false);
+        musiconIconOn.setContentAreaFilled(false);
+        musiconIconOn.setFocusPainted(false);
+        musiconIconOn.setOpaque(false);
+        JButton musiconIconOff = new JButton();
+        musiconIconOff.setLocation(middleW + (buttonMusicOn.getWidth()/2) + 10, middleH + (int)(148*pourcentageH));
+        musiconIconOff.setSize(50, 50);
+        musiconIconOff.setIcon(new ImageIcon(ImageImport.getImage("Menu/MusicOff.png", 50, 50)));
+        musiconIconOff.setBorderPainted(false);
+        musiconIconOff.setContentAreaFilled(false);
+        musiconIconOff.setFocusPainted(false);
+        musiconIconOff.setOpaque(false);
+        
         buttonMusicOn.addActionListener(e -> {
             controleur.setMusic(false);
             controleur.stopMusic();
             buttonMusicOn.setVisible(false);
             buttonMusicOff.setVisible(true);
+            musiconIconOff.setVisible(true);
+            musiconIconOn.setVisible(false);            
         });
         buttonMusicOff.addActionListener(e -> {
             controleur.setMusic(true);
             controleur.playMusic();
             buttonMusicOn.setVisible(true);
             buttonMusicOff.setVisible(false);
+            musiconIconOff.setVisible(false);
+            musiconIconOn.setVisible(true);
         });
-        add(buttonMusicOff);
-        add(buttonMusicOn);
+        musiconIconOn.addActionListener(e -> {
+            controleur.setMusic(false);
+            controleur.stopMusic();
+            buttonMusicOn.setVisible(false);
+            buttonMusicOff.setVisible(true);
+            musiconIconOff.setVisible(true);
+            musiconIconOn.setVisible(false);
+        });
+        musiconIconOff.addActionListener(e -> {
+            controleur.setMusic(true);
+            controleur.playMusic();
+            buttonMusicOn.setVisible(true);
+            buttonMusicOff.setVisible(false);
+            musiconIconOff.setVisible(false);
+            musiconIconOn.setVisible(true);
+        });
+        if (controleur.getMusic()) {
+            musiconIconOn.setVisible(true);
+            musiconIconOff.setVisible(false);
+        } else {
+            musiconIconOn.setVisible(false);
+            musiconIconOff.setVisible(true);
+        }
+        add(musiconIconOff);
+        add(musiconIconOn);
+
+        BoutonMenu buttonSoundOn = new BoutonMenu("Sound On", 200, 50);
+        buttonSoundOn.setLocation(middleW - (buttonSoundOn.getWidth()/2), middleH + (int)(50*pourcentageH));
+        BoutonMenu buttonSoundOff = new BoutonMenu("Sound Off", 200, 50);
+        buttonSoundOff.setLocation(middleW - (buttonSoundOn.getWidth()/2), middleH + (int)(50*pourcentageH));
+        if (controleur.getSound()) {
+            buttonSoundOn.setVisible(true);
+            buttonSoundOff.setVisible(false);
+        } else {
+            buttonSoundOn.setVisible(false);
+            buttonSoundOff.setVisible(true);
+        }
+        buttonSoundOn.addActionListener(e -> {
+            controleur.setSound(false);
+            buttonSoundOn.setVisible(false);
+            buttonSoundOff.setVisible(true);
+        });
+        buttonSoundOff.addActionListener(e -> {
+            controleur.setSound(true);
+            buttonSoundOn.setVisible(true);
+            buttonSoundOff.setVisible(false);
+        });
+        
+        add(buttonSoundOff);
+        add(buttonSoundOn);
+        
+
+        BoutonMenu backgroundBounton = new BoutonMenu("Background", 200, 50);
+        backgroundBounton.setLocation(middleW - (backgroundBounton.getWidth()/2), middleH - (int)(48*pourcentageH));
+        backgroundBounton.addActionListener(e -> {
+            //TODO
+        });
+        add(backgroundBounton);
+
+
 
 
         setFocusable(true);
@@ -124,46 +207,27 @@ public class MenuParametres extends JPanel {
 
 
         Skin(int width, int height){
+            setLayout(null);
             setSize(width, height);
             setOpaque(false);
 
             image = getEditedImage("    Skins    ", (width*2)/3, 50) ;
 
             int tailleSkin = (height-image.getHeight()) /allNameImage.length ; 
+            System.out.println(tailleSkin);
             int gapSkin = tailleSkin /5 ;
             tailleSkin = (tailleSkin*4) /5 ;
 
-            tabBouton = new BoutonBall[5];
+            tabBouton = new BoutonBall[allNameImage.length ];
 
             int y = image.getHeight() + gapSkin ; 
-            // BoutonMenu skin1
-            tabBouton[0] = new BoutonBall(0, tailleSkin);
-            tabBouton[0].setLocation((this.getWidth()- tailleSkin)/2, y);
-            add(tabBouton[0]);
+            for (int i = 0 ; i < allNameImage.length ; i++){
+                tabBouton[i] = new BoutonBall(i, tailleSkin);
+                tabBouton[i].setLocation((this.getWidth()- tailleSkin)/2, y);
+                add(tabBouton[i]);
+                y += gapSkin + tailleSkin ;
+            }
             
-            // BoutonMenu skin2
-            y += gapSkin + tailleSkin ;
-            tabBouton[1] = new BoutonBall(1, tailleSkin);
-            tabBouton[1].setLocation((this.getWidth()- tailleSkin)/2, y);
-            add(tabBouton[1]);
-            // add(tab);
-            
-            // BoutonMenu skin3
-            y += gapSkin + tailleSkin ;
-            tabBouton[2] = new BoutonBall(2, tailleSkin);
-            tabBouton[2].setLocation((this.getWidth()- tailleSkin)/2 , y);
-            add(tabBouton[2]);
-            
-            y += gapSkin + tailleSkin ;
-            tabBouton[3] = new BoutonBall(3, tailleSkin);
-            tabBouton[3].setLocation((this.getWidth()- tailleSkin)/2 , y);
-            add(tabBouton[3]);
-
-            y += gapSkin + tailleSkin ;
-            tabBouton[4] = new BoutonBall(4, tailleSkin);
-            tabBouton[4].setLocation((this.getWidth()- tailleSkin)/2 , y);
-            add(tabBouton[4]);
-
             iluminateButton() ;
             repaint();
         }

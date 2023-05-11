@@ -30,6 +30,7 @@ public class Controleur extends JFrame {
     private File musicmenu = ImageImport.getMusicMenu();
     private File musicgame = ImageImport.getMusicGame();
     AudioInputStream audioStream;
+    public boolean sound = true;
     
     AudioFormat format;
     DataLine.Info info = new DataLine.Info(Clip.class, format);
@@ -205,5 +206,12 @@ public class Controleur extends JFrame {
 
     public void setMusic(boolean b) {
         isMusicOn = b;
+    }
+    public void setSound (boolean b){
+        sound = b;
+        Ball.setSound(b);
+    }
+    public boolean getSound (){
+        return sound;
     }
 }
