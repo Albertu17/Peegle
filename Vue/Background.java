@@ -17,7 +17,7 @@ import java.awt.image.ConvolveOp;
 import java.awt.image.Kernel;
 
 public class Background extends JPanel {
-  private static String pathBackGround = "Gameview/licorne.jpg";
+  private static String pathBackGround = "Gameview/arbre.jpg";
   private static int selecteurBackground = 0 ; 
   
   

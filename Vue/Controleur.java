@@ -149,9 +149,6 @@ public class Controleur extends JFrame {
         }
         this.removeAll();
         gameview = new GameView(this, nomNiveau);
-        for(Ball ball : gameview.court.getBalls()){
-            ball.inLevelTrue();
-        }
         if (gameview != null){
             add(gameview) ;
         }

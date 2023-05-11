@@ -17,12 +17,12 @@ public class Pegs implements Cloneable {
     private Point courtCenter;
     private double radiusToCourtCenter;
     private int courtWidth; 
-    private Point rectCenter; // sauvegarde
+    private Point rectCenter;
     
 
     private double radiusToRectCenter;
-    private int rectWidth; // sauvegarde
-    private int rectHeight; // sauvegarde
+    private int rectWidth;
+    private int rectHeight;
     
 
     private double angleToCenterOfRotation;

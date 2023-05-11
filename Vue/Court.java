@@ -202,20 +202,6 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         return canon;
     }
 
-
-    public void upVitesse(){
-        canon.setVitesseTir(canon.getVitesseTir()*1.1);
-        if(canon.getVitesseTir()>=1000){
-            canon.setVitesseTir(1000);
-        }
-    }
-    public void downVitesse(){
-        canon.setVitesseTir(canon.getVitesseTir()*0.9);
-        if(canon.getVitesseTir()<=50){
-            canon.setVitesseTir(50);
-        }
-    }
-
     public void setEditMode(boolean editMode) {
         this.editMode = editMode;
     }
@@ -494,12 +480,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         }
     }
 
-    public void mouseClicked(MouseEvent e) {
-        // lancer une balle
-        if (gameOver && mouseX > 535 && mouseX < 985 && mouseY > 695 && mouseY < 765) {
-            controleur.launchMenu();
-        }
-    }
+
 
     public void mousePressed(MouseEvent e) {
         // lancer une balle
@@ -742,6 +723,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
 
     public void keyReleased(KeyEvent e) {}
     public void mouseEntered(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e) {}
     public void keyTyped(KeyEvent e) {}
 
     public class PanelFin extends JPanel{

@@ -25,9 +25,6 @@ public class Ball{
     public double ballSpeedX, ballSpeedY; // m
 
     public double nextBallX,nextBallY;
-
-    // private int height=500;
-    // private int width=500;
     private static boolean musicOn = true;
 
     public double p1,p2,p3,p4,p5;
@@ -74,8 +71,6 @@ public class Ball{
     private Court court;
     private Pegs pegderniertoucher;
 
-
-    public boolean inLevel = true;
 
     double x,y;
 
@@ -162,7 +157,7 @@ public class Ball{
 
         
         if (p!=null && p != pegderniertoucher){
-        if (p!=null && !atoucherpegs && inLevel){
+        if (p!=null && !atoucherpegs){
             if(musicOn){
                 try {
                     playSound();
@@ -188,13 +183,6 @@ public class Ball{
         }
         ballX = nextBallX;
         ballY = nextBallY;
-    }
-
-    public void inLevelTrue(){
-        inLevel = true;
-    }
-    public void inLevelFalse(){
-        inLevel = false;
     }
 
 
