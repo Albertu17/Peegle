@@ -9,8 +9,8 @@ Lien utile :
 
 
 *Pour lancer le jeu :
-    *Compiler le fichier Vue/Controleur.java
-    *Executer le fichier Vue/Controleur.class
+    javac.exe ./Vue/Controleur.java
+    java Vue.Controleur
 
 Fonctionnalitées du jeu :
     *Option
