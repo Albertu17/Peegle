@@ -434,7 +434,6 @@ public class Niveau {
         List<String> tout = getAllCheckNiveau(true);
         for (int i = 0; i < tout.size(); i++) {
             if (tout.get(i).charAt(tout.get(i).length() - 2) == '0') {
-                System.out.println(tout.get(i).substring(0, tout.get(i).length() - 2));
                 return tout.get(i).substring(0, tout.get(i).length() - 2);
             }
         }

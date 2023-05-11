@@ -285,6 +285,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         });
         timer.start();
     }
+    
 
     public void askReset(){
         pegs.clear();
