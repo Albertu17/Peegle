@@ -238,8 +238,8 @@ public class Ball{
     }
 
     public int getComboScore() {
-        int score = 1;
-        for (int i = 2; i <= combo; i++) {
+        int score = 0;
+        for (int i = 0; i <= combo; i++) {
             score += i;
         }
         return score;
