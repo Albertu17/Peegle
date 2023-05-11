@@ -50,21 +50,6 @@ public class Niveau {
         return campagne;
     }
 
-    public static String getPlayLevel() {
-        String[] atraiter = new File(dosierSauvegarde + "Campagne").list();
-        for (int i = 0; i < atraiter.length; i++) {
-            try (Scanner save = new Scanner(new File(dosierSauvegarde + "Campagne" + "/" + atraiter[i]))) {
-                String[] line = save.nextLine().split(";");
-                if (line[8] == "0") {
-                    return line[0];
-                }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
-
     public ArrayList<Pegs> getPegs() {
         return pegs;
     }
@@ -279,12 +264,6 @@ public class Niveau {
             }
         }
         return ret;
-    }
-
-    public static List<String> getAllCheckNiveau() {
-        List<String> tout = getAllCheckNiveau(true);
-        tout.addAll(getAllCheckNiveau(false));
-        return tout;
     }
 
     public static List<String> getAllNameNiveau(boolean campagne) {
