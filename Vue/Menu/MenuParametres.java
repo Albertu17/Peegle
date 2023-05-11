@@ -172,9 +172,7 @@ public class MenuParametres extends JPanel {
         backgroundBounton.setLocation(width/3 - (backgroundBounton.getWidth()/2), middleH - (int)(48*pourcentageH));
         add(backgroundBounton);
 
-        BoutonMenu BallIllimite = new BoutonMenu("Balles ilimitées", 200, 50);
-        BallIllimite.removeMouseListener(BallIllimite.getMouseListeners()[0]);
-        
+        BoutonMenu BallIllimite = new BoutonMenu("Balles ilimitees", 200, 50, false);        
         BallIllimite.setLocation(width/3 - (BallIllimite.getWidth()/2), middleH - (int)((98+48)*pourcentageH));
         add(BallIllimite);
         BallIllimite.addActionListener(e -> {
