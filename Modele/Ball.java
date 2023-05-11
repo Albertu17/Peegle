@@ -119,7 +119,6 @@ public class Ball{
         // next, see if the ball would meet some obstacle
         if (touchedWallY(nextBallY)) { 
             ballSpeedY = -ballSpeedY*coeffRebond;
-            // System.out.println("touched wall Y");
             nextBallY = ballY + deltaT * ballSpeedY + 1/2*g*(deltaT*deltaT);
         }
 
@@ -132,7 +131,6 @@ public class Ball{
         }
 
         if (sceau.inside(this)){
-            System.out.println("inside");
             sceau.getCourt().augmenteNbDeBall();
             hitground=true;
             ispresent=false;

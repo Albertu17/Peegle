@@ -174,22 +174,13 @@ public class MenuParametres extends JPanel {
 
         dispBackground = new DispBackground(((width - backgroundBounton.getX())*2)/3, height/2) ;
         dispBackground.setVisible(false);
-        // int xCenterdispBackground = (width*2)/3; 
         dispBackground.setLocation(backgroundBounton.getX() +backgroundBounton.getWidth() + ((width - backgroundBounton.getX()))/6, middleH - (dispBackground.getHeight())/2);
-        System.out.println(dispBackground.getSize());
-        System.out.println(dispBackground.getLocation());
-        // dispBackground.setLocation(xCenterdispBackground - (dispBackground.getWidth()/2), middleH - (dispBackground.getHeight())/2);
         add(dispBackground) ;
         
 
         backgroundBounton.addActionListener(e -> {
             dispBackground.setVisible(! dispBackground.isVisible());
         });
-
-
-
-
-
 
 
         setFocusable(true);
@@ -308,7 +299,6 @@ public class MenuParametres extends JPanel {
             image = getEditedImage("    Skins    ", (width*2)/3, 50) ;
 
             int tailleSkin = (height-image.getHeight()) /allNameImage.length ; 
-            System.out.println(tailleSkin);
             int gapSkin = tailleSkin /5 ;
             tailleSkin = (tailleSkin*4) /5 ;
 

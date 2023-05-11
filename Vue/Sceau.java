@@ -16,7 +16,6 @@ public class Sceau{
     private BufferedImage imageBAS,imageHAUT; 
 
     Sceau(Court court){
-        System.out.println(bordure);
         this.court = court;
         Xb = court.getWidth()/2 - longeur/2;
         Yb = court.getHeight() - (hauteur);

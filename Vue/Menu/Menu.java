@@ -57,9 +57,6 @@ public class Menu extends JPanel {
         btnOptions = new BoutonMenu("options", 200, 50);
         btnOptions.setLocation(middleW-100,middleH-25); 
         btnOptions.addActionListener(e -> {
-            if(controleur.gameview == null){
-                controleur.gameview = new GameView(controleur, "Perso/Triangle");
-            }
             controleur.launchParametres();});
         add(btnOptions);
 
