@@ -286,7 +286,6 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
             balls.add(canon.tirer());
             nbDeBallChange = true;
             if ( ! BallIllimite){
-
                 NbDeBall--;
             }
             if (!editMode)
@@ -863,8 +862,8 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
             g.drawString("Score: " + toucher, x, y);  
             y += (height * 75) / 876  ;          
             g.drawString("Balles Restantes: " + NbDeBall, x, y);
-            y += (height * 75) / 876  ;          
-            g.drawString("Balles Utilisees: " + (niveau.getNbrBall() - NbDeBall), x, y);
+            y += (height * 75) / 876  ; 
+            g.drawString("Balles Utilisees: " + canon.getNbDeBallTirer(), x, y);
             y += (height * 75) / 876  ;          
             g.drawString("Score Max : " + niveau.getScoreMax(), x, y);
             if (toucher > ScoreMax) {

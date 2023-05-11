@@ -33,9 +33,14 @@ public class Canon extends JPanel{
     private static double vitesseTir = 450 ;
     private double tailleCanon = 6/100.0; // en pourcentage de la taille de l'écran
     private int angleMaxBord = 5 ;
+    private int NbDeBallTirer = 0; 
     
     
     
+    public int getNbDeBallTirer() {
+        return NbDeBallTirer;
+    }
+
     public Canon(Court court){ 
 
         
@@ -139,6 +144,8 @@ public class Canon extends JPanel{
 
         // redéfinie la gravité pour chaque balle
         gravity = balleATirer.getG() ;
+
+        NbDeBallTirer++ ;
 
         // return la balle tirer
         return Ball_lancer ;
