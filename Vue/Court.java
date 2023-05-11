@@ -390,7 +390,7 @@ public class Court extends JPanel implements MouseInputListener, KeyListener {
         g.setColor(Color.RED);
         // traçage ligne de viser
         if (!enPause) {
-            canon.calculCordonnéeLigneViser();
+            canon.calculCordonneeLigneViser();
             Graphics2D g2DGameview = (Graphics2D) g;
             g2DGameview.setColor(Color.RED);
             float dash1[] = { 20.0f };

@@ -173,7 +173,7 @@ public class Canon extends JPanel{
     } 
     
 
-    public void calculCordonnéeLigneViser(){
+    public void calculCordonneeLigneViser(){
         Point depart = new Point((int)(pivotDeRotation.x + court.getInsets().left -  Math.cos(angleOrientation)*(this.getHeight()/2)), (int)(pivotDeRotation.y + Math.sin(angleOrientation)*(this.getHeight()/2) + court.getInsets().top )) ;
         
         //calcul du point d'arrivé de la ligne de visée
