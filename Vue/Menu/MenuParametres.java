@@ -10,8 +10,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
-import Modele.Ball;
+import javax.swing.plaf.synth.SynthSeparatorUI;
 
+import Modele.Ball;
+import Vue.Background;
 import Vue.Controleur;
 import Vue.ImageImport;
 
@@ -30,6 +32,7 @@ public class MenuParametres extends JPanel {
 
    
     private Skin skin ; 
+    private DispBackground dispBackground ;
 
     JButton plus;
     JButton minus;
@@ -57,19 +60,26 @@ public class MenuParametres extends JPanel {
         // BoutonMenu back
         btnRetour = new BoutonMenu("Retour", 200, 50);
         btnRetour.setLocation(40, 40);
-        btnRetour.addActionListener(e -> controleur.launchMenu());
+        btnRetour.addActionListener(e -> {
+            dispBackground.setVisible(false);
+            controleur.launchMenu() ;
+        });
+        
         add(btnRetour);
 
 
         skin = new Skin(width/5, height/2) ;
         skin.setVisible(true);
-        int xCenterSkin = (width)/3; 
+        int xCenterSkin = (width)/5; 
         skin.setLocation(xCenterSkin - (skin.getWidth()/2), (height - skin.getHeight())/2);
         add(skin) ;
+
+
+
         BoutonMenu buttonMusicOn = new BoutonMenu("Music On", 200, 50);
-        buttonMusicOn.setLocation(middleW - (buttonMusicOn.getWidth()/2), middleH + (int)(148*pourcentageH) );
+        buttonMusicOn.setLocation(width/3 - (buttonMusicOn.getWidth()/2), middleH + (int)(148*pourcentageH) );
         BoutonMenu buttonMusicOff = new BoutonMenu("Music Off", 200, 50);
-        buttonMusicOff.setLocation(middleW- (buttonMusicOn.getWidth()/2), middleH + (int)(148*pourcentageH));
+        buttonMusicOff.setLocation(width/3- (buttonMusicOn.getWidth()/2), middleH + (int)(148*pourcentageH));
         if (controleur.getMusic()) {
             buttonMusicOn.setVisible(true);
             buttonMusicOff.setVisible(false);
@@ -80,7 +90,7 @@ public class MenuParametres extends JPanel {
         add(buttonMusicOff);
         add(buttonMusicOn);
         JButton musiconIconOn = new JButton();
-        musiconIconOn.setLocation(middleW + (buttonMusicOn.getWidth()/2) + 10, middleH + (int)(148*pourcentageH));
+        musiconIconOn.setLocation(width/3 + (buttonMusicOn.getWidth()/2) + 10, middleH + (int)(148*pourcentageH));
         musiconIconOn.setSize(50, 50);
         musiconIconOn.setIcon(new ImageIcon(ImageImport.getImage("Menu/MusicOn.png", 50, 50)));
         musiconIconOn.setBorderPainted(false);
@@ -88,7 +98,7 @@ public class MenuParametres extends JPanel {
         musiconIconOn.setFocusPainted(false);
         musiconIconOn.setOpaque(false);
         JButton musiconIconOff = new JButton();
-        musiconIconOff.setLocation(middleW + (buttonMusicOn.getWidth()/2) + 10, middleH + (int)(148*pourcentageH));
+        musiconIconOff.setLocation(width/3 + (buttonMusicOn.getWidth()/2) + 10, middleH + (int)(148*pourcentageH));
         musiconIconOff.setSize(50, 50);
         musiconIconOff.setIcon(new ImageIcon(ImageImport.getImage("Menu/MusicOff.png", 50, 50)));
         musiconIconOff.setBorderPainted(false);
@@ -139,9 +149,9 @@ public class MenuParametres extends JPanel {
         add(musiconIconOn);
 
         BoutonMenu buttonSoundOn = new BoutonMenu("Sound On", 200, 50);
-        buttonSoundOn.setLocation(middleW - (buttonSoundOn.getWidth()/2), middleH + (int)(50*pourcentageH));
+        buttonSoundOn.setLocation(width/3 - (buttonSoundOn.getWidth()/2), middleH + (int)(50*pourcentageH));
         BoutonMenu buttonSoundOff = new BoutonMenu("Sound Off", 200, 50);
-        buttonSoundOff.setLocation(middleW - (buttonSoundOn.getWidth()/2), middleH + (int)(50*pourcentageH));
+        buttonSoundOff.setLocation(width/3 - (buttonSoundOn.getWidth()/2), middleH + (int)(50*pourcentageH));
         if (controleur.getSound()) {
             buttonSoundOn.setVisible(true);
             buttonSoundOff.setVisible(false);
@@ -162,21 +172,38 @@ public class MenuParametres extends JPanel {
         
         add(buttonSoundOff);
         add(buttonSoundOn);
-        
 
         BoutonMenu backgroundBounton = new BoutonMenu("Background", 200, 50);
-        backgroundBounton.setLocation(middleW - (backgroundBounton.getWidth()/2), middleH - (int)(48*pourcentageH));
-        backgroundBounton.addActionListener(e -> {
-            //TODO
-        });
+        backgroundBounton.setLocation(width/3 - (backgroundBounton.getWidth()/2), middleH - (int)(48*pourcentageH));
         add(backgroundBounton);
+
+
+        dispBackground = new DispBackground(((width - backgroundBounton.getX())*2)/3, height/2) ;
+        dispBackground.setVisible(false);
+        // int xCenterdispBackground = (width*2)/3; 
+        dispBackground.setLocation(backgroundBounton.getX() +backgroundBounton.getWidth() + ((width - backgroundBounton.getX()))/6, middleH - (dispBackground.getHeight())/2);
+        System.out.println(dispBackground.getSize());
+        System.out.println(dispBackground.getLocation());
+        // dispBackground.setLocation(xCenterdispBackground - (dispBackground.getWidth()/2), middleH - (dispBackground.getHeight())/2);
+        add(dispBackground) ;
+        
+
+        backgroundBounton.addActionListener(e -> {
+            dispBackground.setVisible(! dispBackground.isVisible());
+        });
+
+
+
 
 
 
 
         setFocusable(true);
         requestFocusInWindow();
-        addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[] {}, () -> controleur.launchMenu()));
+        addKeyListener(new BoutonMenu.BoutonClavier(new BoutonMenu[] {}, () -> {
+            dispBackground.setVisible(false);
+            controleur.launchMenu() ;
+        }));
     }
 
 
@@ -197,6 +224,80 @@ public class MenuParametres extends JPanel {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, this);
     }
+
+    class DispBackground extends JPanel{
+        private String[] allPathImage = new String[] { "Gameview/arbre.jpg",  "Gameview/licorne.jpg", 
+                        "Gameview/neige.jpg",  "Gameview/foret.jpg" };
+
+        private BufferedImage cadre ;
+        private BufferedImage cadreSeleted ;
+
+        DispBackground(int width, int height){
+            setLayout(null);
+            setVisible(false);
+            setSize(width, height);
+            this.setOpaque(false);
+            int largeurImg = width / 2 ; 
+            int hauteurImg = height /2 ;
+            int gapL = (largeurImg)/9 ;
+            int gapH = (hauteurImg)/9 ;
+            largeurImg -= gapL ;
+            hauteurImg -= gapH ;
+            
+            for (int i = 0 ; i < 4 ; i++){
+                ImgBackground imgBG = new ImgBackground(i, largeurImg, hauteurImg) ;
+                add(imgBG);
+                int x = 0 ;
+                int y = 0 ;
+                if (1 == i%2)  x = (largeurImg + gapL ) ;
+                if (i >= 2) y = (hauteurImg + gapH ) ;
+                imgBG.setLocation(x, y);
+            }
+            Background.setPathBackGround(allPathImage[Background.getSelecteurBackground()]) ;
+            repaint() ;
+
+        }
+        class ImgBackground extends JPanel{
+            private BufferedImage bg ;
+            private int offsetCadre = 10;
+            int selecteur ;
+    
+            ImgBackground(int selecteur, int width, int height){
+                this.selecteur = selecteur ;
+                bg = ImageImport.getImage(allPathImage[selecteur], width-offsetCadre, height-offsetCadre); 
+                if (cadre == null){
+                    cadre = ImageImport.getImage("Menu/CadreCampagne.png", width, height);  
+                    cadreSeleted = ImageImport.getImage("Menu/CadreCampagneHover.png", width, height);  
+                }
+    
+                setLayout(null);
+                setSize(width, height) ;
+                setVisible(true);
+                setOpaque(false);
+                
+                this.addMouseListener((MouseListener) new MouseAdapter() {
+                    public void mouseClicked(MouseEvent evt){
+                        Background.setPathBackGround(allPathImage[selecteur]) ;
+                        Background.setSelecteurBackground(selecteur) ;
+                        DispBackground.this.repaint() ;
+                    }
+                });
+            }
+    
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(bg, offsetCadre/2, offsetCadre/2, this) ;
+                if (selecteur == Background.getSelecteurBackground()) {
+                    g.drawImage(cadreSeleted, 0, 0, this) ;
+                }else{
+                    g.drawImage(cadre, 0, 0, this) ;
+
+                }
+            }
+        }
+    }
+
     
     public class Skin extends JPanel{
         private String[] allNameImage = new String[] { "Ball/ball.png", "Ball/basketBall.png", "Ball/smileysBall.png",
@@ -227,7 +328,7 @@ public class MenuParametres extends JPanel {
                 add(tabBouton[i]);
                 y += gapSkin + tailleSkin ;
             }
-            
+
             iluminateButton() ;
             repaint();
         }
