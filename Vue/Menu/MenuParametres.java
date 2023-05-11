@@ -1,6 +1,5 @@
 package Vue.Menu;
 
-import java.awt.Button;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -10,8 +9,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
-import javax.swing.plaf.synth.SynthSeparatorUI;
-
 import Modele.Ball;
 import Vue.Background;
 import Vue.Controleur;
