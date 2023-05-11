@@ -15,5 +15,5 @@ Lien utile :
 Fonctionnalitées du jeu :
     *Option
     *Niveau
-        Permet de voir tout les no
+        Permet de voir tout les niveau crés
     *Editeur de niveau
