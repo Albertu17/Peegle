@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import javax.swing.*;
 
 import Vue.Controleur;
-import Vue.GameView;
 import Vue.ImageImport;
 
 public class Menu extends JPanel {

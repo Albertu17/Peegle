@@ -221,20 +221,6 @@ public class Niveau {
 
     }
 
-    public static void main(String[] args) {
-        ImageImport.setImage(false);
-        boolean campagne = true;
-        for (String name : new File("Niveau/" + (campagne ? "Campagne" : "Perso")).list()) {
-            name = name.substring(0, name.length() - 5);
-            createIconeNiveau(name, campagne);
-        }
-        campagne = false;
-        for (String name : new File("Niveau/" + (campagne ? "Campagne" : "Perso")).list()) {
-            name = name.substring(0, name.length() - 5);
-            createIconeNiveau(name, campagne);
-        }
-    }
-
     public static void resetAllCheckNiveau(boolean campagne) {
         String[] atraiter = new File(dosierSauvegarde + (campagne ? "Campagne" : "Perso")).list();
         for (String nom : atraiter) {
