@@ -27,7 +27,7 @@ public class Ball{
     public double nextBallX,nextBallY;
     private static boolean musicOn = true;
 
-    public double p1,p2,p3,p4,p5;
+    public Point p1,p2,p3,p4,p5;
 
     private boolean ispresent = true;
     private boolean atoucherpegs = false;
@@ -137,12 +137,10 @@ public class Ball{
             previousPosition.remove(0);
         }
         if (previousPosition.size()==5){
-            p1 = previousPosition.get(0).getX();
-            p2 = previousPosition.get(1).getX();
-            p3 = previousPosition.get(2).getX();
-            p4 = previousPosition.get(3).getX();
-            p5 = previousPosition.get(4).getX();
-            if (p1==p2 && p2==p3 && p3==p4 && p4==p5){
+            p1 = previousPosition.get(0);
+            p2 = previousPosition.get(2);
+            p3 = previousPosition.get(4);
+            if ( p1.getX() == p2.getX() && p1.getY() == p2.getY() && p2.getX() == p3.getX() && p2.getY() == p3.getY()){
                 notBlocked = false;
             }
         }
