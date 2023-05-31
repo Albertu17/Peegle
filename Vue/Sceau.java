@@ -4,8 +4,8 @@ import Modele.*;
 import java.awt.image.BufferedImage;
 
 public class Sceau{
-    public final int longeur = 100; // m
-    public final int hauteur = 50;
+    public final int longeur = 140; // m
+    public final int hauteur = 70;
     public double speedX = 100; // m
 
     private int bordure = (longeur * 65) / 405;
